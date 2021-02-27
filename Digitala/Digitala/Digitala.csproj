@@ -278,6 +278,7 @@
     <Content Include="images\user-img-background.jpg" />
     <Content Include="images\user.jpg" />
     <Content Include="images\user.png" />
+    <Content Include="index.html" />
     <Content Include="js\admin.js" />
     <Content Include="Scripts\ajaxCallsWithKey.js" />
     <Content Include="js\demo.js" />
