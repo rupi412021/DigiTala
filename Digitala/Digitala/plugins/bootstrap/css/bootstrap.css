@@ -1603,11 +1603,19 @@ pre code {
     width: 1170px;
   }
 }
+
 .container-fluid {
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #D9D9D9;
+}
+.container-fluid-general {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
 }
 .row {
   margin-right: -15px;
@@ -4229,19 +4237,23 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .container > .navbar-header,
 .container-fluid > .navbar-header,
+.container-fluid-general > .navbar-header,
 .container > .navbar-collapse,
-.container-fluid > .navbar-collapse {
-  margin-right: -15px;
-  margin-left: -15px;
+.container-fluid > .navbar-collapse,
+.container-fluid-general > .navbar-collapse {
+    margin-right: -15px;
+    margin-left: -15px;
 }
 @media (min-width: 768px) {
-  .container > .navbar-header,
-  .container-fluid > .navbar-header,
-  .container > .navbar-collapse,
-  .container-fluid > .navbar-collapse {
-    margin-right: 0;
-    margin-left: 0;
-  }
+    .container > .navbar-header,
+    .container-fluid > .navbar-header,
+    .container-fluid-general > .navbar-header,
+    .container > .navbar-collapse,
+    .container-fluid > .navbar-collapse,
+    .container-fluid-general > .navbar-collapse {
+        margin-right: 0;
+        margin-left: 0;
+    }
 }
 .navbar-static-top {
   z-index: 1000;
@@ -4275,9 +4287,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-width: 1px 0 0;
 }
 .navbar-brand {
-  float: left;
+  float: right;
   height: 50px;
-  padding: 15px 15px;
   font-size: 18px;
   line-height: 20px;
 }
@@ -4289,10 +4300,11 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   display: block;
 }
 @media (min-width: 768px) {
-  .navbar > .container .navbar-brand,
-  .navbar > .container-fluid .navbar-brand {
-    margin-left: -15px;
-  }
+    .navbar > .container .navbar-brand,
+    .navbar > .container-fluid .navbar-brand,
+    .navbar > .container-fluid-general .navbar-brand {
+        margin-left: -15px;
+    }
 }
 .navbar-toggle {
   position: relative;
@@ -4978,10 +4990,11 @@ a.badge:focus {
   border-top-color: #d5d5d5;
 }
 .container .jumbotron,
-.container-fluid .jumbotron {
-  padding-right: 15px;
-  padding-left: 15px;
-  border-radius: 6px;
+.container-fluid .jumbotron,
+.container-fluid-general .jumbotron {
+    padding-right: 15px;
+    padding-left: 15px;
+    border-radius: 6px;
 }
 .jumbotron .container {
   max-width: 100%;
@@ -4991,11 +5004,12 @@ a.badge:focus {
     padding-top: 48px;
     padding-bottom: 48px;
   }
-  .container .jumbotron,
-  .container-fluid .jumbotron {
-    padding-right: 60px;
-    padding-left: 60px;
-  }
+    .container .jumbotron,
+    .container-fluid .jumbotron,
+    .container-fluid-general .jumbotron {
+        padding-right: 60px;
+        padding-left: 60px;
+    }
   .jumbotron h1,
   .jumbotron .h1 {
     font-size: 63px;
@@ -6469,6 +6483,8 @@ button.close {
 .container:after,
 .container-fluid:before,
 .container-fluid:after,
+.container-fluid-general:before,
+.container-fluid-general:after,
 .row:before,
 .row:after,
 .form-horizontal .form-group:before,
@@ -6493,13 +6509,14 @@ button.close {
 .modal-header:after,
 .modal-footer:before,
 .modal-footer:after {
-  display: table;
-  content: " ";
+    display: table;
+    content: " ";
 }
 .clearfix:after,
 .dl-horizontal dd:after,
 .container:after,
 .container-fluid:after,
+.container-fluid-general:after,
 .row:after,
 .form-horizontal .form-group:after,
 .btn-toolbar:after,
@@ -6512,7 +6529,7 @@ button.close {
 .panel-body:after,
 .modal-header:after,
 .modal-footer:after {
-  clear: both;
+    clear: both;
 }
 .center-block {
   display: block;

@@ -2,16 +2,21 @@
   background-color: #F44336; }
 
 .theme-red .navbar-brand {
-  color: #fff; }
-  .theme-red .navbar-brand:hover {
-    color: #fff; }
-  .theme-red .navbar-brand:active {
-    color: #fff; }
-  .theme-red .navbar-brand:focus {
-    color: #fff; }
+    color: #F46549;
+}
+    .theme-red .navbar-brand:hover {
+        color: #F46549;
+    }
+    .theme-red .navbar-brand:active {
+        color: #F46549;
+    }
+    .theme-red .navbar-brand:focus {
+        color: #F46549;
+    }
 
 .theme-red .nav > li > a {
-  color: #fff; }
+    color: #F46549;
+}
   .theme-red .nav > li > a:hover {
     background-color: transparent; }
   .theme-red .nav > li > a:focus {
@@ -25,7 +30,8 @@
     background-color: transparent; }
 
 .theme-red .bars {
-  color: #fff; }
+    color: #F46549;
+}
 
 .theme-red .sidebar .menu .list li.active {
   background-color: transparent; }
