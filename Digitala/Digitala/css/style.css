@@ -7585,7 +7585,8 @@ fieldset[disabled] .form-control {
         padding: 8px 16px; }
         .sidebar .menu .list i.material-icons {
             margin-top: 4px;
-            margin-right: 4px;
+            margin-left: 4px;
+
         }
       .sidebar .menu .list .menu-toggle:after, .sidebar .menu .list .menu-toggle:before {
           font-family: sans-serif;
@@ -7662,14 +7663,15 @@ fieldset[disabled] .form-control {
         .sidebar .menu .list .ml-menu li.active a.toggled:not(.menu-toggle) {
           font-weight: 600;
           margin-right: 5px; }
-          .sidebar .menu .list .ml-menu li.active a.toggled:not(.menu-toggle):before {
-            content: '\E315';
-            font-family: 'Material Icons';
-            position: relative;
-            font-size: 21px;
-            height: 20px;
-            top: -5px;
-            right: 0px; }
+            .sidebar .menu .list .ml-menu li.active a.toggled:not(.menu-toggle):before {
+                content: 'chevron_left'; 
+                font-family: 'Material Icons';
+                position: relative;
+                font-size: 21px;
+                height: 20px;
+                top: -5px;
+                right: 0px;
+            }
         .sidebar .menu .list .ml-menu li .ml-menu li a {
           padding-right: 80px; }
         .sidebar .menu .list .ml-menu li .ml-menu .ml-menu li a {
@@ -7736,7 +7738,9 @@ fieldset[disabled] .form-control {
   padding-left: 0;
   max-width: 360px;
   margin: 5% auto;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  direction: rtl;
+}
   .login-page .login-box .msg {
     color: #555;
     margin-bottom: 30px;
@@ -7766,7 +7770,9 @@ fieldset[disabled] .form-control {
   padding-left: 0;
   max-width: 360px;
   margin: 5% auto;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  direction: rtl;
+}
   .signup-page .signup-box .msg {
     color: #555;
     margin-bottom: 30px;
@@ -7796,7 +7802,9 @@ fieldset[disabled] .form-control {
   padding-left: 0;
   max-width: 360px;
   margin: 5% auto;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  direction: rtl;
+}
   .fp-page .fp-box .msg {
     color: #555;
     margin-bottom: 30px;
