@@ -322,8 +322,8 @@
     <Content Include="js\pages\widgets\infobox\infobox-4.js" />
     <Content Include="js\pages\widgets\infobox\infobox-5.js" />
     <Content Include="js\script.js" />
-    <Content Include="pages\examples\forgot-password.html" />
-    <Content Include="pages\examples\sign-in.html" />
+    <Content Include="pages\forgot-password.html" />
+    <Content Include="pages\sign-in.html" />
     <Content Include="pages\examples\sign-up.html" />
     <Content Include="plugins\animate-css\animate.css" />
     <Content Include="plugins\animate-css\animate.min.css" />
