@@ -24,7 +24,9 @@
     <link href="../css/StyleSheet.css" rel="stylesheet" />
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
     <script>
-        ajaxCall("GET", "../api/Targets", "", getSuccess, error);
+        $(document).ready(function () {
+            ajaxCall("GET", "../api/Targets", "", getSuccess, error);
+        }
         function getSuccess(TargetsBankdata) {
             console.log(table(TargetsBankdata));
             allTargetInBank = TargetsBankdata;
