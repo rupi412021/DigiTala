@@ -17,13 +17,43 @@
     <link href="../plugins/node-waves/waves.css" rel="stylesheet" />
     <!-- Animation Css -->
     <link href="../plugins/animate-css/animate.css" rel="stylesheet" />
-    <!-- Morris Chart Css-->
-    <link href="../plugins/morrisjs/morris.css" rel="stylesheet" />
     <!-- Custom Css -->
     <link href="../css/style.css" rel="stylesheet">
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
     <link href="../css/StyleSheet.css" rel="stylesheet" />
+    <script src="../Scripts/ajaxCallsWithKey.js"></script>
+    <script>
+        ajaxCall("GET", "../api/Targets", "", getSuccess, error);
+        function getSuccess(TargetsBankdata) {
+            console.log(table(TargetsBankdata));
+            allTargetInBank = TargetsBankdata;
+
+            try {
+                tbl = $('#mainTable').DataTable({
+                    data: TargetsBankdata,
+                    pageLength: 10,
+                    columns: [
+                        { data: "Target" },
+                        { data: "FunctionArea" },
+                        { data: "SubFunctionArea" },
+                        //{ data: "Chars-true" },
+                        //{ data: "Chars-false" },
+                        { data: "Originality" },
+                        { data: "Suitability" },
+                        { data: "NumOfUses" },
+                    ],
+                });
+            }
+
+            catch (err) {
+                alert(err);
+            }
+        }
+        function error(err) {
+            swal("Error: " + err);
+        }
+    </script>
 </head>
 
 <body class="theme-red">
@@ -73,50 +103,13 @@
                                             <th>מטרה</th>
                                             <th>תחום</th>
                                             <th>תת-תחום</th>
-                                            <th>מאפיינים</th>
-                                            <th>חוזקות</th>
+                                            <!--<th>מאפיינים</th>
+                                            <th>חוזקות</th>-->
+                                            <th>דירוג מקוריות</th>
+                                            <th>דירוג התאמה</th>
+                                            <th>כמות שימוש</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Car</td>
-                                            <td>100</td>
-                                            <td>200</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bike</td>
-                                            <td>330</td>
-                                            <td>240</td>
-                                            <td>1</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Plane</td>
-                                            <td>430</td>
-                                            <td>540</td>
-                                            <td>3</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Yacht</td>
-                                            <td>100</td>
-                                            <td>200</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Segway</td>
-                                            <td>330</td>
-                                            <td>240</td>
-                                            <td>1</td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th><strong>TOTAL</strong></th>
-                                            <th>1290</th>
-                                            <th>1420</th>
-                                            <th>5</th>
-                                        </tr>
-                                    </tfoot>
                                 </table>
                             </div>
                         </div>
@@ -229,8 +222,7 @@
         </aside>
         <!-- #END# Left Sidebar -->
     </section>
-    <!-- Editable Table Plugin Js -->
-    <script src="../plugins/editable-table/mindmup-editabletable.js"></script>
+
     <!-- Jquery Core Js -->
     <script src="../plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap Core Js -->
@@ -241,21 +233,8 @@
     <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
     <!-- Waves Effect Plugin Js -->
     <script src="../plugins/node-waves/waves.js"></script>
-    <!-- Jquery CountTo Plugin Js -->
-    <script src="../plugins/jquery-countto/jquery.countTo.js"></script>
-    <!-- Morris Plugin Js -->
-    <script src="../plugins/raphael/raphael.min.js"></script>
-    <script src="../plugins/morrisjs/morris.js"></script>
-    <!-- ChartJs -->
-    <script src="../plugins/chartjs/Chart.bundle.js"></script>
-    <!-- Flot Charts Plugin Js -->
-    <script src="../plugins/flot-charts/jquery.flot.js"></script>
-    <script src="../plugins/flot-charts/jquery.flot.resize.js"></script>
-    <script src="../plugins/flot-charts/jquery.flot.pie.js"></script>
-    <script src="../plugins/flot-charts/jquery.flot.categories.js"></script>
-    <script src="../plugins/flot-charts/jquery.flot.time.js"></script>
-    <!-- Sparkline Chart Plugin Js -->
-    <script src="../plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- Editable Table Plugin Js -->
+    <script src="../plugins/editable-table/mindmup-editabletable.js"></script>
     <!-- Custom Js -->
     <script src="../js/admin.js"></script>
     <script src="../js/pages/index.js"></script>

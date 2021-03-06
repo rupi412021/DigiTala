@@ -4572,12 +4572,16 @@ section.content {
   color: #fff; }
 
 .table tbody tr.danger td, .table tbody tr.danger th {
-  background-color: #fb483a;
-  color: #fff; }
+    background-color: #fb483a;
+    color: #fff;
+
+}
 
 .table thead tr th {
   padding: 10px;
-  border-bottom: 1px solid #eee; }
+  border-bottom: 1px solid #eee;
+  text-align: right;
+}
 
 .table-bordered {
   border-top: 1px solid #eee; }
