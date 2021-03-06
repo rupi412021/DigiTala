@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+
 <html>
 
 <head>
@@ -22,15 +23,20 @@
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
     <link href="../css/StyleSheet.css" rel="stylesheet" />
-    <script src="../Scripts/ajaxCalls.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCallsWithKey.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+
+
 
     <script>
         $(document).ready(function () {
             ajaxCall("GET", "../api/Targets", "", getSuccess, error);
-        })
+        });
 
         function getSuccess(TargetsBankdata) {
-            console.log(table(TargetsBankdata));
+            console.log(TargetsBankdata);
             allTargetInBank = TargetsBankdata;
 
             try {
@@ -120,7 +126,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 

@@ -288,7 +288,6 @@
     <Content Include="pages\ManageClasses.html" />
     <Content Include="pages\index.html" />
     <Content Include="js\admin.js" />
-    <Content Include="Scripts\ajaxCalls.js" />
     <Content Include="js\demo.js" />
     <Content Include="js\helpers.js" />
     <Content Include="js\pages\cards\basic.js" />
@@ -3492,6 +3491,7 @@
     <Content Include="plugins\waitme\waitMe.js" />
     <Content Include="plugins\waitme\waitMe.min.css" />
     <Content Include="plugins\waitme\waitMe.min.js" />
+    <Content Include="Scripts\ajaxCallsWithKey.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />

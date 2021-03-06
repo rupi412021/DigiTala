@@ -45,9 +45,9 @@ namespace Digitala.Models.DAL
                 {   // Read till the end of the data into a row
                     Targets t = new Targets();
 
-                    t.Target = (string)(dr["TSerial"]);
-                    t.FunctionArea = (string)(dr["FASerial"]);
-                    t.SubFunctionArea = (string)(dr["SFASerial"]);
+                    t.Target = (string)(dr["Target"]);
+                    t.FunctionArea = (string)(dr["FunctionArea"]);
+                    t.SubFunctionArea = (string)(dr["SubFunctionArea"]);
                     t.NumOfUses = Convert.ToInt32(dr["NumOfUses"]);
                     t.Suitability = Convert.ToDouble(dr["Suitability"]);
                     t.Originality = Convert.ToDouble(dr["Originality"]);
