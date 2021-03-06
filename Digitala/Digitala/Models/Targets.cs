@@ -8,6 +8,9 @@ namespace Digitala.Models
 {
     public class Targets
     {
+        int tarSerial;
+        int faSerial;
+        int sfaSerial;
         string target;
         string functionArea;
         string subFunctionArea;
@@ -16,8 +19,11 @@ namespace Digitala.Models
         int numOfUses;
         
 
-        public Targets(string target, string functionArea, string subFunctionArea, double suitability, double originality, int numOfUses)
+        public Targets(int tarSerial, int faSerial, int sfaSerial, string target, string functionArea, string subFunctionArea, double suitability, double originality, int numOfUses)
         {
+            TarSerial = tarSerial;
+            FaSerial = faSerial;
+            SfaSerial = sfaSerial;
             Target = target;
             FunctionArea = functionArea;
             SubFunctionArea = subFunctionArea;
@@ -28,6 +34,9 @@ namespace Digitala.Models
 
         public Targets() { }
 
+        public int TarSerial { get => tarSerial; set => tarSerial = value; }
+        public int FaSerial { get => faSerial; set => faSerial = value; }
+        public int SfaSerial { get => sfaSerial; set => sfaSerial = value; }
         public string Target { get => target; set => target = value; }
         public string FunctionArea { get => functionArea; set => functionArea = value; }
         public string SubFunctionArea { get => subFunctionArea; set => subFunctionArea = value; }

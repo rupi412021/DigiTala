@@ -33,7 +33,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "Select T.Target, T.Suitability, T.Originality, T.NumOfUses, FA.FunctionArea, SFA.SubFunctionArea from Targets T"+
+                String selectSTR = "Select T.*, FA.FunctionArea, SFA.SubFunctionArea from Targets T"+
                                     " inner join FunctionAreas FA on T.FASerial = FA.FASerial  inner join SubFunctionAreas SFA on T.SFASerial = SFA.SFASerial";
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
@@ -45,13 +45,16 @@ namespace Digitala.Models.DAL
                 {   // Read till the end of the data into a row
                     Targets t = new Targets();
 
+                    t.TarSerial = Convert.ToInt32(dr["TSerial"]);
+                    t.FaSerial = Convert.ToInt32(dr["FASerial"]);
+                    t.SfaSerial = Convert.ToInt32(dr["SFASerial"]);
                     t.Target = (string)(dr["Target"]);
-                    t.FunctionArea = (string)(dr["FunctionArea"]);
-                    t.SubFunctionArea = (string)(dr["SubFunctionArea"]);
-                    t.NumOfUses = Convert.ToInt32(dr["NumOfUses"]);
                     t.Suitability = Convert.ToDouble(dr["Suitability"]);
                     t.Originality = Convert.ToDouble(dr["Originality"]);
-
+                    t.NumOfUses = Convert.ToInt32(dr["NumOfUses"]);
+                    t.FunctionArea = (string)(dr["FunctionArea"]);
+                    t.SubFunctionArea = (string)(dr["SubFunctionArea"]);
+                    
                     targetList.Add(t);
                 }
 

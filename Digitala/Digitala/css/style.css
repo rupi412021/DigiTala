@@ -2492,7 +2492,7 @@ section.content {
     top: 6px !important; }
 
 .btn:not(.btn-link):not(.btn-circle) {
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05), 0 2px 10px rgba(0, 0, 0, 0.05);
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   -ms-border-radius: 2px;
@@ -6691,7 +6691,7 @@ fieldset[disabled] .form-control {
     overflow: visible; }
 
 .ls-closed .sidebar {
-  margin-right: -300px; }
+  margin-right: -290px; }
 
 .ls-closed section.content {
   margin-right: 15px; }
@@ -7489,7 +7489,7 @@ fieldset[disabled] .form-control {
   transition: all 0.5s;
   font-family: "Roboto", sans-serif;
   background: #fdfdfd;
-  width: 300px;
+  width: 290px;
   overflow: hidden;
   display: inline-block;
   height: calc(100vh - 70px);
@@ -7690,7 +7690,7 @@ fieldset[disabled] .form-control {
   width: 280px;
   height: calc(100vh - 70px);
   position: fixed;
-  right: -300px;
+  right: -290px;
   top: 70px;
   background: #fdfdfd;
   z-index: 11 !important;

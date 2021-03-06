@@ -8,3 +8,9 @@
     color: white;
 }
 
+.deleteBtn, .updateBtn {
+    padding: 3px;
+    margin: 2px;
+}
+
+

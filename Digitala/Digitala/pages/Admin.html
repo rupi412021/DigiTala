@@ -22,13 +22,13 @@
     <link href="../css/style.css" rel="stylesheet">
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
-    <link href="../css/StyleSheet.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+    <link href="../css/StyleSheet.css" rel="stylesheet" />
 
     <script>
         $(document).ready(function () {
@@ -44,6 +44,14 @@
                     data: TargetsBankdata,
                     pageLength: 10,
                     columns: [
+                        {
+                            render: function (data, type, row, meta) {
+                                let dataTar = "data-tarId='" + row.TarSerial + "'";
+                                deleteBtn = "<button type='button' class = 'deleteBtn btn'" + dataTar + "><i class='material-icons'>delete</i></button>";
+                                updateBtn = "<button type='button' class = 'updateBtn btn'" + dataTar + "><i class='material-icons'>create</i></button>";
+                                return updateBtn + deleteBtn;
+                            },
+                        },
                         { data: "Target" },
                         { data: "FunctionArea" },
                         { data: "SubFunctionArea" },
@@ -51,7 +59,7 @@
                         //{ data: "Chars-false" },
                         { data: "Originality" },
                         { data: "Suitability" },
-                        { data: "NumOfUses" },
+                        { data: "NumOfUses" }
                     ],
                 });
             }
@@ -110,6 +118,7 @@
                                 <table id="mainTable" class="table table-striped">
                                     <thead>
                                         <tr>
+                                            <th></th>
                                             <th>מטרה</th>
                                             <th>תחום</th>
                                             <th>תת-תחום</th>
