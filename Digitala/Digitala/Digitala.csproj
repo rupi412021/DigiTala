@@ -288,7 +288,7 @@
     <Content Include="pages\ManageClasses.html" />
     <Content Include="pages\index.html" />
     <Content Include="js\admin.js" />
-    <Content Include="Scripts\ajaxCallsWithKey.js" />
+    <Content Include="Scripts\ajaxCalls.js" />
     <Content Include="js\demo.js" />
     <Content Include="js\helpers.js" />
     <Content Include="js\pages\cards\basic.js" />
