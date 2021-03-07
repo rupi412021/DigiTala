@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>דיגיתל"א - תוכנית לימודים דיגיטלית לתלמיד</title>
+
     <!-- Favicon-->
-    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
@@ -23,54 +24,11 @@
 
     <!-- Custom Css -->
     <link href="../css/style.css" rel="stylesheet">
+
+    <!-- Bootstrap Select Css -->
+    <link href="../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+
     <link href="../css/StyleSheet.css" rel="stylesheet" />
-
-    <!-- Validation Plugin Js -->
-    <script src="../plugins/jquery-validation/jquery.validate.js"></script>
-
-    <!-- Jquery Core Js -->
-    <script src="../../plugins/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap Core Js -->
-    <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
-
-    <!-- Select Plugin Js -->
-    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
-
-    <!-- Slimscroll Plugin Js -->
-    <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
-
-    <!-- Bootstrap Colorpicker Js -->
-    <script src="../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
-
-    <!-- Dropzone Plugin Js -->
-    <script src="../../plugins/dropzone/dropzone.js"></script>
-
-    <!-- Input Mask Plugin Js -->
-    <script src="../../plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
-
-    <!-- Multi Select Plugin Js -->
-    <script src="../../plugins/multi-select/js/jquery.multi-select.js"></script>
-
-    <!-- Jquery Spinner Plugin Js -->
-    <script src="../../plugins/jquery-spinner/js/jquery.spinner.js"></script>
-
-    <!-- Bootstrap Tags Input Plugin Js -->
-    <script src="../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
-
-    <!-- noUISlider Plugin Js -->
-    <script src="../../plugins/nouislider/nouislider.js"></script>
-
-    <!-- Waves Effect Plugin Js -->
-    <script src="../../plugins/node-waves/waves.js"></script>
-
-    <!-- Custom Js -->
-    <script src="../../js/admin.js"></script>
-    <script src="../../js/pages/forms/advanced-form-elements.js"></script>
-
-    <!-- Demo Js -->
-    <script src="../../js/demo.js"></script>
-
 </head>
 
 <body class="signup-page">
@@ -129,12 +87,13 @@
                     <!--<input type="checkbox" name="terms" id="terms" class="filled-in chk-col-pink">-->
                     <!--<label for="terms">קראתי והבנתי את <a href="javascript:void(0);">תנאי השימוש</a></label>-->
                     <!--</div>-->
+
                     <div class="input-group">
                         <span class="input-group-addon">
                             <i class="material-icons">school</i>
                         </span>
-                        <select class="form-control show-tick" data-live-search="true">
-                            <option>בחר בית ספר</option>
+                        <select class="btn-group bootstrap-select form-control show-tick " data-live-search="true">
+                            <option value="-1">בחר בית ספר</option>
                             <option>Burger, Shake and a Smile</option>
                             <option>Sugar, Spice and all things nice</option>
                         </select>
@@ -150,7 +109,26 @@
         </div>
     </div>
 
- 
+    <!-- Jquery Core Js -->
+    <script src="../plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="../plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="../plugins/node-waves/waves.js"></script>
+
+    <!-- Validation Plugin Js -->
+    <script src="../plugins/jquery-validation/jquery.validate.js"></script>
+
+    <!-- Custom Js -->
+    <script src="../js/admin.js"></script>
+    <script src="../js/pages/examples/sign-up.js"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+   
 
 </body>
 
