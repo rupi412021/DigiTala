@@ -33,7 +33,46 @@
     <script>
         $(document).ready(function () {
             ajaxCall("GET", "../api/Targets", "", getSuccess, error);
+
+            buttonEvents();
         });
+
+        function buttonEvents() {
+            $(document).on("click", ".updateBtn", function () {
+                mode = "edit";
+                markSelected(this);
+                $("#addingDiv").show();
+                $("#restaurantDIV").hide();
+                $("#saveNewBTN").hide();
+                $("#saveBTN").show();
+                populateFields(this.getAttribute('data-tarId'));
+            });
+
+            $(document).on("click", ".deleteBtn", function () {
+                mode = "delete";
+                markSelected(this);
+                var campId = this.getAttribute('data-tarId');
+                swal({ // this will open a dialouge
+                    title: "?האם ברצונך למחוק מטרה זו",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                })
+                    .then(function (willDelete) {
+                        if (willDelete) DeleteTar(tarId);
+                        else swal("מטרה לא נמחקה");
+                    });
+            });
+        }
+
+        function DeleteTar(tarId) {
+            for (i in allTargetInBank)
+                if (allTargetInBank[i].tarSerial == tarId) {
+                    //allTargetInBank[i].Status = false;
+                    ajaxCall("DELETE", "../api/Targets", JSON.stringify(allTargetInBank[i]), deleteSuccess, error);
+                }
+        }
 
         function getSuccess(TargetsBankdata) {
             console.log(TargetsBankdata);
@@ -55,8 +94,6 @@
                         { data: "Target" },
                         { data: "FunctionArea" },
                         { data: "SubFunctionArea" },
-                        //{ data: "Chars-true" },
-                        //{ data: "Chars-false" },
                         { data: "Originality" },
                         { data: "Suitability" },
                         { data: "NumOfUses" }
@@ -68,9 +105,34 @@
                 alert(err);
             }
         }
+
         function error(err) {
             swal("Error: " + err);
         }
+
+        function redrawTable(tbl, data) {
+            tbl.clear();
+            for (var i = 0; i < data.length; i++) {
+                tbl.row.add(data[i]);
+            }
+            tbl.draw();
+        }
+
+        function deleteSuccess(tarsdata) {
+            tbl.clear();
+            redrawTable(tbl, tarsdata);
+            allTargetInBank = tarsdata;
+            buttonEvents(); // after redrawing the table, we must wire the new buttons
+            $("#addingDiv").hide();
+            mode = "";
+        }
+
+        function markSelected(btn) {
+            $("#restsTable tr").removeClass("selected");
+            row = (btn.parentNode).parentNode;
+            row.className = 'selected';
+        }
+
     </script>
 </head>
 
@@ -122,8 +184,6 @@
                                             <th>מטרה</th>
                                             <th>תחום</th>
                                             <th>תת-תחום</th>
-                                            <!--<th>מאפיינים</th>
-                                            <th>חוזקות</th>-->
                                             <th>דירוג מקוריות</th>
                                             <th>דירוג התאמה</th>
                                             <th>כמות שימוש</th>
@@ -135,8 +195,11 @@
                     </div>
                 </div>
             </div>
+            <div class="row clearfix" id="editDiv">
+
+            </div>
         </div>
-    </section>
+</section>
 
     <section>
         <!-- Left Sidebar -->
