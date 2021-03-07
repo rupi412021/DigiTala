@@ -3042,7 +3042,6 @@ section.content {
     .card .body .col-md-8,
     .card .body .col-lg-8 {
       margin-bottom: 20px;
-      direction: ltr;
     }
     .card .body .col-xs-9,
     .card .body .col-sm-9,
