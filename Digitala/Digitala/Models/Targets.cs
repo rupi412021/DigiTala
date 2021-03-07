@@ -50,5 +50,12 @@ namespace Digitala.Models
             List<Targets> tList = dbs.ReadTargets();
             return tList;
         }
+
+        public List<Targets> Delete()
+        {
+            DBServices dbs = new DBServices();
+            dbs.DeleteTarget(this.TarSerial);
+            return Read();
+        }
     }
 }

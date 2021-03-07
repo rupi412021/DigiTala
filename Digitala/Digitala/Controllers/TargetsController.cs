@@ -18,5 +18,12 @@ namespace Digitala.Controllers
             List<Targets> tlist = t.Read();
             return tlist;
         }
+
+        [HttpDelete]
+        [Route("api/Targets")]
+        public List<Targets> Delete([FromBody]Targets t)
+        {
+            return t.Delete();
+        }
     }
 }

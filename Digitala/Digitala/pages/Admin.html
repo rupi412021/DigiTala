@@ -29,13 +29,15 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
     <link href="../css/StyleSheet.css" rel="stylesheet" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+    <script src="../Scripts/jquery-3.3.1.min.js"></script>
     <script>
         $(document).ready(function () {
             mode = "";
             $("#editDiv").hide();
             ajaxCall("GET", "../api/Targets", "", getSuccess, error);
-            
+
             buttonEvents();
         });
 
@@ -43,8 +45,7 @@
             $(document).on("click", ".updateBtn", function () {
                 mode = "edit";
                 markSelected(this);
-                $("#addingDiv").show();
-                $("#restaurantDIV").hide();
+                $("#editDiv").show();
                 $("#saveNewBTN").hide();
                 $("#saveBTN").show();
                 populateFields(this.getAttribute('data-tarId'));
@@ -53,27 +54,26 @@
             $(document).on("click", ".deleteBtn", function () {
                 mode = "delete";
                 markSelected(this);
-                var campId = this.getAttribute('data-tarId');
-                swal({ // this will open a dialouge
+                var tarId = this.getAttribute('data-tarId');
+                swal({
                     title: "?האם ברצונך למחוק מטרה זו",
                     text: "",
                     icon: "warning",
+                    dangerMode: true,
                     buttons: true,
-                    dangerMode: true
+                    cancel: "ביטול",
+                    confirm: "אישור"    
                 })
                     .then(function (willDelete) {
                         if (willDelete) DeleteTar(tarId);
-                        else swal("מטרה לא נמחקה");
                     });
             });
         }
 
         function DeleteTar(tarId) {
             for (i in allTargetInBank)
-                if (allTargetInBank[i].tarSerial == tarId) {
-                    //allTargetInBank[i].Status = false;
+                if (allTargetInBank[i].TarSerial == tarId)
                     ajaxCall("DELETE", "../api/Targets", JSON.stringify(allTargetInBank[i]), deleteSuccess, error);
-                }
         }
 
         function getSuccess(TargetsBankdata) {
