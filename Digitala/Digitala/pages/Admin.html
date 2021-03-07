@@ -32,8 +32,10 @@
 
     <script>
         $(document).ready(function () {
+            mode = "";
+            $("#editDiv").hide();
             ajaxCall("GET", "../api/Targets", "", getSuccess, error);
-
+            
             buttonEvents();
         });
 
