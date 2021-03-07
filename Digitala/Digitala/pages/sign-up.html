@@ -6,6 +6,9 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>דיגיתל"א - תוכנית לימודים דיגיטלית לתלמיד</title>
 
+    <script src="../Scripts/ajaxCallsWithKey.js"></script>
+
+
     <!-- Favicon-->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
@@ -29,6 +32,31 @@
     <link href="../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
 
     <link href="../css/StyleSheet.css" rel="stylesheet" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            ajaxCall("GET", "../api/Schools", "", getSuccess, error);
+        });
+
+        function getSuccess(schoolsList) {
+            console.log(schoolsList);
+            str = "<option value='-1'>בחר בית ספר</option>";
+
+            for (var i = 0; i < schoolsList.length; i++) {
+                let _schName = schoolsList[i].SchoolName;
+                let _schId = schoolsList[i].SchoolId;
+                str += "<option value='" + _schId + "'>" + _schName + "-" + _schId + "</option>";
+            }
+
+            $("#schOpt").append(str);
+        }
+        function error(err) {
+            alert("Error: " + err);
+        }
+    </script>
+
 </head>
 
 <body class="signup-page">
@@ -92,10 +120,8 @@
                         <span class="input-group-addon">
                             <i class="material-icons">school</i>
                         </span>
-                        <select class="btn-group bootstrap-select form-control show-tick " data-live-search="true">
-                            <option value="-1">בחר בית ספר</option>
-                            <option>Burger, Shake and a Smile</option>
-                            <option>Sugar, Spice and all things nice</option>
+                        <select id="schOpt" class="btn-group bootstrap-select form-control show-tick" data-live-search="true">
+
                         </select>
                     </div>
 
