@@ -326,7 +326,7 @@
     <Content Include="js\script.js" />
     <Content Include="pages\forgot-password.html" />
     <Content Include="pages\sign-in.html" />
-    <Content Include="pages\examples\sign-up.html" />
+    <Content Include="pages\sign-up.html" />
     <Content Include="plugins\animate-css\animate.css" />
     <Content Include="plugins\animate-css\animate.min.css" />
     <Content Include="plugins\autosize\autosize.js" />
