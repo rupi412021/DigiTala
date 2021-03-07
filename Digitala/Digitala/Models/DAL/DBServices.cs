@@ -63,7 +63,7 @@ namespace Digitala.Models.DAL
             catch (Exception ex)
             {
                 // write to log
-                throw new Exception("Could not GET List of campaigns", ex);
+                throw new Exception("Could not GET Targets from DB", ex);
             }
             finally
             {
