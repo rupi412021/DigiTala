@@ -155,16 +155,16 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\FuncAreasController.cs" />
     <Compile Include="Controllers\SchoolsController.cs" />
     <Compile Include="Controllers\TargetsController.cs" />
     <Compile Include="Controllers\TeachersController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DAL\DBServices.cs" />
     <Compile Include="Models\Schools.cs" />
+    <Compile Include="Models\FuncAreas.cs" />
     <Compile Include="Models\Targets.cs" />
     <Compile Include="Models\Teachers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

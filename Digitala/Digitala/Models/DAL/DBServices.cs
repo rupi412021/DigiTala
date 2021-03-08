@@ -150,7 +150,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "Select * from School";
+                String selectSTR = "Select * from School ORDER BY SchName ASC";
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -182,6 +182,55 @@ namespace Digitala.Models.DAL
             }
 
         }
+
+        public List<FuncAreas> ReadSubAreas()
+        {
+
+            SqlConnection con = null;
+            List<FuncAreas> subAreas = new List<FuncAreas>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT SFA.SFASerial, SFA.FASerial, SFA.SubFunctionArea, FA.FunctionArea FROM SubFunctionAreas SFA inner join FunctionAreas FA " +
+                    "on SFA.FASerial = FA.FASerial ORDER BY SFA.FASerial DESC";
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    FuncAreas s = new FuncAreas();
+
+                    s.SubArea = (string)(dr["SubFunctionArea"]);
+                    s.Area = (string)(dr["FunctionArea"]);
+                    s.SubAreaId = Convert.ToInt32(dr["SFASerial"]);
+                    s.AreaId = Convert.ToInt32(dr["FASerial"]);
+
+                    subAreas.Add(s);
+                }
+
+                return subAreas;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Schools from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
 
         public int Insert(Teachers teacher)
         {
@@ -224,6 +273,7 @@ namespace Digitala.Models.DAL
             }
 
         }
+
         private String BuildInsertCommand(Teachers teacher)
         {
             String command;

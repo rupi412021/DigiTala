@@ -35,9 +35,9 @@
     <script>
         $(document).ready(function () {
             mode = "";
-            $("#editDiv").hide();
+            //$("#editDiv").hide();
             ajaxCall("GET", "../api/Targets", "", getSuccess, error);
-
+            ajaxCall("GET", "../api/FuncAreas", "", getAreasSuccess, error);
             buttonEvents();
         });
 
@@ -74,6 +74,28 @@
             for (i in allTargetInBank)
                 if (allTargetInBank[i].TarSerial == tarId)
                     ajaxCall("DELETE", "../api/Targets", JSON.stringify(allTargetInBank[i]), deleteSuccess, error);
+        }
+
+        function getAreasSuccess(SubAreasData) {
+            allSubAreas = SubAreasData;
+            allAreas = [];
+            areas = '<option value="">בחר תחום</option>';  
+            for (var i = 0; i < SubAreasData.length; i++) {
+                hit = 0;
+                for (var j = 0; j < allAreas.length; j++) {
+                    if (allAreas[j] == SubAreasData[i].AreaId) {
+                        hit = 1;
+                        break;
+                    }
+                }
+                if (hit == 0) {
+                    allAreas[j] = SubAreasData[i].AreaId;
+                    areas += '<option value=' + SubAreasData[i].AreaId + '>' + SubAreasData[i].Area+'</option>'
+                }
+            }
+
+            $("#areaPick").html(areas);
+                      
         }
 
         function getSuccess(TargetsBankdata) {
@@ -198,7 +220,19 @@
                 </div>
             </div>
             <div class="row clearfix" id="editDiv">
-
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-md-4">
+                                    <select class="form-control show-tick" id="areaPick">
+                                        
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 </section>
