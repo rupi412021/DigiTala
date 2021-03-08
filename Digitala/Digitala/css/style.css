@@ -5019,7 +5019,7 @@ section.content {
   .input-group .input-group-addon {
     border: none;
     background-color: transparent;
-    padding-left: 0;
+    /*padding-left: 0;*/
     font-weight: bold; }
     .input-group .input-group-addon .material-icons {
       font-size: 18px;
