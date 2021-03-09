@@ -16,7 +16,7 @@
   }
   else {
     // Browser globals
-    factory(jQuery);
+    factory(jquery);
   }
 })(function($) {
   var spinningTimer;
