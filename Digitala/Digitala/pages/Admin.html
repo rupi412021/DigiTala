@@ -19,12 +19,15 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
     <!-- Bootstrap Core Css -->
     <link href="../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
 
     <!-- Jquery Spinner Plugin Js -->
     <script src="../plugins/jquery-spinner/js/jquery.spinner.js"></script>
+
+    <link href="../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+
     <!-- Custom Css -->
     <link href="../css/style.css" rel="stylesheet">
+
     <!-- Waves Effect Css -->
     <link href="../../plugins/node-waves/waves.css" rel="stylesheet" />
 
@@ -47,14 +50,68 @@
             ajaxCall("GET", "../api/FuncAreas", "", getAreasSuccess, error);
 
             buttonEvents();
-            
+
             $(document).on("click", "#cancelBTN", function () {
+                mode = "";
                 tar = null;
-                unMarkSelected(this);
+                unMarkSelected();
                 $("#editDiv").hide();
                 clearFields(this.getAttribute('data-tarId')); // fill the form fields according to the selected row
             });
+
+            $(document).on("click", "#addNewTar", function () {
+                tar = null;
+                mode = "new";
+                $("#editDiv").show();
+                clearFields();
+                $("#editDiv :input").prop("disabled", false); // new mode: enable all controls in the form
+            });
+
+            $("#saveBTN").submit(onSubmitFunc);
         });
+
+        function onSubmitFunc() {
+            let area = -1;
+            let subarea = -1;
+
+            if (mode == "edit") {
+                Id = tar.Id;
+                Uses = tar.NumOfUses
+            }
+            else
+                TarSerial = allTargetInBank.length;
+            
+            for (var i = 0; i < allSubAreas.length; i++) {
+                if (allSubAreas[i].SubAreaId == $("#areaPick").val()) {
+                    area = allSubAreas[i].SubArea;
+                    break;
+                }
+            }
+            for (var i = 0; i < allSubAreas.length; i++) {
+                if (allSubAreas[i].AreaId == $("#areaPick").val()) {
+                    area = allSubAreas[i].Area;
+                    break;
+                }
+            }
+
+            let targetToSave = {
+                TarSerial: Id,
+                Target: $("#target").val(),
+                FaSerial: $("#areaPick").val(),
+                FunctionArea: area,
+                SfaSerial: $("#subAreaPick").val(),
+                SubFunctionArea: subarea,
+                Suitability: $("#suitability").val(),
+                Originality: $("#originality").val(),
+                NumOfUses: Uses
+            }
+
+            if (mode == "edit")
+                ajaxCall("PUT", "../api/Targets", JSON.stringify(targetToSave), updateSuccess, error);
+            else if (mode == "new")
+                ajaxCall("POST", "../api/Targets", JSON.stringify(targetToSave), insertSuccess, error);
+            return false;
+        }
 
         function buttonEvents() {
             $(document).on("click", ".updateBtn", function () {
@@ -97,7 +154,7 @@
             $("#target").val(tar.Target);
             $("#suitability").val(tar.Suitability);
             $("#originality").val(tar.Originality);
-            $(".header#AddEditTar").hide();
+            $(".header#AddEditTar h2").html("<b>מטרה בעריכה</b>");
         }
 
         function clearFields(tarSerial) {
@@ -107,7 +164,7 @@
             $("#target").val("");
             $("#suitability").val("");
             $("#originality").val("");
-            $(".header#AddEditTar").show();
+            $(".header#AddEditTar h2").html("<b>הוסף מטרה חדשה</b>");
         }
 
         function getTarget(id) {
@@ -197,10 +254,27 @@
             row = (btn.parentNode).parentNode;
             row.className = 'selected';
         }
-        function unMarkSelected(btn) {
-            $("#restsTable tr").removeClass("selected");
+        function unMarkSelected() {
+            $(".selected").removeClass("selected");
         }
-        
+
+        function insertSuccess(targetsdata) {
+            tbl.clear();
+            redrawTable(tbl, targetsdata);
+            buttonEvents();
+            $("#editDiv").hide();
+            swal("המטרה נוספה בהצלחה", "", "success");
+            mode = "";
+        }
+
+        function updateSuccess(targetsdata) {
+            tbl.clear();
+            redrawTable(tbl, targetsdata);
+            buttonEvents();
+            $("#editDiv").hide();
+            swal("המטרה עודכנה בהצלחה", "", "success");
+            mode = "";
+        }
     </script>
 
 </head>
@@ -276,17 +350,17 @@
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
+
                             <div class="header" id="AddEditTar">
-                                <h2><b id="AddEditTar">הוסף מטרה חדשה</b></h2>
-                               
+                                <div class="icon-button-demo" style="float:left">
+                                    <button type="button" id="cancelBTN" class="btn btn-default waves-effect">
+                                        <i class="material-icons">clear</i>
+                                    </button>
+                                </div>
+                                <h2></h2>
                             </div>
                             <div class="body">
                                 <div class="row clearfix">
-                                    <div class="icon-button-demo" style="float:left">
-                                        <button type="button" id="cancelBTN" class="btn btn-default waves-effect">
-                                            <i class="material-icons">clear</i>
-                                        </button>
-                                    </div>
                                     <div class="col-sm-12">
                                         <p><b>מטרה</b></p>
                                         <div class="form-group form-group-lg">
@@ -322,21 +396,22 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
-                                        <label for="subAreaPick">תת-תחום</label>
-                                        <select id="subAreaPick" class="form-control" title="בחר תת-תחום" disabled multiple required></select>
+                                        <p><b>תת-תחום</b></p>
+                                        <select id="subAreaPick" class="show-tick form-control" title="בחר תת-תחום" disabled required></select>
                                     </div>
                                     <div class="col-sm-4">
-                                        <label for="areaPick">תחום תפקוד</label>
-                                        <select id="areaPick" class="form-control" title="בחר תחום" multiple required></select>
+                                        <p><b>תחום  תפקוד</b></p>
+                                        <select class="form-control show-tick" title="בחר תחום" id="areaPick" required></select>
                                     </div>
-                                    
                                 </div>
-                                <div class="footer" style="float:left">
-                                    <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
+                                <div class="row clearfix">
+                                    <div style="float:left; margin-left:20px">
+                                        <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">שמור</button>
+                                    </div>
                                 </div>
                             </div>
-                                
-                            </div>
+
+                        </div>
 
                     </div>
                 </div>
@@ -452,8 +527,7 @@
     <script src="../plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap Core Js -->
     <script src="../plugins/bootstrap/js/bootstrap.js"></script>
-    <!-- Select Plugin Js -->
-    <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
     <!-- Slimscroll Plugin Js -->
     <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
     <!-- Waves Effect Plugin Js -->
@@ -468,7 +542,8 @@
     <script src="../plugins/multi-select/js/jquery.multi-select.js"></script>
     <!-- Jquery Spinner Plugin Js -->
     <script src="../plugins/jquery-spinner/js/jquery.spinner.js"></script>
-
+    <!-- Select Plugin Js -->
+    <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
 </body>
 
 </html>

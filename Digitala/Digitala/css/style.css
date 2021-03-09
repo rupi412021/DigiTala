@@ -2985,10 +2985,11 @@ section.content {
         .card .header .header-dropdown i:hover {
           color: #000; }
     .card .header h2 {
-      margin: 0;
-      font-size: 18px;
-      font-weight: normal;
-      color: #111; }
+        margin: 0;
+        font-size: 18px;
+        font-weight: normal;
+        color: #5D7373;
+    }
       .card .header h2 small {
         display: block;
         font-size: 12px;
@@ -7748,7 +7749,7 @@ fieldset[disabled] .form-control {
 
 /* Login Page ================================== */
 .login-page {
-    background-color: #73A4A4;
+    background-color: #96C4DA;
     padding-left: 0;
     max-width: 360px;
     margin: 5% auto;
@@ -7780,7 +7781,7 @@ fieldset[disabled] .form-control {
 
 /* Sign Up Page ================================ */
 .signup-page {
-    background-color: #73A4A4;
+    background-color: #96C4DA;
     padding-left: 0;
     max-width: 360px;
     margin: 5% auto;
@@ -7812,7 +7813,7 @@ fieldset[disabled] .form-control {
 
 /* Forgot Password Page ======================== */
 .fp-page {
-    background-color: #73A4A4;
+    background-color: #96C4DA;
     padding-left: 0;
     max-width: 360px;
     margin: 5% auto;

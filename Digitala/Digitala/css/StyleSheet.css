@@ -1,4 +1,4 @@
-﻿* {
+﻿body {
     font-family: Calibri;
 
 }
@@ -18,18 +18,15 @@ span {
     margin: 2px;
 }
 
-.card .header #AddEditTar {
-    color: #73A4A4;
-}
 
-button#addNewTar.btn.waves-effect {
+#addNewTar.btn.waves-effect {
     width: 115px;
     margin-right: 30px;
     background-color: #73A4A4;
     color: white;
 }
 #cancelBTN {
-    box-shadow: 0 0px 0px rgba(0, 0, 0, 0), 0 2px 10px rgba(0, 0, 0, 0);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0), 0 2px 10px rgba(0, 0, 0, 0);
 }
 
 xx {
