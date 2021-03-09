@@ -12,7 +12,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
     <!-- Favicon-->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
     <!-- Google Fonts -->
@@ -26,6 +25,8 @@
     <script src="../plugins/jquery-spinner/js/jquery.spinner.js"></script>
     <!-- Custom Css -->
     <link href="../css/style.css" rel="stylesheet">
+    <!-- Waves Effect Css -->
+    <link href="../../plugins/node-waves/waves.css" rel="stylesheet" />
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
@@ -36,27 +37,32 @@
     <script src="../Scripts/jquery-3.3.1.min.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <link href="../css/StyleSheet.css" rel="stylesheet" />
+
+
     <script>
         $(document).ready(function () {
             mode = "";
-            //$("#editDiv").hide();
+            $("#editDiv").hide();
             ajaxCall("GET", "../api/Targets", "", getSuccess, error);
             ajaxCall("GET", "../api/FuncAreas", "", getAreasSuccess, error);
-            buttonEvents();
 
-            $(document).on("click", ".subAreaPick", function () {
-                mode = "edit";
-                markSelected(this);
-                $("#editDiv").show();
-                $("#saveNewBTN").hide();
-                $("#saveBTN").show();
-                populateFields(this.getAttribute('data-tarId'));
+            buttonEvents();
+            
+            $(document).on("click", "#cancelBTN", function () {
+                tar = null;
+                unMarkSelected(this);
+                $("#editDiv").hide();
+                clearFields(this.getAttribute('data-tarId')); // fill the form fields according to the selected row
             });
         });
 
         function buttonEvents() {
-            $(document).on("change", ".areaPick", function () {
-
+            $(document).on("click", ".updateBtn", function () {
+                mode = "edit";
+                markSelected(this);
+                $("#editDiv").show();
+                $("#editDiv :input").prop("disabled", false); // edit mode: enable all controls in the form
+                populateFields(this.getAttribute('data-tarId')); // fill the form fields according to the selected row
             });
 
             $(document).on("click", ".deleteBtn", function () {
@@ -82,6 +88,34 @@
             for (i in allTargetInBank)
                 if (allTargetInBank[i].TarSerial == tarId)
                     ajaxCall("DELETE", "../api/Targets", JSON.stringify(allTargetInBank[i]), deleteSuccess, error);
+        }
+
+        function populateFields(tarSerial) {
+            tar = getTarget(tarSerial);
+            $("#areaPick").val(tar.FaSerial);
+            $("#subAreaPick").val(tar.SfaSerial);
+            $("#target").val(tar.Target);
+            $("#suitability").val(tar.Suitability);
+            $("#originality").val(tar.Originality);
+            $(".header#AddEditTar").hide();
+        }
+
+        function clearFields(tarSerial) {
+            tar = getTarget(tarSerial);
+            $("#areaPick").val("");
+            $("#subAreaPick").val("");
+            $("#target").val("");
+            $("#suitability").val("");
+            $("#originality").val("");
+            $(".header#AddEditTar").show();
+        }
+
+        function getTarget(id) {
+            for (i in allTargetInBank) {
+                if (allTargetInBank[i].TarSerial == id)
+                    return allTargetInBank[i];
+            }
+            return null;
         }
 
         function getAreasSuccess(SubAreasData) {
@@ -163,7 +197,10 @@
             row = (btn.parentNode).parentNode;
             row.className = 'selected';
         }
-
+        function unMarkSelected(btn) {
+            $("#restsTable tr").removeClass("selected");
+        }
+        
     </script>
 
 </head>
@@ -223,6 +260,14 @@
                                     </thead>
                                 </table>
                             </div>
+                            <div class="footer">
+                                <div class="icon-and-text-button-demo">
+                                    <button type="button" class="btn waves-effect" id="addNewTar">
+                                        <i class="material-icons">add</i>
+                                        <span>מטרה חדשה</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -233,17 +278,25 @@
                         <div class="card">
                             <div class="header" id="AddEditTar">
                                 <h2><b id="AddEditTar">הוסף מטרה חדשה</b></h2>
+                               
                             </div>
                             <div class="body">
                                 <div class="row clearfix">
-                                    <div class="col-sm-8">
+                                    <div class="icon-button-demo" style="float:left">
+                                        <button type="button" id="cancelBTN" class="btn btn-default waves-effect">
+                                            <i class="material-icons">clear</i>
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <p><b>מטרה</b></p>
                                         <div class="form-group form-group-lg">
                                             <div class="form-line">
-                                                <p><b>מטרה</b></p>
-                                                <input type="text" class="form-control" id="target" />
+                                                <input type="text" class="form-control" id="target" required />
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row clearfix">
                                     <div class="col-sm-2">
                                         <p><b>דירוג מקוריות (0-5)</b></p>
                                         <div class="input-group spinner" data-trigger="spinner">
@@ -260,7 +313,7 @@
                                         <p><b>מידת התאמה (0-5)</b></p>
                                         <div class="input-group spinner" data-trigger="spinner">
                                             <div class="form-line">
-                                                <input type="text" id="suitability" class="form-control text-center" value="5" data-rule="currency" max="5.0" >
+                                                <input type="text" id="suitability" class="form-control text-center" value="5" data-rule="currency" max="5.0">
                                             </div>
                                             <span class="input-group-addon">
                                                 <a href="javascript:;" class="spin-up" data-spin="up"><i class="glyphicon glyphicon-chevron-up"></i></a>
@@ -268,23 +321,22 @@
                                             </span>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="form-group col-sm-4">
-                                        <label for="areaPick">מטרה בתחום</label>
-                                        <select id="areaPick" class="form-control" multiple required></select>
-                                    </div>
-                                    <div class="form-group col-sm-4">
+                                    <div class="col-sm-4">
                                         <label for="subAreaPick">תת-תחום</label>
-                                        <select id="subAreaPick" class="form-control" disabled multiple required></select>
+                                        <select id="subAreaPick" class="form-control" title="בחר תת-תחום" disabled multiple required></select>
                                     </div>
-                                    <div class="form-group col-sm-4">
-                                        <label for="newSubArea">תת-תחום אחר</label>
-                                        <input type="text" id="newSubArea" class="form-control" disabled>
+                                    <div class="col-sm-4">
+                                        <label for="areaPick">תחום תפקוד</label>
+                                        <select id="areaPick" class="form-control" title="בחר תחום" multiple required></select>
                                     </div>
+                                    
+                                </div>
+                                <div class="footer" style="float:left">
+                                    <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
                                 </div>
                             </div>
-                        </div>
+                                
+                            </div>
 
                     </div>
                 </div>
@@ -366,7 +418,7 @@
                             <span>ניהול כיתות</span>
                         </a>
                     </li>
-                    <li class="active">
+                    <li class="active" id="admin">
                         <a href="Admin.html">
                             <i class="material-icons">build</i>
                             <span>ניהול מאגר מטרות</span>

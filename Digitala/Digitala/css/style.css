@@ -2539,7 +2539,8 @@ section.content {
 .btn-primary:hover,
 .btn-primary:active,
 .btn-primary:focus {
-  background-color: #1f91f3 !important; }
+    background-color: #73A4A4 !important;
+}
 
 .btn-default,
 .btn-default:hover,
@@ -4524,7 +4525,8 @@ section.content {
   border-radius: 0; }
 
 .label-primary {
-  background-color: #1f91f3; }
+    background-color: #73A4A4;
+}
 
 .label-success {
   background-color: #2b982b; }
@@ -4550,13 +4552,14 @@ section.content {
 
 /* Tables ====================================== */
 .table tbody tr td, .table tbody tr th {
-  padding: 10px;
+  padding: 5px;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee; }
 
 .table tbody tr.primary td, .table tbody tr.primary th {
-  background-color: #1f91f3;
-  color: #fff; }
+    background-color: #73A4A4;
+    color: #fff;
+}
 
 .table tbody tr.success td, .table tbody tr.success th {
   background-color: #2b982b;
@@ -4579,7 +4582,7 @@ section.content {
 .table thead tr th {
   padding: 10px;
   border-bottom: 1px solid #eee;
-  text-align: right;
+  text-align: center;
 }
 
 .table-bordered {
@@ -4938,9 +4941,10 @@ section.content {
   -ms-border-radius: 0;
   border-radius: 0;
   height: 22px; }
-  .progress .progress-bar {
-    line-height: 23px;
-    background-color: #1f91f3; }
+    .progress .progress-bar {
+        line-height: 23px;
+        background-color: #73A4A4;
+    }
   .progress .progress-bar-success {
     background-color: #2b982b; }
   .progress .progress-bar-info {
@@ -4971,21 +4975,22 @@ section.content {
     border-bottom: 1px solid #ddd;
     position: relative; }
     .input-group .form-line:after {
-      content: '';
-      position: absolute;
-      left: 0;
-      width: 100%;
-      bottom: -2px;
-      -moz-transform: scaleX(0);
-      -ms-transform: scaleX(0);
-      -o-transform: scaleX(0);
-      -webkit-transform: scaleX(0);
-      transform: scaleX(0);
-      -moz-transition: 0.25s ease-in;
-      -o-transition: 0.25s ease-in;
-      -webkit-transition: 0.25s ease-in;
-      transition: 0.25s ease-in;
-      border-bottom: 2px solid #1f91f3; }
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 100%;
+        bottom: -2px;
+        -moz-transform: scaleX(0);
+        -ms-transform: scaleX(0);
+        -o-transform: scaleX(0);
+        -webkit-transform: scaleX(0);
+        transform: scaleX(0);
+        -moz-transition: 0.25s ease-in;
+        -o-transition: 0.25s ease-in;
+        -webkit-transition: 0.25s ease-in;
+        transition: 0.25s ease-in;
+        border-bottom: 2px solid #73A4A4;
+    }
     .input-group .form-line + .input-group-addon {
       padding-right: 0;
       padding-left: 10px; }
@@ -5083,22 +5088,23 @@ section.content {
     position: relative;
     border-bottom: 1px solid #ddd; }
     .form-group .form-line:after {
-      content: '';
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 0;
-      bottom: -1px;
-      -moz-transform: scaleX(0);
-      -ms-transform: scaleX(0);
-      -o-transform: scaleX(0);
-      -webkit-transform: scaleX(0);
-      transform: scaleX(0);
-      -moz-transition: 0.25s ease-in;
-      -o-transition: 0.25s ease-in;
-      -webkit-transition: 0.25s ease-in;
-      transition: 0.25s ease-in;
-      border-bottom: 2px solid #1f91f3; }
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 0;
+        bottom: -1px;
+        -moz-transform: scaleX(0);
+        -ms-transform: scaleX(0);
+        -o-transform: scaleX(0);
+        -webkit-transform: scaleX(0);
+        transform: scaleX(0);
+        -moz-transition: 0.25s ease-in;
+        -o-transition: 0.25s ease-in;
+        -webkit-transition: 0.25s ease-in;
+        transition: 0.25s ease-in;
+        border-bottom: 2px solid #73A4A4;
+    }
     .form-group .form-line .form-label {
       font-weight: normal;
       color: #aaa;
@@ -5115,7 +5121,7 @@ section.content {
   .form-group .form-line.success:after {
     border-bottom: 2px solid #4CAF50; }
   .form-group .form-line.warning:after {
-    border-bottom: 2px solid #FFC107; }
+    border-bottom: 2px solid #73A4A4; }
   .form-group .form-line.focused:after {
     -moz-transform: scaleX(1);
     -ms-transform: scaleX(1);
@@ -7981,7 +7987,8 @@ fieldset[disabled] .form-control {
     font-size: 12px;
     border-bottom: 1px solid #ddd; }
     .dataTables_wrapper input[type="search"]:focus, .dataTables_wrapper input[type="search"]:active {
-      border-bottom: 2px solid #1f91f3; }
+        border-bottom: 2px solid #73A4A4;
+    }
   .dataTables_wrapper .dt-buttons {
     float: left; }
     .dataTables_wrapper .dt-buttons a.dt-button {
