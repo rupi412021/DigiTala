@@ -18,5 +18,13 @@ namespace Digitala.Controllers
             List<FuncAreas> tlist = t.Read();
             return tlist;
         }
+
+        [HttpPut]
+        [Route("api/FuncAreas")]
+        public List<FuncAreas> Put([FromBody]FuncAreas f)
+        {
+            return f.Update();
+        }
+
     }
 }

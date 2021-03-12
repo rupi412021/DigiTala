@@ -33,5 +33,20 @@ namespace Digitala.Models
             List<FuncAreas> tList = dbs.ReadSubAreas();
             return tList;
         }
+
+        public List<FuncAreas> NewArea(int areaId, string area)
+        {
+            DBServices dbs = new DBServices();
+            dbs.InsertArea(areaId, area);
+            return Read();
+        }
+        
+        public List<FuncAreas> NewSubArea(int areaId, int subAreaId, string subArea)
+        {
+            DBServices dbs = new DBServices();
+            dbs.InsertSubArea(areaId, subAreaId, subArea);
+            return Read();
+        }
+
     }
 }

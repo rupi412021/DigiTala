@@ -231,7 +231,6 @@ namespace Digitala.Models.DAL
 
         }
 
-
         public int Insert(Teachers teacher)
         {
 
@@ -290,6 +289,121 @@ namespace Digitala.Models.DAL
 
         }
 
+        private String BuildInsertCommand(int areaId, string area)
+        {
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}' , '{5}')", teacher.TeacherID, teacher.TeacherFname, teacher.TeacherSurName, teacher.TeacherEmail, teacher.TeacherPassword);
+            prefix = "INSERT INTO Teachers " + "([TId], [TFirstName], [TLastName], [TEmail], [TPassword])";
+
+
+            command = prefix + sb.ToString();
+
+            return command;
+
+        }
+
+        private String BuildInsertCommand(int areaId, int subAreaId, string subArea)
+        {
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}' , '{5}')", teacher.TeacherID, teacher.TeacherFname, teacher.TeacherSurName, teacher.TeacherEmail, teacher.TeacherPassword);
+            prefix = "INSERT INTO Teachers " + "([TId], [TFirstName], [TLastName], [TEmail], [TPassword])";
+
+
+            command = prefix + sb.ToString();
+
+            return command;
+
+        }
+
+        public int InsertArea(int areaId, string area)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildInsertCommand(areaId, area);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not insert new Area", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        public int InsertSubArea(int areaId, int subAreaId, string subArea)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildInsertCommand(areaId, subAreaId, subArea);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not insert new Sub-Area", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
     }
     
 }

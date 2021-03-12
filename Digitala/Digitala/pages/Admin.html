@@ -47,7 +47,6 @@
             mode = "";
             $("#editDiv").hide();
             ajaxCall("GET", "../api/Targets", "", getSuccess, error);
-            ajaxCall("GET", "../api/FuncAreas", "", getAreasSuccess, error);
 
             buttonEvents();
 
@@ -65,6 +64,7 @@
                 $("#editDiv").show();
                 clearFields();
                 $("#editDiv :input").prop("disabled", false); // new mode: enable all controls in the form
+                ajaxCall("GET", "../api/FuncAreas", "", getAreasSuccess, error);
             });
 
             $("#saveBTN").submit(onSubmitFunc);
@@ -73,13 +73,13 @@
         function onSubmitFunc() {
             let area = -1;
             let subarea = -1;
+            let Id = -1;
+            let Uses = 0;
 
             if (mode == "edit") {
                 Id = tar.Id;
                 Uses = tar.NumOfUses
             }
-            else
-                TarSerial = allTargetInBank.length;
             
             for (var i = 0; i < allSubAreas.length; i++) {
                 if (allSubAreas[i].SubAreaId == $("#areaPick").val()) {
@@ -95,7 +95,7 @@
             }
 
             let targetToSave = {
-                TarSerial: Id,
+                TarId: Id,
                 Target: $("#target").val(),
                 FaSerial: $("#areaPick").val(),
                 FunctionArea: area,
@@ -162,8 +162,8 @@
             $("#areaPick").val("");
             $("#subAreaPick").val("");
             $("#target").val("");
-            $("#suitability").val("");
-            $("#originality").val("");
+            $("#suitability").val("5.00");
+            $("#originality").val("5.00");
             $(".header#AddEditTar h2").html("<b>הוסף מטרה חדשה</b>");
         }
 
@@ -335,10 +335,18 @@
                                 </table>
                             </div>
                             <div class="footer">
-                                <div class="icon-and-text-button-demo">
+                                <div class="icon-and-text-button-demo">   
                                     <button type="button" class="btn waves-effect" id="addNewTar">
-                                        <i class="material-icons">add</i>
-                                        <span>מטרה חדשה</span>
+                                        <i class="material-icons">gps_fixed</i>
+                                        <span class="font-underline">מטרה חדשה</span>
+                                    </button>
+                                    <button type="button" class="btn waves-effect" id="addNewTar">
+                                        <i class="material-icons">hdr_strong</i>
+                                        <span class="font-underline">תחום חדש</span>
+                                    </button>
+                                    <button type="button" class="btn waves-effect" id="addNewTar">
+                                        <i class="material-icons">hdr_weak</i>
+                                        <span class="font-underline">תת-תחום חדש</span>
                                     </button>
                                 </div>
                             </div>
