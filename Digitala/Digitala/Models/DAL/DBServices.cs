@@ -289,14 +289,14 @@ namespace Digitala.Models.DAL
 
         }
 
-        private String BuildInsertCommand(int areaId, string area)
+        private String BuildInsertCommand(string area)
         {
             String command;
             String prefix;
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}' , '{5}')", teacher.TeacherID, teacher.TeacherFname, teacher.TeacherSurName, teacher.TeacherEmail, teacher.TeacherPassword);
-            prefix = "INSERT INTO Teachers " + "([TId], [TFirstName], [TLastName], [TEmail], [TPassword])";
+            sb.AppendFormat("Values('{0}')", area);
+            prefix = "INSERT INTO FunctionAreas " + "([FunctionArea])";
 
 
             command = prefix + sb.ToString();
@@ -305,14 +305,14 @@ namespace Digitala.Models.DAL
 
         }
 
-        private String BuildInsertCommand(int areaId, int subAreaId, string subArea)
+        private String BuildInsertCommand(int areaId, string subArea)
         {
             String command;
             String prefix;
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}' , '{5}')", teacher.TeacherID, teacher.TeacherFname, teacher.TeacherSurName, teacher.TeacherEmail, teacher.TeacherPassword);
-            prefix = "INSERT INTO Teachers " + "([TId], [TFirstName], [TLastName], [TEmail], [TPassword])";
+            sb.AppendFormat("Values('{0}', '{1}')", areaId, subArea);
+            prefix = "INSERT INTO SubFunctionAreas " + "([FASerial], [SubFunctionArea])";
 
 
             command = prefix + sb.ToString();
@@ -321,7 +321,7 @@ namespace Digitala.Models.DAL
 
         }
 
-        public int InsertArea(int areaId, string area)
+        public int InsertArea(string area)
         {
 
             SqlConnection con;
@@ -337,7 +337,7 @@ namespace Digitala.Models.DAL
                 throw new Exception("Could not connect to DB", ex);
             }
 
-            String cStr = BuildInsertCommand(areaId, area);      // helper method to build the insert string
+            String cStr = BuildInsertCommand(area);      // helper method to build the insert string
 
             cmd = CreateCommand(cStr, con);             // create the command
 
@@ -363,7 +363,7 @@ namespace Digitala.Models.DAL
 
         }
 
-        public int InsertSubArea(int areaId, int subAreaId, string subArea)
+        public int InsertSubArea(int areaId, string subArea)
         {
 
             SqlConnection con;
@@ -379,7 +379,7 @@ namespace Digitala.Models.DAL
                 throw new Exception("Could not connect to DB", ex);
             }
 
-            String cStr = BuildInsertCommand(areaId, subAreaId, subArea);      // helper method to build the insert string
+            String cStr = BuildInsertCommand(areaId, subArea);      // helper method to build the insert string
 
             cmd = CreateCommand(cStr, con);             // create the command
 

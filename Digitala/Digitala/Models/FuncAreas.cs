@@ -34,17 +34,17 @@ namespace Digitala.Models
             return tList;
         }
 
-        public List<FuncAreas> NewArea(int areaId, string area)
+        public List<FuncAreas> NewArea(string area)
         {
             DBServices dbs = new DBServices();
-            dbs.InsertArea(areaId, area);
+            dbs.InsertArea(area);
             return Read();
         }
         
-        public List<FuncAreas> NewSubArea(int areaId, int subAreaId, string subArea)
+        public List<FuncAreas> NewSubArea(int areaId, string subArea)
         {
             DBServices dbs = new DBServices();
-            dbs.InsertSubArea(areaId, subAreaId, subArea);
+            dbs.InsertSubArea(areaId, subArea);
             return Read();
         }
 

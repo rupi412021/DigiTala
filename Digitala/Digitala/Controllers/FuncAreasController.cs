@@ -23,7 +23,10 @@ namespace Digitala.Controllers
         [Route("api/FuncAreas")]
         public List<FuncAreas> Put([FromBody]FuncAreas f)
         {
-            return f.Update();
+            if (f.AreaId == -1)
+                return f.NewArea(f.Area);
+            else
+                return f.NewSubArea(f.AreaId, f.SubArea);
         }
 
     }
