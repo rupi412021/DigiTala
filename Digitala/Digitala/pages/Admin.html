@@ -57,6 +57,11 @@
                 tar = null;
                 unMarkSelected();
                 $("#editTarDiv").hide();
+                $("#editSubAreaDiv").hide();
+                $("#editAreaDiv").hide();
+                $("#NewArea").val("");
+                $("#AreaPickForNewSubArea").val("");
+                $("#NewSubArea").val("");
                 clearFields(this.getAttribute('data-tarId')); // fill the form fields according to the selected row
             });
 
@@ -92,10 +97,52 @@
                 $("#editSubAreaDiv :input").prop("disabled", false); // new mode: enable all controls in the form
             });
 
-
-
             $("#saveBTN").submit(onSubmitFunc);
+
+            $("#saveAreaBTN").click(saveNewArea)
+            $("#saveSubAreaBTN").click(saveAndMoveToSubArea);
+            $("#saveAreaBTNandAddSub").click(saveNewSubArea);
+
         });
+
+        function saveAndMoveToSubArea() {
+            
+            saveNewArea();
+            tar = null;
+            mode = "newSubArea";
+            $("#editSubAreaDiv").show();
+            $("#editTarDiv").hide();
+            $("#editAreaDiv").hide();
+            $("#NewSubArea").val("");
+            $("#AreaPickForNewSubArea").val("");
+            $("#editSubAreaDiv :input").prop("disabled", false);
+        }
+
+        function saveNewArea() {
+
+            let NewArea = {
+                subAreaId: null,
+                areaId: -1,
+                subArea: null,
+                area: $("#NewArea").val()
+            }
+
+            ajaxCall("PUT", "../api/FuncAreas", JSON.stringify(NewArea), getAreasSuccess, error);
+
+        }
+
+        function saveNewSubArea() {
+
+            let NewArea = {
+                subAreaId: null,
+                areaId: $("#NewArea").val(),
+                subArea: $("#NewSubArea").val(),
+                area: null
+            }
+
+            ajaxCall("PUT", "../api/FuncAreas", JSON.stringify(NewArea), getAreasSuccess, error);
+
+        }
 
         function onSubmitFunc() {
             let area = -1;
