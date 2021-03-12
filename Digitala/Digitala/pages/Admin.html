@@ -45,7 +45,9 @@
     <script>
         $(document).ready(function () {
             mode = "";
-            $("#editDiv").hide();
+            $("#editTarDiv").hide();
+            $("#editAreaDiv").hide(); 
+            $("#editSubAreaDiv").hide(); 
             ajaxCall("GET", "../api/Targets", "", getSuccess, error);
 
             buttonEvents();
@@ -54,18 +56,43 @@
                 mode = "";
                 tar = null;
                 unMarkSelected();
-                $("#editDiv").hide();
+                $("#editTarDiv").hide();
                 clearFields(this.getAttribute('data-tarId')); // fill the form fields according to the selected row
             });
 
             $(document).on("click", "#addNewTar", function () {
                 tar = null;
                 mode = "new";
-                $("#editDiv").show();
+                $("#editTarDiv").show();
+                $("#editAreaDiv").hide();
+                $("#editSubAreaDiv").hide(); 
                 clearFields();
-                $("#editDiv :input").prop("disabled", false); // new mode: enable all controls in the form
+                $("#editTarDiv :input").prop("disabled", false); // new mode: enable all controls in the form
                 ajaxCall("GET", "../api/FuncAreas", "", getAreasSuccess, error);
             });
+
+            $(document).on("click", "#addNewArea", function () {
+                tar = null;
+                mode = "newArea";
+                $("#editAreaDiv").show();
+                $("#editSubAreaDiv").hide(); 
+                $("#editTarDiv").hide();
+                $("#NewArea").val("");
+                $("#editAreaDiv :input").prop("disabled", false); // new mode: enable all controls in the form
+            });
+            
+            $(document).on("click", "#addNewSubArea", function () {
+                tar = null;
+                mode = "newSubArea";
+                $("#editSubAreaDiv").show();
+                $("#editTarDiv").hide();
+                $("#editAreaDiv").hide();
+                $("#AreaPickForNewSubArea").val("");
+                $("#NewSubArea").val("");
+                $("#editSubAreaDiv :input").prop("disabled", false); // new mode: enable all controls in the form
+            });
+
+
 
             $("#saveBTN").submit(onSubmitFunc);
         });
@@ -117,8 +144,8 @@
             $(document).on("click", ".updateBtn", function () {
                 mode = "edit";
                 markSelected(this);
-                $("#editDiv").show();
-                $("#editDiv :input").prop("disabled", false); // edit mode: enable all controls in the form
+                $("#editTarDiv").show();
+                $("#editTarDiv :input").prop("disabled", false); // edit mode: enable all controls in the form
                 populateFields(this.getAttribute('data-tarId')); // fill the form fields according to the selected row
             });
 
@@ -262,7 +289,7 @@
             tbl.clear();
             redrawTable(tbl, targetsdata);
             buttonEvents();
-            $("#editDiv").hide();
+            $("#editTarDiv").hide();
             swal("המטרה נוספה בהצלחה", "", "success");
             mode = "";
         }
@@ -271,7 +298,7 @@
             tbl.clear();
             redrawTable(tbl, targetsdata);
             buttonEvents();
-            $("#editDiv").hide();
+            $("#editTarDiv").hide();
             swal("המטרה עודכנה בהצלחה", "", "success");
             mode = "";
         }
@@ -335,16 +362,16 @@
                                 </table>
                             </div>
                             <div class="footer">
-                                <div class="icon-and-text-button-demo">   
+                                <div class="icon-and-text-button-demo">
                                     <button type="button" class="btn waves-effect" id="addNewTar">
                                         <i class="material-icons">gps_fixed</i>
                                         <span class="font-underline">מטרה חדשה</span>
                                     </button>
-                                    <button type="button" class="btn waves-effect" id="addNewTar">
+                                    <button type="button" class="btn waves-effect" id="addNewArea">
                                         <i class="material-icons">hdr_strong</i>
                                         <span class="font-underline">תחום חדש</span>
                                     </button>
-                                    <button type="button" class="btn waves-effect" id="addNewTar">
+                                    <button type="button" class="btn waves-effect" id="addNewSubArea">
                                         <i class="material-icons">hdr_weak</i>
                                         <span class="font-underline">תת-תחום חדש</span>
                                     </button>
@@ -354,11 +381,11 @@
                     </div>
                 </div>
             </div>
-            <div class="row clearfix" id="editDiv">
+
+            <div class="row clearfix" id="editTarDiv">
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
-
                             <div class="header" id="AddEditTar">
                                 <div class="icon-button-demo" style="float:left">
                                     <button type="button" id="cancelBTN" class="btn btn-default waves-effect">
@@ -418,13 +445,84 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
             </div>
 
+            <div class="row clearfix" id="editAreaDiv">
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card">
+                            <div class="header">
+                                <div class="icon-button-demo" style="float:left">
+                                    <button type="button" id="cancelBTN" class="btn btn-default waves-effect">
+                                        <i class="material-icons">clear</i>
+                                    </button>
+                                </div>
+                                <h2>הוסף תחום חדש של מטרות</h2>
+                            </div>
+                            <div class="body">
+                                <div class="row clearfix">
+                                    <div class="col-sm-12">
+                                        <p><b>הזן תחום חדש</b></p>
+                                        <div class="form-group form-group-lg">
+                                            
+                                            <div class="form-line">
+                                                <input type="text" class="form-control" id="NewArea" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row clearfix">
+                                    <div style="float:left; margin-left:20px">
+                                        <button type="button" class="btn btn-primary btn-lg" id="saveAreaBTN">שמור</button>
+                                        <button type="button" class="btn btn-primary btn-lg" id="saveAreaBTNandAddSub">שמור ועבור להוספת תת-תחום</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row clearfix" id="editSubAreaDiv">
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card">
+                            <div class="header">
+                                <div class="icon-button-demo" style="float:left">
+                                    <button type="button" id="cancelBTN" class="btn btn-default waves-effect">
+                                        <i class="material-icons">clear</i>
+                                    </button>
+                                </div>
+                                <h2>הוסף תת-תחום חדש לתחום</h2>
+                            </div>
+                            <div class="body">
+                                <div class="row clearfix">
+                                    <div class="col-sm-6">
+                                        <p><b>בחר תחום</b></p>
+                                        <select id="AreaPickForNewSubArea" class="show-tick form-control" title="תחום" required></select>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p><b>הזן תת-תחום חדש</b></p>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="text" class="form-control" id="NewSubArea" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row clearfix">
+                                    <div style="float:left; margin-left:20px">
+                                        <button type="button" class="btn btn-primary btn-lg" id="saveSubAreaBTN">שמור</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 

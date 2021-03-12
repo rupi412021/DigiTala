@@ -1,4 +1,4 @@
-﻿body {
+﻿div {
     font-family: Calibri;
 
 }
@@ -13,12 +13,18 @@ span {
     text-align: right;
 }
 
+#saveAreaBTNandAddSub.btn.btn-primary.btn-lg {
+    color: #073636;
+}
+
 .deleteBtn, .updateBtn {
     padding: 3px;
     margin: 2px;
 }
 
 
+#addNewArea.btn.waves-effect,
+#addNewSubArea.btn.waves-effect,
 #addNewTar.btn.waves-effect {
     margin: 6px 10px;
     background-color: transparent;
