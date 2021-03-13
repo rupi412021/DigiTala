@@ -7,10 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>דיגיתל"א - מאגר מטרות</title>
-
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
+    <!-- Sweet Alert Css -->
+    <link href="../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- Favicon-->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
@@ -19,35 +20,32 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
     <!-- Bootstrap Core Css -->
     <link href="../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
-
-    <!-- Jquery Spinner Plugin Js -->
-    <script src="../plugins/jquery-spinner/js/jquery.spinner.js"></script>
-
     <link href="../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+
+    <!-- Waves Effect Css -->
+    <link href="../plugins/node-waves/waves.css" rel="stylesheet" />
 
     <!-- Custom Css -->
     <link href="../css/style.css" rel="stylesheet">
 
-    <!-- Waves Effect Css -->
-    <link href="../../plugins/node-waves/waves.css" rel="stylesheet" />
+    <!-- Bootstrap Spinner Css -->
+    <link href="../plugins/jquery-spinner/css/bootstrap-spinner.css" rel="stylesheet">
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
 
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
 
-
     <script src="../Scripts/jquery-3.3.1.min.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <link href="../css/StyleSheet.css" rel="stylesheet" />
-
 
     <script>
         $(document).ready(function () {
             mode = "";
             $("#editTarDiv").hide();
-            $("#editAreaDiv").hide(); 
-            $("#editSubAreaDiv").hide(); 
+            $("#editAreaDiv").hide();
+            $("#editSubAreaDiv").hide();
             ajaxCall("GET", "../api/Targets", "", getSuccess, error);
 
             buttonEvents();
@@ -70,7 +68,7 @@
                 mode = "new";
                 $("#editTarDiv").show();
                 $("#editAreaDiv").hide();
-                $("#editSubAreaDiv").hide(); 
+                $("#editSubAreaDiv").hide();
                 clearFields();
                 $("#editTarDiv :input").prop("disabled", false); // new mode: enable all controls in the form
                 ajaxCall("GET", "../api/FuncAreas", "", getAreasSuccess, error);
@@ -78,17 +76,15 @@
 
             $(document).on("click", "#addNewArea", function () {
                 tar = null;
-                mode = "newArea";
                 $("#editAreaDiv").show();
-                $("#editSubAreaDiv").hide(); 
+                $("#editSubAreaDiv").hide();
                 $("#editTarDiv").hide();
                 $("#NewArea").val("");
                 $("#editAreaDiv :input").prop("disabled", false); // new mode: enable all controls in the form
             });
-            
+
             $(document).on("click", "#addNewSubArea", function () {
                 tar = null;
-                mode = "newSubArea";
                 $("#editSubAreaDiv").show();
                 $("#editTarDiv").hide();
                 $("#editAreaDiv").hide();
@@ -98,21 +94,17 @@
             });
 
             $("#saveBTN").submit(onSubmitFunc);
-
-            $("#saveAreaBTN").click(saveNewArea)
-            $("#saveSubAreaBTN").click(saveAndMoveToSubArea);
-            $("#saveAreaBTNandAddSub").click(saveNewSubArea);
+            $("#saveAreaBTN").submit(saveNewArea)
+            $("#saveSubAreaBTN").submit(saveNewSubArea);
+            $("#saveAreaBTNandAddSub").submit(saveAndMoveToSubArea);
 
         });
 
         function saveAndMoveToSubArea() {
-            
             saveNewArea();
             tar = null;
-            mode = "newSubArea";
-            $("#editSubAreaDiv").show();
-            $("#editTarDiv").hide();
             $("#editAreaDiv").hide();
+            $("#editSubAreaDiv").show();
             $("#NewSubArea").val("");
             $("#AreaPickForNewSubArea").val("");
             $("#editSubAreaDiv :input").prop("disabled", false);
@@ -132,7 +124,6 @@
         }
 
         function saveNewSubArea() {
-
             let NewArea = {
                 subAreaId: null,
                 areaId: $("#NewArea").val(),
@@ -154,7 +145,7 @@
                 Id = tar.Id;
                 Uses = tar.NumOfUses
             }
-            
+
             for (var i = 0; i < allSubAreas.length; i++) {
                 if (allSubAreas[i].SubAreaId == $("#areaPick").val()) {
                     area = allSubAreas[i].SubArea;
@@ -442,55 +433,58 @@
                                 <h2></h2>
                             </div>
                             <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-sm-12">
-                                        <p><b>מטרה</b></p>
-                                        <div class="form-group form-group-lg">
-                                            <div class="form-line">
-                                                <input type="text" class="form-control" id="target" required />
+                                <form id="form_validation" method="POST" style="direction: rtl">
+                                    <div class="row clearfix">
+                                        <div class="col-sm-12">
+                                            <p><b>מטרה</b></p>
+                                            <div class="form-group form-group-lg">
+                                                <div class="form-line">
+                                                    <input type="text" class="form-control" id="target" required
+                                                           oninvalid="this.setCustomValidity('הזן מטרה')">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row clearfix">
-                                    <div class="col-sm-2">
-                                        <p><b>דירוג מקוריות (0-5)</b></p>
-                                        <div class="input-group spinner" data-trigger="spinner">
-                                            <div class="form-line">
-                                                <input type="text" id="originality" class="form-control text-center" value="5" data-rule="currency">
+                                    <div class="row clearfix">
+                                        <div class="col-sm-2">
+                                            <p><b>דירוג מקוריות (0-5)</b></p>
+                                            <div class="input-group spinner" data-trigger="spinner">
+                                                <div class="form-line">
+                                                    <input type="text" class="form-control text-center" id="originality" value="5" data-rule="currency" max="5">
+                                                </div>
+                                                <span class="input-group-addon">
+                                                    <a href="javascript:;" class="spin-up" data-spin="up"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                                                    <a href="javascript:;" class="spin-down" data-spin="down"><i class="glyphicon glyphicon-chevron-down"></i></a>
+                                                </span>
                                             </div>
-                                            <span class="input-group-addon">
-                                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="glyphicon glyphicon-chevron-up"></i></a>
-                                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="glyphicon glyphicon-chevron-down"></i></a>
-                                            </span>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p><b>מידת התאמה (0-5)</b></p>
+                                            <div class="input-group spinner" data-trigger="spinner">
+                                                <div class="form-line">
+                                                    <input type="text" id="suitability" class="form-control text-center" value="5" data-rule="currency" max="5">
+                                                </div>
+                                                <span class="input-group-addon">
+                                                    <a href="javascript:;" class="spin-up" data-spin="up"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                                                    <a href="javascript:;" class="spin-down" data-spin="down"><i class="glyphicon glyphicon-chevron-down"></i></a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p><b>תת-תחום</b></p>
+                                            <select id="subAreaPick" class="show-tick form-control" title="בחר תת-תחום" disabled required oninvalid="this.setCustomValidity('בחר תת-תחום')"></select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p><b>תחום  תפקוד</b></p>
+                                            <select class="form-control show-tick" title="בחר תחום" id="areaPick" required oninvalid="this.setCustomValidity('בחר תחום')"></select>
                                         </div>
                                     </div>
-                                    <div class="col-sm-2">
-                                        <p><b>מידת התאמה (0-5)</b></p>
-                                        <div class="input-group spinner" data-trigger="spinner">
-                                            <div class="form-line">
-                                                <input type="text" id="suitability" class="form-control text-center" value="5" data-rule="currency" max="5.0">
-                                            </div>
-                                            <span class="input-group-addon">
-                                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="glyphicon glyphicon-chevron-up"></i></a>
-                                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="glyphicon glyphicon-chevron-down"></i></a>
-                                            </span>
+                                    <div class="row clearfix">
+                                        <div style="float:left; margin-left:20px">
+                                            <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">שמור</button>
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
-                                        <p><b>תת-תחום</b></p>
-                                        <select id="subAreaPick" class="show-tick form-control" title="בחר תת-תחום" disabled required></select>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <p><b>תחום  תפקוד</b></p>
-                                        <select class="form-control show-tick" title="בחר תחום" id="areaPick" required></select>
-                                    </div>
-                                </div>
-                                <div class="row clearfix">
-                                    <div style="float:left; margin-left:20px">
-                                        <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">שמור</button>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -507,26 +501,27 @@
                                         <i class="material-icons">clear</i>
                                     </button>
                                 </div>
-                                <h2>הוסף תחום חדש של מטרות</h2>
+                                <h2><b>הוסף תחום חדש של מטרות</b></h2>
                             </div>
                             <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-sm-12">
-                                        <p><b>הזן תחום חדש</b></p>
-                                        <div class="form-group form-group-lg">
-                                            
-                                            <div class="form-line">
-                                                <input type="text" class="form-control" id="NewArea" required />
+                                <form id="form_validation" method="POST">
+                                    <div class="row clearfix">
+                                        <div class="col-sm-12">
+                                            <p><b>הזן תחום חדש</b></p>
+                                            <div class="form-group form-group-lg">
+                                                <div class="form-line">
+                                                    <input type="text" class="form-control" id="NewArea" required oninvalid="this.setCustomValidity('הזן תחום')">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row clearfix">
-                                    <div style="float:left; margin-left:20px">
-                                        <button type="button" class="btn btn-primary btn-lg" id="saveAreaBTN">שמור</button>
-                                        <button type="button" class="btn btn-primary btn-lg" id="saveAreaBTNandAddSub">שמור ועבור להוספת תת-תחום</button>
+                                    <div class="row clearfix">
+                                        <div style="float:left; margin-left:20px">
+                                            <button type="submit" class="btn btn-primary btn-lg" id="saveAreaBTN">שמור</button>
+                                            <button type="submit" class="btn btn-primary btn-lg" id="saveAreaBTNandAddSub">שמור ועבור להוספת תת-תחום</button>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -543,28 +538,31 @@
                                         <i class="material-icons">clear</i>
                                     </button>
                                 </div>
-                                <h2>הוסף תת-תחום חדש לתחום</h2>
+                                <h2><b>הוסף תת-תחום חדש לתחום</b></h2>
                             </div>
                             <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-sm-6">
-                                        <p><b>בחר תחום</b></p>
-                                        <select id="AreaPickForNewSubArea" class="show-tick form-control" title="תחום" required></select>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <p><b>הזן תת-תחום חדש</b></p>
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                                <input type="text" class="form-control" id="NewSubArea" required />
+                                <form id="form_validation" method="POST">
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-6">
+                                            <p><b>הזן תת-תחום חדש</b></p>
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                    <input type="text" class="form-control" id="NewSubArea" required oninvalid="this.setCustomValidity('הזן תת-תחום')">
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="col-sm-6">
+                                            <p><b>בחר תחום</b></p>
+                                            <select id="AreaPickForNewSubArea" class="show-tick form-control" title="תחום" required oninvalid="this.setCustomValidity('בחר תחום')"></select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row clearfix">
-                                    <div style="float:left; margin-left:20px">
-                                        <button type="button" class="btn btn-primary btn-lg" id="saveSubAreaBTN">שמור</button>
+                                    <div class="row clearfix">
+                                        <div style="float:left; margin-left:20px">
+                                            <button type="submit" class="btn btn-primary btn-lg" id="saveSubAreaBTN">שמור</button>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -680,23 +678,31 @@
     <script src="../plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap Core Js -->
     <script src="../plugins/bootstrap/js/bootstrap.js"></script>
+    <!-- Select Plugin Js -->
+    <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
     <!-- Slimscroll Plugin Js -->
     <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
-    <!-- Waves Effect Plugin Js -->
-    <script src="../plugins/node-waves/waves.js"></script>
+
+    <!-- Jquery Validation Plugin Css -->
+    <script src="../plugins/jquery-validation/jquery.validate.js"></script>
 
     <!-- Custom Js -->
     <script src="../js/admin.js"></script>
     <script src="../js/pages/index.js"></script>
-    <!-- Demo Js -->
-    <script src="../js/demo.js"></script>
+    <script src="../js/pages/forms/form-validation.js"></script>
+    <script src="../js/pages/forms/advanced-form-elements.js"></script>
+    <!-- Waves Effect Plugin Js -->
+    <script src="../plugins/node-waves/waves.js"></script>
+    <!-- Sweet Alert Plugin Js -->
+    <script src="../plugins/sweetalert/sweetalert.min.js"></script>
     <!-- Multi Select Plugin Js -->
     <script src="../plugins/multi-select/js/jquery.multi-select.js"></script>
     <!-- Jquery Spinner Plugin Js -->
     <script src="../plugins/jquery-spinner/js/jquery.spinner.js"></script>
-    <!-- Select Plugin Js -->
-    <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <!-- Demo Js -->
+    <script src="../js/demo.js"></script>
+
 </body>
 
 </html>
