@@ -421,149 +421,143 @@
             </div>
 
             <div class="row clearfix" id="editTarDiv">
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="header" id="AddEditTar">
-                                <div class="icon-button-demo" style="float:left">
-                                    <button type="button" id="cancelBTN" class="btn btn-default waves-effect">
-                                        <i class="material-icons">clear</i>
-                                    </button>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header" id="AddEditTar">
+                            <div class="icon-button-demo" style="float:left">
+                                <button type="button" id="cancelBTN" class="btn btn-default waves-effect">
+                                    <i class="material-icons">clear</i>
+                                </button>
+                            </div>
+                            <h2></h2>
+                        </div>
+                        <div class="body">
+                            <form id="form_validation" method="POST">
+                                <div class="row clearfix">
+                                    <div class="col-sm-12">
+                                        <p><b>מטרה</b></p>
+                                        <div class="form-group form-group-lg">
+                                            <div class="form-line">
+                                                <input type="text" class="form-control" id="target" required
+                                                       oninvalid="this.setCustomValidity('הזן מטרה')">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <h2></h2>
-                            </div>
-                            <div class="body">
-                                <form id="form_validation" method="POST" style="direction: rtl">
-                                    <div class="row clearfix">
-                                        <div class="col-sm-12">
-                                            <p><b>מטרה</b></p>
-                                            <div class="form-group form-group-lg">
-                                                <div class="form-line">
-                                                    <input type="text" class="form-control" id="target" required
-                                                           oninvalid="this.setCustomValidity('הזן מטרה')">
-                                                </div>
+                                <div class="row clearfix">
+                                    <div class="col-sm-2">
+                                        <p><b>דירוג מקוריות (0-5)</b></p>
+                                        <div class="input-group spinner" data-trigger="spinner">
+                                            <div class="form-line">
+                                                <input type="text" class="form-control text-center" id="originality" value="5" data-rule="currency" max="5">
                                             </div>
+                                            <span class="input-group-addon">
+                                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="glyphicon glyphicon-chevron-down"></i></a>
+                                            </span>
                                         </div>
                                     </div>
-                                    <div class="row clearfix">
-                                        <div class="col-sm-2">
-                                            <p><b>דירוג מקוריות (0-5)</b></p>
-                                            <div class="input-group spinner" data-trigger="spinner">
-                                                <div class="form-line">
-                                                    <input type="text" class="form-control text-center" id="originality" value="5" data-rule="currency" max="5">
-                                                </div>
-                                                <span class="input-group-addon">
-                                                    <a href="javascript:;" class="spin-up" data-spin="up"><i class="glyphicon glyphicon-chevron-up"></i></a>
-                                                    <a href="javascript:;" class="spin-down" data-spin="down"><i class="glyphicon glyphicon-chevron-down"></i></a>
-                                                </span>
+                                    <div class="col-sm-2">
+                                        <p><b>מידת התאמה (0-5)</b></p>
+                                        <div class="input-group spinner" data-trigger="spinner">
+                                            <div class="form-line">
+                                                <input type="text" id="suitability" class="form-control text-center" value="5" data-rule="currency" max="5">
                                             </div>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <p><b>מידת התאמה (0-5)</b></p>
-                                            <div class="input-group spinner" data-trigger="spinner">
-                                                <div class="form-line">
-                                                    <input type="text" id="suitability" class="form-control text-center" value="5" data-rule="currency" max="5">
-                                                </div>
-                                                <span class="input-group-addon">
-                                                    <a href="javascript:;" class="spin-up" data-spin="up"><i class="glyphicon glyphicon-chevron-up"></i></a>
-                                                    <a href="javascript:;" class="spin-down" data-spin="down"><i class="glyphicon glyphicon-chevron-down"></i></a>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <p><b>תת-תחום</b></p>
-                                            <select id="subAreaPick" class="show-tick form-control" title="בחר תת-תחום" disabled required oninvalid="this.setCustomValidity('בחר תת-תחום')"></select>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <p><b>תחום  תפקוד</b></p>
-                                            <select class="form-control show-tick" title="בחר תחום" id="areaPick" required oninvalid="this.setCustomValidity('בחר תחום')"></select>
+                                            <span class="input-group-addon">
+                                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="glyphicon glyphicon-chevron-down"></i></a>
+                                            </span>
                                         </div>
                                     </div>
-                                    <div class="row clearfix">
-                                        <div style="float:left; margin-left:20px">
-                                            <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">שמור</button>
-                                        </div>
+                                    <div class="col-sm-4">
+                                        <p><b>תת-תחום</b></p>
+                                        <select id="subAreaPick" class="form-control show-tick" title="בחר תת-תחום" required oninvalid="this.setCustomValidity('בחר תת-תחום')"></select>
                                     </div>
-                                </form>
-                            </div>
+                                    <div class="col-sm-4">
+                                        <p><b>תחום תפקוד</b></p>
+                                        <select id="areaPick" class="form-control show-tick" title="בחר תחום" required oninvalid="this.setCustomValidity('בחר תחום')"></select>
+                                    </div>
+                                </div>
+                                <div class="row clearfix">
+                                    <div style="float:left; margin-left:20px">
+                                        <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">שמור</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="row clearfix" id="editAreaDiv">
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="header">
-                                <div class="icon-button-demo" style="float:left">
-                                    <button type="button" id="cancelBTN" class="btn btn-default waves-effect">
-                                        <i class="material-icons">clear</i>
-                                    </button>
-                                </div>
-                                <h2><b>הוסף תחום חדש של מטרות</b></h2>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <div class="icon-button-demo" style="float:left">
+                                <button type="button" id="cancelBTN" class="btn btn-default waves-effect">
+                                    <i class="material-icons">clear</i>
+                                </button>
                             </div>
-                            <div class="body">
-                                <form id="form_validation" method="POST">
-                                    <div class="row clearfix">
-                                        <div class="col-sm-12">
-                                            <p><b>הזן תחום חדש</b></p>
-                                            <div class="form-group form-group-lg">
-                                                <div class="form-line">
-                                                    <input type="text" class="form-control" id="NewArea" required oninvalid="this.setCustomValidity('הזן תחום')">
-                                                </div>
+                            <h2><b>הוסף תחום חדש של מטרות</b></h2>
+                        </div>
+                        <div class="body">
+                            <form id="form_validation" method="POST">
+                                <div class="row clearfix">
+                                    <div class="col-sm-12">
+                                        <p><b>הזן תחום חדש</b></p>
+                                        <div class="form-group form-group-lg">
+                                            <div class="form-line">
+                                                <input type="text" class="form-control" id="NewArea" required oninvalid="this.setCustomValidity('הזן תחום')">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row clearfix">
-                                        <div style="float:left; margin-left:20px">
-                                            <button type="submit" class="btn btn-primary btn-lg" id="saveAreaBTN">שמור</button>
-                                            <button type="submit" class="btn btn-primary btn-lg" id="saveAreaBTNandAddSub">שמור ועבור להוספת תת-תחום</button>
-                                        </div>
+                                </div>
+                                <div class="row clearfix">
+                                    <div style="float:left; margin-left:20px">
+                                        <button type="submit" class="btn btn-primary btn-lg" id="saveAreaBTN">שמור</button>
+                                        <button type="submit" class="btn btn-primary btn-lg" id="saveAreaBTNandAddSub">שמור ועבור להוספת תת-תחום</button>
                                     </div>
-                                </form>
-                            </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="row clearfix" id="editSubAreaDiv">
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
-                            <div class="header">
-                                <div class="icon-button-demo" style="float:left">
-                                    <button type="button" id="cancelBTN" class="btn btn-default waves-effect">
-                                        <i class="material-icons">clear</i>
-                                    </button>
-                                </div>
-                                <h2><b>הוסף תת-תחום חדש לתחום</b></h2>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <div class="icon-button-demo" style="float:left">
+                                <button type="button" id="cancelBTN" class="btn btn-default waves-effect">
+                                    <i class="material-icons">clear</i>
+                                </button>
                             </div>
-                            <div class="body">
-                                <form id="form_validation" method="POST">
-
-                                    <div class="row clearfix">
-                                        <div class="col-sm-6">
-                                            <p><b>הזן תת-תחום חדש</b></p>
-                                            <div class="form-group">
-                                                <div class="form-line">
-                                                    <input type="text" class="form-control" id="NewSubArea" required oninvalid="this.setCustomValidity('הזן תת-תחום')">
-                                                </div>
+                            <h2><b>הוסף תת-תחום חדש לתחום</b></h2>
+                        </div>
+                        <div class="body">
+                            <form id="form_validation" method="POST">
+                                <div class="row clearfix">
+                                    <div class="col-sm-6">
+                                        <p><b>הזן תת-תחום חדש</b></p>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="text" class="form-control" id="NewSubArea" required oninvalid="this.setCustomValidity('הזן תת-תחום')">
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
-                                            <p><b>בחר תחום</b></p>
-                                            <select id="AreaPickForNewSubArea" class="show-tick form-control" title="תחום" required oninvalid="this.setCustomValidity('בחר תחום')"></select>
-                                        </div>
                                     </div>
-                                    <div class="row clearfix">
-                                        <div style="float:left; margin-left:20px">
-                                            <button type="submit" class="btn btn-primary btn-lg" id="saveSubAreaBTN">שמור</button>
-                                        </div>
+                                    <div class="col-sm-6">
+                                        <p><b>בחר תחום</b></p>
+                                        <select id="AreaPickForNewSubArea" class="show-tick form-control" title="תחום" required oninvalid="this.setCustomValidity('בחר תחום')"></select>
                                     </div>
-                                </form>
-                            </div>
+                                </div>
+                                <div class="row clearfix">
+                                    <div style="float:left; margin-left:20px">
+                                        <button type="submit" class="btn btn-primary btn-lg" id="saveSubAreaBTN">שמור</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
