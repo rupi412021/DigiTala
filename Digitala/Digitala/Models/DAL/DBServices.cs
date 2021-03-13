@@ -9,8 +9,10 @@ using System.Data.SqlClient;
 
 namespace Digitala.Models.DAL
 {
+
     public class DBServices
     {
+
         public SqlDataAdapter da;
         public DataTable dt;
 
@@ -259,7 +261,7 @@ namespace Digitala.Models.DAL
             catch (Exception ex)
             {
                 // write to log
-                throw new Exception("Could not insert new Teacher", ex);
+                throw new Exception("המשתמש נמצא כרשום למערכת", ex);
             }
 
             finally
@@ -275,18 +277,30 @@ namespace Digitala.Models.DAL
 
         private String BuildInsertCommand(Teachers teacher)
         {
-            String command;
-            String prefix;
-            StringBuilder sb = new StringBuilder();
+            //check if id alredy exsist in DB
+            if (CheckId(teacher.TeacherID))
+            {
+                return null;
+            }
+            //check if email alredy exsist in DB
+            else if (CheckEmail(teacher.TeacherEmail))
+            {
+                return null;
+            }
+            else
+            {
+                String command;
+                String prefix;
+                StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}' , '{5}')", teacher.TeacherID, teacher.TeacherFname, teacher.TeacherSurName, teacher.TeacherEmail, teacher.TeacherPassword);
-            prefix = "INSERT INTO Teachers " + "([TId], [TFirstName], [TLastName], [TEmail], [TPassword])";
-            
-           
-            command = prefix + sb.ToString();
+                sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}')", teacher.TeacherID, teacher.TeacherFname, teacher.TeacherSurName, teacher.TeacherEmail, teacher.TeacherPassword);
+                prefix = "INSERT INTO Teachers " + "([TId], [TFirstName], [TLastName], [TEmail], [TPassword])";
 
-            return command;
 
+                command = prefix + sb.ToString();
+
+                return command;
+            }    
         }
 
         private String BuildInsertCommand(string area)
@@ -362,7 +376,6 @@ namespace Digitala.Models.DAL
             }
 
         }
-
         public int InsertSubArea(int areaId, string subArea)
         {
 
@@ -404,7 +417,75 @@ namespace Digitala.Models.DAL
             }
 
         }
+        public bool CheckId(int id)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+
+                String selectSTR = "SELECT * FROM Teachers where [TId] = " + id;
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (dr.Read())
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("תעודת הזהות נמצאת במערכת", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
+
+        
+        public bool CheckEmail(string email)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+
+                String selectSTR = "SELECT * FROM Teachers where [TEmail] = " + "'" + email + "'";
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (dr.Read())
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("האימייל נמצא כרשום במערכת", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
     }
-    
+   
 }
 

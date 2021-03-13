@@ -1,18 +1,15 @@
 ﻿<!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>דיגיתל"א - תוכנית לימודים דיגיטלית לתלמיד</title>
-
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
-
     <script src="../Scripts/jquery-3.3.1.min.js"></script>
-
     <!-- Favicon-->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
-
+    <link href="../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <script src="../plugins/sweetalert/sweetalert.min.js"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
@@ -38,9 +35,20 @@
     <script>
         $(document).ready(function () {
             ajaxCall("GET", "../api/Schools", "", getSchoolSuccess, getSchoolerror);
-            $("#sign_up").submit(registerTeacher);
+            $("#sign_up").submit(f1);
+            $("#confirm").on("blur", checkPassword);
         });
 
+        function checkPassword() {
+            if (this.value == $("#password").val()) {
+                this.validity.valid = true;
+                this.setCustomValidity("")
+            }
+            else {
+                this.validity.valid = false;
+                this.setCustomValidity("Password don't match")
+            }
+        }
         function getSchoolSuccess(schoolsList) {
             console.log(schoolsList);
 
@@ -49,7 +57,7 @@
             for (var i = 0; i < schoolsList.length; i++) {
                 let _schName = schoolsList[i].SchoolName;
                 let _schId = schoolsList[i].SchoolId;
-                str += "<option value='" + _schId + "'>" + _schName ;
+                str += "<option value='" + _schId + "'>" + _schName;
             }
 
 
@@ -60,25 +68,31 @@
         }
 
         function registerTeacher() {
-            Teachers = {
-                TeacherID : $("#id").val(),
-                TeacherFname : $("#name").val(),
-                TeacherSurName : $("#surname").val(),
-                TeacherEmail : $("#email").val(),
+            Teacher = {
+                TeacherID: $("#id").val(),
+                TeacherFname: $("#name").val(),
+                TeacherSurName: $("#surname").val(),
+                TeacherEmail: $("#email").val(),
                 TeacherPassword: $("#password").val()
             }
 
-            ajaxCall("POST", "../api/Teachers", JSON.stringify(Teachers), AddTeacherSuccess, AddTeacherError);
+            ajaxCall("POST", "../api/Teachers", JSON.stringify(Teacher), AddTeacherSuccess, AddTeacherError);
 
         }
-        //function AddTeacherError(err) {
-        //    console.log(err.responseText)
-        //}
 
-        //function AddTeacherSuccess() {
-        //    console.log()
-        //}
+        function AddTeacherError(err) {
+            swal("שגיאה", err.responseJSON.ExceptionMessage, "error");
+        }
 
+        function AddTeacherSuccess(data) {
+            username = $("#email").val();
+            localStorage.setItem("UserName", username);
+        }
+
+        function f1() {
+            registerTeacher();
+            return false;
+        }
     </script>
 
 </head>
@@ -98,7 +112,8 @@
                             <i class="material-icons">person</i>
                         </span>
                         <div class="form-line">
-                            <input type="text" class="form-control" name="id" id="id" placeholder="תעודת זהות" required autofocus>
+                            <input type="text" class="form-control" name="id" id="id" placeholder="תעודת זהות" required
+                                 maxlength="9"  minlength="9" autofocus>
                         </div>
                     </div>
                     <div class="input-group">
@@ -106,7 +121,7 @@
                             <i class="material-icons">person</i>
                         </span>
                         <div class="form-line">
-                            <input type="text" class="form-control" name="name" id="name" placeholder="שם פרטי" required autofocus>
+                            <input type="text" class="form-control" name="name" id="name" placeholder="שם פרטי" required >
                         </div>
                     </div>
                     <div class="input-group">
@@ -114,7 +129,7 @@
                             <i class="material-icons">person</i>
                         </span>
                         <div class="form-line">
-                            <input type="text" class="form-control" name="surname" id="surname" placeholder="שם משפחה" required autofocus>
+                            <input type="text" class="form-control" name="surname" id="surname" placeholder="שם משפחה" required >
                         </div>
                     </div>
                     <div class="input-group">
@@ -138,7 +153,7 @@
                             <i class="material-icons">lock</i>
                         </span>
                         <div class="form-line">
-                            <input type="password" class="form-control" name="confirm" minlength="6" placeholder="אישור סיסמא" required>
+                            <input type="password" class="form-control" name="confirm" id="confirm" minlength="6" placeholder="אישור סיסמא" required>
                         </div>
 
                     </div>
@@ -147,15 +162,14 @@
                         <span class="input-group-addon">
                             <i class="material-icons">school</i>
                         </span>
-                        <div class="option">
-                            <input name="schOpt" list="schOpt" placeholder="בחר בית ספר">
+                        <div class="form-line">
+                            <input name="schOpt" list="schOpt" class="form-control" placeholder="בחר בית ספר" required>
                             <datalist id="schOpt">
-
                             </datalist>
                         </div>
                     </div>
 
-                    <input class="btn btn-block btn-lg bg-pink waves-effect" type="submit" value="רשום אותי" />
+                    <button class="btn btn-block btn-lg bg-pink waves-effect" type="submit">רשום אותי</button>
 
                     <div class="m-t-25 m-b--5 align-center">
                         <a href="sign-in.html">משתמש רשום</a>
@@ -175,8 +189,8 @@
     <script src="../plugins/node-waves/waves.js"></script>
 
     <!-- Validation Plugin Js -->
-    <script src="../plugins/jquery-validation/jquery.validate.js"></script>
-
+    <!--<script src="../plugins/jquery-validation/jquery.validate.js"></script>
+    <script src="../plugins/jquery-validation/additional-methods.js"></script>-->
     <!-- Custom Js -->
     <script src="../js/admin.js"></script>
     <script src="../js/pages/examples/sign-up.js"></script>
