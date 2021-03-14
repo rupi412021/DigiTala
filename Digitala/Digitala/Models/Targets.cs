@@ -57,5 +57,19 @@ namespace Digitala.Models
             dbs.DeleteTarget(this.TarSerial);
             return Read();
         }
+
+        public List<Targets> Insert()
+        {
+            DBServices dbs = new DBServices();
+            dbs.Insert(this);
+            return Read();
+        }
+
+        public List<Targets> Update()
+        {
+            DBServices dbs = new DBServices();
+            dbs.Update(this);
+            return Read();
+        }
     }
 }
