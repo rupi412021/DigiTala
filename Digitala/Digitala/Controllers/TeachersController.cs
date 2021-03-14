@@ -14,5 +14,13 @@ namespace Digitala.Controllers
         {
             t.Insert();
         }
+
+        public List<Teachers> Get()
+        {
+            Teachers t = new Teachers();
+            List<Teachers> tlist = t.Read();
+            return tlist;
+        }
+
     }
 }

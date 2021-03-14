@@ -376,6 +376,7 @@ namespace Digitala.Models.DAL
             }
 
         }
+
         public int InsertSubArea(int areaId, string subArea)
         {
 
@@ -417,6 +418,7 @@ namespace Digitala.Models.DAL
             }
 
         }
+
         public bool CheckId(int id)
         {
             SqlConnection con = null;
@@ -451,7 +453,6 @@ namespace Digitala.Models.DAL
             }
         }
 
-        
         public bool CheckEmail(string email)
         {
             SqlConnection con = null;
@@ -484,6 +485,53 @@ namespace Digitala.Models.DAL
                     con.Close();
                 }
             }
+        }
+
+        public List<Teachers> ReadTeachers()
+        {
+
+            SqlConnection con = null;
+            List<Teachers> teachersList = new List<Teachers>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM Teachers";
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Teachers t = new Teachers();
+                        t.TeacherID = Convert.ToInt32(dr["TId"]);
+                        t.TeacherFname = (string)dr["TFirstName"];
+                        t.TeacherSurName = (string)dr["TLastName"];
+                        t.TeacherEmail = (string)dr["TEmail"];
+                        t.TeacherPassword = (string)dr["TPassword"];
+                        t.TeacherAdmin = (bool)dr["TIsAdmin"];
+                    teachersList.Add(t);
+                }
+                return teachersList;
+            }
+
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET teachers list", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
         }
     }
    

@@ -42,5 +42,12 @@ namespace Digitala.Models
             DBServices dbs = new DBServices();
             dbs.Insert(this);
         }
+
+        public List<Teachers> Read()
+        {
+            DBServices dbs = new DBServices();
+            List<Teachers> teachersList = dbs.ReadTeachers();
+            return teachersList;
+        }
     }
 }
