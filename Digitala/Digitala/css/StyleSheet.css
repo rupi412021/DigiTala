@@ -9,7 +9,7 @@
     color: white;
 }
 
-span {
+span, datalist {
     text-align: right;
 }
 
