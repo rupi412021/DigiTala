@@ -63,7 +63,6 @@
                         subAreas += '<option value="' + allSubAreas[i].SubArea + '" id=saId-' + allSubAreas[i].SfaSerial + '>';
                     }
                 }
-
                 $("#subAreaPickList").html(subAreas);
             });
 
@@ -108,6 +107,7 @@
                 $("#AreaPickForNewSubArea").val("");
                 $("#NewSubArea").val("");
                 $("#editSubAreaDiv :input").prop("disabled", false); // new mode: enable all controls in the form
+                $("#AreaPickForNewSubAreaList").html(areas);
             });
 
             $("#saveBTN").submit(onSubmitFunc);
@@ -128,7 +128,6 @@
         }
 
         function saveNewArea() {
-
             let NewArea = {
                 subAreaId: null,
                 areaId: -1,
@@ -570,7 +569,12 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <p><b>בחר תחום</b></p>
-                                        <select id="AreaPickForNewSubArea" class="show-tick form-control" title="תחום" required oninvalid="this.setCustomValidity('בחר תחום')"></select>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input id="AreaPickForNewSubArea" list="AreaPickForNewSubAreaList" class="form-control" required oninvalid="this.setCustomValidity('בחר תחום')">
+                                                <datalist id="AreaPickForNewSubAreaList"></datalist>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row clearfix">
