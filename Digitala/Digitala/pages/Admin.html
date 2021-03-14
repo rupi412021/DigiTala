@@ -136,7 +136,7 @@
                 area: $("#NewArea").val()
             }
 
-            ajaxCall("PUT", "../api/FuncAreas", JSON.stringify(NewArea), getAreasSuccess, error);
+            ajaxCall("POST", "../api/FuncAreas", JSON.stringify(NewArea), getAreasSuccess, error);
             return false;
         }
 
@@ -576,7 +576,6 @@
                                 <div class="row clearfix">
                                     <div style="float:left; margin-left:20px">
                                         <button type="submit" class="btn btn-primary btn-lg" id="saveSubAreaBTN">שמור</button>
-
                                     </div>
                                 </div>
                             </form>
