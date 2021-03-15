@@ -1,4 +1,4 @@
-/*! 
+﻿/*! 
  * jQuery Steps v1.1.0 - 09/04/2014
  * Copyright (c) 2014 Rafael Staib (http://www.jquery-steps.com)
  * Licensed under MIT http://www.opensource.org/licenses/MIT
@@ -1971,10 +1971,10 @@ var defaults = $.fn.steps.defaults = {
          *
          * @property cancel
          * @type String
-         * @default "Cancel"
+        * @default "Cancel"
          * @for defaults
          **/
-        cancel: "Cancel",
+        cancel: "ביטול",
 
         /**
          * This label is important for accessability reasons.
@@ -2006,7 +2006,7 @@ var defaults = $.fn.steps.defaults = {
          * @default "Finish"
          * @for defaults
          **/
-        finish: "Finish",
+        finish: "סיום",
 
         /**
          * Label for the next button.
@@ -2016,7 +2016,7 @@ var defaults = $.fn.steps.defaults = {
          * @default "Next"
          * @for defaults
          **/
-        next: "Next",
+        next: "המשך",
 
         /**
          * Label for the previous button.
@@ -2026,17 +2026,17 @@ var defaults = $.fn.steps.defaults = {
          * @default "Previous"
          * @for defaults
          **/
-        previous: "Previous",
+        previous: "חזור",
 
         /**
          * Label for the loading animation.
          *
          * @property loading
          * @type String
-         * @default "Loading ..."
+         * @default "Loading..."
          * @for defaults
          **/
-        loading: "Loading ..."
+        loading: "...בטעינה"
     }
 };
 })(jQuery);
