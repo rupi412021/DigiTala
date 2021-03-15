@@ -52,10 +52,12 @@
 
             let email = $("#email").val();
             let passWord = $("#password").val();
+            let hit = 0;
             for (var i = 0; i < data.length; i++) {
                 if (data[i].TeacherEmail == email) {
                     if (data[i].TeacherPassword == passWord) {
                         localStorage.setItem("UserName", name);
+                        hit = 1;
                         window.location.href = 'index.html'
                     }
                     else {
@@ -64,7 +66,7 @@
                 }
 
             }
-            if (hit != 0) {
+            if (hit == 0) {
                 swal("שגיאה", "בדוק את הפרטים או הרשם", "error");
             }
         }

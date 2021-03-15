@@ -338,8 +338,8 @@ namespace Digitala.Models.DAL
                 String prefix;
                 StringBuilder sb = new StringBuilder();
 
-                sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}')", teacher.TeacherID, teacher.TeacherFname, teacher.TeacherSurName, teacher.TeacherEmail, teacher.TeacherPassword);
-                prefix = "INSERT INTO Teachers " + "([TId], [TFirstName], [TLastName], [TEmail], [TPassword])";
+                sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", teacher.TeacherID, teacher.TeacherFname, teacher.TeacherSurName, teacher.TeacherEmail, teacher.TeacherPassword, teacher.TeacherSchoolId);
+                prefix = "INSERT INTO Teachers " + "([TId], [TFirstName], [TLastName], [TEmail], [TPassword], [TSchool])";
 
 
                 command = prefix + sb.ToString();

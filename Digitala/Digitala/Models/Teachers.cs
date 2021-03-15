@@ -13,12 +13,13 @@ namespace Digitala.Models
         string teacherSurName;
         string teacherEmail;
         string teacherPassword;
-        DateTime teacherAlert;
         bool teacherAdmin;
-  
+        int teacherSchoolId;
+
+
         public Teachers(){}
 
-        public Teachers(int teacherID, string teacherFname, string teacherSurName, string teacherEmail, string teacherPassword, bool teacherAdmin)
+        public Teachers(int teacherID, string teacherFname, string teacherSurName, string teacherEmail, string teacherPassword, bool teacherAdmin,  int teacherSchoolId)
         {
             TeacherID = teacherID;
             TeacherFname = teacherFname;
@@ -26,8 +27,10 @@ namespace Digitala.Models
             TeacherEmail = teacherEmail;
             TeacherPassword = teacherPassword;
             TeacherAdmin = teacherAdmin;
+            TeacherSchoolId =  teacherSchoolId;
         }
 
+        public int TeacherSchoolId { get => teacherSchoolId; set => teacherSchoolId = value; }
         public int TeacherID { get => teacherID; set => teacherID = value; }
         public string TeacherFname { get => teacherFname; set => teacherFname = value; }
         public string TeacherSurName { get => teacherSurName; set => teacherSurName = value; }

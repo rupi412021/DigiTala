@@ -532,7 +532,7 @@
                                         <p><b>תת-תחום</b></p>
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <input id="subAreaPick" list="subAreaPickList" class="form-control" required oninvalid="this.setCustomValidity('בחר תת-תחום')">
+                                                <input id="subAreaPick" list="subAreaPickList" class="form-control" required oninvalid="this.setCustomValidity('בחר תת-תחום')" oninput="this.setCustomValidity('')">
                                                 <datalist id="subAreaPickList"></datalist>
                                             </div>
                                         </div>
@@ -541,7 +541,7 @@
                                         <p><b>תחום תפקוד</b></p>
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <input id="areaPick" list="areaPickList" class="form-control" required oninvalid="this.setCustomValidity('בחר תחום')">
+                                                <input id="areaPick" list="areaPickList" class="form-control" required oninvalid="this.setCustomValidity('בחר תחום')" oninput="this.setCustomValidity('')">
                                                 <datalist id="areaPickList"></datalist>
                                             </div>
                                         </div>
@@ -612,7 +612,7 @@
                                         <p><b>הזן תת-תחום חדש</b></p>
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" class="form-control" id="NewSubArea" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('הזן תת-תחום')">
+                                                <input type="text" class="form-control" id="NewSubArea" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('הזן תת-תחום')"  >
                                             </div>
                                         </div>
                                     </div>
@@ -620,7 +620,7 @@
                                         <p><b>בחר תחום</b></p>
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <input id="AreaPickForNewSubArea" list="AreaPickForNewSubAreaList" class="form-control" required oninvalid="this.setCustomValidity('בחר תחום')">
+                                                <input id="AreaPickForNewSubArea" list="AreaPickForNewSubAreaList" class="form-control" required oninvalid="this.setCustomValidity('בחר תחום')" oninput="this.setCustomValidity('')">
                                                 <datalist id="AreaPickForNewSubAreaList"></datalist>
                                             </div>
                                         </div>

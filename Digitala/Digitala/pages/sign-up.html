@@ -61,7 +61,7 @@
             }
 
 
-            $("#schOpt").html(str);
+            $("#schOptList").html(str);
         }
         function getSchoolerror(err) {
             alert("Error: " + err);
@@ -73,7 +73,8 @@
                 TeacherFname: $("#name").val(),
                 TeacherSurName: $("#surname").val(),
                 TeacherEmail: $("#email").val(),
-                TeacherPassword: $("#password").val()
+                TeacherPassword: $("#password").val(),
+                TeacherSchoolId: $("#schOpt").val()
             }
 
             ajaxCall("POST", "../api/Teachers", JSON.stringify(Teacher), AddTeacherSuccess, AddTeacherError);
@@ -113,7 +114,7 @@
                         </span>
                         <div class="form-line">
                             <input type="text" class="form-control" name="id" id="id" placeholder="תעודת זהות" required
-                                 maxlength="9"  minlength="9" autofocus>
+                                   maxlength="9" minlength="9" autofocus>
                         </div>
                     </div>
                     <div class="input-group">
@@ -121,7 +122,7 @@
                             <i class="material-icons">person</i>
                         </span>
                         <div class="form-line">
-                            <input type="text" class="form-control" name="name" id="name" placeholder="שם פרטי" required >
+                            <input type="text" class="form-control" name="name" id="name" placeholder="שם פרטי" required>
                         </div>
                     </div>
                     <div class="input-group">
@@ -129,7 +130,7 @@
                             <i class="material-icons">person</i>
                         </span>
                         <div class="form-line">
-                            <input type="text" class="form-control" name="surname" id="surname" placeholder="שם משפחה" required >
+                            <input type="text" class="form-control" name="surname" id="surname" placeholder="שם משפחה" required>
                         </div>
                     </div>
                     <div class="input-group">
@@ -163,8 +164,8 @@
                             <i class="material-icons">school</i>
                         </span>
                         <div class="form-line">
-                            <input name="schOpt" list="schOpt" class="form-control" placeholder="בחר בית ספר" required>
-                            <datalist id="schOpt">
+                            <input id="schOpt" list="schOptList" class="form-control" placeholder="בחר בית ספר" required>
+                            <datalist id="schOptList">
                             </datalist>
                         </div>
                     </div>
