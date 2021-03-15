@@ -11,6 +11,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <script src="../Scripts/jquery-3.3.1.min.js"></script>
 
     <!-- Bootstrap Core Css -->
     <link href="../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -30,7 +31,7 @@
 
     <script>
         $(document).ready(function () {
-            $("#signIn").submit(logUser);
+            $("#signInBTN").click(f1);
         });
 
         function logUser() {
@@ -41,26 +42,30 @@
             console.log(err.responseText)
         }
 
+        function f1() {
+            logUser();
+            return false;
+        }
+
         function getLogInSuccess(data) {
             console.log(data)
 
             let email = $("#email").val();
             let passWord = $("#password").val();
-            let hit = 0;
             for (var i = 0; i < data.length; i++) {
-                if (data[i].TEmail == email) {
-                    if (data[i].TPassword == passWord) {
+                if (data[i].TeacherEmail == email) {
+                    if (data[i].TeacherPassword == passWord) {
                         localStorage.setItem("UserName", name);
-                        hit = 1;
                         window.location.href = 'index.html'
                     }
                     else {
-                        swal("Check your Password", "Please try again", "error");
+                        swal("בדוק את הסיסמא", "נסה שוב", "error");
                     }
                 }
+
             }
-            if (hit == 0) {
-                swal("User does not exists", "Check your email or sign up", "error");
+            if (hit != 0) {
+                swal("שגיאה", "בדוק את הפרטים או הרשם", "error");
             }
         }
     </script>
@@ -94,7 +99,7 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-4">
-                            <button class="btn btn-block bg-pink waves-effect" type="submit" id="signIn">כניסה</button>
+                            <button class="btn btn-block bg-pink waves-effect" id="signInBTN">כניסה</button>
                         </div>
                         <!--<div class="col-xs-8 p-t-5">
                             <input type="checkbox" name="rememberme" id="rememberme" class="filled-in chk-col-pink">
