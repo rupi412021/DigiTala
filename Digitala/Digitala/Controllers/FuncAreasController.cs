@@ -19,9 +19,18 @@ namespace Digitala.Controllers
             return tlist;
         }
 
-        [HttpPut]
+        [HttpGet]
+        [Route("api/FuncAreas/{a}")]
+        public List<FuncAreas> Get(int a)
+        {
+            FuncAreas t = new FuncAreas();
+            List<FuncAreas> tlist = t.ReadMainArea();
+            return tlist;
+        }
+
+        [HttpPost]
         [Route("api/FuncAreas")]
-        public List<FuncAreas> Put([FromBody]FuncAreas f)
+        public List<FuncAreas> Post([FromBody]FuncAreas f)
         {
             if (f.AreaId == -1)
                 return f.NewArea(f.Area);

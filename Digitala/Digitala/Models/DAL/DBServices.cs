@@ -66,7 +66,7 @@ namespace Digitala.Models.DAL
                     t.TarSerial = Convert.ToInt32(dr["TSerial"]);
                     t.FaSerial = Convert.ToInt32(dr["FASerial"]);
                     t.SfaSerial = Convert.ToInt32(dr["SFASerial"]);
-                    t.Target = (string)(dr["Target"]);
+                    t.Target = (string)(dr["TargetText"]);
                     t.Suitability = Convert.ToDouble(dr["Suitability"]);
                     t.Originality = Convert.ToDouble(dr["Originality"]);
                     t.NumOfUses = Convert.ToInt32(dr["NumOfUses"]);
@@ -220,7 +220,52 @@ namespace Digitala.Models.DAL
             catch (Exception ex)
             {
                 // write to log
-                throw new Exception("Could not GET Schools from DB", ex);
+                throw new Exception("Could not GET Sub-Areas from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
+        public List<FuncAreas> ReadAreas()
+        {
+
+            SqlConnection con = null;
+            List<FuncAreas> subAreas = new List<FuncAreas>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM FunctionAreas FA ORDER BY FA.FASerial DESC";
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    FuncAreas s = new FuncAreas();
+
+                    s.Area = (string)(dr["FunctionArea"]);
+                    s.AreaId = Convert.ToInt32(dr["FASerial"]);
+
+                    subAreas.Add(s);
+                }
+
+                return subAreas;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Areas from DB", ex);
             }
             finally
             {
@@ -532,6 +577,115 @@ namespace Digitala.Models.DAL
 
             }
 
+        }
+
+        public int Insert(Targets target)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildInsertCommand(target);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("מטרה לא התווספה", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildInsertCommand(Targets t)
+        {
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", t.FaSerial, t.SfaSerial, t.Target, t.Suitability, t.Originality, t.NumOfUses);
+            prefix = "INSERT INTO Targets " + "([FASerial], [SFASerial], [TargetText], [Suitability], [Originality], [NumOfUses])";
+
+            command = prefix + sb.ToString();
+
+            return command;
+
+        }
+
+        public int Update(Targets target)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildUpdateCommand(target);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("מטרה לא התעדכנה", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildUpdateCommand(Targets t)
+        {
+            String command;
+            command = "UPDATE Targets SET FASerial = " + t.FaSerial +
+                ", SFASerial = " + t.SfaSerial + ", TargetText = '" + t.Target + "', Suitability = " + t.Suitability +
+                ", Originality = " + t.Originality + " WHERE Tserial = " + t.TarSerial;
+
+            return command;
         }
     }
    

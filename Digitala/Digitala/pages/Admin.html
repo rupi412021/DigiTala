@@ -10,8 +10,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
-    <!-- Sweet Alert Css -->
-    <link href="../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- Favicon-->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
@@ -40,15 +39,31 @@
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <link href="../css/StyleSheet.css" rel="stylesheet" />
 
+    
+
     <script>
+       
+
         $(document).ready(function () {
+            allMainAreas = [];
             mode = "";
             $("#editTarDiv").hide();
             $("#editAreaDiv").hide();
             $("#editSubAreaDiv").hide();
             ajaxCall("GET", "../api/Targets", "", getSuccess, error);
-
+            ajaxCall("GET", "../api/FuncAreas", "", getAreasSuccess, error);
             buttonEvents();
+
+            $(document).on("change", "#areaPick", function () {
+                mainArea = $("#areaPick").val();
+                subAreas = '';
+                for (var i = 0; i < allSubAreas.length; i++) {
+                    if (mainArea == allSubAreas[i].Area) {
+                        subAreas += '<option value="' + allSubAreas[i].SubArea + '" id=saId-' + allSubAreas[i].SfaSerial + '>';
+                    }
+                }
+                $("#subAreaPickList").html(subAreas);
+            });
 
             $(document).on("click", "#cancelBTN", function () {
                 mode = "";
@@ -71,7 +86,6 @@
                 $("#editSubAreaDiv").hide();
                 clearFields();
                 $("#editTarDiv :input").prop("disabled", false); // new mode: enable all controls in the form
-                ajaxCall("GET", "../api/FuncAreas", "", getAreasSuccess, error);
             });
 
             $(document).on("click", "#addNewArea", function () {
@@ -91,12 +105,15 @@
                 $("#AreaPickForNewSubArea").val("");
                 $("#NewSubArea").val("");
                 $("#editSubAreaDiv :input").prop("disabled", false); // new mode: enable all controls in the form
+                if (allMainAreas.length == 0) 
+                    ajaxCall("GET", "../api/FuncAreas/1", "", getNewAreasSuccess, error);
+                $("#AreaPickForNewSubAreaList").html(areas);
             });
 
             $("#saveBTN").submit(onSubmitFunc);
             $("#saveAreaBTN").submit(saveNewArea)
             $("#saveSubAreaBTN").submit(saveNewSubArea);
-            $("#saveAreaBTNandAddSub").submit(saveAndMoveToSubArea);
+            $("#saveAreaBTNandAddSub").click(saveAndMoveToSubArea);
 
         });
 
@@ -108,64 +125,94 @@
             $("#NewSubArea").val("");
             $("#AreaPickForNewSubArea").val("");
             $("#editSubAreaDiv :input").prop("disabled", false);
+            $("#AreaPickForNewSubAreaList").html(areas);
         }
 
         function saveNewArea() {
-
-            let NewArea = {
-                subAreaId: null,
-                areaId: -1,
-                subArea: null,
-                area: $("#NewArea").val()
+            mode = "newarea";
+            let Exists = 0;
+            for (var i = 0; i < allAreas.length; i++) {
+                if (allAreas[i] == $("#NewArea").val()) {                    
+                    Exists = 1;
+                    break;
+                }
             }
 
-            ajaxCall("PUT", "../api/FuncAreas", JSON.stringify(NewArea), getAreasSuccess, error);
+            if (Exists == 0) {
+                let NewArea = {
+                    subAreaId: null,
+                    areaId: -1,
+                    subArea: null,
+                    area: $("#NewArea").val()
+                }
 
+                ajaxCall("POST", "../api/FuncAreas", JSON.stringify(NewArea), getNewAreasSuccess, error);
+            }
+            else {
+                swal("תחום זה כבר קיים במערכת", "", "error");
+            }
+            return false;
         }
 
         function saveNewSubArea() {
-            let NewArea = {
-                subAreaId: null,
-                areaId: $("#NewArea").val(),
-                subArea: $("#NewSubArea").val(),
-                area: null
+            mode = "newsubarea";
+            let areaId = -5;
+
+            for (var i = 0; i < allAreas.length; i++) {
+                if (allMainAreas[i].Area == $("#AreaPickForNewSubArea").val()) {
+                    areaId = allMainAreas[i].AreaId;
+                    break;
+                }
             }
 
-            ajaxCall("PUT", "../api/FuncAreas", JSON.stringify(NewArea), getAreasSuccess, error);
+            if (areaId == -5 || $("#AreaPickForNewSubArea").val() == "") {
+                swal("תחום לא קיים במערכת", "אנא בחר תחום מהרשימה", "error");
+            }
 
+            else {
+                let NewArea = {
+                    subAreaId: null,
+                    areaId: areaId,
+                    subArea: $("#NewSubArea").val(),
+                    area: null
+                }
+
+                ajaxCall("POST", "../api/FuncAreas", JSON.stringify(NewArea), getAreasSuccess, error);
+            }
+            return false;
         }
 
         function onSubmitFunc() {
-            let area = -1;
-            let subarea = -1;
+            let area;
+            let subarea;
             let Id = -1;
             let Uses = 0;
 
             if (mode == "edit") {
-                Id = tar.Id;
-                Uses = tar.NumOfUses
+                Id = tar.TarSerial;
+                Uses = tar.NumOfUses;
             }
 
             for (var i = 0; i < allSubAreas.length; i++) {
-                if (allSubAreas[i].SubAreaId == $("#areaPick").val()) {
-                    area = allSubAreas[i].SubArea;
+                if (allSubAreas[i].SubArea == $("#subAreaPick").val()) {
+                    subarea = allSubAreas[i].SubAreaId;
                     break;
                 }
             }
             for (var i = 0; i < allSubAreas.length; i++) {
-                if (allSubAreas[i].AreaId == $("#areaPick").val()) {
-                    area = allSubAreas[i].Area;
+                if (allSubAreas[i].Area == $("#areaPick").val()) {
+                    area = allSubAreas[i].AreaId;
                     break;
                 }
             }
 
             let targetToSave = {
-                TarId: Id,
+                TarSerial: Id,
                 Target: $("#target").val(),
-                FaSerial: $("#areaPick").val(),
-                FunctionArea: area,
-                SfaSerial: $("#subAreaPick").val(),
-                SubFunctionArea: subarea,
+                FaSerial: area,
+                FunctionArea: $("#areaPick").val(),
+                SfaSerial: subarea,
+                SubFunctionArea: $("#subAreaPick").val(),
                 Suitability: $("#suitability").val(),
                 Originality: $("#originality").val(),
                 NumOfUses: Uses
@@ -183,12 +230,16 @@
                 mode = "edit";
                 markSelected(this);
                 $("#editTarDiv").show();
+                $("#editAreaDiv").hide();
+                $("#editSubAreaDiv").hide();
                 $("#editTarDiv :input").prop("disabled", false); // edit mode: enable all controls in the form
                 populateFields(this.getAttribute('data-tarId')); // fill the form fields according to the selected row
             });
 
             $(document).on("click", ".deleteBtn", function () {
                 mode = "delete";
+                $("#editAreaDiv").hide();
+                $("#editSubAreaDiv").hide();
                 markSelected(this);
                 var tarId = this.getAttribute('data-tarId');
                 swal({
@@ -214,8 +265,8 @@
 
         function populateFields(tarSerial) {
             tar = getTarget(tarSerial);
-            $("#areaPick").val(tar.FaSerial);
-            $("#subAreaPick").val(tar.SfaSerial);
+            $("#areaPick").val(tar.FunctionArea);
+            $("#subAreaPick").val(tar.SubFunctionArea);
             $("#target").val(tar.Target);
             $("#suitability").val(tar.Suitability);
             $("#originality").val(tar.Originality);
@@ -240,25 +291,41 @@
             return null;
         }
 
-        function getAreasSuccess(SubAreasData) {
+        function getNewAreasSuccess(AreasData) {
+            allMainAreas = AreasData;
+            allAreas = [];
+            areas = "";
+            for (var i = 0; i < AreasData.length; i++) {
+                allAreas.push(AreasData[i].Area);
+                areas += '<option value="' + AreasData[i].Area + '" id=aId-' + AreasData[i].AreaId + '></option>';
+            }
+            $("#AreaPickForNewSubAreaList").html(areas);
+            $("#editAreaDiv").hide();
+        }
+
+        function getAreasSuccess(SubAreasData) {           
+            console.log(SubAreasData);
             allSubAreas = SubAreasData;
             allAreas = [];
-            areas = '<option value="">בחר תחום</option>';
+            areas = '';
             for (var i = 0; i < SubAreasData.length; i++) {
                 hit = 0;
                 for (var j = 0; j < allAreas.length; j++) {
-                    if (allAreas[j] == SubAreasData[i].AreaId) {
+                    if (allAreas[j] == SubAreasData[i].Area) {
                         hit = 1;
                         break;
                     }
                 }
                 if (hit == 0) {
-                    allAreas[j] = SubAreasData[i].AreaId;
-                    areas += '<option value=' + SubAreasData[i].AreaId + '>' + SubAreasData[i].Area + '</option>';
+                    allAreas[j] = SubAreasData[i].Area;
+                    areas += '<option value="' + SubAreasData[i].Area + '" id=aId-' + SubAreasData[i].AreaId + '></option>';
+
                 }
             }
 
-            $("#areaPick").html(areas);
+            $("#areaPickList").html(areas);
+            if (mode == "newsubarea")
+                $("#editSubAreaDiv").hide();             
         }
 
         function getSuccess(TargetsBankdata) {
@@ -432,14 +499,13 @@
                             <h2></h2>
                         </div>
                         <div class="body">
-                            <form id="form_validation" method="POST">
+                            <form id="saveBTN">
                                 <div class="row clearfix">
                                     <div class="col-sm-12">
                                         <p><b>מטרה</b></p>
                                         <div class="form-group form-group-lg">
                                             <div class="form-line">
-                                                <input type="text" class="form-control" id="target" required
-                                                       oninvalid="this.setCustomValidity('הזן מטרה')">
+                                                <input type="text" class="form-control" id="target" required oninvalid="this.setCustomValidity('הזן מטרה')">
                                             </div>
                                         </div>
                                     </div>
@@ -447,40 +513,43 @@
                                 <div class="row clearfix">
                                     <div class="col-sm-2">
                                         <p><b>דירוג מקוריות (0-5)</b></p>
-                                        <div class="input-group spinner" data-trigger="spinner">
+                                        <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" class="form-control text-center" id="originality" value="5" data-rule="currency" max="5">
+                                                <input type="number" class="form-control text-center" id="originality" value="5.0" step="0.1" max="5" min="0">
                                             </div>
-                                            <span class="input-group-addon">
-                                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="glyphicon glyphicon-chevron-up"></i></a>
-                                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="glyphicon glyphicon-chevron-down"></i></a>
-                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
                                         <p><b>מידת התאמה (0-5)</b></p>
-                                        <div class="input-group spinner" data-trigger="spinner">
+                                        <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" id="suitability" class="form-control text-center" value="5" data-rule="currency" max="5">
+                                                <input type="number" id="suitability" class="form-control text-center" value="5.0" step="0.1" max="5" min="0">
                                             </div>
-                                            <span class="input-group-addon">
-                                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="glyphicon glyphicon-chevron-up"></i></a>
-                                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="glyphicon glyphicon-chevron-down"></i></a>
-                                            </span>
+
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <p><b>תת-תחום</b></p>
-                                        <select id="subAreaPick" class="form-control show-tick" title="בחר תת-תחום" required oninvalid="this.setCustomValidity('בחר תת-תחום')"></select>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input id="subAreaPick" list="subAreaPickList" class="form-control" required oninvalid="this.setCustomValidity('בחר תת-תחום')">
+                                                <datalist id="subAreaPickList"></datalist>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <p><b>תחום תפקוד</b></p>
-                                        <select id="areaPick" class="form-control show-tick" title="בחר תחום" required oninvalid="this.setCustomValidity('בחר תחום')"></select>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input id="areaPick" list="areaPickList" class="form-control" required oninvalid="this.setCustomValidity('בחר תחום')">
+                                                <datalist id="areaPickList"></datalist>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row clearfix">
                                     <div style="float:left; margin-left:20px">
-                                        <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">שמור</button>
+                                        <input type="submit" class="btn btn-primary btn-lg" value="שמור">
                                     </div>
                                 </div>
                             </form>
@@ -502,7 +571,7 @@
                             <h2><b>הוסף תחום חדש של מטרות</b></h2>
                         </div>
                         <div class="body">
-                            <form id="form_validation" method="POST">
+                            <form id="saveAreaBTN">
                                 <div class="row clearfix">
                                     <div class="col-sm-12">
                                         <p><b>הזן תחום חדש</b></p>
@@ -515,8 +584,8 @@
                                 </div>
                                 <div class="row clearfix">
                                     <div style="float:left; margin-left:20px">
-                                        <button type="submit" class="btn btn-primary btn-lg" id="saveAreaBTN">שמור</button>
-                                        <button type="submit" class="btn btn-primary btn-lg" id="saveAreaBTNandAddSub">שמור ועבור להוספת תת-תחום</button>
+                                        <button type="submit" class="btn btn-primary btn-lg" >שמור</button>
+                                        <input type="button" class="btn btn-primary btn-lg" id="saveAreaBTNandAddSub" value="שמור ועבור להוספת תת-תחום">
                                     </div>
                                 </div>
                             </form>
@@ -537,7 +606,7 @@
                             <h2><b>הוסף תת-תחום חדש לתחום</b></h2>
                         </div>
                         <div class="body">
-                            <form id="form_validation" method="POST">
+                            <form id="saveSubAreaBTN" >
                                 <div class="row clearfix">
                                     <div class="col-sm-6">
                                         <p><b>הזן תת-תחום חדש</b></p>
@@ -549,12 +618,17 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <p><b>בחר תחום</b></p>
-                                        <select id="AreaPickForNewSubArea" class="show-tick form-control" title="תחום" required oninvalid="this.setCustomValidity('בחר תחום')"></select>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input id="AreaPickForNewSubArea" list="AreaPickForNewSubAreaList" class="form-control" required oninvalid="this.setCustomValidity('בחר תחום')">
+                                                <datalist id="AreaPickForNewSubAreaList"></datalist>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row clearfix">
                                     <div style="float:left; margin-left:20px">
-                                        <button type="submit" class="btn btn-primary btn-lg" id="saveSubAreaBTN">שמור</button>
+                                        <button type="submit" class="btn btn-primary btn-lg" >שמור</button>
                                     </div>
                                 </div>
                             </form>
@@ -688,15 +762,13 @@
     <script src="../js/pages/forms/advanced-form-elements.js"></script>
     <!-- Waves Effect Plugin Js -->
     <script src="../plugins/node-waves/waves.js"></script>
-    <!-- Sweet Alert Plugin Js -->
-    <script src="../plugins/sweetalert/sweetalert.min.js"></script>
+
     <!-- Multi Select Plugin Js -->
     <script src="../plugins/multi-select/js/jquery.multi-select.js"></script>
     <!-- Jquery Spinner Plugin Js -->
     <script src="../plugins/jquery-spinner/js/jquery.spinner.js"></script>
     <!-- Demo Js -->
     <script src="../js/demo.js"></script>
-
 </body>
 
 </html>
