@@ -72,7 +72,6 @@
                 $("#editTarDiv").hide();
                 $("#editSubAreaDiv").hide();
                 $("#editAreaDiv").hide();
-                $("#NewArea").val("");
                 $("#AreaPickForNewSubArea").val("");
                 $("#NewSubArea").val("");
                 clearFields(this.getAttribute('data-tarId')); // fill the form fields according to the selected row
@@ -86,15 +85,6 @@
                 $("#editSubAreaDiv").hide();
                 clearFields();
                 $("#editTarDiv :input").prop("disabled", false); // new mode: enable all controls in the form
-            });
-
-            $(document).on("click", "#addNewArea", function () {
-                tar = null;
-                $("#editAreaDiv").show();
-                $("#editSubAreaDiv").hide();
-                $("#editTarDiv").hide();
-                $("#NewArea").val("");
-                $("#editAreaDiv :input").prop("disabled", false); // new mode: enable all controls in the form
             });
 
             $(document).on("click", "#addNewSubArea", function () {
@@ -111,14 +101,12 @@
             });
 
             $("#saveBTN").submit(onSubmitFunc);
-            $("#saveAreaBTN").submit(saveNewArea)
             $("#saveSubAreaBTN").submit(saveNewSubArea);
             $("#saveAreaBTNandAddSub").click(saveAndMoveToSubArea);
 
         });
 
         function saveAndMoveToSubArea() {
-            saveNewArea();
             tar = null;
             $("#editAreaDiv").hide();
             $("#editSubAreaDiv").show();
@@ -126,32 +114,6 @@
             $("#AreaPickForNewSubArea").val("");
             $("#editSubAreaDiv :input").prop("disabled", false);
             $("#AreaPickForNewSubAreaList").html(areas);
-        }
-
-        function saveNewArea() {
-            mode = "newarea";
-            let Exists = 0;
-            for (var i = 0; i < allAreas.length; i++) {
-                if (allAreas[i] == $("#NewArea").val()) {                    
-                    Exists = 1;
-                    break;
-                }
-            }
-
-            if (Exists == 0) {
-                let NewArea = {
-                    subAreaId: null,
-                    areaId: -1,
-                    subArea: null,
-                    area: $("#NewArea").val()
-                }
-
-                ajaxCall("POST", "../api/FuncAreas", JSON.stringify(NewArea), getNewAreasSuccess, error);
-            }
-            else {
-                swal("תחום זה כבר קיים במערכת", "", "error");
-            }
-            return false;
         }
 
         function saveNewSubArea() {
@@ -472,10 +434,6 @@
                                         <i class="material-icons">gps_fixed</i>
                                         <span class="font-underline">מטרה חדשה</span>
                                     </button>
-                                    <button type="button" class="btn waves-effect" id="addNewArea">
-                                        <i class="material-icons">hdr_strong</i>
-                                        <span class="font-underline">תחום חדש</span>
-                                    </button>
                                     <button type="button" class="btn waves-effect" id="addNewSubArea">
                                         <i class="material-icons">hdr_weak</i>
                                         <span class="font-underline">תת-תחום חדש</span>
@@ -557,41 +515,6 @@
                     </div>
                 </div>
 
-            </div>
-
-            <div class="row clearfix" id="editAreaDiv">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <div class="icon-button-demo" style="float:left">
-                                <button type="button" id="cancelBTN" class="btn btn-default waves-effect">
-                                    <i class="material-icons">clear</i>
-                                </button>
-                            </div>
-                            <h2><b>הוסף תחום חדש של מטרות</b></h2>
-                        </div>
-                        <div class="body">
-                            <form id="saveAreaBTN">
-                                <div class="row clearfix">
-                                    <div class="col-sm-12">
-                                        <p><b>הזן תחום חדש</b></p>
-                                        <div class="form-group form-group-lg">
-                                            <div class="form-line">
-                                                <input type="text" class="form-control" id="NewArea" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('הזן תחום')" >
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row clearfix">
-                                    <div style="float:left; margin-left:20px">
-                                        <button type="submit" class="btn btn-primary btn-lg" >שמור</button>
-                                        <input type="button" class="btn btn-primary btn-lg" id="saveAreaBTNandAddSub" value="שמור ועבור להוספת תת-תחום">
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="row clearfix" id="editSubAreaDiv">

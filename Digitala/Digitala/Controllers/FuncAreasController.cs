@@ -20,8 +20,8 @@ namespace Digitala.Controllers
         }
 
         [HttpGet]
-        [Route("api/FuncAreas/{a}")]
-        public List<FuncAreas> Get(int a)
+        [Route("api/FuncAreas/{mainArea}")]
+        public List<FuncAreas> Get(int mainArea)
         {
             FuncAreas t = new FuncAreas();
             List<FuncAreas> tlist = t.ReadMainArea();

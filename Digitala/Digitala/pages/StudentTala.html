@@ -97,7 +97,14 @@
                     btnArea6 = 0;
                 }
             });
+
+            ajaxCall("GET", "../api/FuncAreas/1", "", getAreasSuccess, error);
         });
+
+        function getAreasSuccess(allMainAreas) {
+            MainAreas = allMainAreas;
+
+        }
 
     </script>
 </head>
