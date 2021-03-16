@@ -48,7 +48,6 @@
             allMainAreas = [];
             mode = "";
             $("#editTarDiv").hide();
-            $("#editAreaDiv").hide();
             $("#editSubAreaDiv").hide();
             ajaxCall("GET", "../api/Targets", "", getSuccess, error);
             ajaxCall("GET", "../api/FuncAreas", "", getAreasSuccess, error);
@@ -71,7 +70,6 @@
                 unMarkSelected();
                 $("#editTarDiv").hide();
                 $("#editSubAreaDiv").hide();
-                $("#editAreaDiv").hide();
                 $("#AreaPickForNewSubArea").val("");
                 $("#NewSubArea").val("");
                 clearFields(this.getAttribute('data-tarId')); // fill the form fields according to the selected row
@@ -81,7 +79,6 @@
                 tar = null;
                 mode = "new";
                 $("#editTarDiv").show();
-                $("#editAreaDiv").hide();
                 $("#editSubAreaDiv").hide();
                 clearFields();
                 $("#editTarDiv :input").prop("disabled", false); // new mode: enable all controls in the form
@@ -91,7 +88,6 @@
                 tar = null;
                 $("#editSubAreaDiv").show();
                 $("#editTarDiv").hide();
-                $("#editAreaDiv").hide();
                 $("#AreaPickForNewSubArea").val("");
                 $("#NewSubArea").val("");
                 $("#editSubAreaDiv :input").prop("disabled", false); // new mode: enable all controls in the form
@@ -108,7 +104,6 @@
 
         function saveAndMoveToSubArea() {
             tar = null;
-            $("#editAreaDiv").hide();
             $("#editSubAreaDiv").show();
             $("#NewSubArea").val("");
             $("#AreaPickForNewSubArea").val("");
@@ -192,7 +187,6 @@
                 mode = "edit";
                 markSelected(this);
                 $("#editTarDiv").show();
-                $("#editAreaDiv").hide();
                 $("#editSubAreaDiv").hide();
                 $("#editTarDiv :input").prop("disabled", false); // edit mode: enable all controls in the form
                 populateFields(this.getAttribute('data-tarId')); // fill the form fields according to the selected row
@@ -200,7 +194,6 @@
 
             $(document).on("click", ".deleteBtn", function () {
                 mode = "delete";
-                $("#editAreaDiv").hide();
                 $("#editSubAreaDiv").hide();
                 markSelected(this);
                 var tarId = this.getAttribute('data-tarId');
@@ -262,7 +255,6 @@
                 areas += '<option value="' + AreasData[i].Area + '" id=aId-' + AreasData[i].AreaId + '></option>';
             }
             $("#AreaPickForNewSubAreaList").html(areas);
-            $("#editAreaDiv").hide();
         }
 
         function getAreasSuccess(SubAreasData) {           
