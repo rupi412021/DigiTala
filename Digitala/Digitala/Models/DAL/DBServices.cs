@@ -278,6 +278,62 @@ namespace Digitala.Models.DAL
 
         }
 
+        public List<Chararcteristics> ReadChararcteristics(List<int> areas)
+        {
+
+            SqlConnection con = null;
+            List<Chararcteristics> Chars = new List<Chararcteristics>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM Chararcteristics WHERE ";
+                int count = areas.Count();
+                foreach (int area in areas)
+                {
+                    count--;
+                    if (count == 0)
+                        selectSTR += "FASerial=" + area;
+                    else
+                        selectSTR += "FASerial=" + area + " OR ";   
+                }
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Chararcteristics c = new Chararcteristics();
+
+                    c.Chararcteristic = (string)(dr["Chararcteristic"]);
+                    c.FaSerial = Convert.ToInt32(dr["FASerial"]);
+                    c.SfaSerial = Convert.ToInt32(dr["SFASerial"]);
+                    c.IsWeekness = Convert.ToBoolean(dr["Weekness"]);
+
+                    Chars.Add(c);
+                }
+
+                return Chars;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Chararcteristics from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
         public int Insert(Teachers teacher)
         {
 

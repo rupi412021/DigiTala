@@ -8,6 +8,7 @@
     <title>דיגיתל"א - תוכנית לימודים דיגיטלית לתלמיד</title>
     <!-- Favicon-->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
     <script src="../Scripts/jquery-3.3.1.min.js"></script>
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
 
@@ -25,10 +26,12 @@
     <link href="../css/style.css" rel="stylesheet">
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
+
+
     <link href="../css/StyleSheet.css" rel="stylesheet" />
 
-    <script>
 
+    <script>
         $(document).ready(function () {
             btnArea1 = 0;
             btnArea2 = 0;
@@ -36,6 +39,7 @@
             btnArea4 = 0;
             btnArea5 = 0;
             btnArea6 = 0;
+            AreasForChararcteristic = [];
 
             $(document).on("click", "#FASerial-1", function () {
                 if (btnArea1 == 0) {
@@ -100,17 +104,54 @@
 
             ajaxCall("GET", "../api/FuncAreas/1", "", getAreasSuccess, error);
 
-            $(document).on("click", ".actions", function () {
-                if ($("#wizard_with_validation-p-1").hasClass("current"))
-                    $("#123").html("<p>bla bla bla</p>");
+            $(document).on("click", "#next", function () {
+                var validationAreas = 0;              
+                if (btnArea6 == 1) {
+                    AreasForChararcteristic.push(6);
+                    validationAreas += 1;
+                }
+                if (btnArea5 == 1) {
+                    AreasForChararcteristic.push(5);
+                    validationAreas += 1;
+                }
+                if (btnArea4 == 1) {
+                    AreasForChararcteristic.push(4);
+                    validationAreas += 1;
+                }
+                if (btnArea3 == 1) {
+                    AreasForChararcteristic.push(3);
+                    validationAreas += 1;
+                }
+                if (btnArea2 == 1) {
+                    AreasForChararcteristic.push(2);
+                    validationAreas += 1;
+                }
+                if (btnArea1 == 1) {
+                    AreasForChararcteristic.push(1);
+                    validationAreas += 1;
+                }  
+                
+                if ($("#wizard_with_validation-p-1").hasClass("current")) {
+                    if (validationAreas == 0)
+                        swal("יש לבחור לפחות תחום תפקוד אחד", "יש לבחור לפחות תחום תפקוד אחד", "error");
+
+                    else
+                        ajaxCall("GET", "../api/Chararcteristics/" + AreasForChararcteristic, "", getChararcteristicsSuccess, error);
+                }
+                
             });
-        
-
-            
         });
-
+        function getChararcteristicsSuccess(ChararcteristicsData) {
+            ChararcteristicsList = ChararcteristicsData;
+            console.log(ChararcteristicsData);
+        }
         function getAreasSuccess(allMainAreas) {
+            console.log(allMainAreas);
             MainAreasList = allMainAreas;
+        }
+
+        function error(data) {
+            alert("could not bring data")
         }
 
     </script>
