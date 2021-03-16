@@ -8,6 +8,8 @@
     <title>דיגיתל"א - תוכנית לימודים דיגיטלית לתלמיד</title>
     <!-- Favicon-->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <script src="../Scripts/jquery-3.3.1.min.js"></script>
+    <script src="../Scripts/ajaxCallsWithKey.js"></script>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
@@ -24,6 +26,80 @@
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
     <link href="../css/StyleSheet.css" rel="stylesheet" />
+
+    <script>
+
+        $(document).ready(function () {
+            btnArea1 = 0;
+            btnArea2 = 0;
+            btnArea3 = 0;
+            btnArea4 = 0;
+            btnArea5 = 0;
+            btnArea6 = 0;
+
+            $(document).on("click", "#FASerial-1", function () {
+                if (btnArea1 == 0) {
+                    $("#FASerial-1").html('<img src="../images/FASerial1Checked.png" />');
+                    btnArea1 = 1;
+                }
+                else {
+                    $("#FASerial-1").html('<img src="../images/FASerial1NotChecked.png" />');
+                    btnArea1 = 0;
+                }
+            });
+            $(document).on("click", "#FASerial-2", function () {
+                if (btnArea2 == 0) {
+                    $("#FASerial-2").html('<img src="../images/FASerial2Checked.png" />');
+                    btnArea2 = 1;
+                }
+                else {
+                    $("#FASerial-2").html('<img src="../images/FASerial2NotChecked.png" />');
+                    btnArea2 = 0;
+                }
+            });
+            $(document).on("click", "#FASerial-3", function () {
+                if (btnArea3 == 0) {
+                    $("#FASerial-3").html('<img src="../images/FASerial3Checked.png" />');
+                    btnArea3 = 1;
+                }
+                else {
+                    $("#FASerial-3").html('<img src="../images/FASerial3NotChecked.png" />');
+                    btnArea3 = 0;
+                }
+            });
+            $(document).on("click", "#FASerial-4", function () {
+                if (btnArea4 == 0) {
+                    $("#FASerial-4").html('<img src="../images/FASerial4Checked.png" />');
+                    btnArea4 = 1;
+                }
+                else {
+                    $("#FASerial-4").html('<img src="../images/FASerial4NotChecked.png" />');
+                    btnArea4 = 0;
+                }
+            });
+            $(document).on("click", "#FASerial-5", function () {
+                if (btnArea5 == 0) {
+                    $("#FASerial-5").html('<img src="../images/FASerial5Checked.png" />');
+                    btnArea5 = 1;
+                }
+                else {
+                    $("#FASerial-5").html('<img src="../images/FASerial5NotChecked.png" />');
+                    btnArea5 = 0;
+                }
+            });
+            $(document).on("click", "#FASerial-6", function () {
+                if (btnArea6 == 0) {
+                    $("#FASerial-6").html('<img src="../images/FASerial6Checked.png" />');
+                    btnArea6 = 1;
+                }
+                else {
+                    $("#FASerial-6").html('<img src="../images/FASerial6NotChecked.png" />');
+                    btnArea6 = 0;
+                }
+            });
+        });
+
+    </script>
 </head>
 
 <body class="theme-red">
@@ -74,25 +150,25 @@
                                 <h3><b>בחירת תחומי תפקוד</b></h3>
                                 <fieldset>
                                     <div class="row" style="text-align: center">
-                                        <button type="button" id="FASerial-1-NotChosen" class="btn-trans wave-effect">
+                                        <button type="button" id="FASerial-1" class="btn-trans wave-effect">
                                             <img src="../images/FASerial1NotChecked.png" />
                                         </button>
-                                        <button type="button" id="FASerial-2-NotChosen" class="btn-trans wave-effect">
+                                        <button type="button" id="FASerial-2" class="btn-trans wave-effect">
                                             <img src="../images/FASerial2NotChecked.png" />
                                         </button>
-                                        <button type="button" id="FASerial-3-NotChosen" class="btn-trans wave-effect">
+                                        <button type="button" id="FASerial-3" class="btn-trans wave-effect">
                                             <img src="../images/FASerial3NotChecked.png" />
                                         </button>
                                     </div>
                                     <div class="row" style="text-align: center">
-                                        <button type="button" id="FASerial-6-NotChosen" class="btn-trans wave-effect">
+                                        <button type="button" id="FASerial-6" class="btn-trans wave-effect">
                                             <img src="../images/FASerial6NotChecked.png" />
                                         </button>
-                                        <button type="button" id="FASerial-5-NotChosen" class="btn-trans wave-effect">
-                                            <img src="../images/FASerial5NotChecked.png" />
-                                        </button>
-                                        <button type="button" id="FASerial-4-NotChosen" class="btn-trans wave-effect">
+                                        <button type="button" id="FASerial-4" class="btn-trans wave-effect">
                                             <img src="../images/FASerial4NotChecked.png" />
+                                        </button>
+                                        <button type="button" id="FASerial-5" class="btn-trans wave-effect">
+                                            <img src="../images/FASerial5NotChecked.png" />
                                         </button>
                                     </div>
 
