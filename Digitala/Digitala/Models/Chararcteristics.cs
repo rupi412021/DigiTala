@@ -28,7 +28,7 @@ namespace Digitala.Models
         public int SfaSerial { get => sfaSerial; set => sfaSerial = value; }
         public bool IsWeekness { get => isWeekness; set => isWeekness = value; }
 
-        public List<Chararcteristics> Read(List<int> areas)
+        public List<Chararcteristics> Read(int[] areas)
         {
             DBServices dbs = new DBServices();
             List<Chararcteristics> cList = dbs.ReadChararcteristics(areas);

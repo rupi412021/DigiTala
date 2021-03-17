@@ -278,7 +278,7 @@ namespace Digitala.Models.DAL
 
         }
 
-        public List<Chararcteristics> ReadChararcteristics(List<int> areas)
+        public List<Chararcteristics> ReadChararcteristics(int[] areas)
         {
 
             SqlConnection con = null;

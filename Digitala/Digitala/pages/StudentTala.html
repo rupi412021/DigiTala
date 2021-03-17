@@ -137,10 +137,10 @@
 
                     else
                         ajaxCall("GET", "../api/Chararcteristics/" + AreasForChararcteristic, "", getChararcteristicsSuccess, error);
-                }
-                
+                }      
             });
         });
+
         function getChararcteristicsSuccess(ChararcteristicsData) {
             ChararcteristicsList = ChararcteristicsData;
             console.log(ChararcteristicsData);
