@@ -4532,7 +4532,9 @@ section.content {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   -ms-border-radius: 0;
-  border-radius: 0; }
+  border-radius: 5px;
+  margin: 5px;
+}
 
 .label-primary {
     background-color: #73A4A4;
