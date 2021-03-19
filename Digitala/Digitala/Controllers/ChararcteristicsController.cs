@@ -21,10 +21,10 @@ namespace Digitala.Controllers
 
         [HttpGet]
         [Route("api/Chararcteristics/{areas}")]
-        public List<Chararcteristics> Get(int[] areas)
+        public List<Chararcteristics> Get()
         {
             Chararcteristics c = new Chararcteristics();
-            List<Chararcteristics> clist = c.Read(areas);
+            List<Chararcteristics> clist = c.Read();
             return clist;
         }
 

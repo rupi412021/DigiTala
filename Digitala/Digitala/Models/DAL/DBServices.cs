@@ -278,7 +278,7 @@ namespace Digitala.Models.DAL
 
         }
 
-        public List<Chararcteristics> ReadChararcteristics(int[] areas)
+        public List<Chararcteristics> ReadChararcteristics()
         {
 
             SqlConnection con = null;
@@ -288,17 +288,8 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "SELECT * FROM Chararcteristics WHERE ";
-                int count = areas.Count();
-                foreach (int area in areas)
-                {
-                    count--;
-                    if (count == 0)
-                        selectSTR += "FASerial=" + area;
-                    else
-                        selectSTR += "FASerial=" + area + " OR ";   
-                }
-
+                String selectSTR = "SELECT * FROM Chararcteristics";
+                
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
                 // get a reader

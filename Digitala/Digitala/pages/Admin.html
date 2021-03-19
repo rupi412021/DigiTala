@@ -278,8 +278,9 @@
             }
 
             $("#areaPickList").html(areas);
-            if (mode == "newsubarea")
-                $("#editSubAreaDiv").hide();             
+            if (mode == "newsubarea") {
+                $("#editSubAreaDiv").hide();        
+            }
         }
 
         function getSuccess(TargetsBankdata) {
@@ -521,13 +522,13 @@
                             <h2><b>הוסף תת-תחום חדש לתחום</b></h2>
                         </div>
                         <div class="body">
-                            <form id="saveSubAreaBTN" >
+                            <form id="saveSubAreaBTN">
                                 <div class="row clearfix">
                                     <div class="col-sm-6">
                                         <p><b>הזן תת-תחום חדש</b></p>
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" class="form-control" id="NewSubArea" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('הזן תת-תחום')"  >
+                                                <input type="text" class="form-control" id="NewSubArea" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('הזן תת-תחום')">
                                             </div>
                                         </div>
                                     </div>
@@ -543,7 +544,7 @@
                                 </div>
                                 <div class="row clearfix">
                                     <div style="float:left; margin-left:20px">
-                                        <button type="submit" class="btn btn-primary btn-lg" >שמור</button>
+                                        <button type="submit" class="btn btn-primary btn-lg">שמור</button>
                                     </div>
                                 </div>
                             </form>
@@ -663,7 +664,6 @@
     <script src="../plugins/bootstrap/js/bootstrap.js"></script>
     <!-- Select Plugin Js -->
     <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
-
     <!-- Slimscroll Plugin Js -->
     <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
 

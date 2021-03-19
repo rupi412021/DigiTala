@@ -28,10 +28,10 @@ namespace Digitala.Models
         public int SfaSerial { get => sfaSerial; set => sfaSerial = value; }
         public bool IsWeekness { get => isWeekness; set => isWeekness = value; }
 
-        public List<Chararcteristics> Read(int[] areas)
+        public List<Chararcteristics> Read()
         {
             DBServices dbs = new DBServices();
-            List<Chararcteristics> cList = dbs.ReadChararcteristics(areas);
+            List<Chararcteristics> cList = dbs.ReadChararcteristics();
             return cList;
         }
     }

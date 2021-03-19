@@ -33,112 +33,112 @@
 
     <script>
         $(document).ready(function () {
-            btnArea1 = 0;
-            btnArea2 = 0;
-            btnArea3 = 0;
-            btnArea4 = 0;
-            btnArea5 = 0;
-            btnArea6 = 0;
             AreasForChararcteristic = [];
+            //btnArea1 = 0;
+            //btnArea2 = 0;
+            //btnArea3 = 0;
+            //btnArea4 = 0;
+            //btnArea5 = 0;
+            //btnArea6 = 0;
+            
+            //$(document).on("click", "#FASerial-1", function () {
+            //    if (btnArea1 == 0) {
+            //        $("#FASerial-1").html('<img src="../images/FASerial1Checked.png" />');
+            //        btnArea1 = 1;
+            //    }
+            //    else {
+            //        $("#FASerial-1").html('<img src="../images/FASerial1NotChecked.png" />');
+            //        btnArea1 = 0;
+            //    }
+            //});
+            //$(document).on("click", "#FASerial-2", function () {
+            //    if (btnArea2 == 0) {
+            //        $("#FASerial-2").html('<img src="../images/FASerial2Checked.png" />');
+            //        btnArea2 = 1;
+            //    }
+            //    else {
+            //        $("#FASerial-2").html('<img src="../images/FASerial2NotChecked.png" />');
+            //        btnArea2 = 0;
+            //    }
+            //});
+            //$(document).on("click", "#FASerial-3", function () {
+            //    if (btnArea3 == 0) {
+            //        $("#FASerial-3").html('<img src="../images/FASerial3Checked.png" />');
+            //        btnArea3 = 1;
+            //    }
+            //    else {
+            //        $("#FASerial-3").html('<img src="../images/FASerial3NotChecked.png" />');
+            //        btnArea3 = 0;
+            //    }
+            //});
+            //$(document).on("click", "#FASerial-4", function () {
+            //    if (btnArea4 == 0) {
+            //        $("#FASerial-4").html('<img src="../images/FASerial4Checked.png" />');
+            //        btnArea4 = 1;
+            //    }
+            //    else {
+            //        $("#FASerial-4").html('<img src="../images/FASerial4NotChecked.png" />');
+            //        btnArea4 = 0;
+            //    }
+            //});
+            //$(document).on("click", "#FASerial-5", function () {
+            //    if (btnArea5 == 0) {
+            //        $("#FASerial-5").html('<img src="../images/FASerial5Checked.png" />');
+            //        btnArea5 = 1;
+            //    }
+            //    else {
+            //        $("#FASerial-5").html('<img src="../images/FASerial5NotChecked.png" />');
+            //        btnArea5 = 0;
+            //    }
+            //});
+            //$(document).on("click", "#FASerial-6", function () {
+            //    if (btnArea6 == 0) {
+            //        $("#FASerial-6").html('<img src="../images/FASerial6Checked.png" />');
+            //        btnArea6 = 1;
+            //    }
+            //    else {
+            //        $("#FASerial-6").html('<img src="../images/FASerial6NotChecked.png" />');
+            //        btnArea6 = 0;
+            //    }
+            //});
 
-            $(document).on("click", "#FASerial-1", function () {
-                if (btnArea1 == 0) {
-                    $("#FASerial-1").html('<img src="../images/FASerial1Checked.png" />');
-                    btnArea1 = 1;
-                }
-                else {
-                    $("#FASerial-1").html('<img src="../images/FASerial1NotChecked.png" />');
-                    btnArea1 = 0;
-                }
-            });
-            $(document).on("click", "#FASerial-2", function () {
-                if (btnArea2 == 0) {
-                    $("#FASerial-2").html('<img src="../images/FASerial2Checked.png" />');
-                    btnArea2 = 1;
-                }
-                else {
-                    $("#FASerial-2").html('<img src="../images/FASerial2NotChecked.png" />');
-                    btnArea2 = 0;
-                }
-            });
-            $(document).on("click", "#FASerial-3", function () {
-                if (btnArea3 == 0) {
-                    $("#FASerial-3").html('<img src="../images/FASerial3Checked.png" />');
-                    btnArea3 = 1;
-                }
-                else {
-                    $("#FASerial-3").html('<img src="../images/FASerial3NotChecked.png" />');
-                    btnArea3 = 0;
-                }
-            });
-            $(document).on("click", "#FASerial-4", function () {
-                if (btnArea4 == 0) {
-                    $("#FASerial-4").html('<img src="../images/FASerial4Checked.png" />');
-                    btnArea4 = 1;
-                }
-                else {
-                    $("#FASerial-4").html('<img src="../images/FASerial4NotChecked.png" />');
-                    btnArea4 = 0;
-                }
-            });
-            $(document).on("click", "#FASerial-5", function () {
-                if (btnArea5 == 0) {
-                    $("#FASerial-5").html('<img src="../images/FASerial5Checked.png" />');
-                    btnArea5 = 1;
-                }
-                else {
-                    $("#FASerial-5").html('<img src="../images/FASerial5NotChecked.png" />');
-                    btnArea5 = 0;
-                }
-            });
-            $(document).on("click", "#FASerial-6", function () {
-                if (btnArea6 == 0) {
-                    $("#FASerial-6").html('<img src="../images/FASerial6Checked.png" />');
-                    btnArea6 = 1;
-                }
-                else {
-                    $("#FASerial-6").html('<img src="../images/FASerial6NotChecked.png" />');
-                    btnArea6 = 0;
-                }
-            });
+            //ajaxCall("GET", "../api/FuncAreas/1", "", getAreasSuccess, error);
 
-            ajaxCall("GET", "../api/FuncAreas/1", "", getAreasSuccess, error);
-
-            $(document).on("click", "#next", function () {
-                var validationAreas = 0;              
-                if (btnArea6 == 1) {
-                    AreasForChararcteristic.push(6);
-                    validationAreas += 1;
-                }
-                if (btnArea5 == 1) {
-                    AreasForChararcteristic.push(5);
-                    validationAreas += 1;
-                }
-                if (btnArea4 == 1) {
-                    AreasForChararcteristic.push(4);
-                    validationAreas += 1;
-                }
-                if (btnArea3 == 1) {
-                    AreasForChararcteristic.push(3);
-                    validationAreas += 1;
-                }
-                if (btnArea2 == 1) {
-                    AreasForChararcteristic.push(2);
-                    validationAreas += 1;
-                }
-                if (btnArea1 == 1) {
-                    AreasForChararcteristic.push(1);
-                    validationAreas += 1;
-                }  
+            //$(document).on("click", "#next", function () {
+            //    var validationAreas = 0;              
+            //    if (btnArea6 == 1) {
+            //        AreasForChararcteristic.push(6);
+            //        validationAreas += 1;
+            //    }
+            //    if (btnArea5 == 1) {
+            //        AreasForChararcteristic.push(5);
+            //        validationAreas += 1;
+            //    }
+            //    if (btnArea4 == 1) {
+            //        AreasForChararcteristic.push(4);
+            //        validationAreas += 1;
+            //    }
+            //    if (btnArea3 == 1) {
+            //        AreasForChararcteristic.push(3);
+            //        validationAreas += 1;
+            //    }
+            //    if (btnArea2 == 1) {
+            //        AreasForChararcteristic.push(2);
+            //        validationAreas += 1;
+            //    }
+            //    if (btnArea1 == 1) {
+            //        AreasForChararcteristic.push(1);
+            //        validationAreas += 1;
+            //    }  
                 
-                if ($("#wizard_with_validation-p-1").hasClass("current")) {
-                    if (validationAreas == 0)
-                        swal("יש לבחור לפחות תחום תפקוד אחד", "יש לבחור לפחות תחום תפקוד אחד", "error");
+            //    if ($("#wizard_with_validation-p-1").hasClass("current")) {
+            //        if (validationAreas == 0)
+            //            swal("לא נבחרו תחומים", "יש לבחור לפחות תחום תפקוד אחד", "error");
 
-                    else
-                        ajaxCall("GET", "../api/Chararcteristics/" + AreasForChararcteristic, "", getChararcteristicsSuccess, error);
-                }      
-            });
+            //        else
+            //            ajaxCall("GET", "../api/Chararcteristics/" + AreasForChararcteristic, "", getChararcteristicsSuccess, error);
+            //    }      
+            //});
         });
 
         function getChararcteristicsSuccess(ChararcteristicsData) {
@@ -202,7 +202,7 @@
                         </div>
                         <div class="body">
                             <form id="wizard_with_validation">
-                                <h3><b>בחירת תחומי תפקוד</b></h3>
+                                <!--<h3><b>בחירת תחומי תפקוד</b></h3>
                                 <fieldset>
                                     <div class="row" style="text-align: center">
                                         <button type="button" id="FASerial-1" class="btn-trans wave-effect">
@@ -226,9 +226,10 @@
                                             <img src="../images/FASerial5NotChecked.png" />
                                         </button>
                                     </div>
-                                </fieldset>
-                                <h3><b>מיפוי מאפייני תלמיד</b></h3>
+                                </fieldset>-->
+                                <h3><b>מאפייני תלמיד</b></h3>
                                 <fieldset>
+                                    <p>אנא בחר מאפיינים אשר לדעתך מתארים את התלמיד באופן הטוב ביותר</p>
                                     <div id="123" class="form-group form-float">
                                         <div class="form-line">
                                             <input type="text" name="name" class="form-control" required>
@@ -397,11 +398,14 @@
     <script src="../plugins/jquery-steps/jquery.steps.js"></script>
     <!-- Sweet Alert Plugin Js -->
     <script src="../plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Bootstrap Tags Input Plugin Js -->
+    <script src="../plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
     <!-- Waves Effect Plugin Js -->
     <script src="../plugins/node-waves/waves.js"></script>
     <!-- Custom Js -->
     <script src="../js/admin.js"></script>
     <script src="../js/pages/forms/form-wizard.js"></script>
+    <script src="../js/pages/forms/advanced-form-elements.js"></script>
     <!-- Demo Js -->
     <script src="../js/demo.js"></script>
 </body>
