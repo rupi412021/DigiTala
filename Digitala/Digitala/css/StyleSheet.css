@@ -2,7 +2,16 @@
     font-family: Calibri;
 
 }
+optgroup {
+    font-size: 18px;
+}
 
+#phLabels{
+    margin-top:15px;
+}
+.label {
+    font-size: 17px;
+}
 .user-helper-dropdown {
     float: left;
     box-shadow: none;

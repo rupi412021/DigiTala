@@ -24,7 +24,12 @@ namespace Digitala.Controllers
         public List<FuncAreas> Get(int mainArea)
         {
             FuncAreas t = new FuncAreas();
-            List<FuncAreas> tlist = t.ReadMainArea();
+            List<FuncAreas> tlist = new List<FuncAreas>();
+            if (mainArea == 1)
+                tlist = t.ReadMainArea();
+            else
+                tlist = t.ReadSubArea();
+
             return tlist;
         }
 

@@ -185,7 +185,7 @@ namespace Digitala.Models.DAL
 
         }
 
-        public List<FuncAreas> ReadSubAreas()
+        public List<FuncAreas> ReadAllAreas()
         {
 
             SqlConnection con = null;
@@ -266,6 +266,52 @@ namespace Digitala.Models.DAL
             {
                 // write to log
                 throw new Exception("Could not GET Areas from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
+        public List<FuncAreas> ReadSubAreas()
+        {
+
+            SqlConnection con = null;
+            List<FuncAreas> subAreas = new List<FuncAreas>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM SubFunctionAreas SFA ORDER BY SFA.SFASerial DESC";
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    FuncAreas s = new FuncAreas();
+
+                    s.SubArea = (string)(dr["SubFunctionArea"]);
+                    s.AreaId = Convert.ToInt32(dr["FASerial"]);
+                    s.SubAreaId = Convert.ToInt32(dr["SFASerial"]);
+
+                    subAreas.Add(s);
+                }
+
+                return subAreas;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET SubAreas from DB", ex);
             }
             finally
             {
