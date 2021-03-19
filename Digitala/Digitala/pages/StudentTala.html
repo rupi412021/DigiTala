@@ -13,7 +13,6 @@
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&amp;subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
     <!-- Bootstrap Core Css -->
     <link href="../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -22,17 +21,10 @@
     <!-- Multi Select Css -->
     <link href="../plugins/multi-select/css/multi-select.css" rel="stylesheet">
     <!-- Bootstrap Tagsinput Css -->
-    <link href="../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
-
-    <link href="../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet">
-    <!-- Animation Css -->
-    <link href="../plugins/animate-css/animate.css" rel="stylesheet" />
-
+    <link href="../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">  
 
     <!-- Custom Css -->
     <link href="../css/style.css" rel="stylesheet">
-    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
-    <link href="../css/themes/all-themes.css" rel="stylesheet" />
 
     <link href="../css/StyleSheet.css" rel="stylesheet" />
 
@@ -42,35 +34,48 @@
             AreasForChararcteristic = [];
             ajaxCall("GET", "../api/FuncAreas/1", "", getAreasSuccess, error);
             ajaxCall("GET", "../api/Chararcteristics", "", getChararcteristicsSuccess, error);
-
+            
             //$(document).on("click", "#next", function () {
             //    if ($("#wizard_with_validation-p-1").hasClass("current")) {
             //        if (validationAreas == 0)
             //    }
             //});
+
+            $(document).on("change", "#charsMultiPick", function () {
+                let tempVal = $("#charsMultiPick").val();
+                $("#phLabels").append('<span class="tag label label-info">' + tempVal + '<span data-role="remove"></span></span>');                
+                $("#charsMultiPick").val("");
+            });
         });
 
         function getChararcteristicsSuccess(ChararcteristicsData) {
             ChararcteristicsList = ChararcteristicsData;
             console.log(ChararcteristicsData);
             let charsList = "";
-            for (var j = 0; j < MainAreasList.length; j++) {
-                charsList += "<optgroup label='" + MainAreasList[j].Area + "'>";
-                for (var i = 0; i < ChararcteristicsData.length; i++) {
-                    if (MainAreasList[j].AreaId == ChararcteristicsData[i].FaSerial)
-                        charsList += "<option value='" + ChararcteristicsData[i].Chararcteristic + "'>" + ChararcteristicsData[i].Chararcteristic + "</option>";
-                }
-                charsList += '</optgroup>';
+            //for (var j = 0; j < MainAreasList.length; j++) {
+            //    charsList += "<optgroup label='" + MainAreasList[j].Area + "'>";
+            //    for (var i = 0; i < ChararcteristicsData.length; i++) {
+            //        if (MainAreasList[j].AreaId == ChararcteristicsData[i].FaSerial)
+            //            charsList += "<option value='" + ChararcteristicsData[i].Chararcteristic + "'>" + ChararcteristicsData[i].Chararcteristic + "</option>";
+            //    }
+            //    charsList += '</optgroup>';
+            //}
+
+            //$("#optgroup").html(charsList);
+            //$('#optgroup').multiSelect({ selectableOptgroup: true });
+
+            for (var i = 0; i < ChararcteristicsList.length; i++) {
+                    charsList += "<option value='" + ChararcteristicsList[i].Chararcteristic + "'>" + ChararcteristicsData[i].Chararcteristic + "</option>";
             }
 
-            $("#optgroup").html(charsList);
-            $('#optgroup').multiSelect({ selectableOptgroup: true });
+            $("#charsMultiPickList").html(charsList);
 
-            var ref = document.getElementById("demo-tagsinput-area");
+            var ref = document.getElementById("charsMultiPickList");
             var con = ref.innerHTML;
             ref.innerHTML = con;
 
         }
+
         function getAreasSuccess(allMainAreas) {
             console.log(allMainAreas);
             MainAreasList = allMainAreas;
@@ -131,9 +136,13 @@
                                 <h3><b>מאפייני תלמיד תגיות</b></h3>
                                 <fieldset>
                                     <h4>אנא בחר מאפיינים המתארים לדעתך את תלמידך באופן הטוב ביותר</h4>
-                                    <div class="form-group demo-tagsinput-area">
-                                        <div class="form-line" id="demo-tagsinput-area">
-                                            <input type="text" class="form-control" data-role="tagsinput">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input id="charsMultiPick" list="charsMultiPickList" class="form-control" required oninvalid="this.setCustomValidity('בחר תחום')" oninput="this.setCustomValidity('')">
+                                            <datalist id="charsMultiPickList"></datalist>
+                                        </div>
+                                        <div id="phLabels">
+
                                         </div>
                                     </div>
                                 </fieldset>
@@ -265,12 +274,10 @@
     </section>
 
     <!-- Jquery Core Js -->
-    <script async src="https://www.google-analytics.com/analytics.js"></script>
     <script src="../plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap Core Js -->
     <script src="../plugins/bootstrap/js/bootstrap.js"></script>
-    <!-- Select Plugin Js -->
-    <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
     <!-- Slimscroll Plugin Js -->
     <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
     <!--Multi Select Plugin Js -->
