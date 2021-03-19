@@ -302,7 +302,7 @@ namespace Digitala.Models.DAL
                     c.Chararcteristic = (string)(dr["Chararcteristic"]);
                     c.FaSerial = Convert.ToInt32(dr["FASerial"]);
                     c.SfaSerial = Convert.ToInt32(dr["SFASerial"]);
-                    c.IsWeekness = Convert.ToBoolean(dr["Weekness"]);
+                    c.IsWeakness = Convert.ToBoolean(dr["Weakness"]);
 
                     Chars.Add(c);
                 }

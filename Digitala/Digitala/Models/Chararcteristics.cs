@@ -11,14 +11,14 @@ namespace Digitala.Models
         string chararcteristic;
         int faSerial;
         int sfaSerial;
-        bool isWeekness;
+        bool isWeakness;
 
-        public Chararcteristics(string chararcteristic, int faSerial, int sfaSerial, bool isWeekness)
+        public Chararcteristics(string chararcteristic, int faSerial, int sfaSerial, bool isWeakness)
         {
             Chararcteristic = chararcteristic;
             FaSerial = faSerial;
             SfaSerial = sfaSerial;
-            IsWeekness = isWeekness;
+            IsWeakness = isWeakness;
         }
 
         public Chararcteristics() { }
@@ -26,7 +26,7 @@ namespace Digitala.Models
         public string Chararcteristic { get => chararcteristic; set => chararcteristic = value; }
         public int FaSerial { get => faSerial; set => faSerial = value; }
         public int SfaSerial { get => sfaSerial; set => sfaSerial = value; }
-        public bool IsWeekness { get => isWeekness; set => isWeekness = value; }
+        public bool IsWeakness { get => isWeakness; set => isWeakness = value; }
 
         public List<Chararcteristics> Read()
         {

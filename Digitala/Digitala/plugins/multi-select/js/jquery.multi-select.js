@@ -21,8 +21,8 @@
     this.options = options;
     this.$element = $(element);
     this.$container = $('<div/>', { 'class': "ms-container" });
-    this.$selectableContainer = $('<div/>', { 'class': 'ms-selectable' });
     this.$selectionContainer = $('<div/>', { 'class': 'ms-selection' });
+    this.$selectableContainer = $('<div/>', { 'class': 'ms-selectable' });
     this.$selectableUl = $('<ul/>', { 'class': "ms-list", 'tabindex' : '-1' });
     this.$selectionUl = $('<ul/>', { 'class': "ms-list", 'tabindex' : '-1' });
     this.scrollTo = 0;
@@ -63,8 +63,8 @@
           that.$selectionContainer.append(that.options.selectionFooter);
         }
 
-        that.$container.append(that.$selectableContainer);
         that.$container.append(that.$selectionContainer);
+        that.$container.append(that.$selectableContainer);
         ms.after(that.$container);
 
         that.activeMouse(that.$selectableUl);

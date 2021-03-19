@@ -3628,6 +3628,10 @@
     <Content Include="plugins\tinymce\skins\lightgray\fonts\tinymce.eot" />
     <Content Include="plugins\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="plugins\tinymce\skins\lightgray\fonts\tinymce.woff" />
+    <Content Include="bower.json" />
+    <Content Include="compilerconfig.json" />
+    <Content Include="compilerconfig.json.defaults" />
+    <Content Include="package.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />

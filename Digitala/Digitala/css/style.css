@@ -2583,7 +2583,6 @@ section.content {
 .bootstrap-tagsinput {
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
-  -ms-box-shadow: none !important;
   box-shadow: none !important;
   border: none !important; }
 
@@ -4543,7 +4542,9 @@ section.content {
   background-color: #2b982b; }
 
 .label-info {
-  background-color: #00b0e4; }
+    background-color: #F4A55C;
+    border-radius: 3px;
+}
 
 .label-warning {
   background-color: #ff9600; }

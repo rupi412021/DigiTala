@@ -20,7 +20,7 @@ namespace Digitala.Controllers
         //}
 
         [HttpGet]
-        [Route("api/Chararcteristics/{areas}")]
+        [Route("api/Chararcteristics")]
         public List<Chararcteristics> Get()
         {
             Chararcteristics c = new Chararcteristics();

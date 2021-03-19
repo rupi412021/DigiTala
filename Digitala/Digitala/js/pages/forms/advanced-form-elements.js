@@ -1,5 +1,5 @@
 $(function () {
-    $('.colorpicker').colorpicker();
+    //$('.colorpicker').colorpicker();
 
     //Dropzone
     Dropzone.options.frmFileUpload = {
