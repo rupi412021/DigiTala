@@ -4544,8 +4544,13 @@ section.content {
   background-color: #2b982b; }
 
 .label-info {
+    background-color: #00b0e4;
+}
+
+.label-tag {
     background-color: #F4A55C;
     border-radius: 3px;
+    float: right;
 }
 
 .label-warning {

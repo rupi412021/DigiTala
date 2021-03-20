@@ -44,7 +44,7 @@
             $(document).on("change", "#charsMultiPick", function () {
                 let tempVal = $("#charsMultiPick").val();
                 CharsChosen.push(tempVal);
-                let tampValString = '<span class="tag label label-info"><button class="btn-trans tagRemove" id="' + tempVal + '">X</button> ' + tempVal + '</span>';
+                let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + tempVal + '">X</button> ' + tempVal + '</span>';
                 $("#phLabels").append(tampValString);
                 $("#charsMultiPick").val("");
             });
@@ -58,7 +58,7 @@
                 }
 
                 for (var i = 0; i < CharsChosen.length; i++) {
-                    tagsList += '<span class="tag label label-info"><button class="btn-trans tagRemove" id="' + CharsChosen[i] + '">X</button> ' + CharsChosen[i] + '</span>';
+                    tagsList += '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + CharsChosen[i] + '">X</button> ' + CharsChosen[i] + '</span>';
                 }
                 $("#phLabels").html(tagsList);
                 return false;
@@ -149,10 +149,10 @@
                                     <h4>אנא בחר מאפיינים המתארים לדעתך את תלמידך באופן הטוב ביותר</h4>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input id="charsMultiPick" list="charsMultiPickList" placeholder="הקלד כאן..." class="form-control"/>
+                                            <input id="charsMultiPick" list="charsMultiPickList" placeholder="הקלד כאן..." class="form-control" required/>
                                             <datalist id="charsMultiPickList"></datalist>
                                         </div>
-                                        <div id="phLabels"></div>
+                                        <div id="phLabels"></div>                     
                                     </div>
                                 </fieldset>
                                 <h3><b>בחירת מטרות</b></h3>
