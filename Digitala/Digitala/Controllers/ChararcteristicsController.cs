@@ -29,12 +29,17 @@ namespace Digitala.Controllers
         }
 
         [HttpPost]
-        [Route("api/Chararcteristics/{studentId}/{year}/{chars}")]
-        public void Post(string studentId, string year, string[] chars)
-        {
-            Chararcteristics c = new Chararcteristics();
-            c.PostCharsToStudent(studentId, year, chars);            
+        [Route("api/Chararcteristics")]
+        public void Post([FromBody]Chararcteristics c)
+        {      
+            c.PostCharsToStudent();            
         }
-
+        
+        [HttpDelete]
+        [Route("api/Chararcteristics")]
+        public void Delete([FromBody]Chararcteristics c)
+        {
+            c.Delete();
+        }
     }
 }

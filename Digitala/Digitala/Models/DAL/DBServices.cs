@@ -514,59 +514,56 @@ namespace Digitala.Models.DAL
             }
 
         }
-        
-        public int InsertChararcteristics(string studentId, string year, string[] chars)
+
+        public int InsertChararcteristics(Chararcteristics Chararcteristic)
         {
             SqlConnection con;
             SqlCommand cmd;
-            foreach (var item in chars)
+
+            try
             {
-                try
-                {
-                    con = connect("DBConnectionString"); // create the connection
-                }
-                catch (Exception ex)
-                {
-                    // write to log
-                    throw new Exception("Could not connect to DB", ex);
-                }
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
 
-                String cStr = BuildInsertCommand(studentId, year, item, sarea);      // helper method to build the insert string
+            String cStr = BuildInsertCommand(Chararcteristic);      // helper method to build the insert string
 
-                cmd = CreateCommand(cStr, con);             // create the command
+            cmd = CreateCommand(cStr, con);             // create the command
 
-                try
-                {
-                    int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                    return numEffected;
-                }
-                catch (Exception ex)
-                {
-                    // write to log
-                    throw new Exception("Could not insert new Character for a student", ex);
-                }
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not insert new Character for a student", ex);
+            }
 
-                finally
+            finally
+            {
+                if (con != null)
                 {
-                    if (con != null)
-                    {
-                        // close the db connection
-                        con.Close();
-                    }
+                    // close the db connection
+                    con.Close();
                 }
             }
 
-            return 1;
         }
 
-        private String BuildInsertCommand(string studentId, string year, string chars, string sarea)
+        private String BuildInsertCommand(Chararcteristics c)
         {
             String command;
             String prefix;
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("Values('{0}', '{1}', {2}, {3})", studentId, year, chars, sarea);
-            prefix = "INSERT INTO StudentCharacteristics " + "([StudentId], [Year], [Character] [SFASerial])";
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}')", c.StudentId, c.Year, c.Chararcteristic, c.SfaSerial);
+            prefix = "INSERT INTO StudentCharacteristics " + "([StudentId], [SCYear], [Chararcteristic], [SFASerial])";
 
             command = prefix + sb.ToString();
 
@@ -836,6 +833,53 @@ namespace Digitala.Models.DAL
                 ", SFASerial = " + t.SfaSerial + ", TargetText = '" + t.Target + "', Suitability = " + t.Suitability +
                 ", Originality = " + t.Originality + " WHERE Tserial = " + t.TarSerial;
 
+            return command;
+        }
+
+        public int DeleteChars(Chararcteristics chars)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildDeleteCommand(chars);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Faild removing item", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildDeleteCommand(Chararcteristics c)
+        {
+            String command;
+            command = "DELETE from StudentCharacteristics where StudentId = '" + c.StudentId + "' and SCYear = " + c.Year
+                + " and Chararcteristic = '" + c.Chararcteristic + "' and SFASerial = " + c.SfaSerial;
             return command;
         }
     }

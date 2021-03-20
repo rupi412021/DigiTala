@@ -51,44 +51,67 @@
                         });
                     }
                     else {
-                        let Sid = "324545649";
-                        let Syear = "rrr";
-                        ajaxCall("POST", "../api/Chararcteristics/" + Sid + "/" + Syear, JSON.stringify(CharsChose), postCarsForStudentSuccess, error);
+                        renderTargets();
                     }
                 }
             });
         });
 
         function postCarsForStudentSuccess() {
-            
+            console.log("char added successefully");
+        }
+        function DeletetCarsForStudentSuccess() {
+            console.log("char deleted successefully");
+        }
+
+        function renderTargets() {
+
         }
 
         function tagsButtons() {
             $(document).on("change", "#charsMultiPick", function () {
+                let tempVal= $("#charsMultiPick").val();
+                let tempSubArea = $('#charsMultiPickList option[value="' + $("#charsMultiPick").val() + '"]').attr('id');
 
                 let ObjTemp = {
-                    tempVal: $("#charsMultiPick").val(),
-                    tempSubArea: $('#charsMultiPickList option[value="' + $("#charsMultiPick").val() + '"]').attr('id')
-                }
+                    Chararcteristic: tempVal,
+                    SfaSerial: tempSubArea,
+                    StudentId: "303087886",
+                    Year: 2020
+                    }
 
                 CharsChosen.push(ObjTemp);
-                let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + ObjTemp.tempVal + '">X</button> ' + ObjTemp.tempVal + '</span>';
+                let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + ObjTemp.Chararcteristic + '">X</button> ' + ObjTemp.Chararcteristic + '</span>';
                 $("#phLabels").append(tampValString);
                 $("#charsMultiPick").val("");
+
+                ajaxCall("POST", "../api/Chararcteristics", JSON.stringify(ObjTemp), postCarsForStudentSuccess, error);
+
             });
 
             $(document).on("click", ".tagRemove", function () {
                 let ValToRemove = this.getAttribute("id");
                 let tagsList = "";
-                for (var i = 0; i < CharsChosen.length; i++) {
-                    if (CharsChosen[i].tempVal == ValToRemove)
-                        CharsChosen.splice(i, 1);
+                for (i = 0; i < CharsChosen.length; i++) {
+                    if (CharsChosen[i].Chararcteristic == ValToRemove) {
+                        ObjTempDel = {
+                            Chararcteristic: CharsChosen[i].Chararcteristic,
+                            SfaSerial: CharsChosen[i].SfaSerial,
+                            StudentId: CharsChosen[i].StudentId,
+                            Year: CharsChosen[i].Year
+                        }
+                        CharsChosen.splice(i, 1); 
+                        break;
+                    }
                 }
 
                 for (var i = 0; i < CharsChosen.length; i++) {
-                    tagsList += '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + CharsChosen[i].tempVal + '">X</button> ' + CharsChosen[i].tempVal + '</span>';
+                    tagsList += '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + CharsChosen[i].Chararcteristic + '">X</button> ' + CharsChosen[i].Chararcteristic + '</span>';
                 }
                 $("#phLabels").html(tagsList);
+
+                ajaxCall("DELETE", "../api/Chararcteristics", JSON.stringify(ObjTempDel), DeletetCarsForStudentSuccess, error);
+
                 return false;
             });
         }
@@ -100,7 +123,7 @@
             for (var i = 0; i < ChararcteristicsData.length; i++) {
                 for (var j = 0; j < SubAreasList.length; j++) {
                     if (SubAreasList[j].SubAreaId == ChararcteristicsData[i].SfaSerial) {
-                        charsList += "<option value='" + ChararcteristicsData[i].Chararcteristic + "' id='" + SubAreasList[j].SubArea + "'>תחום: " + SubAreasList[j].SubArea + "</option>";
+                        charsList += "<option value='" + ChararcteristicsData[i].Chararcteristic + "' id=" + SubAreasList[j].SubAreaId + ">תחום: " + SubAreasList[j].SubArea + "</option>";
                         break;
                     }
                 }
@@ -171,6 +194,7 @@
                         </div>
                         <div class="body">
                             <form id="wizard_with_validation">
+                                <!--האם קיימים מאפיינים?-->
                                 <h3><b>מאפייני תלמיד</b></h3>
                                 <fieldset>
                                     <h4>אנא בחר מאפיינים המתארים לדעתך את תלמידך באופן הטוב ביותר</h4>
