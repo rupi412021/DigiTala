@@ -28,15 +28,13 @@ namespace Digitala.Controllers
             return clist;
         }
 
-        //[HttpPost]
-        //[Route("api/Chararcteristics")]
-        //public List<Chararcteristics> Post([FromBody]Chararcteristics f)
-        //{
-        //    if (f.AreaId == -1)
-        //        return f.NewArea(f.Area);
-        //    else
-        //        return f.NewSubArea(f.AreaId, f.SubArea);
-        //}
+        [HttpPost]
+        [Route("api/Chararcteristics/{studentId}/{year}/{chars}")]
+        public void Post(string studentId, string year, string[] chars)
+        {
+            Chararcteristics c = new Chararcteristics();
+            c.PostCharsToStudent(studentId, year, chars);            
+        }
 
     }
 }

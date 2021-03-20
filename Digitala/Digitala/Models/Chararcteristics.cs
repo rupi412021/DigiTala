@@ -34,5 +34,11 @@ namespace Digitala.Models
             List<Chararcteristics> cList = dbs.ReadChararcteristics();
             return cList;
         }
+
+        public void PostCharsToStudent(string studentId, string year, string[] chars)
+        {
+            DBServices dbs = new DBServices();
+            dbs.InsertChararcteristics(studentId, year, chars);
+        }
     }
 }

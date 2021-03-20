@@ -514,6 +514,64 @@ namespace Digitala.Models.DAL
             }
 
         }
+        
+        public int InsertChararcteristics(string studentId, string year, string[] chars)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            foreach (var item in chars)
+            {
+                try
+                {
+                    con = connect("DBConnectionString"); // create the connection
+                }
+                catch (Exception ex)
+                {
+                    // write to log
+                    throw new Exception("Could not connect to DB", ex);
+                }
+
+                String cStr = BuildInsertCommand(studentId, year, item, sarea);      // helper method to build the insert string
+
+                cmd = CreateCommand(cStr, con);             // create the command
+
+                try
+                {
+                    int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                    return numEffected;
+                }
+                catch (Exception ex)
+                {
+                    // write to log
+                    throw new Exception("Could not insert new Character for a student", ex);
+                }
+
+                finally
+                {
+                    if (con != null)
+                    {
+                        // close the db connection
+                        con.Close();
+                    }
+                }
+            }
+
+            return 1;
+        }
+
+        private String BuildInsertCommand(string studentId, string year, string chars, string sarea)
+        {
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Values('{0}', '{1}', {2}, {3})", studentId, year, chars, sarea);
+            prefix = "INSERT INTO StudentCharacteristics " + "([StudentId], [Year], [Character] [SFASerial])";
+
+            command = prefix + sb.ToString();
+
+            return command;
+        }
 
         public int InsertSubArea(int areaId, string subArea)
         {
