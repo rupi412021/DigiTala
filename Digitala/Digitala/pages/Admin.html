@@ -38,11 +38,11 @@
     <script src="../Scripts/jquery-3.3.1.min.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <link href="../css/StyleSheet.css" rel="stylesheet" />
+    <script src="../js/pages/loging.js"></script>
 
-    
 
     <script>
-       
+
 
         $(document).ready(function () {
             allMainAreas = [];
@@ -91,7 +91,7 @@
                 $("#AreaPickForNewSubArea").val("");
                 $("#NewSubArea").val("");
                 $("#editSubAreaDiv :input").prop("disabled", false); // new mode: enable all controls in the form
-                if (allMainAreas.length == 0) 
+                if (allMainAreas.length == 0)
                     ajaxCall("GET", "../api/FuncAreas/1", "", getNewAreasSuccess, error);
                 $("#AreaPickForNewSubAreaList").html(areas);
             });
@@ -257,7 +257,7 @@
             $("#AreaPickForNewSubAreaList").html(areas);
         }
 
-        function getAreasSuccess(SubAreasData) {           
+        function getAreasSuccess(SubAreasData) {
             console.log(SubAreasData);
             allSubAreas = SubAreasData;
             allAreas = [];
@@ -279,7 +279,7 @@
 
             $("#areaPickList").html(areas);
             if (mode == "newsubarea") {
-                $("#editSubAreaDiv").hide();        
+                $("#editSubAreaDiv").hide();
             }
         }
 
@@ -560,9 +560,8 @@
         <aside id="leftsidebar" class="sidebar" style="direction: rtl">
             <!-- User Info -->
             <div class="user-info">
-                <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ג'יין דו</div>
-                    <div class="email">jane.doe@example.com</div>
+                <div class="info-container" id="signin">
+
                 </div>
                 <div class="btn-group user-helper-dropdown">
                     <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>

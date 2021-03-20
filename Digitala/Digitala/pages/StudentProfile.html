@@ -25,6 +25,9 @@
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
     <link href="../css/StyleSheet.css" rel="stylesheet" />
+    <script src="../Scripts/jquery-3.3.1.min.js"></script>
+    <script src="../Scripts/ajaxCallsWithKey.js"></script>
+    <script src="../js/pages/loging.js"></script>
 </head>
 
 <body class="theme-red">
@@ -125,9 +128,8 @@
         <aside id="leftsidebar" class="sidebar" style="direction: rtl">
             <!-- User Info -->
             <div class="user-info">
-                <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ג'יין דו</div>
-                    <div class="email">jane.doe@example.com</div>
+                <div class="info-container" id="signin">
+
                 </div>
                 <div class="btn-group user-helper-dropdown">
                     <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
@@ -193,7 +195,7 @@
                             <span>ניהול כיתות</span>
                         </a>
                     </li>
-                    <li>
+                    <li id="adminPage">
                         <a href="Admin.html">
                             <i class="material-icons">build</i>
                             <span>ניהול מאגר מטרות</span>

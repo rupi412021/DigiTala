@@ -288,6 +288,7 @@
     <Content Include="images\user-img-background.jpg" />
     <Content Include="images\user.jpg" />
     <Content Include="images\user.png" />
+    <Content Include="js\pages\loging.js" />
     <Content Include="pages\Admin.html" />
     <Content Include="pages\index.html" />
     <Content Include="pages\StudentProfile.html" />

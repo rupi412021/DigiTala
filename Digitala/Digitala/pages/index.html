@@ -27,53 +27,8 @@
     <link href="../css/StyleSheet.css" rel="stylesheet" />
     <script src="../Scripts/jquery-3.3.1.min.js"></script>
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
+    <script src="../js/pages/loging.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            $("#logout").attr("onclick", "logUserOut()");
-            if (localStorage["UserName"] != null) {
-                ajaxCall("GET", "../api/Teachers", "", getUserSuccess, getUserError);
-
-
-                //$("#sighInOutBTN").html("Sign Out");
-                //$("#sighInOutBTN").attr("onclick", "logUserOut()");
-            }
-
-            else {
-                $("#signedin").css("display", "none");
-                $("#signin").css("display", "block");
-            }
-
-            function logUserOut() {
-                user = "";
-                window.location.reload();
-            }
-            function getUserSuccess(data) {
-                user = localStorage["UserName"];
-                isadmin = false;
-                tEmail = "";
-                tname = "";
-
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].TeacherEmail == user) {
-                        isadmin = data[i].TeacherAdmin;
-                        tEmail = data[i].TeacherEmail;
-                        tname = data[i].TeacherFname;
-                    }
-
-                }
-                str = "<div class='name' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'> שלום " + tname + " </div>" +
-                    "<div class='email' >" + tEmail + "</div>";
-                $("#signedin").css("display", "none");
-                $("#signin").css("display", "block");
-                $("#signin").html(str);
-            }
-
-            function getUserError(error) {
-                console.log(error);
-            }
-        });
-    </script>
 </head>
 
 <body class="theme-red">
@@ -145,13 +100,8 @@
         <aside id="leftsidebar" class="sidebar" style="direction: rtl">
             <!-- User Info -->
             <div class="user-info">
-                <!--<div class="info-container" id="signedin">
-
-                </div>-->
                 <div class="info-container" id="signin">
-                    <!--<i class="material-icons">lock</i>-->
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ג'יין דו</div>
-                    <div class="email">jane.doe@example.com</div>
+
                 </div>
                 <div class="btn-group user-helper-dropdown">
                     <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
@@ -162,7 +112,7 @@
                         <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
                         <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
                         <li class="divider"></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">input</i>Sign Out</a></li>
+                        <li><a href="sign-in.html";><i class="material-icons">input</i>Sign Out</a></li>
                     </ul>
                 </div>
             </div>
@@ -212,13 +162,13 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="ManageClasses.html">
+                        <a href="ManageClasses.html" id="manageClass">
                             <i class="material-icons">school</i>
                             <span>ניהול כיתות</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="Admin.html">
+                    <li id="adminPage">
+                        <a href="Admin.html" >
                             <i class="material-icons">build</i>
                             <span>ניהול מאגר מטרות</span>
                         </a>
