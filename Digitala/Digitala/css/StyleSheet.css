@@ -31,10 +31,13 @@ span, datalist {
     margin: 2px;
 }
 
-img{
-    float:right;
+.header > img {
+    float: right;
 }
 
+.header.studentName{
+    text-align: center;
+}
 #addNewArea.btn.waves-effect,
 #addNewSubArea.btn.waves-effect,
 #addNewTar.btn.waves-effect {
