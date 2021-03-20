@@ -18,17 +18,18 @@
     <link href="../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
     <!-- Waves Effect Css -->
     <link href="../plugins/node-waves/waves.css" rel="stylesheet" />
-    <!-- Multi Select Css -->
-    <link href="../plugins/multi-select/css/multi-select.css" rel="stylesheet">
+    <link href="../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <script src="../plugins/sweetalert/sweetalert.min.js"></script>
     <!-- Bootstrap Tagsinput Css -->
-    <link href="../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">  
+    <link href="../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
 
     <!-- Custom Css -->
     <link href="../css/style.css" rel="stylesheet">
 
     <link href="../css/StyleSheet.css" rel="stylesheet" />
 
-
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="../css/themes/all-themes.css" rel="stylesheet" />
     <script>
         $(document).ready(function () {
             CharsChosen = [];
@@ -37,8 +38,28 @@
             ajaxCall("GET", "../api/Chararcteristics", "", getChararcteristicsSuccess, error);
 
             tagsButtons();
-            
+
+            $(document).on("click", "#next", function () {
+                if ($("#wizard_with_validation-p-1").hasClass("body current")) {
+                    if (CharsChosen.length == 0) {
+                        swal({
+                            title: "לא נבחרו מאפייני תלמיד",
+                            text: "חזור לבחירת מאפיינים מתאימים",
+                            type: "error"
+                        }, function () {
+                            document.getElementById("previous").click();
+                        });
+                    }
+                    else {
+                        renderTarget();
+                    }
+                }
+            });
         });
+
+        function renderTarget() {
+
+        }
 
         function tagsButtons() {
             $(document).on("change", "#charsMultiPick", function () {
@@ -49,7 +70,7 @@
                 $("#charsMultiPick").val("");
             });
 
-            $(document).on("click", "#tagRemove", function () {
+            $(document).on("click", ".tagRemove", function () {
                 let ValToRemove = this.getAttribute("id");
                 let tagsList = "";
                 for (var i = 0; i < CharsChosen.length; i++) {
@@ -64,6 +85,7 @@
                 return false;
             });
         }
+
         function getChararcteristicsSuccess(ChararcteristicsData) {
             ChararcteristicsList = ChararcteristicsData;
             console.log(ChararcteristicsData);
@@ -78,8 +100,6 @@
             }
 
             $("#charsMultiPickList").html(charsList);
-
-            //$('#optgroup').multiSelect({ selectableOptgroup: true });
         }
 
         function getAreasSuccess(allMainAreas) {
@@ -149,7 +169,7 @@
                                     <h4>אנא בחר מאפיינים המתארים לדעתך את תלמידך באופן הטוב ביותר</h4>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input id="charsMultiPick" list="charsMultiPickList" placeholder="הקלד כאן..." class="form-control" required/>
+                                            <input id="charsMultiPick" list="charsMultiPickList" placeholder="הקלד כאן..." class="form-control"/>
                                             <datalist id="charsMultiPickList"></datalist>
                                         </div>
                                         <div id="phLabels"></div>                     
@@ -157,8 +177,7 @@
                                 </fieldset>
                                 <h3><b>בחירת מטרות</b></h3>
                                 <fieldset>
-                                    <input id="acceptTerms-2" name="acceptTerms" type="checkbox" required>
-                                    <label for="acceptTerms-2">I agree with the Terms and Conditions.</label>
+                                    <!-- דיב לכל תחום, בכל תחום מטרות מוצעות, לכל מטרה צריך אייקון של עריכה ואייקון של מחיקה -->
                                 </fieldset>
                                 <h3><b>הגדרת יעדים ואמצעים</b></h3>
                                 <fieldset>
@@ -284,8 +303,7 @@
 
     <!-- Slimscroll Plugin Js -->
     <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
-    <!--Multi Select Plugin Js -->
-    <script src="../plugins/multi-select/js/jquery.multi-select.js"></script>
+
     <!-- Jquery Validation Plugin Css -->
     <script src="../plugins/jquery-validation/jquery.validate.js"></script>
     <!-- JQuery Steps Plugin Js -->
