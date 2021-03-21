@@ -17,9 +17,13 @@ optgroup {
     box-shadow: none;
     color: white;
 }
-
+.studentDetalis{
+    margin-right: 45px;
+    color: grey;
+}
 span, datalist {
     text-align: right;
+    vertical-align: super;
 }
 
 #saveAreaBTNandAddSub.btn.btn-primary.btn-lg {

@@ -893,7 +893,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "SELECT * FROM Students";
+                String selectSTR = "SELECT * FROM Student";
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -985,7 +985,7 @@ namespace Digitala.Models.DAL
             StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}')", s.Dis1st, s.Dis2nd, s.StudentId, s.SFirstName, s.SLastName, s.SEmail, s.SGender, s.SAddress, s.SPhone, s.SDescripion, s.SBirthDate);
-            prefix = "INSERT INTO Students " + "([1stDis], [2ndDis], [StudentId], [SFirstName], [SLastName], [SEmail], [SGender], [SAddress], [SPhone], [SDescripion], [SBirthDate])";
+            prefix = "INSERT INTO Student " + "([1stDis], [2ndDis], [StudentId], [SFirstName], [SLastName], [SEmail], [SGender], [SAddress], [SPhone], [SDescripion], [SBirthDate])";
            
 
             command = prefix + sb.ToString();
@@ -1039,7 +1039,7 @@ namespace Digitala.Models.DAL
         private String BuildUpdateCommand(Students s)
         {
             String command;
-            command = "UPDATE Students SET 1stDis = " + s.Dis1st + ", 2ndDis = " + s.Dis2nd + ", SDescripion = '" + s.SDescripion + "', SGender = " + s.SGender +
+            command = "UPDATE Student SET 1stDis = " + s.Dis1st + ", 2ndDis = " + s.Dis2nd + ", SDescripion = '" + s.SDescripion + "', SGender = " + s.SGender +
                 ", SFirstName = '" + s.SFirstName + "', SLastName = '" + s.SLastName + "', SEmail = '" + s.SEmail + "', SAddress = '" + s.SAddress +
                 "', SPhone = " + s.SPhone + ", SBirthDate = " + s.SBirthDate +  " WHERE StudentId = " + s.StudentId;
             return command;

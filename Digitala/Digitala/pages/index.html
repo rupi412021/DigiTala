@@ -45,21 +45,34 @@
         }
 
         function RenderStudentsCards(StudsentsData) {
-            let studentsStr = "";
+            let studentsStrRight = "";
+            let studentsStrLeft = "";
 
             for (var i = 0; i < StudsentsData.length; i++) {
-                studentsStr += '<div class="card">';
-                studentsStr += '<div class="header studentName">';
-                studentsStr += '<img src="../images/' + StudsentsData[i].SGender + '.png" />';
-                studentsStr += '<h2>' + StudsentsData[i].SFirstName + ' ' + StudsentsData[i].SLastName + '</h2>';
-                studentsStr += '</div><div class="body">';
+                if (i < StudsentsData.length / 2) {
+                    studentsStrRight += '<div class="card">';
+                    studentsStrRight += '<div class="header studentName">';
+                    studentsStrRight += '<img src="../images/' + StudsentsData[i].SGender + '.png" />';
+                    studentsStrRight += '<h2>' + StudsentsData[i].SFirstName + ' ' + StudsentsData[i].SLastName + '</h2>';
+                    studentsStrRight += '</div><div class="body studentDetalis">';
+                    studentsStrRight += '<div><i class="material-icons">fingerprint</i><span class="icon-name">' + StudsentsData[i].StudentId + '</span></div>';
+                    studentsStrRight += '<div><i class="material-icons">phone</i><span class="icon-name">' + StudsentsData[i].SPhone + '</span></div>';
+                    studentsStrRight += "</div></div>";
+                }
+                else {
+                    studentsStrLeft += '<div class="card">';
+                    studentsStrLeft += '<div class="header studentName">';
+                    studentsStrLeft += '<img src="../images/' + StudsentsData[i].SGender + '.png" />';
+                    studentsStrLeft += '<h2>' + StudsentsData[i].SFirstName + ' ' + StudsentsData[i].SLastName + '</h2>';
+                    studentsStrLeft += '</div><div class="body studentDetalis">';
+                    studentsStrLeft += '<div><i class="material-icons">fingerprint</i><span class="icon-name">' + StudsentsData[i].StudentId + '</span></div>';
+                    studentsStrLeft += '<div><i class="material-icons">phone</i><span class="icon-name">' + StudsentsData[i].SPhone + '</span></div>';
+                    studentsStrLeft += "</div></div>";
+                }
+            }          
 
-                studentsStr += "/////////////CONTENT//////////////";
-
-                studentsStr += "</div></div>";
-
-            }
-            $("#studentsCards").html(studentsStr);
+            $("#studentsCardsRight").html(studentsStrRight);
+            $("#studentsCardsLeft").html(studentsStrLeft);
         }
 
         function error(err) {
@@ -104,32 +117,19 @@
             <div class="block-header">
                 <h1>כיתה ה' 3 - לרנדר</h1>
             </div>
-
             <div class="row clearfix">
-                <div class="col-sm-8 col-xs-12" id="studentsCards" style="float:right">
-                    <div class="card">
-                        <div class="header studentName">
-                            <img src="../images/F.png" />
-                            <h2>סבינה אלפסי</h2>
-                        </div>
-                        <div class="body">
-                            Quis pharetra a pharetra fames blandit. Risus faucibus velit Risus imperdiet mattis neque volutpat, etiam lacinia netus dictum magnis per facilisi sociosqu. Volutpat. Ridiculus nostra.
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="header studentName">
-                            <img src="../images/M.png" />
-                            <h2>נמרוד גלבוע</h2>
-                        </div>
-                        <div class="body">
-                            Quis pharetra a pharetra fames blandit. Risus faucibus velit Risus imperdiet mattis neque volutpat, etiam lacinia netus dictum magnis per facilisi sociosqu. Volutpat. Ridiculus nostra.
-                        </div>
-                    </div>
+                <div class="col-sm-8 col-xs-12" style="float:right">
+                    <!--filter buttons-->
                 </div>
-                
             </div>
-
+            <div class="row clearfix">
+                <div class="col-sm-4 col-xs-12" id="studentsCardsRight" style="float:right">
+                </div>
+                <div class="col-sm-4 col-xs-12" id="studentsCardsLeft" style="float:right">
+                </div>
+            </div>
         </div>
+
     </section>
 
     <section>
