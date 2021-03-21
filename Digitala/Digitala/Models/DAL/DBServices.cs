@@ -882,6 +882,60 @@ namespace Digitala.Models.DAL
                 + " and Chararcteristic = '" + c.Chararcteristic + "' and SFASerial = " + c.SfaSerial;
             return command;
         }
+
+        public List<Students> ReadStudents(Students student)
+        {
+
+            SqlConnection con = null;
+            List<Students> StudentsList = new List<Students>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM Students";
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Students t = new Students();
+
+                    t.Dis1st = Convert.ToInt32(dr["TSerial"]);
+                    t.Dis2nd = Convert.ToInt32(dr["TSerial"]);
+                    t.StudentId = (string)(dr["StudentId"]);
+                    t.SFirstName = (string)(dr["SFirstName"]);
+                    t.SLastName = (string)(dr["SLastName"]);
+                    t.SEmail = (string)(dr["SEmail"]);
+                    t.SGender = (string)(dr["SGender"]);
+                    t.SAddress = (string)(dr["SAddress"]);
+                    t.SPhone = (string)(dr["SPhone"]);
+                    t.SDescripion = (string)(dr["SDescripion"]);
+                    t.SBirthDate = Convert.ToDateTime(dr["sBirthDate"]);
+
+                    StudentsList.Add(t);
+                }
+
+                return StudentsList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Students from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
     }
    
 }
