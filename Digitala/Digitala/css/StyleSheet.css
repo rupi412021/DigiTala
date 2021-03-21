@@ -1,4 +1,4 @@
-﻿div, h2, p {
+﻿div, h2, p, span {
     font-family: Calibri;
 
 }
@@ -39,8 +39,31 @@ span, datalist {
     float: right;
 }
 
-.header.studentName{
+.studentCard{
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.surveys {
+    border-radius: 10px;
+    background-color: #73A4A4;
     text-align: center;
+}
+.card.surveys > .header > h2 {
+    font-weight: bold;
+    font-size: 20px;
+    color: #3f5656;
+}
+.surveys > .body > .card {
+    background-color: white;
+    border-radius: 8px;
+    text-align: right;
+    font-size: 16px;
+    padding: 0px 10px 10px 10px;
+}
+.header.studentHeader h2 {
+    text-align: center;
+    font-weight: bold;
 }
 #addNewArea.btn.waves-effect,
 #addNewSubArea.btn.waves-effect,

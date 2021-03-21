@@ -893,7 +893,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "SELECT * FROM Student";
+                String selectSTR = "SELECT * FROM Student ORDER BY SFirstName ASC";
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
