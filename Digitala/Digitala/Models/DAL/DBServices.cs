@@ -883,7 +883,7 @@ namespace Digitala.Models.DAL
             return command;
         }
 
-        public List<Students> ReadStudents(Students student)
+        public List<Students> ReadStudents()
         {
 
             SqlConnection con = null;
@@ -902,21 +902,21 @@ namespace Digitala.Models.DAL
 
                 while (dr.Read())
                 {   // Read till the end of the data into a row
-                    Students t = new Students();
+                    Students s = new Students();
 
-                    t.Dis1st = Convert.ToInt32(dr["TSerial"]);
-                    t.Dis2nd = Convert.ToInt32(dr["TSerial"]);
-                    t.StudentId = (string)(dr["StudentId"]);
-                    t.SFirstName = (string)(dr["SFirstName"]);
-                    t.SLastName = (string)(dr["SLastName"]);
-                    t.SEmail = (string)(dr["SEmail"]);
-                    t.SGender = (string)(dr["SGender"]);
-                    t.SAddress = (string)(dr["SAddress"]);
-                    t.SPhone = (string)(dr["SPhone"]);
-                    t.SDescripion = (string)(dr["SDescripion"]);
-                    t.SBirthDate = Convert.ToDateTime(dr["sBirthDate"]);
+                    s.Dis1st = Convert.ToInt32(dr["1stDis"]);
+                    s.Dis2nd = Convert.ToInt32(dr["2ndDis"]);
+                    s.StudentId = (string)(dr["StudentId"]);
+                    s.SFirstName = (string)(dr["SFirstName"]);
+                    s.SLastName = (string)(dr["SLastName"]);
+                    s.SEmail = (string)(dr["SEmail"]);
+                    s.SGender = (string)(dr["SGender"]);
+                    s.SAddress = (string)(dr["SAddress"]);
+                    s.SPhone = (string)(dr["SPhone"]);
+                    s.SDescripion = (string)(dr["SDescripion"]);
+                    s.SBirthDate = Convert.ToDateTime(dr["SBirthDate"]);
 
-                    StudentsList.Add(t);
+                    StudentsList.Add(s);
                 }
 
                 return StudentsList;
@@ -934,6 +934,63 @@ namespace Digitala.Models.DAL
                 }
 
             }
+        }
+
+        public int Insert(Students Student)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildInsertCommand(Student);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("לא נוצר תלמיד חדש במערכת", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildInsertCommand(Students s)
+        {
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}')", s.Dis1st, s.Dis2nd, s.StudentId, s.SFirstName, s.SLastName, s.SEmail, s.SGender, s.SAddress, s.SPhone, s.SDescripion, s.SBirthDate);
+            prefix = "INSERT INTO Students " + "([1stDis], [2ndDis], [StudentId], [SFirstName], [SLastName], [SEmail], [SGender], [SAddress], [SPhone], [SDescripion], [SBirthDate])";
+           
+
+            command = prefix + sb.ToString();
+
+            return command;
 
         }
     }
