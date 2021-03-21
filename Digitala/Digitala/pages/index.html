@@ -16,8 +16,6 @@
     <link href="../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
     <!-- Waves Effect Css -->
     <link href="../plugins/node-waves/waves.css" rel="stylesheet" />
-    <!--WaitMe Css-->
-    <link href="../plugins/waitme/waitMe.css" rel="stylesheet" />
     <!-- Animation Css -->
     <link href="../plugins/animate-css/animate.css" rel="stylesheet" />
     <!-- Custom Css -->
@@ -55,8 +53,8 @@
                     studentsStrRight += '<img src="../images/' + StudsentsData[i].SGender + '.png" />';
                     studentsStrRight += '<h2>' + StudsentsData[i].SFirstName + ' ' + StudsentsData[i].SLastName + '</h2>';
                     studentsStrRight += '</div><div class="body studentDetalis">';
-                    studentsStrRight += '<div><i class="material-icons">fingerprint</i><span class="icon-name">' + StudsentsData[i].StudentId + '</span></div>';
-                    studentsStrRight += '<div><i class="material-icons">phone</i><span class="icon-name">' + StudsentsData[i].SPhone + '</span></div>';
+                    studentsStrRight += '<div><i class="material-icons">fingerprint</i><span class="icon-name studentIcons">' + StudsentsData[i].StudentId + '</span></div>';
+                    studentsStrRight += '<div><i class="material-icons">phone</i><span class="icon-name studentIcons">' + StudsentsData[i].SPhone + '</span></div>';
                     studentsStrRight += "</div></div>";
                 }
                 else {
@@ -65,8 +63,8 @@
                     studentsStrLeft += '<img src="../images/' + StudsentsData[i].SGender + '.png" />';
                     studentsStrLeft += '<h2>' + StudsentsData[i].SFirstName + ' ' + StudsentsData[i].SLastName + '</h2>';
                     studentsStrLeft += '</div><div class="body studentDetalis">';
-                    studentsStrLeft += '<div><i class="material-icons">fingerprint</i><span class="icon-name">' + StudsentsData[i].StudentId + '</span></div>';
-                    studentsStrLeft += '<div><i class="material-icons">phone</i><span class="icon-name">' + StudsentsData[i].SPhone + '</span></div>';
+                    studentsStrLeft += '<div><i class="material-icons">fingerprint</i><span class="icon-name studentIcons">' + StudsentsData[i].StudentId + '</span></div>';
+                    studentsStrLeft += '<div><i class="material-icons">phone</i><span class="icon-name studentIcons">' + StudsentsData[i].SPhone + '</span></div>';
                     studentsStrLeft += "</div></div>";
                 }
             }          
@@ -134,7 +132,7 @@
                             <h2>מטרות חדשות לדירוג</h2>
                         </div>
                         <div class="body">
-                            <div class="card">
+                            <div class="card">       
                                 <i class="material-icons">more_horiz</i>
                                 <p>לימוד ותרגול טכניקות להרגעה עצמית באמצעות נשימות, אמירות מרגיעות</p>
                             </div>
@@ -174,7 +172,7 @@
                         <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
                         <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
                         <li class="divider"></li>
-                        <li><a href="sign-in.html";><i class="material-icons">input</i>Sign Out</a></li>
+                        <li><a href="sign-in.html" ;><i class="material-icons">input</i>Sign Out</a></li>
                     </ul>
                 </div>
             </div>
@@ -230,7 +228,7 @@
                         </a>
                     </li>
                     <li id="adminPage">
-                        <a href="Admin.html" >
+                        <a href="Admin.html">
                             <i class="material-icons">build</i>
                             <span>ניהול מאגר מטרות</span>
                         </a>
@@ -260,6 +258,7 @@
     </section>
 
     <!-- Jquery Core Js -->
+    <script async src="https://www.google-analytics.com/analytics.js"></script>
     <script src="../plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap Core Js -->
     <script src="../plugins/bootstrap/js/bootstrap.js"></script>
@@ -267,13 +266,15 @@
     <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
     <!-- Slimscroll Plugin Js -->
     <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <!-- Bootstrap Notify Plugin Js -->
+    <script src="../plugins/bootstrap-notify/bootstrap-notify.js"></script>
     <!-- Waves Effect Plugin Js -->
     <script src="../plugins/node-waves/waves.js"></script>
-    <!-- Wait Me Plugin Js -->
-    <script src="../plugins/waitme/waitMe.js"></script>
     <!-- Custom Js -->
     <script src="../js/admin.js"></script>
+    <script src="../js/pages/ui/modals.js"></script>
     <script src="../js/pages/cards/basic.js"></script>
+
     <!-- Demo Js -->
     <script src="../js/demo.js"></script>
 </body>
