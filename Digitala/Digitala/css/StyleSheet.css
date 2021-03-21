@@ -80,6 +80,9 @@ span, datalist {
     box-shadow: 0 0 0 rgba(0, 0, 0, 0), 0 2px 10px rgba(0, 0, 0, 0);
 }
 
+#filetButtons {
+    margin-bottom: 10px;
+}
 xx {
     color: #73A4A4;
     color: #96C4DA;
