@@ -7,7 +7,8 @@
     <title>דיגיתל"א - תוכנית לימודים דיגיטלית לתלמיד</title>
     <!-- Favicon-->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../Scripts/ajaxCallsWithKey.js"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
@@ -26,9 +27,45 @@
 
     <link href="../css/StyleSheet.css" rel="stylesheet" />
     <script src="../Scripts/jquery-3.3.1.min.js"></script>
-    <script src="../Scripts/ajaxCallsWithKey.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+
     <script src="../js/pages/loging.js"></script>
 
+    <script>
+        $(document).ready(function () {
+            //צריך להביא רק תלמידים של המורה בשנת הלימודים הנוכחית, כרגע מביא את כל התלמידים במערכת
+            ajaxCall("GET", "../api/Students", "", getStudentsSuccess, error);
+        });
+
+        function getStudentsSuccess(StudsentsData) {
+            StudsentsList = StudsentsData;
+            console.log(StudsentsData);
+            RenderStudentsCards(StudsentsData);
+
+        }
+
+        function RenderStudentsCards(StudsentsData) {
+            let studentsStr = "";
+
+            for (var i = 0; i < StudsentsData.length; i++) {
+                studentsStr += '<div class="card">';
+                studentsStr += '<div class="header studentName">';
+                studentsStr += '<img src="../images/' + StudsentsData[i].SGender + '.png" />';
+                studentsStr += '<h2>' + StudsentsData[i].SFirstName + ' ' + StudsentsData[i].SLastName + '</h2>';
+                studentsStr += '</div><div class="body">';
+
+                studentsStr += "/////////////CONTENT//////////////";
+
+                studentsStr += "</div></div>";
+
+            }
+            $("#studentsCards").html(studentsStr);
+        }
+
+        function error(err) {
+            alert("Error: " + err);
+        }
+    </script>
 </head>
 
 <body class="theme-red">
@@ -67,9 +104,9 @@
             <div class="block-header">
                 <h1>כיתה ה' 3 - לרנדר</h1>
             </div>
-            <!-- Widgets -->
+
             <div class="row clearfix">
-                <div class="col-sm-6 col-xs-12" style="float:right">
+                <div class="col-sm-8 col-xs-12" id="studentsCards" style="float:right">
                     <div class="card">
                         <div class="header studentName">
                             <img src="../images/F.png" />
@@ -91,7 +128,7 @@
                 </div>
                 
             </div>
-            <!-- #END# Widgets -->
+
         </div>
     </section>
 

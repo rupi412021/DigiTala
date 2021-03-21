@@ -46,8 +46,8 @@ namespace Digitala.Models
         public string SAddress { get => sAddress; set => sAddress = value; }
         public string SPhone { get => sPhone; set => sPhone = value; }
         public string SDescripion { get => sDescripion; set => sDescripion = value; }
-        public int Dis1st { get => Dis1st; set => Dis1st = value; }
-        public int Dis2nd { get => Dis2nd; set => Dis2nd = value; }
+        public int Dis1st { get => dis1st; set => dis1st = value; }
+        public int Dis2nd { get => dis2nd; set => dis2nd = value; }
 
         public List<Students> Read()
         {

@@ -993,6 +993,57 @@ namespace Digitala.Models.DAL
             return command;
 
         }
+
+        public int Update(Students Student)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildUpdateCommand(Student);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("תלמיד לא עודכן", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildUpdateCommand(Students s)
+        {
+            String command;
+            command = "UPDATE Students SET 1stDis = " + s.Dis1st + ", 2ndDis = " + s.Dis2nd + ", SDescripion = '" + s.SDescripion + "', SGender = " + s.SGender +
+                ", SFirstName = '" + s.SFirstName + "', SLastName = '" + s.SLastName + "', SEmail = '" + s.SEmail + "', SAddress = '" + s.SAddress +
+                "', SPhone = " + s.SPhone + ", SBirthDate = " + s.SBirthDate +  " WHERE StudentId = " + s.StudentId;
+            return command;
+        }
     }
    
 }
