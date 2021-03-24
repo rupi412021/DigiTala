@@ -22,5 +22,11 @@ namespace Digitala.Controllers
             return tlist;
         }
 
+        [HttpPost]
+        [Route("api/Students")]
+        public List<Students> Post([FromBody] Students s)
+        {
+            return s.Insert();
+        }
     }
 }

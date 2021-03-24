@@ -6,6 +6,7 @@ using System.Web.Configuration;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using System.Net.Mail;
 
 namespace Digitala.Models.DAL
 {
@@ -1131,6 +1132,34 @@ namespace Digitala.Models.DAL
 
             }
 
+        }
+
+        public void SendMailToUser(string UserMail, string UserRandomPassword)
+        {          
+
+            try
+            {
+                MailMessage mail = new MailMessage();
+                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                mail.From = new MailAddress("rupi41.2021@gmail.com");
+                mail.To.Add(UserMail);
+                mail.Subject = "Welcome to SpeakUp";
+                mail.Body = "שלום" + Environment.NewLine+
+                "הסיסמא הזמנית הינה:  " + UserRandomPassword;
+
+                SmtpServer.Port = 587;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("rupi41.2021@gmail.com", "igroup41_45920");
+                SmtpServer.EnableSsl = true;
+
+                SmtpServer.Send(mail);
+                //MessageBox.Show("mail Send");
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+                //MessageBox.Show(ex.ToString());
+            }
         }
     }
    
