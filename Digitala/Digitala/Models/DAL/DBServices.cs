@@ -346,6 +346,7 @@ namespace Digitala.Models.DAL
                 {   // Read till the end of the data into a row
                     Chararcteristics c = new Chararcteristics();
 
+                    c.CharacteristicKey = Convert.ToInt32(dr["CharacteristicKey"]);
                     c.Chararcteristic = (string)(dr["Chararcteristic"]);
                     c.FaSerial = Convert.ToInt32(dr["FASerial"]);
                     c.SfaSerial = Convert.ToInt32(dr["SFASerial"]);
@@ -563,8 +564,8 @@ namespace Digitala.Models.DAL
             String prefix;
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}')", c.StudentId, c.Year, c.Chararcteristic, c.SfaSerial);
-            prefix = "INSERT INTO StudentCharacteristics " + "([StudentId], [SCYear], [Chararcteristic], [SFASerial])";
+            sb.AppendFormat("Values('{0}', '{1}', '{2}')", c.StudentId, c.Year, c.CharacteristicKey);
+            prefix = "INSERT INTO StudentCharacteristics " + "([StudentId], [SCYear], [CharacteristicKey])";
 
             command = prefix + sb.ToString();
 
@@ -880,8 +881,10 @@ namespace Digitala.Models.DAL
         {
             String command;
             command = "DELETE from StudentCharacteristics where StudentId = '" + c.StudentId + "' and SCYear = " + c.Year
-                + " and Chararcteristic = '" + c.Chararcteristic + "' and SFASerial = " + c.SfaSerial;
+                + " and CharacteristicKey = " + c.CharacteristicKey;
             return command;
+
+
         }
 
         public List<Students> ReadStudents()
@@ -1161,6 +1164,54 @@ namespace Digitala.Models.DAL
                 //MessageBox.Show(ex.ToString());
             }
         }
+
+        //public int TEMP(int id)
+        //{
+
+        //    SqlConnection con;
+        //    SqlCommand cmd;
+
+        //    try
+        //    {
+        //        con = connect("DBConnectionString"); // create the connection
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("Could not connect to DB", ex);
+        //    }
+
+        //    String cStr = BuildTEMPCommand(id);      // helper method to build the insert string
+
+        //    cmd = CreateCommand(cStr, con);             // create the command
+
+        //    try
+        //    {
+        //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
+        //        return numEffected;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("Faild removing item", ex);
+        //    }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            // close the db connection
+        //            con.Close();
+        //        }
+        //    }
+
+        //}
+
+        //private String BuildTEMPCommand(int id)
+        //{
+        //    String command;
+        //    command = "ALTER TABLE dbo.[CharacteristicsMatrix] ADD char_" + id + " INT DEFAULT(0) NULL";
+        //    return command;
+
+
+        //}
     }
    
 }

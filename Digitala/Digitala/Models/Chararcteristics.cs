@@ -8,6 +8,7 @@ namespace Digitala.Models
 {
     public class Chararcteristics
     {
+        int characteristicKey;
         string chararcteristic;
         int faSerial;
         int sfaSerial;
@@ -15,7 +16,7 @@ namespace Digitala.Models
         string studentId;
         int year;
 
-        public Chararcteristics(string chararcteristic, int faSerial, int sfaSerial, bool isWeakness, string studentId, int year)
+        public Chararcteristics(int characteristicKey, string chararcteristic, int faSerial, int sfaSerial, bool isWeakness, string studentId, int year)
         {
             Chararcteristic = chararcteristic;
             FaSerial = faSerial;
@@ -23,6 +24,7 @@ namespace Digitala.Models
             IsWeakness = isWeakness;
             StudentId = studentId;
             Year = year;
+            CharacteristicKey = characteristicKey;
         }
 
         public Chararcteristics() { }
@@ -33,6 +35,7 @@ namespace Digitala.Models
         public int SfaSerial { get => sfaSerial; set => sfaSerial = value; }
         public int Year { get => year; set => year = value; }
         public bool IsWeakness { get => isWeakness; set => isWeakness = value; }
+        public int CharacteristicKey { get => characteristicKey; set => characteristicKey = value; }
 
         public List<Chararcteristics> Read()
         {
@@ -52,5 +55,11 @@ namespace Digitala.Models
             DBServices dbs = new DBServices();
             dbs.DeleteChars(this);
         }
+
+        //public void TEMP(int id)
+        //{
+        //    DBServices dbs = new DBServices();
+        //    dbs.TEMP(id);
+        //}
     }
 }

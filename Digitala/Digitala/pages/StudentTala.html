@@ -74,17 +74,17 @@
         function tagsButtons() {
             $(document).on("change", "#charsMultiPick", function () {
                 let tempVal = $("#charsMultiPick").val();
-                let tempSubArea = $('#charsMultiPickList option[value="' + $("#charsMultiPick").val() + '"]').attr('id');
+                let tempID = $('#charsMultiPickList option[value="' + tempVal + '"]').attr('id');
 
                 let ObjTemp = {
-                    Chararcteristic: tempVal,
-                    SfaSerial: tempSubArea,
+                    Charascteristic: tempVal,
+                    CharacteristicKey: tempID,
                     StudentId: "303087886",
                     Year: 2020
                 }
 
                 CharsChosen.push(ObjTemp);
-                let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + ObjTemp.Chararcteristic + '">X</button> ' + ObjTemp.Chararcteristic + '</span>';
+                let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + tempID + '">X</button> ' + tempVal + '</span>';
                 $("#phLabels").append(tampValString);
                 $("#charsMultiPick").val("");
 
@@ -96,10 +96,10 @@
                 let ValToRemove = this.getAttribute("id");
                 let tagsList = "";
                 for (i = 0; i < CharsChosen.length; i++) {
-                    if (CharsChosen[i].Chararcteristic == ValToRemove) {
+                    if (CharsChosen[i].CharacteristicKey == ValToRemove) {
                         ObjTempDel = {
-                            Chararcteristic: CharsChosen[i].Chararcteristic,
-                            SfaSerial: CharsChosen[i].SfaSerial,
+                            Charascteristic: CharsChosen[i].Charascteristic,
+                            CharacteristicKey: CharsChosen[i].CharacteristicKey,
                             StudentId: CharsChosen[i].StudentId,
                             Year: CharsChosen[i].Year
                         }
@@ -109,7 +109,7 @@
                 }
 
                 for (var i = 0; i < CharsChosen.length; i++) {
-                    tagsList += '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + CharsChosen[i].Chararcteristic + '">X</button> ' + CharsChosen[i].Chararcteristic + '</span>';
+                    tagsList += '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + CharsChosen[i].CharacteristicKey + '">X</button> ' + CharsChosen[i].Charascteristic + '</span>';
                 }
                 $("#phLabels").html(tagsList);
 
@@ -126,15 +126,22 @@
             for (var i = 0; i < ChararcteristicsData.length; i++) {
                 for (var j = 0; j < SubAreasList.length; j++) {
                     if (SubAreasList[j].SubAreaId == ChararcteristicsData[i].SfaSerial) {
-                        charsList += "<option value='" + ChararcteristicsData[i].Chararcteristic + "' id=" + SubAreasList[j].SubAreaId + ">תחום: " + SubAreasList[j].SubArea + "</option>";
+                        charsList += "<option value='" + ChararcteristicsData[i].Chararcteristic + "' id=" + ChararcteristicsData[i].CharacteristicKey + ">תחום: " + SubAreasList[j].SubArea + "</option>";
                         break;
                     }
                 }
             }
 
             $("#charsMultiPickList").html(charsList);
+
+            //for (var i = 0; i < ChararcteristicsData.length; i++) {
+            //    ajaxCall("POST", "../api/Chararcteristics/" + ChararcteristicsData[i].CharacteristicKey, "", SuccessSuccess, error);
+            //}
         }
 
+        //function SuccessSuccess(data) {
+        //    console.log(data);
+        //}
         function getAreasSuccess(allMainAreas) {
             console.log(allMainAreas);
             MainAreasList = allMainAreas;
