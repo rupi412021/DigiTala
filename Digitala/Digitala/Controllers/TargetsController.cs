@@ -33,6 +33,14 @@ namespace Digitala.Controllers
             return t.Insert();
         }
 
+        [HttpPost]
+        [Route("api/Targets")]
+        public List<Targets> Post()
+        {
+            Targets t = new Targets();
+            return t.GetRecommendedTargets();
+        }
+
         [HttpPut]
         [Route("api/Targets")]
         public List<Targets> Put([FromBody]Targets t)

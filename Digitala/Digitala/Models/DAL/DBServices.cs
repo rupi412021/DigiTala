@@ -1044,6 +1044,94 @@ namespace Digitala.Models.DAL
                 "', SPhone = " + s.SPhone + ", SBirthDate = " + s.SBirthDate +  " WHERE StudentId = " + s.StudentId;
             return command;
         }
+
+        public List<String> GetUniqueChararcteristics()
+        {
+
+            SqlConnection con = null;
+            List<String> Chars = new List<String>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT DISTINCT Chararcteristic FROM StudentCharacteristics";
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    String UniqueChar;
+
+                    UniqueChar = (string)(dr["Chararcteristic"]);
+
+                    Chars.Add(UniqueChar);
+                }
+
+                return Chars;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Unique Chararcteristics from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
+        public List<String> GetUniqueIdAndYear()
+        {
+
+            SqlConnection con = null;
+            List<String> Chars = new List<String>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT DISTINCT StudentId, SCYear FROM StudentCharacteristics";
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    String UniqueChar;
+
+                    UniqueChar = (string)(dr["StudentId"]) +", "+ (string)(dr["SCYear"]);
+
+                    Chars.Add(UniqueChar);
+                }
+
+                return Chars;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Unique Chararcteristics from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
     }
    
 }

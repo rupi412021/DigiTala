@@ -71,5 +71,19 @@ namespace Digitala.Models
             dbs.Update(this);
             return Read();
         }
+
+        public List<Targets> GetRecommendedTargets()
+        {
+            DBServices dbs = new DBServices();
+            List<String> charsList = dbs.GetUniqueChararcteristics();
+            List<String> IdAndYearsList = dbs.GetUniqueIdAndYear();
+            int cols = charsList.Count();
+            int rows = IdAndYearsList.Count();
+
+            string Matrix[rows][cols];
+
+
+            return tList;
+        }
     }
 }
