@@ -7,6 +7,7 @@
         location.replace("sign-in.html");
     }
 
+    ajaxCall("GET", "../api/Students", "", getStudentSuccess, getStudentError)
 });
 
 function getUserSuccess(data) {
@@ -40,3 +41,22 @@ function getUserSuccess(data) {
 function getUserError(error) {
     console.log(error);
 }
+
+function getStudentError(error) {
+    console.log(error);
+}
+
+function getStudentSuccess(Students) {
+    str = '';
+
+    for (var i = 0; i < Students.length; i++) {
+        str += '<li><a class="menu-toggle"><span>' + Students[i].SFirstName + ' ' + Students[i].SLastName + '</span></a>' +
+            '<ul class="ml-menu"><li><a href="StudentProfile.html">תיק אישי</a></li><li><a href="StudentTala.html">תל"א</a></li></ul></li>';
+    }
+
+    $("#renderStudentsinMenu").html(str);
+    console.log(str);
+}
+
+
+           

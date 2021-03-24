@@ -9,11 +9,14 @@
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
     <!-- Bootstrap Core Css -->
+    <script src="../js/pages/loging.js"></script>
     <link href="../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+
     <!-- Waves Effect Css -->
     <link href="../plugins/node-waves/waves.css" rel="stylesheet" />
     <!-- Animation Css -->
@@ -27,7 +30,6 @@
     <script src="../Scripts/jquery-3.3.1.min.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
 
-    <script src="../js/pages/loging.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -67,7 +69,7 @@
                     studentsStrLeft += '<div><i class="material-icons">phone</i><span class="icon-name studentIcons">' + StudsentsData[i].SPhone + '</span></div>';
                     studentsStrLeft += "</div></div>";
                 }
-            }          
+            }
 
             $("#studentsCardsRight").html(studentsStrRight);
             $("#studentsCardsLeft").html(studentsStrLeft);
@@ -192,35 +194,9 @@
                             <i class="material-icons">people</i>
                             <span>תלמידים</span>
                         </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="javascript:void(0);" class="menu-toggle">
-                                    <span>סבינה אלפסי</span>
-                                </a>
-                                <ul class="ml-menu">
-                                    <li>
-                                        <a href="StudentProfile.html">תיק אישי</a>
-                                    </li>
-                                    <li>
-                                        <a href="StudentTala.html">תל"א</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);" class="menu-toggle">
-                                    <span>מור אורובן</span>
-                                </a>
-                                <ul class="ml-menu">
-                                    <li>
-                                        <a href="StudentProfile.html">תיק אישי</a>
-                                    </li>
-                                    <li>
-                                        <a href="StudentTala.html">תל"א</a>
-                                    </li>
-                                </ul>
-                            </li>
+                        <ul class="ml-menu" id="renderStudentsinMenu">
+                           
                         </ul>
-                    </li>
                     <li>
                         <a href="ManageClasses.html" id="manageClass">
                             <i class="material-icons">school</i>
