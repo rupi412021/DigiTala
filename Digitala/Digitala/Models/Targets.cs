@@ -72,18 +72,27 @@ namespace Digitala.Models
             return Read();
         }
 
-        //public List<Targets> GetRecommendedTargets()
-        //{
-        //    DBServices dbs = new DBServices();
-        //    List<String> charsList = dbs.GetUniqueChararcteristics();
-        //    List<String> IdAndYearsList = dbs.GetUniqueIdAndYear();
-        //    int cols = charsList.Count();
-        //    int rows = IdAndYearsList.Count();
+        public List<Targets> GetRecommendedTargets(string SId, int year)
+        {
+            DBServices dbs = new DBServices();
+            List <Students> S = dbs.ReadStudents();
+            int dis1 = 0;
+            int dis2 = 0;
 
-        //    string Matrix[rows][cols];
+            for (int i = 0; i < S.Count; i++)
+            {
+                if (S[i].StudentId == SId)
+                {
+                    dis1 = S[i].Dis1st;
+                    dis2 = S[i].Dis2nd;
+                }
+            }
 
+            List<Students> SDB = dbs.ReadStudentsByDis(dis1, dis2);
 
-        //    return tList;
-        //}
-    }
+            List<Targets> tList = dbs.ActivateRecommendation(SId, year, SDB);
+
+            return tList;
+        }
+}
 }

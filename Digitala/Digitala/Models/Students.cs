@@ -19,8 +19,9 @@ namespace Digitala.Models
         string sDescripion;
         int dis1st;
         int dis2nd;
+        int countMatch;
 
-        public Students(string studentId, string sFirstName, string sLastName, string sEmail, DateTime sBirthDate, string sGender, string sAddress, string sPhone, string sDescripion, int dis1st, int dis2nd)
+        public Students(string studentId, string sFirstName, string sLastName, string sEmail, DateTime sBirthDate, string sGender, string sAddress, string sPhone, string sDescripion, int dis1st, int dis2nd, int countMatch)
         {
             StudentId = studentId;
             SFirstName = sFirstName;
@@ -33,6 +34,7 @@ namespace Digitala.Models
             SDescripion = sDescripion;
             Dis1st = dis1st;
             Dis2nd = dis2nd;
+            CountMatch = countMatch;
         }
 
         public Students() { }
@@ -48,6 +50,7 @@ namespace Digitala.Models
         public string SDescripion { get => sDescripion; set => sDescripion = value; }
         public int Dis1st { get => dis1st; set => dis1st = value; }
         public int Dis2nd { get => dis2nd; set => dis2nd = value; }
+        public int CountMatch { get => countMatch; set => countMatch = value; }
 
         public List<Students> Read()
         {

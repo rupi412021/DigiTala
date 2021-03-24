@@ -1049,96 +1049,8 @@ namespace Digitala.Models.DAL
             return command;
         }
 
-        public List<String> GetUniqueChararcteristics()
-        {
-
-            SqlConnection con = null;
-            List<String> Chars = new List<String>();
-
-            try
-            {
-                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-
-                String selectSTR = "SELECT DISTINCT Chararcteristic FROM StudentCharacteristics";
-
-                SqlCommand cmd = new SqlCommand(selectSTR, con);
-
-                // get a reader
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-
-                while (dr.Read())
-                {   // Read till the end of the data into a row
-                    String UniqueChar;
-
-                    UniqueChar = (string)(dr["Chararcteristic"]);
-
-                    Chars.Add(UniqueChar);
-                }
-
-                return Chars;
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw new Exception("Could not GET Unique Chararcteristics from DB", ex);
-            }
-            finally
-            {
-                if (con != null)
-                {
-                    con.Close();
-                }
-
-            }
-
-        }
-
-        public List<String> GetUniqueIdAndYear()
-        {
-
-            SqlConnection con = null;
-            List<String> Chars = new List<String>();
-
-            try
-            {
-                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-
-                String selectSTR = "SELECT DISTINCT StudentId, SCYear FROM StudentCharacteristics";
-
-                SqlCommand cmd = new SqlCommand(selectSTR, con);
-
-                // get a reader
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-
-                while (dr.Read())
-                {   // Read till the end of the data into a row
-                    String UniqueChar;
-
-                    UniqueChar = (string)(dr["StudentId"]) +", "+ (string)(dr["SCYear"]);
-
-                    Chars.Add(UniqueChar);
-                }
-
-                return Chars;
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw new Exception("Could not GET Unique Chararcteristics from DB", ex);
-            }
-            finally
-            {
-                if (con != null)
-                {
-                    con.Close();
-                }
-
-            }
-
-        }
-
         public void SendMailToUser(string UserMail, string UserRandomPassword)
-        {          
+        {
 
             try
             {
@@ -1148,7 +1060,7 @@ namespace Digitala.Models.DAL
                 mail.From = new MailAddress("rupi41.2021@gmail.com");
                 mail.To.Add(UserMail);
                 mail.Subject = "Welcome to SpeakUp";
-                mail.Body = "שלום" + Environment.NewLine+
+                mail.Body = "שלום" + Environment.NewLine +
                 "הסיסמא הזמנית הינה:  " + UserRandomPassword;
 
                 SmtpServer.Port = 587;
@@ -1163,6 +1075,148 @@ namespace Digitala.Models.DAL
                 throw (ex);
                 //MessageBox.Show(ex.ToString());
             }
+        }
+
+        public List<Targets> ReadTargetsById(string id, int year)
+        {
+
+            SqlConnection con = null;
+            List<Targets> targetList = new List<Targets>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "Select * from TargetsInTala where StudentId = " + id + " and TYear = " + year;
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Targets t = new Targets();
+
+                    t.TarSerial = Convert.ToInt32(dr["TSerial"]);
+                    t.FaSerial = Convert.ToInt32(dr["FASerial"]);
+                    t.SfaSerial = Convert.ToInt32(dr["SFASerial"]);
+                    t.Target = (string)(dr["TargetText"]);
+                    t.Suitability = Convert.ToDouble(dr["Suitability"]);
+                    t.Originality = Convert.ToDouble(dr["Originality"]);
+                    t.NumOfUses = Convert.ToInt32(dr["NumOfUses"]);
+                    t.FunctionArea = (string)(dr["FunctionArea"]);
+                    t.SubFunctionArea = (string)(dr["SubFunctionArea"]);
+
+                    targetList.Add(t);
+                }
+
+                return targetList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Targets To Tala from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }        
+
+        public List<Targets> ActivateRecommendation(string SId, int year, List<Students> SDB)
+        {
+
+            SqlConnection con = null;
+            List<Targets> targetList = new List<Targets>();
+            List<String> StudentCharList = new List<String>();
+            List<Students> MatchStudentsList = new List<Students>();
+
+            int count = 0;
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "Select * from CharacteristicsMatrix";
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+
+                    if ((string)dr["StudentId"] == SId && Convert.ToInt32(dr["SCYear"]) == year)
+                    {
+                        for (int i = 2; i <= dr.FieldCount; i++)
+                        {
+                            if(Convert.ToInt32(dr["char_"+(i-1)]) == 1)
+                                StudentCharList.Add("char_" + (i-1));
+                        }
+                    }
+                }
+
+                while (dr.Read())
+                {
+                    if ((string)dr["StudentId"] != SId)
+                    {
+                        for (int i = 0; i < SDB.Count; i++)
+                        {
+                            if((string)dr["StudentId"] == SDB[i].StudentId)
+                            {
+                                for (int j = 0; j < StudentCharList.Count; j++)
+                                {
+                                    for (int k = 2; k <= dr.FieldCount; k++)
+                                    {
+                                        if (StudentCharList[j] == "char_"+(k-1))
+                                        {
+                                            if (Convert.ToInt32(dr["char_"+(k-1)]) == 1)
+                                                count++;
+                                        }
+                                    }
+                                }
+                                if (count > 0)
+                                {
+                                    Students s = new Students();
+
+                                    s.CountMatch = count;
+                                    s.StudentId = (string)dr["StudentId"];
+
+                                    MatchStudentsList.Add(s);
+
+                                    count = 0;
+                                }
+                            }
+                        }      
+                    }
+                }
+
+                //MatchStudentsList.Sort(CountMatch)
+
+                //מיון הרשימה לפי הקאונט, קריאה לפונקציה
+                //ReadTargetsById(MatchStudentsList[0].StudentId, year)
+
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Targets To Tala from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
         }
 
         //public int TEMP(int id)
@@ -1212,6 +1266,50 @@ namespace Digitala.Models.DAL
 
 
         //}
+
+        public List<Students> ReadStudentsByDis(int dis1, int dis2)
+        {
+
+            SqlConnection con = null;
+            List<Students> student = new List<Students>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "Select StudentId from Student where 1stDis = " + dis1 + " or 1stDis = " + dis2 + " or 2stDis = " + dis2 + " or 2stDis = " + dis1;
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Students s = new Students();
+
+                    s.StudentId = Convert.ToString(dr["StudentId"]);
+
+                    student.Add(s);
+                }
+
+                return student;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Students by Disabilities from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
     }
    
 }
