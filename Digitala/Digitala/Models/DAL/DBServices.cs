@@ -1094,7 +1094,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "Select * from TargetsInTala where StudentId = " + r.MatchStudentId + " and TYear = " + r.MatchYear;
+                String selectSTR = "Select T.* from TargetsInTala TT join Targets T on T.Tserial=TT.Tserial where TT.StudentId = " + r.MatchStudentId + " and TT.TYear = " + r.MatchYear;
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -1112,8 +1112,6 @@ namespace Digitala.Models.DAL
                     t.Suitability = Convert.ToDouble(dr["Suitability"]);
                     t.Originality = Convert.ToDouble(dr["Originality"]);
                     t.NumOfUses = Convert.ToInt32(dr["NumOfUses"]);
-                    t.FunctionArea = (string)(dr["FunctionArea"]);
-                    t.SubFunctionArea = (string)(dr["SubFunctionArea"]);
 
                     targetList.Add(t);
                 }
@@ -1142,7 +1140,7 @@ namespace Digitala.Models.DAL
             SqlConnection con = null;
             List<RecommendedTargets> MatchStudentsList = new List<RecommendedTargets>();
             RecommendedTargets Chosen = new RecommendedTargets();
-
+            int tablefull = 0;
             int countMatch = 0;
             int disMatch = 0;
             double score = 0;
@@ -1156,57 +1154,59 @@ namespace Digitala.Models.DAL
 
                 // get a reader
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-                if (dr.Depth > 0)
+                while (dr.Read())
                 {
-                    while (dr.Read())
+                    if ((string)dr["StudentId"] != rt.NewStudentId)
                     {
-                        if ((string)dr["StudentId"] != rt.NewStudentId)
+                        for (int j = 0; j < rt.NewStudentChars.Count; j++)
                         {
-                            for (int j = 0; j < rt.NewStudentChars.Count; j++)
+                            for (int k = 1; k < dr.FieldCount; k++)
                             {
-                                for (int k = 1; k <= dr.FieldCount; k++)
+                                string c = "char_" + k;
+                                if ("char_" + rt.NewStudentChars[j].CharacteristicKey == c)
                                 {
-                                    if ("char_" + rt.NewStudentChars[j].CharacteristicKey == "char_" + k)
-                                    {
-                                        if (Convert.ToInt32(dr["char_" + k]) == 1)
-                                            countMatch++;
-                                        else
-                                            disMatch++;
-                                    }
+                                    
+                                    if (Convert.ToInt32(dr[c]) == 1)
+                                        countMatch++;
+                                    else
+                                        disMatch++;
+                                    tablefull = 1;
+                                    break;
                                 }
                             }
-
-                            score = countMatch * 0.75 + (dr.FieldCount - 2 - countMatch - disMatch) * 0.25;
-
-                            RecommendedTargets tempR = new RecommendedTargets();
-
-                            tempR.CountMatch = score;
-                            tempR.MatchStudentId = (string)dr["StudentId"];
-                            tempR.MatchYear = Convert.ToInt32(dr["SCYear"]);
-
-                            MatchStudentsList.Add(tempR);
-
-                            countMatch = 0;
-                            disMatch = 0;
-                            score = 0;
                         }
-                    }
 
-                    double max = 0;
-                    //we can check => to max and count it. if there are more than numOfStudent/5 similar - to bring random student between them
-                    foreach (var item in MatchStudentsList)
-                    {
-                        if (item.CountMatch > max)
-                        {
-                            max = item.CountMatch;
-                            Chosen.CountMatch = max;
-                            Chosen.MatchStudentId = item.MatchStudentId;
-                            Chosen.MatchYear = item.MatchYear;
-                        }
+                        score = countMatch * 0.75 + (dr.FieldCount - 2 - countMatch - disMatch) * 0.25;
+
+                        RecommendedTargets tempR = new RecommendedTargets();
+
+                        tempR.CountMatch = score;
+                        tempR.MatchStudentId = (string)dr["StudentId"];
+                        tempR.MatchYear = Convert.ToInt32(dr["SCYear"]);
+
+                        MatchStudentsList.Add(tempR);
+
+                        countMatch = 0;
+                        disMatch = 0;
+                        score = 0;
                     }
-                    Chosen.Recommendations = ReadTargetsById(Chosen);
                 }
-                else
+
+                double max = 0;
+                //we can check => to max and count it. if there are more than numOfStudent/5 similar - to bring random student between them
+                foreach (var item in MatchStudentsList)
+                {
+                    if (item.CountMatch > max)
+                    {
+                        max = item.CountMatch;
+                        Chosen.CountMatch = max;
+                        Chosen.MatchStudentId = item.MatchStudentId;
+                        Chosen.MatchYear = item.MatchYear;
+                    }
+                }
+                    Chosen.Recommendations = ReadTargetsById(Chosen);
+                
+                if(tablefull==0)
                 {
                     List <Targets> TargetsList = ReadTargets();
                     List<Chararcteristics> chars= ReadChararcteristics();
