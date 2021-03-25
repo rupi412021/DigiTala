@@ -1087,7 +1087,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "Select * from TargetsInTala where StudentId = " + id + " and TYear = " + year;
+                String selectSTR = "Select * from TargetsInTala where StudentId = " + r.MatchStudentId + " and TYear = " + r.MatchYear;
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -1116,7 +1116,7 @@ namespace Digitala.Models.DAL
             catch (Exception ex)
             {
                 // write to log
-                throw new Exception("Could not GET Targets To Tala from DB", ex);
+                throw new Exception("Could not GET Targets From Tala from DB", ex);
             }
             finally
             {
@@ -1133,7 +1133,6 @@ namespace Digitala.Models.DAL
         {
 
             SqlConnection con = null;
-            List<Targets> targetList = new List<Targets>();
             List<Chararcteristics> StudentCharList = rt.NewStudentChars;
             List<RecommendedTargets> MatchStudentsList = new List<RecommendedTargets>();
             RecommendedTargets Chosen = new RecommendedTargets();
@@ -1162,6 +1161,8 @@ namespace Digitala.Models.DAL
                                 {
                                     if (Convert.ToInt32(dr["char_"+k]) == 1)
                                         count++;
+
+                                    //count 0? 25%
                                 }
                             }
                         }
@@ -1181,10 +1182,10 @@ namespace Digitala.Models.DAL
                     }
                 }
 
-                //if MatchStudentsList is empty?
-
+                //if MatchStudentsList is empty? return from  rt.charsList the sub-Areas and bring their most usable targets.
+                
                 int max = 0;
-
+                //we can check => to max and count it. if there are more than numOfStudent/5 similar - to bring random student between them
                 foreach (var item in MatchStudentsList)
                 {
                     if (item.CountMatch > max)
