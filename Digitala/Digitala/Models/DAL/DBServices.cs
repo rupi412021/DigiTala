@@ -1077,7 +1077,7 @@ namespace Digitala.Models.DAL
             }
         }
 
-        public List<Targets> ReadTargetsById(string id, int year)
+        public List<Targets> ReadTargetsById(RecommendedTargets r)
         {
 
             SqlConnection con = null;
@@ -1134,7 +1134,7 @@ namespace Digitala.Models.DAL
 
             SqlConnection con = null;
             List<Targets> targetList = new List<Targets>();
-            List<String> StudentCharList = new List<String>();
+            List<Chararcteristics> StudentCharList = rt.NewStudentChars;
             List<RecommendedTargets> MatchStudentsList = new List<RecommendedTargets>();
             RecommendedTargets Chosen = new RecommendedTargets();
 
@@ -1143,7 +1143,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "Select cm.* from CharacteristicsMatrix cm left join Student s on s.StudentId = cm.StudentId where s.1stDis = " + dis1 + " or s.1stDis = " + dis2 + " or s.2stDis = " + dis2 + " or s.2stDis = " + dis1;
+                String selectSTR = "Select cm.* from CharacteristicsMatrix cm left join Student s on s.StudentId = cm.StudentId where s.[1stDis] = " + dis1 + " or s.[1stDis] = " + dis2 + " or s.[2ndDis] = " + dis2 + " or s.[2ndDis] = " + dis1;
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -1151,67 +1151,58 @@ namespace Digitala.Models.DAL
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
 
                 while (dr.Read())
-                {   // Read till the end of the data into a row
-
-                    if ((string)dr["StudentId"] == rt.NewStudentId && Convert.ToInt32(dr["SCYear"]) == rt.CurrentYear)
+                {
+                    if ((string)dr["StudentId"] != rt.NewStudentId)
                     {
-                        for (int i = 2; i <= dr.FieldCount; i++)
+                        for (int j = 0; j < StudentCharList.Count; j++)
                         {
-                            if(Convert.ToInt32(dr["char_"+(i-1)]) == 1)
-                                StudentCharList.Add("char_" + (i-1));
+                            for (int k = 1; k <= dr.FieldCount; k++)
+                            {
+                                if ("char_"+StudentCharList[j].CharacteristicKey == "char_"+k)
+                                {
+                                    if (Convert.ToInt32(dr["char_"+k]) == 1)
+                                        count++;
+                                }
+                            }
+                        }
+
+                        if (count > 0)
+                        {
+                            RecommendedTargets tempR = new RecommendedTargets();
+
+                            tempR.CountMatch = count;
+                            tempR.MatchStudentId = (string)dr["StudentId"];
+                            tempR.MatchYear = Convert.ToInt32(dr["SCYear"]);
+
+                            MatchStudentsList.Add(tempR);
+
+                            count = 0;
                         }
                     }
                 }
 
-                while (dr.Read())
+                //if MatchStudentsList is empty?
+
+                int max = 0;
+
+                foreach (var item in MatchStudentsList)
                 {
-                    if ((string)dr["StudentId"] != rt.NewStudentId)
+                    if (item.CountMatch > max)
                     {
-                        for (int i = 0; i < SDB.Count; i++)
-                        {
-                            if((string)dr["StudentId"] == SDB[i].StudentId)
-                            {
-                                for (int j = 0; j < StudentCharList.Count; j++)
-                                {
-                                    for (int k = 2; k <= dr.FieldCount; k++)
-                                    {
-                                        if (StudentCharList[j] == "char_"+(k-1))
-                                        {
-                                            if (Convert.ToInt32(dr["char_"+(k-1)]) == 1)
-                                                count++;
-                                        }
-                                    }
-                                }
-                                if (count > 0)
-                                {
-                                    RecommendedTargets r = new RecommendedTargets();
-
-                                    r.CountMatch = count;
-                                    r.MatchStudentId = (string)dr["StudentId"];
-
-                                    MatchStudentsList.Add(r);
-
-                                    count = 0;
-                                }
-                            }
-                        }      
+                        max = item.CountMatch;
+                        Chosen.CountMatch = max;
+                        Chosen.MatchStudentId = item.MatchStudentId;
+                        Chosen.MatchYear = item.MatchYear;
                     }
                 }
 
-                //MatchStudentsList.Sort(CountMatch)
+                Chosen.Recommendations = ReadTargetsById(Chosen);
 
-                //מיון הרשימה לפי הקאונט, קריאה לפונקציה
-                //ReadTargetsById(MatchStudentsList[0].StudentId, year)
+                Chosen.CurrentYear = rt.CurrentYear;
+                Chosen.NewStudentId = rt.NewStudentId;
+                Chosen.NewStudentChars = rt.NewStudentChars;
 
-                //Chosen.CurrentYear = rt.CurrentYear;
-                //Chosen.NewStudentId = rt.NewStudentId;
-                //Chosen.NewStudentChars = rt.NewStudentChars;
-
-                //Chosen.CountMatch =
-                //    Chosen.MatchYear =
-                //    Chosen.MatchStudentId = 
-                //    Chosen.Recommendations = //Targets List 
-                    
+                return Chosen;
 
             }
             catch (Exception ex)
