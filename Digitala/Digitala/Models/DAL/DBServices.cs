@@ -1203,6 +1203,8 @@ namespace Digitala.Models.DAL
                 Chosen.NewStudentId = rt.NewStudentId;
                 Chosen.NewStudentChars = rt.NewStudentChars;
 
+                //update the function and insert rt.NewStudentChars to the MATRIX
+
                 return Chosen;
 
             }
