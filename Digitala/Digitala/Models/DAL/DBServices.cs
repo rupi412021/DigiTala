@@ -517,7 +517,7 @@ namespace Digitala.Models.DAL
 
         }
 
-        public int InsertChararcteristics(Chararcteristics Chararcteristic, string SId, int year)
+        public int InsertChararcteristics(List<Chararcteristics> Chararcteristic, string SId, int year)
         {
             SqlConnection con;
             SqlCommand cmd;
@@ -558,16 +558,26 @@ namespace Digitala.Models.DAL
 
         }
 
-        private String BuildInsertCommand(Chararcteristics c, string SId, int year)
+        private String BuildInsertCommand(List<Chararcteristics> c, string SId, int year)
         {
             String command;
-            String prefix;
+            //String prefix;
             StringBuilder sb = new StringBuilder();
-             
-            sb.AppendFormat("Values('{0}', '{1}', '{2}')", SId, year, 1);
-            prefix = "INSERT INTO CharacteristicsMatrix " + "([StudentId], [SCYear], [char_"+c.CharacteristicKey+"])";
 
-            command = prefix + sb.ToString();
+            string ones="";
+            string columns = "([StudentId], [SCYear]";
+            int i = 2;
+            foreach (var item in c)
+            {
+                //values += ", '{" + i + "}'";
+                ones += ", 1";
+                columns += ", [char_" + item.CharacteristicKey + "]";
+                i++;
+            }
+            //values += ")";
+            columns += ")";
+            ones+= ")";
+            command = "INSERT INTO CharacteristicsMatrix " + columns + " VALUES (" + SId+", "+ year + ones;
 
             return command;
         }
@@ -1146,64 +1156,97 @@ namespace Digitala.Models.DAL
 
                 // get a reader
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-
-                while (dr.Read())
+                if (dr.Depth > 0)
                 {
-                    if ((string)dr["StudentId"] != rt.NewStudentId)
+                    while (dr.Read())
                     {
-                        for (int j = 0; j < rt.NewStudentChars.Count; j++)
+                        if ((string)dr["StudentId"] != rt.NewStudentId)
                         {
-                            for (int k = 1; k <= dr.FieldCount; k++)
+                            for (int j = 0; j < rt.NewStudentChars.Count; j++)
                             {
-                                if ("char_" + rt.NewStudentChars[j].CharacteristicKey == "char_" + k)
+                                for (int k = 1; k <= dr.FieldCount; k++)
                                 {
-                                    if (Convert.ToInt32(dr["char_" + k]) == 1)
-                                        countMatch++;
-                                    else
-                                        disMatch++;
+                                    if ("char_" + rt.NewStudentChars[j].CharacteristicKey == "char_" + k)
+                                    {
+                                        if (Convert.ToInt32(dr["char_" + k]) == 1)
+                                            countMatch++;
+                                        else
+                                            disMatch++;
+                                    }
                                 }
+                            }
+
+                            score = countMatch * 0.75 + (dr.FieldCount - 2 - countMatch - disMatch) * 0.25;
+
+                            RecommendedTargets tempR = new RecommendedTargets();
+
+                            tempR.CountMatch = score;
+                            tempR.MatchStudentId = (string)dr["StudentId"];
+                            tempR.MatchYear = Convert.ToInt32(dr["SCYear"]);
+
+                            MatchStudentsList.Add(tempR);
+
+                            countMatch = 0;
+                            disMatch = 0;
+                            score = 0;
+                        }
+                    }
+
+                    double max = 0;
+                    //we can check => to max and count it. if there are more than numOfStudent/5 similar - to bring random student between them
+                    foreach (var item in MatchStudentsList)
+                    {
+                        if (item.CountMatch > max)
+                        {
+                            max = item.CountMatch;
+                            Chosen.CountMatch = max;
+                            Chosen.MatchStudentId = item.MatchStudentId;
+                            Chosen.MatchYear = item.MatchYear;
+                        }
+                    }
+                    Chosen.Recommendations = ReadTargetsById(Chosen);
+                }
+                else
+                {
+                    List <Targets> TargetsList = ReadTargets();
+                    List<Chararcteristics> chars= ReadChararcteristics();
+                    List<Targets> recommended = new List<Targets>();
+                    for (int i = 0; i < rt.NewStudentChars.Count; i++)
+                    {
+                        for (int j = 0; j < chars.Count; j++)
+                        {
+                            if (rt.NewStudentChars[i].CharacteristicKey == chars[j].CharacteristicKey)
+                                rt.NewStudentChars[i].SfaSerial = chars[j].SfaSerial;
+                        }
+                    }
+
+                    int max5 = 0;
+                    for (int i = 0; i < rt.NewStudentChars.Count; i++)
+                    {
+                        for (int j = 0; j < TargetsList.Count; j++)
+                        {
+                            if (rt.NewStudentChars[i].SfaSerial == TargetsList[j].SfaSerial)
+                            {
+                                max5++;
+                                recommended.Add(TargetsList[j]);
+                                break;
                             }
                         }
 
-                        score = countMatch * 0.75 + (dr.FieldCount - 2 - countMatch - disMatch) * 0.25;
-
-                        RecommendedTargets tempR = new RecommendedTargets();
-
-                        tempR.CountMatch = score;
-                        tempR.MatchStudentId = (string)dr["StudentId"];
-                        tempR.MatchYear = Convert.ToInt32(dr["SCYear"]);
-
-                        MatchStudentsList.Add(tempR);
-                      
-                        countMatch = 0;
-                        disMatch = 0;
-                        score = 0;
+                        if (max5 >= 5)
+                            break;
                     }
+                    Chosen.Recommendations = recommended;
                 }
-            
-                double max = 0;
-                //we can check => to max and count it. if there are more than numOfStudent/5 similar - to bring random student between them
-                foreach (var item in MatchStudentsList)
-                {
-                    if (item.CountMatch > max)
-                    {
-                        max = item.CountMatch;
-                        Chosen.CountMatch = max;
-                        Chosen.MatchStudentId = item.MatchStudentId;
-                        Chosen.MatchYear = item.MatchYear;
-                    }
-                }
-                Chosen.Recommendations = ReadTargetsById(Chosen);
                             
                 Chosen.CurrentYear = rt.CurrentYear;
                 Chosen.NewStudentId = rt.NewStudentId;
                 Chosen.NewStudentChars = rt.NewStudentChars;
 
                 //*******MOVE TO INSERT TALA FUNCTION*********//
-                //for (int i = 0; i < rt.NewStudentChars.Count; i++)
-                //{
-                //    InsertChararcteristics(rt.NewStudentChars[i], rt.NewStudentId, rt.CurrentYear);
-                //}
+
+                InsertChararcteristics(rt.NewStudentChars, rt.NewStudentId, rt.CurrentYear);
+
 
                 return Chosen;
 
