@@ -14,9 +14,9 @@ namespace Digitala.Models
         string matchStudentId;
         List<Chararcteristics> newStudentChars;
         List<Targets> recommendations;
-        int countMatch;
+        double countMatch;
 
-        public RecommendedTargets(string newStudentId, int currentYear, int matchYear, string matchStudentId, List<Chararcteristics> newStudentChars, List<Targets> recommendations, int countMatch)
+        public RecommendedTargets(string newStudentId, int currentYear, int matchYear, string matchStudentId, List<Chararcteristics> newStudentChars, List<Targets> recommendations, double countMatch)
         {
             NewStudentId = newStudentId;
             CurrentYear = currentYear;
@@ -35,7 +35,7 @@ namespace Digitala.Models
         public string MatchStudentId { get => matchStudentId; set => matchStudentId = value; }
         public List<Chararcteristics> NewStudentChars { get => newStudentChars; set => newStudentChars = value; }
         public List<Targets> Recommendations { get => recommendations; set => recommendations = value; }
-        public int CountMatch { get => countMatch; set => countMatch = value; }
+        public double CountMatch { get => countMatch; set => countMatch = value; }
 
     public RecommendedTargets GetRecommendedTargets()
         {
@@ -47,7 +47,7 @@ namespace Digitala.Models
 
             for (int i = 0; i < S.Count; i++)
             {
-                if (S[i].StudentId == this.NewStudentId)
+                if (S[i].StudentId == NewStudentId)
                 {
                     dis1 = S[i].Dis1st;
                     dis2 = S[i].Dis2nd;

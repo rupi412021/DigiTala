@@ -54,21 +54,25 @@
                         });
                     }
                     else {
-                        renderTargets();
+                        let newStudentChars = {
+                            NewStudentId: "303087886",
+                            CurrentYear: 2020,
+                            NewStudentChars: CharsChosen,
+                        }
+
+                        ajaxCall("POST", "../api/Chararcteristics", JSON.stringify(newStudentChars), GetRecommendationsSuccess, error);   
                     }
                 }
             });
         });
 
-        function postCarsForStudentSuccess() {
-            console.log("char added successefully");
-        }
-        function DeletetCarsForStudentSuccess() {
-            console.log("char deleted successefully");
+        function GetRecommendationsSuccess(recommendationsData) {
+            console.log(recommendationsData);
+            renderTargets();
+
         }
 
         function renderTargets() {
-
         }
 
         function tagsButtons() {
@@ -77,18 +81,14 @@
                 let tempID = $('#charsMultiPickList option[value="' + tempVal + '"]').attr('id');
 
                 let ObjTemp = {
-                    Charascteristic: tempVal,
-                    CharacteristicKey: tempID,
-                    StudentId: "303087886",
-                    Year: 2020
+                    Chararcteristic: tempVal,
+                    CharacteristicKey: tempID
                 }
 
                 CharsChosen.push(ObjTemp);
                 let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + tempID + '">X</button> ' + tempVal + '</span>';
                 $("#phLabels").append(tampValString);
                 $("#charsMultiPick").val("");
-
-                ajaxCall("POST", "../api/Chararcteristics", JSON.stringify(ObjTemp), postCarsForStudentSuccess, error);
 
             });
 
@@ -97,12 +97,6 @@
                 let tagsList = "";
                 for (i = 0; i < CharsChosen.length; i++) {
                     if (CharsChosen[i].CharacteristicKey == ValToRemove) {
-                        ObjTempDel = {
-                            Charascteristic: CharsChosen[i].Charascteristic,
-                            CharacteristicKey: CharsChosen[i].CharacteristicKey,
-                            StudentId: CharsChosen[i].StudentId,
-                            Year: CharsChosen[i].Year
-                        }
                         CharsChosen.splice(i, 1);
                         break;
                     }
@@ -112,8 +106,6 @@
                     tagsList += '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + CharsChosen[i].CharacteristicKey + '">X</button> ' + CharsChosen[i].Charascteristic + '</span>';
                 }
                 $("#phLabels").html(tagsList);
-
-                ajaxCall("DELETE", "../api/Chararcteristics", JSON.stringify(ObjTempDel), DeletetCarsForStudentSuccess, error);
 
                 return false;
             });

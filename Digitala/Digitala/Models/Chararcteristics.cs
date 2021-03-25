@@ -44,18 +44,6 @@ namespace Digitala.Models
             return cList;
         }
 
-        public void PostCharsToStudent()
-        {
-            DBServices dbs = new DBServices();
-            dbs.InsertChararcteristics(this);
-        }
-
-        public void Delete()
-        {
-            DBServices dbs = new DBServices();
-            dbs.DeleteChars(this);
-        }
-
         //public void TEMP(int id)
         //{
         //    DBServices dbs = new DBServices();

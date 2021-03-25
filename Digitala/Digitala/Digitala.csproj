@@ -166,6 +166,7 @@
     </Compile>
     <Compile Include="Models\Chararcteristics.cs" />
     <Compile Include="Models\DAL\DBServices.cs" />
+    <Compile Include="Models\RecommendedTargets.cs" />
     <Compile Include="Models\Schools.cs" />
     <Compile Include="Models\FuncAreas.cs" />
     <Compile Include="Models\Students.cs" />

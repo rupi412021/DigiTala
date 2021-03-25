@@ -22,13 +22,6 @@ namespace Digitala.Controllers
 
         [HttpPost]
         [Route("api/Chararcteristics")]
-        public void Post([FromBody]Chararcteristics c)
-        {
-            c.PostCharsToStudent();
-        }
-
-        [HttpPost]
-        [Route("api/Chararcteristics")]
         public RecommendedTargets Post([FromBody]RecommendedTargets rt)
         {
             return rt.GetRecommendedTargets();
@@ -42,11 +35,5 @@ namespace Digitala.Controllers
         //    c.TEMP(id);
         //}
 
-        [HttpDelete]
-        [Route("api/Chararcteristics")]
-        public void Delete([FromBody]Chararcteristics c)
-        {
-            c.Delete();
-        }
     }
 }

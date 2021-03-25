@@ -517,7 +517,7 @@ namespace Digitala.Models.DAL
 
         }
 
-        public int InsertChararcteristics(Chararcteristics Chararcteristic)
+        public int InsertChararcteristics(Chararcteristics Chararcteristic, string SId, int year)
         {
             SqlConnection con;
             SqlCommand cmd;
@@ -532,7 +532,7 @@ namespace Digitala.Models.DAL
                 throw new Exception("Could not connect to DB", ex);
             }
 
-            String cStr = BuildInsertCommand(Chararcteristic);      // helper method to build the insert string
+            String cStr = BuildInsertCommand(Chararcteristic, SId, year);      // helper method to build the insert string
 
             cmd = CreateCommand(cStr, con);             // create the command
 
@@ -558,14 +558,14 @@ namespace Digitala.Models.DAL
 
         }
 
-        private String BuildInsertCommand(Chararcteristics c)
+        private String BuildInsertCommand(Chararcteristics c, string SId, int year)
         {
             String command;
             String prefix;
             StringBuilder sb = new StringBuilder();
-
-            sb.AppendFormat("Values('{0}', '{1}', '{2}')", c.StudentId, c.Year, c.CharacteristicKey);
-            prefix = "INSERT INTO StudentCharacteristics " + "([StudentId], [SCYear], [CharacteristicKey])";
+             
+            sb.AppendFormat("Values('{0}', '{1}', '{2}')", SId, year, 1);
+            prefix = "INSERT INTO CharacteristicsMatrix " + "([StudentId], [SCYear], [char_"+c.CharacteristicKey+"])";
 
             command = prefix + sb.ToString();
 
@@ -838,7 +838,7 @@ namespace Digitala.Models.DAL
             return command;
         }
 
-        public int DeleteChars(Chararcteristics chars)
+        public int DeleteChars(Chararcteristics chars, string SId, int year)
         {
 
             SqlConnection con;
@@ -853,7 +853,7 @@ namespace Digitala.Models.DAL
                 throw new Exception("Could not connect to DB", ex);
             }
 
-            String cStr = BuildDeleteCommand(chars);      // helper method to build the insert string
+            String cStr = BuildDeleteCommand(chars, SId, year);      // helper method to build the insert string
 
             cmd = CreateCommand(cStr, con);             // create the command
 
@@ -877,14 +877,11 @@ namespace Digitala.Models.DAL
 
         }
 
-        private String BuildDeleteCommand(Chararcteristics c)
+        private String BuildDeleteCommand(Chararcteristics c, string SId, int year)
         {
             String command;
-            command = "DELETE from StudentCharacteristics where StudentId = '" + c.StudentId + "' and SCYear = " + c.Year
-                + " and CharacteristicKey = " + c.CharacteristicKey;
+            command = "UPDATE CharacteristicsMatrix SET char_"+c.CharacteristicKey +"=0 WHERE StudentId = '" + SId + "' and SCYear = "+ year;
             return command;
-
-
         }
 
         public List<Students> ReadStudents()
@@ -1133,11 +1130,12 @@ namespace Digitala.Models.DAL
         {
 
             SqlConnection con = null;
-            List<Chararcteristics> StudentCharList = rt.NewStudentChars;
             List<RecommendedTargets> MatchStudentsList = new List<RecommendedTargets>();
             RecommendedTargets Chosen = new RecommendedTargets();
 
-            int count = 0;
+            int countMatch = 0;
+            int disMatch = 0;
+            double score = 0;
             try
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
@@ -1153,38 +1151,37 @@ namespace Digitala.Models.DAL
                 {
                     if ((string)dr["StudentId"] != rt.NewStudentId)
                     {
-                        for (int j = 0; j < StudentCharList.Count; j++)
+                        for (int j = 0; j < rt.NewStudentChars.Count; j++)
                         {
                             for (int k = 1; k <= dr.FieldCount; k++)
                             {
-                                if ("char_"+StudentCharList[j].CharacteristicKey == "char_"+k)
+                                if ("char_" + rt.NewStudentChars[j].CharacteristicKey == "char_" + k)
                                 {
-                                    if (Convert.ToInt32(dr["char_"+k]) == 1)
-                                        count++;
-
-                                    //count 0? 25%
+                                    if (Convert.ToInt32(dr["char_" + k]) == 1)
+                                        countMatch++;
+                                    else
+                                        disMatch++;
                                 }
                             }
                         }
 
-                        if (count > 0)
-                        {
-                            RecommendedTargets tempR = new RecommendedTargets();
+                        score = countMatch * 0.75 + (dr.FieldCount - 2 - countMatch - disMatch) * 0.25;
 
-                            tempR.CountMatch = count;
-                            tempR.MatchStudentId = (string)dr["StudentId"];
-                            tempR.MatchYear = Convert.ToInt32(dr["SCYear"]);
+                        RecommendedTargets tempR = new RecommendedTargets();
 
-                            MatchStudentsList.Add(tempR);
+                        tempR.CountMatch = score;
+                        tempR.MatchStudentId = (string)dr["StudentId"];
+                        tempR.MatchYear = Convert.ToInt32(dr["SCYear"]);
 
-                            count = 0;
-                        }
+                        MatchStudentsList.Add(tempR);
+                      
+                        countMatch = 0;
+                        disMatch = 0;
+                        score = 0;
                     }
                 }
-
-                //if MatchStudentsList is empty? return from  rt.charsList the sub-Areas and bring their most usable targets.
-                
-                int max = 0;
+            
+                double max = 0;
                 //we can check => to max and count it. if there are more than numOfStudent/5 similar - to bring random student between them
                 foreach (var item in MatchStudentsList)
                 {
@@ -1196,14 +1193,17 @@ namespace Digitala.Models.DAL
                         Chosen.MatchYear = item.MatchYear;
                     }
                 }
-
                 Chosen.Recommendations = ReadTargetsById(Chosen);
-
+                            
                 Chosen.CurrentYear = rt.CurrentYear;
                 Chosen.NewStudentId = rt.NewStudentId;
                 Chosen.NewStudentChars = rt.NewStudentChars;
 
-                //update the function and insert rt.NewStudentChars to the MATRIX
+                //*******MOVE TO INSERT TALA FUNCTION*********//
+                //for (int i = 0; i < rt.NewStudentChars.Count; i++)
+                //{
+                //    InsertChararcteristics(rt.NewStudentChars[i], rt.NewStudentId, rt.CurrentYear);
+                //}
 
                 return Chosen;
 
@@ -1219,9 +1219,7 @@ namespace Digitala.Models.DAL
                 {
                     con.Close();
                 }
-
             }
-
         }
 
         //public int TEMP(int id)
