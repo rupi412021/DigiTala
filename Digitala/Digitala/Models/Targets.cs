@@ -17,8 +17,7 @@ namespace Digitala.Models
         double suitability;
         double originality;
         int numOfUses;
-        
-
+       
         public Targets(int tarSerial, int faSerial, int sfaSerial, string target, string functionArea, string subFunctionArea, double suitability, double originality, int numOfUses)
         {
             TarSerial = tarSerial;
@@ -71,28 +70,6 @@ namespace Digitala.Models
             dbs.Update(this);
             return Read();
         }
-
-        public List<Targets> GetRecommendedTargets(string SId, int year)
-        {
-            DBServices dbs = new DBServices();
-            List <Students> S = dbs.ReadStudents();
-            int dis1 = 0;
-            int dis2 = 0;
-
-            for (int i = 0; i < S.Count; i++)
-            {
-                if (S[i].StudentId == SId)
-                {
-                    dis1 = S[i].Dis1st;
-                    dis2 = S[i].Dis2nd;
-                }
-            }
-
-            List<Students> SDB = dbs.ReadStudentsByDis(dis1, dis2);
-
-            List<Targets> tList = dbs.ActivateRecommendation(SId, year, SDB);
-
-            return tList;
-        }
+    
 }
 }

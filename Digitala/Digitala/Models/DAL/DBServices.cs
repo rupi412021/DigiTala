@@ -1129,20 +1129,21 @@ namespace Digitala.Models.DAL
 
         }        
 
-        public List<Targets> ActivateRecommendation(string SId, int year, List<Students> SDB)
+        public RecommendedTargets ActivateRecommendation(RecommendedTargets rt, int dis1, int dis2)
         {
 
             SqlConnection con = null;
             List<Targets> targetList = new List<Targets>();
             List<String> StudentCharList = new List<String>();
-            List<Students> MatchStudentsList = new List<Students>();
+            List<RecommendedTargets> MatchStudentsList = new List<RecommendedTargets>();
+            RecommendedTargets Chosen = new RecommendedTargets();
 
             int count = 0;
             try
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "Select * from CharacteristicsMatrix";
+                String selectSTR = "Select cm.* from CharacteristicsMatrix cm left join Student s on s.StudentId = cm.StudentId where s.1stDis = " + dis1 + " or s.1stDis = " + dis2 + " or s.2stDis = " + dis2 + " or s.2stDis = " + dis1;
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -1152,7 +1153,7 @@ namespace Digitala.Models.DAL
                 while (dr.Read())
                 {   // Read till the end of the data into a row
 
-                    if ((string)dr["StudentId"] == SId && Convert.ToInt32(dr["SCYear"]) == year)
+                    if ((string)dr["StudentId"] == rt.NewStudentId && Convert.ToInt32(dr["SCYear"]) == rt.CurrentYear)
                     {
                         for (int i = 2; i <= dr.FieldCount; i++)
                         {
@@ -1164,7 +1165,7 @@ namespace Digitala.Models.DAL
 
                 while (dr.Read())
                 {
-                    if ((string)dr["StudentId"] != SId)
+                    if ((string)dr["StudentId"] != rt.NewStudentId)
                     {
                         for (int i = 0; i < SDB.Count; i++)
                         {
@@ -1183,12 +1184,12 @@ namespace Digitala.Models.DAL
                                 }
                                 if (count > 0)
                                 {
-                                    Students s = new Students();
+                                    RecommendedTargets r = new RecommendedTargets();
 
-                                    s.CountMatch = count;
-                                    s.StudentId = (string)dr["StudentId"];
+                                    r.CountMatch = count;
+                                    r.MatchStudentId = (string)dr["StudentId"];
 
-                                    MatchStudentsList.Add(s);
+                                    MatchStudentsList.Add(r);
 
                                     count = 0;
                                 }
@@ -1201,6 +1202,16 @@ namespace Digitala.Models.DAL
 
                 //מיון הרשימה לפי הקאונט, קריאה לפונקציה
                 //ReadTargetsById(MatchStudentsList[0].StudentId, year)
+
+                //Chosen.CurrentYear = rt.CurrentYear;
+                //Chosen.NewStudentId = rt.NewStudentId;
+                //Chosen.NewStudentChars = rt.NewStudentChars;
+
+                //Chosen.CountMatch =
+                //    Chosen.MatchYear =
+                //    Chosen.MatchStudentId = 
+                //    Chosen.Recommendations = //Targets List 
+                    
 
             }
             catch (Exception ex)
@@ -1267,49 +1278,6 @@ namespace Digitala.Models.DAL
 
         //}
 
-        public List<Students> ReadStudentsByDis(int dis1, int dis2)
-        {
-
-            SqlConnection con = null;
-            List<Students> student = new List<Students>();
-
-            try
-            {
-                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-
-                String selectSTR = "Select StudentId from Student where 1stDis = " + dis1 + " or 1stDis = " + dis2 + " or 2stDis = " + dis2 + " or 2stDis = " + dis1;
-
-                SqlCommand cmd = new SqlCommand(selectSTR, con);
-
-                // get a reader
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-
-                while (dr.Read())
-                {   // Read till the end of the data into a row
-                    Students s = new Students();
-
-                    s.StudentId = Convert.ToString(dr["StudentId"]);
-
-                    student.Add(s);
-                }
-
-                return student;
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw new Exception("Could not GET Students by Disabilities from DB", ex);
-            }
-            finally
-            {
-                if (con != null)
-                {
-                    con.Close();
-                }
-
-            }
-
-        }
     }
    
 }

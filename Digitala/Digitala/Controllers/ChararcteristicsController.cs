@@ -10,14 +10,6 @@ namespace Digitala.Controllers
 {
     public class ChararcteristicsController : ApiController
     {
-        //[HttpGet]
-        //[Route("api/Chararcteristics")]
-        //public List<Chararcteristics> Get()
-        //{
-        //    Chararcteristics t = new Chararcteristics();
-        //    List<Chararcteristics> tlist = t.Read();
-        //    return tlist;
-        //}
 
         [HttpGet]
         [Route("api/Chararcteristics")]
@@ -33,6 +25,13 @@ namespace Digitala.Controllers
         public void Post([FromBody]Chararcteristics c)
         {
             c.PostCharsToStudent();
+        }
+
+        [HttpPost]
+        [Route("api/Chararcteristics")]
+        public RecommendedTargets Post([FromBody]RecommendedTargets rt)
+        {
+            return rt.GetRecommendedTargets();
         }
 
         //[HttpPost]
