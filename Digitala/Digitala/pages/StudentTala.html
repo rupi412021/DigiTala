@@ -36,9 +36,8 @@
         $(document).ready(function () {
             CharsChosen = [];
             TargetForTala = [];
-            ajaxCall("GET", "../api/FuncAreas/2", "", getSubAreasSuccess, error);
-            ajaxCall("GET", "../api/FuncAreas/1", "", getAreasSuccess, error);
-            ajaxCall("GET", "../api/Chararcteristics", "", getChararcteristicsSuccess, error);
+            
+            ajaxCall("GET", "../api/FuncAreas/2", "", getSubAreasSuccess, error);                   
 
             tagsButtons();
 
@@ -102,9 +101,17 @@
                 CharsChosen.push(ObjTemp);
                 let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + tempID + '">X</button> ' + tempVal + '</span>';
                 $("#phLabels").append(tampValString);
-                getChararcteristicsSuccess(ChararcteristicsList);
                 $("#charsMultiPick").val("");
 
+
+                indexHidden = [];
+                for (var i = 0; i < ChararcteristicsList.length; i++) {
+                    for (var j = 0; j < CharsChosen.length; j++) {
+                        if (ChararcteristicsList[i].CharacteristicKey == CharsChosen[j].CharacteristicKey)
+                            indexHidden.push(i);
+                    }
+                }
+                renderDataListChars(indexHidden);
             });
 
             $(document).on("click", ".tagRemove", function () {
@@ -116,26 +123,27 @@
                         break;
                     }
                 }
-
                 for (var i = 0; i < CharsChosen.length; i++) {
                     tagsList += '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + CharsChosen[i].CharacteristicKey + '">X</button> ' + CharsChosen[i].Chararcteristic + '</span>';
                 }
                 $("#phLabels").html(tagsList);
 
-                return false;
+                indexHidden = [];
+                for (var i = 0; i < ChararcteristicsList.length; i++) {
+                    for (var j = 0; j < CharsChosen.length; j++) {
+                        if (ChararcteristicsList[i].CharacteristicKey == CharsChosen[j].CharacteristicKey)
+                            indexHidden.push(i);
+                    }
+                }
+                renderDataListChars(indexHidden);
+
+               
             });
         }
-
+        
         function getChararcteristicsSuccess(ChararcteristicsData) {
             ChararcteristicsList = ChararcteristicsData;
             console.log(ChararcteristicsData);
-
-            for (var i = 0; i < ChararcteristicsList.length; i++) {
-                for (var i = 0; i < CharsChosen.length; i++) {
-                    if (ChararcteristicsList[i].CharacteristicKey == CharsChosen[j].CharacteristicKey)
-                        ChararcteristicsList.splice(i, 1);
-                }
-            }
 
             let charsList = "";
             for (var i = 0; i < ChararcteristicsList.length; i++) {
@@ -148,7 +156,7 @@
             }
 
             $("#charsMultiPickList").html(charsList);
-
+            
             //for (var i = 0; i < ChararcteristicsData.length; i++) {
             //    ajaxCall("POST", "../api/Chararcteristics/" + ChararcteristicsData[i].CharacteristicKey, "", SuccessSuccess, error);
             //}
@@ -160,13 +168,33 @@
         function getAreasSuccess(allMainAreas) {
             console.log(allMainAreas);
             MainAreasList = allMainAreas;
+            ajaxCall("GET", "../api/Chararcteristics", "", getChararcteristicsSuccess, error);
         }
 
         function getSubAreasSuccess(allSubAreas) {
             console.log(allSubAreas);
             SubAreasList = allSubAreas;
+            ajaxCall("GET", "../api/FuncAreas/1", "", getAreasSuccess, error);
         }
 
+        function renderDataListChars(indexHidden) {
+            tempList = ChararcteristicsList;
+            for (var i = 0; i < indexHidden.length; i++) {
+                tempList.splice(indexHidden[i], 1);
+            }
+
+            let charsList = "";
+            for (var i = 0; i < tempList.length; i++) {
+                for (var j = 0; j < SubAreasList.length; j++) {
+                    if (SubAreasList[j].SubAreaId == tempList[i].SfaSerial) {
+                        charsList += "<option value='" + tempList[i].Chararcteristic + "' id=" + tempList[i].CharacteristicKey + ">תחום: " + SubAreasList[j].SubArea + "</option>";
+                        break;
+                    }
+                }                
+            }
+
+            $("#charsMultiPickList").html(charsList);
+        }
         function error(data) {
             alert("could not bring data")
         }
