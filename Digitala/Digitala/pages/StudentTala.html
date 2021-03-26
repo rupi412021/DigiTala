@@ -74,7 +74,19 @@
         }
 
         function renderTargets(targetsList) {
-            $("#phLabels").html(targetsList);
+            let bla = "";
+            $("#area_"+"somthing").html(bla);
+
+            $("#collapse_1").show();
+            $("#collapse_2").show();
+            $("#collapse_3").show();
+            $("#collapse_4").show();
+            $("#collapse_5").show();
+            $("#collapse_6").show();
+            //let dataTar = "data-tarId='" + row.TarSerial + "'";
+            //deleteBtn = "<button type='button' class = 'deleteBtn btn'" + dataTar + "><i class='material-icons'>delete</i></button>";
+            //updateBtn = "<button type='button' class = 'updateBtn btn'" + dataTar + "><i class='material-icons'>create</i></button>";
+            //return updateBtn + deleteBtn;
         }
 
         function tagsButtons() {
@@ -212,10 +224,9 @@
                                 </fieldset>
                                 <h3><b>בחירת מטרות</b></h3>
                                 <fieldset>
-                                    <!-- דיב לכל תחום, בכל תחום מטרות מוצעות, לכל מטרה צריך אייקון של עריכה ואייקון של מחיקה -->
                                     <h4>להלן המטרות שהתקבלו ע"פ מאפייני התלמיד; ניתן לערוך/למחוק כל מטרה, וכן להוסיף חדשה</h4>
                                     <div class="panel-group" id="accordion_19" role="tablist" aria-multiselectable="true">
-                                        <div class="panel panel-col-orange">
+                                        <div class="panel panel-col-orange" id="collapse_1" hidden="hidden">
                                             <div class="panel-heading" role="tab" id="headingOne_19">
                                                 <h4 class="panel-title">
                                                     <a class="collapsed" role="button" data-toggle="collapse" href="#collapseOne_19" aria-expanded="false" aria-controls="collapseFour_19">
@@ -226,20 +237,21 @@
                                             <div id="collapseOne_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_1">
-                                                        <a href="javascript:void(0);" class="list-group-item">
-                                                            <span class="badge bg-pink">14 New</span> Cras justo odio
-                                                        </a>
-                                                        <a href="javascript:void(0);" class="list-group-item">
-                                                            <span class="badge bg-cyan">99 Unread</span>Dapibus ac facilisis in
-                                                        </a>
-                                                        <a href="javascript:void(0);" class="list-group-item">
-                                                            <span class="badge bg-teal">99+</span>Morbi leo risus
-                                                        </a>
+                                                        <div class="list-group-item">
+                                                            <span class="targetEditAndDel">Morbi leo risus</span>
+                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
+                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
+                                                        </div>
+                                                        <div class="list-group-item">
+                                                            <span class="targetEditAndDel">Dapibus ac facilisis in</span>
+                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
+                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-col-red">
+                                        <div class="panel panel-col-red" id="collapse_2" hidden="hidden">
                                             <div class="panel-heading" role="tab" id="headingTwo_19">
                                                 <h4 class="panel-title">
                                                     <a role="button" data-toggle="collapse" href="#collapseTwo_19" aria-expanded="true" aria-controls="collapseOne_19">
@@ -250,17 +262,21 @@
                                             <div id="collapseTwo_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_2">
-                                                        <a href="javascript:void(0);" class="list-group-item">
-                                                            <span class="badge bg-pink">14 New</span> Cras justo odio
-                                                        </a>
-                                                        <a href="javascript:void(0);" class="list-group-item">
-                                                            <span class="badge bg-cyan">99 Unread</span>Dapibus ac facilisis in
-                                                        </a>
+                                                        <div class="list-group-item">
+                                                            <span class="targetEditAndDel">Cras justo odio</span>
+                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
+                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
+                                                        </div>
+                                                        <div class="list-group-item">
+                                                            <span class="targetEditAndDel">Dapibus ac facilisis in</span>
+                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
+                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-col-light-blue">
+                                        <div class="panel panel-col-light-blue" id="collapse_3" hidden="hidden">
                                             <div class="panel-heading" role="tab" id="headingThree_19">
                                                 <h4 class="panel-title">
                                                     <a class="collapsed" role="button" data-toggle="collapse" href="#collapseThree_19" aria-expanded="true" aria-controls="collapseTwo_19">
@@ -271,17 +287,21 @@
                                             <div id="collapseThree_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_3">
-                                                        <a href="javascript:void(0);" class="list-group-item">
-                                                            <span class="badge bg-pink">14 New</span> Cras justo odio
-                                                        </a>
-                                                        <a href="javascript:void(0);" class="list-group-item">
-                                                            <span class="badge bg-cyan">99 Unread</span>Dapibus ac facilisis in
-                                                        </a>
+                                                        <div class="list-group-item">
+                                                            <span class="targetEditAndDel">Cras justo odio</span>
+                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
+                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
+                                                        </div>
+                                                        <div class="list-group-item">
+                                                            <span class="targetEditAndDel">Dapibus ac facilisis in</span>
+                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
+                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
+                                                        </div>
                                                     </div> 
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-col-teal">
+                                        <div class="panel panel-col-teal" id="collapse_4" hidden="hidden">
                                             <div class="panel-heading" role="tab" id="headingFour_19">
                                                 <h4 class="panel-title">
                                                     <a class="collapsed" role="button" data-toggle="collapse" href="#collapseFour_19" aria-expanded="true" aria-controls="collapseThree_19">
@@ -292,17 +312,21 @@
                                             <div id="collapseFour_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_4">
-                                                        <a href="javascript:void(0);" class="list-group-item">
-                                                            <span class="badge bg-pink">14 New</span> Cras justo odio
-                                                        </a>
-                                                        <a href="javascript:void(0);" class="list-group-item">
-                                                            <span class="badge bg-cyan">99 Unread</span>Dapibus ac facilisis in
-                                                        </a>                                                        
+                                                        <div class="list-group-item">
+                                                            <span class="targetEditAndDel">Cras justo odio</span>
+                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
+                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
+                                                        </div>
+                                                        <div class="list-group-item">
+                                                            <span class="targetEditAndDel">Dapibus ac facilisis in</span>
+                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
+                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
+                                                        </div>
                                                     </div> 
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-col-grey">
+                                        <div class="panel panel-col-grey" id="collapse_5" hidden="hidden">
                                             <div class="panel-heading" role="tab" id="headingFive_19">
                                                 <h4 class="panel-title">
                                                     <a class="collapsed" role="button" data-toggle="collapse" href="#collapseFive_19" aria-expanded="true" aria-controls="collapseTwo_19">
@@ -313,20 +337,21 @@
                                             <div id="collapseFive_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_5">
-                                                        <a href="javascript:void(0);" class="list-group-item">
-                                                            <span class="badge bg-pink">14 New</span> Cras justo odio
-                                                        </a>
-                                                        <a href="javascript:void(0);" class="list-group-item">
-                                                            <span class="badge bg-cyan">99 Unread</span>Dapibus ac facilisis in
-                                                        </a>
-                                                        <a href="javascript:void(0);" class="list-group-item">
-                                                            <span class="badge bg-teal">99+</span>Morbi leo risus
-                                                        </a>
+                                                        <div class="list-group-item">
+                                                            <span class="targetEditAndDel">Cras justo odio</span>
+                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
+                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
+                                                        </div>
+                                                        <div class="list-group-item">
+                                                            <span class="targetEditAndDel">Dapibus ac facilisis in</span>
+                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
+                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-col-light-green">
+                                        <div class="panel panel-col-light-green" id="collapse_6" hidden="hidden">
                                             <div class="panel-heading" role="tab" id="headingSix_19">
                                                 <h4 class="panel-title">
                                                     <a class="collapsed" role="button" data-toggle="collapse" href="#collapseSix_19" aria-expanded="true" aria-controls="collapseThree_19">
@@ -342,9 +367,11 @@
                                                             <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
                                                             <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
                                                         </div>
-                                                        <a href="javascript:void(0);" class="list-group-item">
-                                                            Dapibus ac facilisis in
-                                                        </a>   
+                                                        <div class="list-group-item">
+                                                            <span class="targetEditAndDel">Dapibus ac facilisis in</span>
+                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
+                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
+                                                        </div>
                                                     </div>                                                
                                                 </div>
                                             </div>
