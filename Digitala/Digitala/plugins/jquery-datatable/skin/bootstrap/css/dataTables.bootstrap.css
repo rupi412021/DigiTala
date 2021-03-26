@@ -19,6 +19,7 @@ div.dataTables_wrapper div.dataTables_length label {
   font-weight: normal;
   text-align: left;
   white-space: nowrap;
+  float: left;
 }
 div.dataTables_wrapper div.dataTables_length select {
   width: 75px;

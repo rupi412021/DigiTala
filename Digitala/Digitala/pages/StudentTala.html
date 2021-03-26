@@ -36,10 +36,17 @@
         $(document).ready(function () {
             CharsChosen = [];
             TargetForTala = [];
-            
+            indexHidden = [];
             ajaxCall("GET", "../api/FuncAreas/2", "", getSubAreasSuccess, error);                   
 
             tagsButtons();
+
+            $("form").keypress(function (e) {
+                //Enter key
+                if (e.which == 13) {
+                    return false;
+                }
+            });
 
             $(document).on("click", "#next", function () {
                 if ($("#wizard_with_validation-p-1").hasClass("body current")) {
@@ -93,52 +100,58 @@
                 let tempVal = $("#charsMultiPick").val();
                 let tempID = $('#charsMultiPickList option[value="' + tempVal + '"]').attr('id');
 
-                let ObjTemp = {
-                    Chararcteristic: tempVal,
-                    CharacteristicKey: tempID
+                let unknown = 999;
+                if (tempID > 0) {
+                    ObjTemp = {
+                        Chararcteristic: tempVal,
+                        CharacteristicKey: tempID
+                    }
+                }
+                else {
+                    ObjTemp = {
+                        Chararcteristic: tempVal,
+                        CharacteristicKey: unknown
+                    }
+                    unknown++;
                 }
 
                 CharsChosen.push(ObjTemp);
-                let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + tempID + '">X</button> ' + tempVal + '</span>';
+                let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + ObjTemp.CharacteristicKey + '">X</button> ' + ObjTemp.Chararcteristic + '</span>';
                 $("#phLabels").append(tampValString);
                 $("#charsMultiPick").val("");
-
-
+               
                 indexHidden = [];
-                for (var i = 0; i < ChararcteristicsList.length; i++) {
-                    for (var j = 0; j < CharsChosen.length; j++) {
-                        if (ChararcteristicsList[i].CharacteristicKey == CharsChosen[j].CharacteristicKey)
-                            indexHidden.push(i);
+                for (var j = 0; j < CharsChosen.length; j++) {
+                    for (var i = 0; i < ChararcteristicsList.length; i++) {                    
+                        if (ChararcteristicsList[i].CharacteristicKey == CharsChosen[j].CharacteristicKey) {
+                            indexHidden.push(ChararcteristicsList[i].CharacteristicKey);
+                            break
+                        }
                     }
                 }
-                renderDataListChars(indexHidden);
+                if (indexHidden.length>0)
+                    renderDataListChars(indexHidden);
+
             });
 
             $(document).on("click", ".tagRemove", function () {
                 let ValToRemove = this.getAttribute("id");
                 let tagsList = "";
+
                 for (i = 0; i < CharsChosen.length; i++) {
                     if (CharsChosen[i].CharacteristicKey == ValToRemove) {
+                        indexHidden.splice(i, 1);
                         CharsChosen.splice(i, 1);
                         break;
                     }
                 }
+                    
                 for (var i = 0; i < CharsChosen.length; i++) {
                     tagsList += '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + CharsChosen[i].CharacteristicKey + '">X</button> ' + CharsChosen[i].Chararcteristic + '</span>';
                 }
                 $("#phLabels").html(tagsList);
 
-                ///////////NOT WORKING
-                indexHidden = [];
-                for (var i = 0; i < ChararcteristicsList.length; i++) {
-                    for (var j = 0; j < CharsChosen.length; j++) {
-                        if (ChararcteristicsList[i].CharacteristicKey == CharsChosen[j].CharacteristicKey)
-                            indexHidden.push(i);
-                    }
-                }
-                renderDataListChars(indexHidden);
-
-               
+                renderDataListChars(indexHidden);          
             });
         }
         
@@ -179,9 +192,14 @@
         }
 
         function renderDataListChars(indexHidden) {
-            tempList = ChararcteristicsList;
+            tempList = ChararcteristicsList.slice();
             for (var i = 0; i < indexHidden.length; i++) {
-                tempList.splice(indexHidden[i], 1);
+                for (var j = 0; j < tempList.length; j++) {
+                    if (indexHidden[i] == tempList[j].CharacteristicKey) {
+                        tempList.splice(j, 1);
+                        break;
+                    }
+                }
             }
 
             let charsList = "";
