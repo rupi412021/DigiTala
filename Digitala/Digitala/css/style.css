@@ -4723,7 +4723,7 @@ section.content {
     
 }
     .panel-group .panel-col-yellow .panel-title {
-        background-color: #F4D657 !important;
+        background-color: #e9cf5d !important;
         color: #fff;
         border-radius: 10px;
     }
@@ -4817,7 +4817,9 @@ section.content {
     border-radius: 0; }
     .panel-group .panel .panel-heading a {
       display: block;
-      padding: 10px 15px; }
+      padding: 10px 15px;
+      font-size: 18px;
+    }
       .panel-group .panel .panel-heading a:hover, .panel-group .panel .panel-heading a:focus, .panel-group .panel .panel-heading a:active {
         text-decoration: none; }
   .panel-group .panel .panel-body {
@@ -6780,12 +6782,13 @@ fieldset[disabled] .form-control {
   transform: scale(1); }
 
 .ls-closed .bars:after {
-  content: '\E5C4';
-  -moz-transform: scale(0);
-  -ms-transform: scale(0);
-  -o-transform: scale(0);
-  -webkit-transform: scale(0);
-  transform: scale(0); }
+    content: '\E5C8';
+    -moz-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
 
 .ls-closed .navbar-brand {
   margin-left: 30px; }

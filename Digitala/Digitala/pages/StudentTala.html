@@ -79,20 +79,23 @@
             renderTargets(TargetForTala);
         }
 
-        function renderTargets(targetsList) {
-            let bla = "";
-            $("#area_"+"somthing").html(bla);
-
-            $("#collapse_1").show();
-            $("#collapse_2").show();
-            $("#collapse_3").show();
-            $("#collapse_4").show();
-            $("#collapse_5").show();
-            $("#collapse_6").show();
-            //let dataTar = "data-tarId='" + row.TarSerial + "'";
-            //deleteBtn = "<button type='button' class = 'deleteBtn btn'" + dataTar + "><i class='material-icons'>delete</i></button>";
-            //updateBtn = "<button type='button' class = 'updateBtn btn'" + dataTar + "><i class='material-icons'>create</i></button>";
-            //return updateBtn + deleteBtn;
+        function renderTargets(targetsList) {    
+            for (var j = 0; j < MainAreasList.length; j++) {
+                renderTargets = "";
+                for (var i = 0; i < targetsList.length; i++) {
+                    if (MainAreasList[j].AreaId == targetsList[i].FaSerial) {                       
+                        renderTargets += '<div class="list-group-item">';
+                        renderTargets += '<span class="targetEditAndDel">' + targetsList[i].Target + '</span>';
+                        renderTargets += "<button type='button' class='deleteBtn btn-trans data-tarId=" + targetsList[i].TarSerial + "'><i class='material-icons'>delete</i></button>";
+                        renderTargets += "<button type='button' class='updateBtn btn-trans data-tarId=" + targetsList[i].TarSerial + "'><i class='material-icons'>create</i></button>";
+                        renderTargets += "</div>";                       
+                    }
+                }
+                if (renderTargets.length > 0) {
+                    $("#collapse_" + MainAreasList[j].AreaId).show();
+                    $("#area_" + MainAreasList[j].AreaId).html(renderTargets);
+                }
+            }
         }
 
         function tagsButtons() {
@@ -293,16 +296,7 @@
                                             <div id="collapseOne_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_1">
-                                                        <div class="list-group-item">
-                                                            <span class="targetEditAndDel">Morbi leo risus</span>
-                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
-                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
-                                                        </div>
-                                                        <div class="list-group-item">
-                                                            <span class="targetEditAndDel">Dapibus ac facilisis in</span>
-                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
-                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
-                                                        </div>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -318,16 +312,7 @@
                                             <div id="collapseTwo_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_2">
-                                                        <div class="list-group-item">
-                                                            <span class="targetEditAndDel">Cras justo odio</span>
-                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
-                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
-                                                        </div>
-                                                        <div class="list-group-item">
-                                                            <span class="targetEditAndDel">Dapibus ac facilisis in</span>
-                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
-                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
-                                                        </div>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -343,16 +328,7 @@
                                             <div id="collapseThree_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_3">
-                                                        <div class="list-group-item">
-                                                            <span class="targetEditAndDel">Cras justo odio</span>
-                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
-                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
-                                                        </div>
-                                                        <div class="list-group-item">
-                                                            <span class="targetEditAndDel">Dapibus ac facilisis in</span>
-                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
-                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
-                                                        </div>
+                                                       
                                                     </div> 
                                                 </div>
                                             </div>
@@ -368,16 +344,7 @@
                                             <div id="collapseFour_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_4">
-                                                        <div class="list-group-item">
-                                                            <span class="targetEditAndDel">Cras justo odio</span>
-                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
-                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
-                                                        </div>
-                                                        <div class="list-group-item">
-                                                            <span class="targetEditAndDel">Dapibus ac facilisis in</span>
-                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
-                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
-                                                        </div>
+                                                       
                                                     </div> 
                                                 </div>
                                             </div>
@@ -393,21 +360,12 @@
                                             <div id="collapseFive_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_5">
-                                                        <div class="list-group-item">
-                                                            <span class="targetEditAndDel">Cras justo odio</span>
-                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
-                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
-                                                        </div>
-                                                        <div class="list-group-item">
-                                                            <span class="targetEditAndDel">Dapibus ac facilisis in</span>
-                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
-                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
-                                                        </div>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-col-light-green" id="collapse_6" hidden="hidden">
+                                        <div class="panel panel-col-yellow" id="collapse_6" hidden="hidden">
                                             <div class="panel-heading" role="tab" id="headingSix_19">
                                                 <h4 class="panel-title">
                                                     <a class="collapsed" role="button" data-toggle="collapse" href="#collapseSix_19" aria-expanded="true" aria-controls="collapseThree_19">
@@ -418,16 +376,7 @@
                                             <div id="collapseSix_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSix_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_6">
-                                                        <div class="list-group-item">
-                                                            <span class="targetEditAndDel">Cras justo odio</span>
-                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
-                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
-                                                        </div>
-                                                        <div class="list-group-item">
-                                                            <span class="targetEditAndDel">Dapibus ac facilisis in</span>
-                                                            <button type='button' class='deleteBtn btn-trans'><i class='material-icons'>delete</i></button>
-                                                            <button type='button' class='updateBtn btn-trans'><i class='material-icons'>create</i></button>
-                                                        </div>
+                                                        
                                                     </div>                                                
                                                 </div>
                                             </div>
