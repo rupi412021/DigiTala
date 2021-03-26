@@ -335,7 +335,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "SELECT * FROM Chararcteristics";
+                String selectSTR = "SELECT * FROM Chararcteristics ORDER BY SFASerial ASC";
                 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
