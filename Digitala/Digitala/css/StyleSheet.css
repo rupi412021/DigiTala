@@ -25,7 +25,7 @@ span, datalist {
     text-align: right;
 }
 
-.studentIcons {
+.studentIcons, .targetEditAndDel {
     vertical-align: super;
 }
 
@@ -36,6 +36,7 @@ span, datalist {
 .deleteBtn, .updateBtn {
     padding: 3px;
     margin: 2px;
+    float: left;
 }
 
 .header > img {
