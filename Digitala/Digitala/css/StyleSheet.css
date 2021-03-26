@@ -87,6 +87,11 @@ span, datalist {
     margin-bottom: 10px;
 }
 
+.sorting_1 {
+    float: right;
+    width: max-content;
+}
+
 xx {
     color: #73A4A4;
     color: #96C4DA;
