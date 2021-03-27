@@ -13,10 +13,11 @@ namespace Digitala.Controllers
 
         [HttpPost]
         [Route("api/Teachers/tEmail")]
-        public void RetrivePass(string email)
+        public string RetrivePass(string email)
         {
             Teachers t = new Teachers();
-            t.sendEmail(email);
+            string uMail = t.sendEmail(email);
+            return uMail;
         }
 
         public void Post([FromBody] Teachers t)

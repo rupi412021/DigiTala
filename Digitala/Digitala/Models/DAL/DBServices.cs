@@ -1056,7 +1056,7 @@ namespace Digitala.Models.DAL
             return command;
         }
 
-        public void SendMailToUser(string UserMail, string UserRandomPassword)
+        public string SendMailToUser(string UserMail, string UserRandomPassword)
         {
 
             try
@@ -1066,8 +1066,8 @@ namespace Digitala.Models.DAL
 
                 mail.From = new MailAddress("rupi41.2021@gmail.com");
                 mail.To.Add(UserMail);
-                mail.Subject = "יש לנו אימייייללללללללל";
-                mail.Body = "שלום כפפפרההההההה" + Environment.NewLine +
+                mail.Subject = "שיחזור סיסמא דיגיתלא";
+                mail.Body = "שלום" + Environment.NewLine +
                 "הסיסמא הזמנית הינה:  " + UserRandomPassword;
 
                 SmtpServer.Port = 587;
@@ -1076,6 +1076,8 @@ namespace Digitala.Models.DAL
 
                 SmtpServer.Send(mail);
                 //MessageBox.Show("mail Send");
+
+                return UserRandomPassword;
             }
             catch (Exception ex)
             {

@@ -52,10 +52,11 @@ namespace Digitala.Models
             return teachersList;
         }
 
-        public void sendEmail(string e)
+        public string sendEmail(string e)
         {
             DBServices dbs = new DBServices();
-            dbs.SendMailToUser(e, CreatePassword(9));
+            string newPass =  dbs.SendMailToUser(e, CreatePassword(6));
+            return newPass;
         }
 
         public string CreatePassword(int length)
