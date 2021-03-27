@@ -28,54 +28,30 @@
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
 
     <script>
-        //$(document).ready(function () {
-        //    $("#emailBTN").click(f1);
+        $(document).ready(function () {
+            $("#confirm").on("blur", checkPassword);
+            $("#resetPassBtn").submit(f1);
+        });
 
-        //});
+        function checkPassword() {
+            if (this.value == $("#password").val()) {
+                this.validity.valid = true;
+                this.setCustomValidity("")
+            }
+            else {
+                this.validity.valid = false;
+                this.setCustomValidity("Password don't match")
+            }
+        }
 
-        //function f1() {
-        //    uMail = $("#uEmail").val();
-        //    svalid = uMail.includes('@')
-        //    pvalid = uMail.includes('.')
-        //    if (uMail == "") {
-        //        swal("נא למלא את כתובת האימייל", "נסה שנית", "error");
-        //    }
-        //    else if (pvalid == false) {
-        //        swal("נא למלא את כתובת תקינה", "נסה שנית", "error");
-        //    }
-        //    else if (svalid == false) {
-        //        swal("נא למלא את כתובת תקינה", "נסה שנית", "error");
-        //    }
-        //    else
-        //        sendEmail($("#uEmail").val());
+        function f1() {
+            setNewPassword();
+            return false;
+        }
 
-        //    return false;
-        //}
-
-
-        //function sendEmail() {
-        //    let e = $("#uEmail").val();
-        //    ajaxCall("POST", "../api/Teachers/tEmail?email=" + e, "", postTeacherSuccess, postTeacherError);
-        //}
-
-        //function postTeacherSuccess(newpass) {
-        //    let passWord = newpass;
-        //    let email = $("#uEmail").val();
-        //    api = "../api/Teachers/" + passWord + "/" + email;
-        //    ajaxCall("PUT",api, "", putPassSuccess, putPassError);
-        //}
-
-        //function postTeacherError(error) {
-        //    console.log(error)
-        //}
-
-        //function putPassSuccess(success) {
-        //    console.log("Pass changed")
-        //}
-
-        //function putPassError(error) {
-        //    console.log("Pass didn't changed")
-        //}
+        function setNewPassword() {
+            alert("innewpass");
+        }
 
     </script>
 </head>
@@ -90,7 +66,7 @@
             <div class="body">
                 <form id="forgot_password">
                     <div class="msg">
-                        לאיפוס הסיסמא אנה הזינו את הפרטים 
+                        לאיפוס הסיסמא אנא הזינו את הפרטים 
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon">
@@ -105,7 +81,7 @@
                             <i class="material-icons">lock_open</i>
                         </span>
                         <div class="form-line">
-                            <input type="password" class="form-control" name="password" id="password" minlength="6" placeholder="סיסמא זמנית" required>
+                            <input type="password" class="form-control" name="password" id="newPassword" minlength="6" placeholder="סיסמא זמנית" required>
                         </div>
                     </div>
                     <div class="input-group">
@@ -113,7 +89,7 @@
                             <i class="material-icons">lock_outline</i>
                         </span>
                         <div class="form-line">
-                            <input type="password" class="form-control" name="confirm" id="confirm" minlength="6" placeholder="סיסמא חדשה" required>
+                            <input type="password" class="form-control" name="confirm" id="password" minlength="6" placeholder="סיסמא חדשה" required>
                         </div>
                     </div>
                     <div class="input-group">
@@ -125,7 +101,7 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-block btn-lg bg-pink waves-effect" id="emailBTN">אפס את הסיסמא</button>
+                    <button class="btn btn-block btn-lg bg-pink waves-effect" type="submit" id="resetPassBtn">אפס את הסיסמא</button>
 
                     <div class="row m-t-20 m-b--5 align-center">
                         <a href="sign-in.html">כניסה למערכת</a>
@@ -145,7 +121,7 @@
     <script src="../plugins/node-waves/waves.js"></script>
 
     <!--Validation Plugin Js-->
-    <script src="../plugins/jquery-validation/jquery.validate.js"></script>
+    <!--<script src="../plugins/jquery-validation/jquery.validate.js"></script>-->
 
     <!-- Custom Js -->
     <script src="../js/admin.js"></script>
