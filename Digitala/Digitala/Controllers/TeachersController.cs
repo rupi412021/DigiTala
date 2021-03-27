@@ -10,6 +10,15 @@ namespace Digitala.Controllers
 {
     public class TeachersController : ApiController
     {
+
+        [HttpPost]
+        [Route("api/Teachers/tEmail")]
+        public void RetrivePass(string email)
+        {
+            Teachers t = new Teachers();
+            t.sendEmail(email);
+        }
+
         public void Post([FromBody] Teachers t)
         {
             t.Insert();

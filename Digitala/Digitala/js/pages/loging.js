@@ -55,8 +55,7 @@ function getStudentSuccess(Students) {
     }
 
     $("#renderStudentsinMenu").html(str);
-    console.log(str);
 }
 
 
-           
+ 

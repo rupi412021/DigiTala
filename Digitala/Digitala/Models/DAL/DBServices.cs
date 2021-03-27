@@ -1066,8 +1066,8 @@ namespace Digitala.Models.DAL
 
                 mail.From = new MailAddress("rupi41.2021@gmail.com");
                 mail.To.Add(UserMail);
-                mail.Subject = "Welcome to SpeakUp";
-                mail.Body = "שלום" + Environment.NewLine +
+                mail.Subject = "יש לנו אימייייללללללללל";
+                mail.Body = "שלום כפפפרההההההה" + Environment.NewLine +
                 "הסיסמא הזמנית הינה:  " + UserRandomPassword;
 
                 SmtpServer.Port = 587;
