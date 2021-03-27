@@ -33,10 +33,19 @@ span, datalist {
     color: #073636;
 }
 
+#addNewTarToTala {
+    border-radius: 5px;
+    width: 50%;
+    font-size: medium;
+}
+#OpenTargetsListToAddNew{
+    text-align:center;
+}
 .deleteBtn, .updateBtn {
     padding: 3px;
     margin: 2px;
     float: left;
+    color: #aeaeae;
 }
 
 .header > img {

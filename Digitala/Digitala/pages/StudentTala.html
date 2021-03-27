@@ -96,6 +96,9 @@
                     $("#area_" + MainAreasList[j].AreaId).html(renderTargets);
                 }
             }
+            renderTargets = '<button type="button" class="btn waves-effect" id="addNewTarToTala"><i class="material-icons">add</i><span>הוסף מטרה חדשה</span></button>';
+            $("#OpenTargetsListToAddNew").html(renderTargets);
+            
         }
 
         function tagsButtons() {
@@ -382,6 +385,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div id="OpenTargetsListToAddNew"></div>
                                 </fieldset>
                                 <h3><b>הגדרת יעדים ואמצעים</b></h3>
                                 <fieldset>

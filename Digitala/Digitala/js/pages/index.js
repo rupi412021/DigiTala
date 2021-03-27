@@ -1,6 +1,6 @@
 ﻿$(function () {
     //Widgets count
-    //$('.count-to').countTo();
+    $('.count-to').countTo();
 
     //Sales count to
     $('.sales-count-to').countTo({
