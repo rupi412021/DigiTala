@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Reset Password | Digitala</title>
+    <!-- Favicon-->
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+    <link href="../css/StyleSheet.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <script src="../Scripts/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap Core Css -->
+    <link href="../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <script src="../Scripts/bootstrap.min.js"></script>
+    <!-- Waves Effect Css -->
+    <link href="../plugins/node-waves/waves.css" rel="stylesheet" />
+    <script src="../plugins/sweetalert/sweetalert.min.js"></script>
+    <link href="../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <!-- Animation Css -->
+    <link href="../plugins/animate-css/animate.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    <link href="../css/style.css" rel="stylesheet">
+
+    <script src="../Scripts/ajaxCallsWithKey.js"></script>
+
+    <script>
+        //$(document).ready(function () {
+        //    $("#emailBTN").click(f1);
+
+        //});
+
+        //function f1() {
+        //    uMail = $("#uEmail").val();
+        //    svalid = uMail.includes('@')
+        //    pvalid = uMail.includes('.')
+        //    if (uMail == "") {
+        //        swal("נא למלא את כתובת האימייל", "נסה שנית", "error");
+        //    }
+        //    else if (pvalid == false) {
+        //        swal("נא למלא את כתובת תקינה", "נסה שנית", "error");
+        //    }
+        //    else if (svalid == false) {
+        //        swal("נא למלא את כתובת תקינה", "נסה שנית", "error");
+        //    }
+        //    else
+        //        sendEmail($("#uEmail").val());
+
+        //    return false;
+        //}
+
+
+        //function sendEmail() {
+        //    let e = $("#uEmail").val();
+        //    ajaxCall("POST", "../api/Teachers/tEmail?email=" + e, "", postTeacherSuccess, postTeacherError);
+        //}
+
+        //function postTeacherSuccess(newpass) {
+        //    let passWord = newpass;
+        //    let email = $("#uEmail").val();
+        //    api = "../api/Teachers/" + passWord + "/" + email;
+        //    ajaxCall("PUT",api, "", putPassSuccess, putPassError);
+        //}
+
+        //function postTeacherError(error) {
+        //    console.log(error)
+        //}
+
+        //function putPassSuccess(success) {
+        //    console.log("Pass changed")
+        //}
+
+        //function putPassError(error) {
+        //    console.log("Pass didn't changed")
+        //}
+
+    </script>
+</head>
+
+<body class="fp-page">
+    <div class="fp-box">
+        <div class="logo">
+            <a>דיגיתל"א</a>
+            <small>איפוס סיסמא</small>
+        </div>
+        <div class="card">
+            <div class="body">
+                <form id="forgot_password">
+                    <div class="msg">
+                        לאיפוס הסיסמא אנה הזינו את הפרטים 
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">email</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="email" class="form-control" name="email" id="uEmail" placeholder="אימייל" required autofocus>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">lock_open</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="password" class="form-control" name="password" id="password" minlength="6" placeholder="סיסמא זמנית" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">lock_outline</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="password" class="form-control" name="confirm" id="confirm" minlength="6" placeholder="סיסמא חדשה" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">lock</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="password" class="form-control" name="confirm" id="confirm" minlength="6" placeholder="אישור סיסמא חדשה" required>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-block btn-lg bg-pink waves-effect" id="emailBTN">אפס את הסיסמא</button>
+
+                    <div class="row m-t-20 m-b--5 align-center">
+                        <a href="sign-in.html">כניסה למערכת</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery Core Js -->
+    <script src="../plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="../plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="../plugins/node-waves/waves.js"></script>
+
+    <!--Validation Plugin Js-->
+    <script src="../plugins/jquery-validation/jquery.validate.js"></script>
+
+    <!-- Custom Js -->
+    <script src="../js/admin.js"></script>
+    <script src="../js/pages/examples/forgot-password.js"></script>
+</body>
+
+</html>
