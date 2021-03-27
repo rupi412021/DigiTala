@@ -59,9 +59,15 @@ namespace Digitala.Models
             return newPass;
         }
 
+        public void setTpass(string p, string e)
+        {
+            DBServices dbs = new DBServices();
+            dbs.setNewPass(p, e);
+        }
+
         public string CreatePassword(int length)
         {
-            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
             StringBuilder res = new StringBuilder();
             Random rnd = new Random();
             while (0 < length--)

@@ -16,8 +16,16 @@ namespace Digitala.Controllers
         public string RetrivePass(string email)
         {
             Teachers t = new Teachers();
-            string uMail = t.sendEmail(email);
-            return uMail;
+            string uPass = t.sendEmail(email);
+            return uPass;
+        }
+
+        [HttpPut]
+        [Route("api/Teachers/{passWord}/{email}")]
+        public void ChangePass(string passWord, string email)
+        {
+            Teachers t = new Teachers();
+            t.setTpass(passWord, email);
         }
 
         public void Post([FromBody] Teachers t)

@@ -692,6 +692,54 @@ namespace Digitala.Models.DAL
             }
         }
 
+        public int setNewPass(string tPass, string tEmail)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildUpdateCommand(tPass,tEmail);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("לא ניתן לעדכן סיסמא", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
+
+        private String BuildUpdateCommand(string tPass, string tMail)
+        {
+            String command;
+            command = "UPDATE Teachers SET TPassword = '" + tPass +"' WHERE TEmail = '" + tMail + "'";
+
+            return command;
+        }
+
         public List<Teachers> ReadTeachers()
         {
 
