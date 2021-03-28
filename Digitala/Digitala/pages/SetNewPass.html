@@ -30,7 +30,7 @@
     <script>
         $(document).ready(function () {
             $("#confirm").on("blur", checkPassword);
-            $("#resetPassBtn").submit(f1);
+            $("#resetPass").submit(f1);
         });
 
         function checkPassword() {
@@ -50,7 +50,43 @@
         }
 
         function setNewPassword() {
-            alert("innewpass");
+            ajaxCall("GET", "../api/Teachers", "", getTeachersSuccess, getTeachersError);
+        }
+
+        function getTeachersSuccess(data) {
+            let user = $("#uEmail").val();
+            let oldPass = $("#oldPassword").val();
+            let newPass = $("#password").val();
+
+            let hit = 0;
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].TeacherEmail == user) {
+                    if (data[i].TeacherPassword == oldPass) {
+                        hit = 1;
+                        ajaxCall("PUT", "../api/Teachers/" + newPass + "/" + user, "", setNewpassSuccess, setNewpassError);
+                    }
+                    else {
+                        swal("בדוק את הסיסמא", "נסה שוב", "error");
+                    }
+                }
+
+            }
+            if (hit == 0) {
+                swal("שגיאה", "בדוק את הפרטים או הרשם", "error");
+            }
+        }
+
+        function getTeachersError() {
+            alert("error");
+        }
+
+        function setNewpassSuccess(success) {
+            localStorage.setItem("UserName", $("#uEmail").val());
+            window.location.href = 'index.html'
+        }
+
+        function setNewpassError(error) {
+            alert("error");
         }
 
     </script>
@@ -64,7 +100,7 @@
         </div>
         <div class="card">
             <div class="body">
-                <form id="forgot_password">
+                <form id="resetPass">
                     <div class="msg">
                         לאיפוס הסיסמא אנא הזינו את הפרטים 
                     </div>
@@ -81,7 +117,7 @@
                             <i class="material-icons">lock_open</i>
                         </span>
                         <div class="form-line">
-                            <input type="password" class="form-control" name="password" id="newPassword" minlength="6" placeholder="סיסמא זמנית" required>
+                            <input type="password" class="form-control" name="password" id="oldPassword" minlength="6" placeholder="סיסמא זמנית" required>
                         </div>
                     </div>
                     <div class="input-group">
@@ -101,7 +137,7 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-block btn-lg bg-pink waves-effect" type="submit" id="resetPassBtn">אפס את הסיסמא</button>
+                    <button class="btn btn-block btn-lg bg-pink waves-effect" type="submit" id="resetPass">אפס את הסיסמא</button>
 
                     <div class="row m-t-20 m-b--5 align-center">
                         <a href="sign-in.html">כניסה למערכת</a>
