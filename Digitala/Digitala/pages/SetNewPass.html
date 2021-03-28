@@ -29,8 +29,9 @@
 
     <script>
         $(document).ready(function () {
-            $("#confirm").on("blur", checkPassword);
             $("#resetPass").submit(f1);
+            $("#confirm").on("blur", checkPassword);
+
         });
 
         function checkPassword() {
@@ -117,7 +118,7 @@
                             <i class="material-icons">lock_open</i>
                         </span>
                         <div class="form-line">
-                            <input type="password" class="form-control" name="password" id="oldPassword" minlength="6" placeholder="סיסמא זמנית" required>
+                            <input type="password" class="form-control" name="oldPassword" id="oldPassword" minlength="6" placeholder="סיסמא זמנית" required>
                         </div>
                     </div>
                     <div class="input-group">
@@ -125,7 +126,7 @@
                             <i class="material-icons">lock_outline</i>
                         </span>
                         <div class="form-line">
-                            <input type="password" class="form-control" name="confirm" id="password" minlength="6" placeholder="סיסמא חדשה" required>
+                            <input type="password" class="form-control" name="password" id="password" minlength="6" placeholder="סיסמא חדשה" required>
                         </div>
                     </div>
                     <div class="input-group">
