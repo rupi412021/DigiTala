@@ -10,7 +10,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
 
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- Favicon-->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
     <!-- Google Fonts -->
@@ -19,7 +18,7 @@
     <!-- Bootstrap Core Css -->
     <link href="../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-
+    <link href="../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
     <!-- Waves Effect Css -->
     <link href="../plugins/node-waves/waves.css" rel="stylesheet" />
 
@@ -203,8 +202,8 @@
                     icon: "warning",
                     dangerMode: true,
                     buttons: true,
-                    cancel: "ביטול",
-                    confirm: "אישור"
+                    confirmButtonText: "מחק",
+                    cancelButtonText: "סגור",
                 })
                     .then(function (willDelete) {
                         if (willDelete) DeleteTar(tarId);
@@ -335,6 +334,12 @@
             allTargetInBank = tarsdata;
             buttonEvents(); // after redrawing the table, we must wire the new buttons
             $("#addingDiv").hide();
+            swal({
+                title: "המטרה נמחקה בהצלחה",
+                type: "success",
+                timer: 1500,
+                showConfirmButton: false
+            });
             mode = "";
         }
 
@@ -352,7 +357,12 @@
             redrawTable(tbl, targetsdata);
             buttonEvents();
             $("#editTarDiv").hide();
-            swal("המטרה נוספה בהצלחה", "", "success");
+            swal({
+                title: "המטרה נוספה בהצלחה",
+                type: "success",
+                timer: 1500,
+                showConfirmButton: false
+            });
             mode = "";
         }
 
@@ -361,7 +371,12 @@
             redrawTable(tbl, targetsdata);
             buttonEvents();
             $("#editTarDiv").hide();
-            swal("המטרה עודכנה בהצלחה", "", "success");
+            swal({
+                title: "המטרה עודכנה בהצלחה",
+                type: "success",
+                timer: 1500,
+                showConfirmButton: false
+            });
             mode = "";
         }
     </script>
@@ -644,6 +659,8 @@
 
     <!-- Jquery Validation Plugin Css -->
     <script src="../plugins/jquery-validation/jquery.validate.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="../plugins/sweetalert/sweetalert.min.js"></script>
 
 
     <!-- Waves Effect Plugin Js -->

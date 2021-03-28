@@ -1144,7 +1144,8 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "Select T.* from TargetsInTala TT join Targets T on T.Tserial=TT.Tserial where TT.StudentId = " + r.MatchStudentId + " and TT.TYear = " + r.MatchYear;
+                String selectSTR = "Select T.*, FA.FunctionArea from TargetsInTala TT join Targets T on T.Tserial=TT.Tserial join FunctionAreas FA on FA.FASerial=T.FASerial"
+                    + " where TT.StudentId = " + r.MatchStudentId + " and TT.TYear = " + r.MatchYear;
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -1162,6 +1163,7 @@ namespace Digitala.Models.DAL
                     t.Suitability = Convert.ToDouble(dr["Suitability"]);
                     t.Originality = Convert.ToDouble(dr["Originality"]);
                     t.NumOfUses = Convert.ToInt32(dr["NumOfUses"]);
+                    t.FunctionArea = (string)(dr["FunctionArea"]);
 
                     targetList.Add(t);
                 }

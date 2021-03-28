@@ -1,4 +1,4 @@
-$(function () {
+﻿$(function () {
     $('.js-sweetalert button').on('click', function () {
         var type = $(this).data('type');
         if (type === 'basic') {
@@ -108,11 +108,13 @@ function showAutoCloseTimerMessage() {
 
 function showPromptMessage() {
     swal({
-        title: "An input!",
-        text: "Write something interesting:",
+        title: "ערוך את המטרה כך שעדיין תתאים לתחום התפקוד הנתון",
+        text: "אם ברצונף לשנות את התחום, לחץ על סגור והוסף מטרה חדשה",
         type: "input",
         showCancelButton: true,
         closeOnConfirm: false,
+        confirmButtonText: "שמור שינויים",
+        cancelButtonText: "סגור",
         animation: "slide-from-top",
         inputPlaceholder: "Write something"
     }, function (inputValue) {
@@ -121,6 +123,7 @@ function showPromptMessage() {
             swal.showInputError("You need to write something!"); return false
         }
         swal("Nice!", "You wrote: " + inputValue, "success");
+        return inputValue;
     });
 }
 

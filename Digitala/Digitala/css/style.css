@@ -3429,7 +3429,9 @@ section.content {
   -webkit-border-radius: 0 !important;
   -moz-border-radius: 0 !important;
   -ms-border-radius: 0 !important;
-  border-radius: 0 !important; }
+  border-radius: 0 !important; 
+  direction: rtl;
+}
   .sweet-alert p {
     font-size: 14px !important; }
   .sweet-alert .sa-input-error {

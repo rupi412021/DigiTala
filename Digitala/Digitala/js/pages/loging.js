@@ -50,7 +50,7 @@ function getStudentSuccess(Students) {
     str = '';
 
     for (var i = 0; i < Students.length; i++) {
-        str += '<li><a href="javascript:void(0);" class="menu-toggle"><span>' + Students[i].SFirstName + ' ' + Students[i].SLastName + '</span></a>' +
+        str += '<li><a href="javascript:void(0);" class="menu-toggle" ><span>' + Students[i].SFirstName + ' ' + Students[i].SLastName + "</span></a>" +
             '<ul class="ml-menu" id=' + Students[i].StudentId +'><li><a href="StudentProfile.html">תיק אישי</a></li><li><a href="StudentTala.html">תל"א</a></li></ul></li>';
     }
 
