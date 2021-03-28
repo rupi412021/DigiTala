@@ -14,6 +14,7 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap Core Css -->
     <link href="../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
     <!-- Waves Effect Css -->
@@ -38,9 +39,17 @@
             CharsChosen = [];
             TargetForTala = [];
             indexHidden = [];
+            filterMainBtnIdLast = "filterMainBTN1";
+            
             ajaxCall("GET", "../api/FuncAreas/2", "", getSubAreasSuccess, error);
 
-            tagsButtons();
+            tagsCharsButtons();
+
+            tagsTarsButtons();
+
+            NewTargetFilterButtons();
+
+            EditDelTargets();
 
             $("form").keypress(function (e) {
                 //Enter key
@@ -48,7 +57,7 @@
                     return false;
                 }
             });
-
+         
             $(document).on("click", "#next", function () {
                 if ($("#wizard_with_validation-p-1").hasClass("body current")) {
                     if (CharsChosen.length == 0) {
@@ -73,6 +82,15 @@
                 }
             });
 
+            $(document).on("change", "#tarsMultiPick", function () {
+                $("#TargetsByArea").show();
+            });
+
+            
+            
+        });
+
+        function EditDelTargets() {
             $(document).on("click", ".updateBtn", function () {
                 var tarId = this.getAttribute('data-tarId');
                 var tarVal;
@@ -144,17 +162,57 @@
                     renderTargetsToPage(TargetForTala);
                 });
             });
-        });
+        }
+
+        function NewTargetFilterButtons() {
+            $(document).on("click", ".filterMainBtn", function () {
+                filterBtnId = this.getAttribute('id');
+
+                document.getElementById(filterMainBtnIdLast).classList.remove("bg-grey");
+                document.getElementById(filterMainBtnIdLast).classList.add("bg-blue-grey");
+
+                document.getElementById(filterBtnId).classList.remove("bg-blue-grey");
+                document.getElementById(filterBtnId).classList.add("bg-grey");
+
+                filterMainBtnIdLast = filterBtnId;
+                $("#TargetsByArea").hide();
+
+                renderSubAreasListByArea(filterBtnId);
+            });
+
+            $(document).on("click", ".filterBtn", function () {
+                filterBtnId = this.getAttribute('id');
+
+                document.getElementById(filterBtnIdLast).classList.remove("bg-grey");
+                document.getElementById(filterBtnIdLast).classList.add("bg-blue-grey");
+
+                document.getElementById(filterBtnId).classList.remove("bg-blue-grey");
+                document.getElementById(filterBtnId).classList.add("bg-grey");
+
+                filterBtnIdLast = filterBtnId;
+
+                renderTargetsListByArea(filterBtnId);
+
+            });
+        }
 
         function GetRecommendationsSuccess(recommendationsData) {
             console.log(recommendationsData);
             TargetForTala = recommendationsData.Recommendations;
+            if (TargetForTala.length == 0) {
+                swal({
+                    title: "לא נמצאו מטרות מתאימות",
+                    text: "ניתן לחזור לאחור ולבחור מאפיינים נוספים או להוסיף מטרות חדשות",
+                    type: "warning",
+                    confirmButtonText: "אשר"
+                });
+            }
             renderTargetsToPage(TargetForTala);
         }
 
         function renderTargetsToPage(targetsList) {
             for (var i = 1; i <= 6; i++) {
-                $("#collapse_"+i).hide();
+                $("#collapse_" + i).hide();
             }
             for (var j = 0; j < MainAreasList.length; j++) {
                 renderTargets = "";
@@ -174,24 +232,24 @@
             }
         }
 
-        function tagsButtons() {
+        function tagsCharsButtons() {          
             $(document).on("change", "#charsMultiPick", function () {
                 let tempVal = $("#charsMultiPick").val();
                 let tempID = $('#charsMultiPickList option[value="' + tempVal + '"]').attr('id');
 
-                let unknown = 999;
                 if (tempID > 0) {
                     ObjTemp = {
                         Chararcteristic: tempVal,
                         CharacteristicKey: tempID
                     }
                 }
+
                 else {
                     ObjTemp = {
                         Chararcteristic: tempVal,
-                        CharacteristicKey: unknown
+                        CharacteristicKey: unknownIdChar
                     }
-                    unknown++;
+                    unknownIdChar++;
                 }
 
                 CharsChosen.push(ObjTemp);
@@ -204,7 +262,7 @@
                     for (var i = 0; i < ChararcteristicsList.length; i++) {
                         if (ChararcteristicsList[i].CharacteristicKey == CharsChosen[j].CharacteristicKey) {
                             indexHidden.push(ChararcteristicsList[i].CharacteristicKey);
-                            break
+                            break;
                         }
                     }
                 }
@@ -212,7 +270,6 @@
                     renderDataListChars(indexHidden);
 
             });
-
             $(document).on("click", ".tagRemove", function () {
                 let ValToRemove = this.getAttribute("id");
                 let tagsList = "";
@@ -234,10 +291,70 @@
             });
         }
 
+        function tagsTarsButtons() {
+            //$(document).on("change", "#", function () {
+            //    let tempVal = $("#charsMultiPick").val();
+            //    let tempID = $('#charsMultiPickList option[value="' + tempVal + '"]').attr('id');
+
+                
+            //    if (tempID > 0) {
+            //        ObjTemp = {
+            //            Chararcteristic: tempVal,
+            //            CharacteristicKey: tempID
+            //        }
+            //    }
+            //    else {
+            //        ObjTemp = {
+            //            Chararcteristic: tempVal,
+            //            CharacteristicKey: unknownTarId
+            //        }
+            //        unknownTarId++;
+            //    }
+
+            //    CharsChosen.push(ObjTemp);
+            //    let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + ObjTemp.CharacteristicKey + '">X</button> ' + ObjTemp.Chararcteristic + '</span>';
+            //    $("#phTarsLabels").append(tampValString);
+            //    $("#charsMultiPick").val("");
+
+            //    indexHidden = [];
+            //    for (var j = 0; j < CharsChosen.length; j++) {
+            //        for (var i = 0; i < ChararcteristicsList.length; i++) {
+            //            if (ChararcteristicsList[i].CharacteristicKey == CharsChosen[j].CharacteristicKey) {
+            //                indexHidden.push(ChararcteristicsList[i].CharacteristicKey);
+            //                break
+            //            }
+            //        }
+            //    }
+            //    if (indexHidden.length > 0)
+            //        renderDataListChars(indexHidden);
+
+            //});
+
+            //$(document).on("click", ".tagRemove", function () {
+            //    let ValToRemove = this.getAttribute("id");
+            //    let tagsList = "";
+
+            //    for (i = 0; i < CharsChosen.length; i++) {
+            //        if (CharsChosen[i].CharacteristicKey == ValToRemove) {
+            //            indexHidden.splice(i, 1);
+            //            CharsChosen.splice(i, 1);
+            //            break;
+            //        }
+            //    }
+
+            //    for (var i = 0; i < CharsChosen.length; i++) {
+            //        tagsList += '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + CharsChosen[i].CharacteristicKey + '">X</button> ' + CharsChosen[i].Chararcteristic + '</span>';
+            //    }
+            //    $("#phLabels").html(tagsList);
+
+            //    renderDataListChars(indexHidden);
+            //});
+        }
+
         function getChararcteristicsSuccess(ChararcteristicsData) {
             ChararcteristicsList = ChararcteristicsData;
             console.log(ChararcteristicsData);
-
+            unknownIdChar = ChararcteristicsList.length + 1000;
             let charsList = "";
             for (var i = 0; i < ChararcteristicsList.length; i++) {
                 for (var j = 0; j < SubAreasList.length; j++) {
@@ -268,6 +385,8 @@
             console.log(allSubAreas);
             SubAreasList = allSubAreas;
             ajaxCall("GET", "../api/FuncAreas/1", "", getAreasSuccess, error);
+            ajaxCall("GET", "../api/Targets", "", getTargetsSuccess, error);
+
         }
 
         function renderDataListChars(indexHidden) {
@@ -293,6 +412,65 @@
 
             $("#charsMultiPickList").html(charsList);
         }
+
+        function renderTargetsListByArea(SubAreaFilterId) {
+            var renderTargetsList = "";
+            for (var i = 0; i < TargetsFullList.length; i++) {
+                if ("filterSubBTN" + TargetsFullList[i].SfaSerial == SubAreaFilterId)
+                    renderTargetsList += '<button type="button" id=' + TargetsFullList[i].TarSerial + ' class="list-group-item tagNewTarget">' + TargetsFullList[i].Target + '</button>';
+                $("#TargetsByArea").html(renderTargetsList);
+            }
+        }
+
+        function renderSubAreasListByArea(AreaFilterId) {
+            var renderSubAreasList = "";
+            let first = 0;
+            for (var i = 0; i < SubAreasList.length; i++) {
+                if ("filterMainBTN" + SubAreasList[i].AreaId == AreaFilterId) {
+                    if (first == 0) {
+                        renderSubAreasList += '<button type="button" id=filterSubBTN' + SubAreasList[i].SubAreaId + ' class="btn bg-grey waves-effect filterBtn">' + SubAreasList[i].SubArea + '</button>';
+                        first = 1;
+                        filterBtnIdLast = "filterSubBTN" + SubAreasList[i].SubAreaId;
+                        renderTargetsListByArea(filterBtnIdLast);
+                    }
+                    else {
+                        renderSubAreasList += '<button type="button" id=filterSubBTN' + SubAreasList[i].SubAreaId + ' class="btn bg-blue-grey waves-effect filterBtn">' + SubAreasList[i].SubArea + '</button>';
+                    }
+                }
+            }
+            $("#subareasFilter").html(renderSubAreasList);
+            $("#TargetsByArea").show();
+
+        }
+
+        function getTargetsSuccess(allTargets) {
+            TargetsFullList = allTargets;
+            console.log(allTargets);
+            unknownTarId = TargetsFullList.length + 1000;
+            renderSubAreasListByArea("filterMainBTN1");
+            rederAllTargets(TargetsFullList);
+        }
+
+        function rederAllTargets(targetsList) {
+            var renderTargetsList = "";
+            for (var i = 0; i < targetsList.length; i++) {
+                for (var k = 0; k < TargetForTala.length; i++) {
+                    if (TargetForTala[k].TarSerial == TargetForTala[i].TarSerial) {
+                        break;
+                    }
+                    else {
+                        for (var j = 0; j < SubAreasList.length; j++) {
+                            if (SubAreasList[j].SubAreaId == targetsList[i].SfaSerial) {
+                                renderTargetsList += "<option value='" + targetsList[i].Target + "' id=" + targetsList[i].TarSerial + "></option>";
+                                break;
+                            }
+                        }
+                    }
+                }    
+            }
+            $("#tarsMultiPickList").html(renderTargetsList);
+        }
+
         function error(data) {
             alert("could not bring data")
         }
@@ -401,7 +579,7 @@
                                                     </a>
                                                 </h4>
                                             </div>
-                                            <div id="collapseThree_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo_19">
+                                            <div id="collapseThree_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_3">
 
@@ -464,8 +642,8 @@
                                             <span>הוסף מטרה חדשה</span>
                                         </button>
 
-                                        <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
-                                            <div class="modal-dialog" role="document">
+                                        <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" >
+                                            <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h3 id="largeModalLabel">הוסף מטרה חדשה</h3>
@@ -473,11 +651,43 @@
                                                     <div class="modal-body">
                                                         <div class="form-group">
                                                             <div class="form-line">
-
-                                                                <input id="newTarget" value="this" class="form-control" />
+                                                                <!--<input value="מטרות שלא הושגו משנה שעברה" class="form-control" />-->
                                                             </div>
                                                         </div>
+                                                        <div class="form-group">
+                                                            <div>
+                                                                <button type="button" id="filterMainBTN1" class="btn bg-grey btn-lg waves-effect filterMainBtn">סנסומוטורי</button>
+                                                                <button type="button" id="filterMainBTN2" class="btn bg-blue-grey btn-lg waves-effect filterMainBtn">כישורי חיים</button>
+                                                                <button type="button" id="filterMainBTN3" class="btn bg-blue-grey btn-lg waves-effect filterMainBtn">חברתי</button>
+                                                                <button type="button" id="filterMainBTN4" class="btn bg-blue-grey btn-lg waves-effect filterMainBtn">תקשורתי שפתי</button>
+                                                                <button type="button" id="filterMainBTN5" class="btn bg-blue-grey btn-lg waves-effect filterMainBtn">התנהגותי רגשי</button>
+                                                                <button type="button" id="filterMainBTN6" class="btn bg-blue-grey btn-lg waves-effect filterMainBtn">קוגנטיבי לימודי</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div id="subareasFilter">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group" style="float:right">
+                                                            <div class="form-line">
+                                                                <input id="tarsMultiPick" list="tarsMultiPickList" placeholder="&#xf002" Class="form-control" />
+                                                                <datalist id="tarsMultiPickList"></datalist>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="list-group" id="TargetsByArea">
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="form-line">
+                                                                <!--<input id="newTarget" value="מטרה חדשה" class="form-control" />-->
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group" id="phTarsLabels"></div>
                                                     </div>
+                                                    
                                                     <div class="modal-footer" style="text-align:center">
                                                         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
                                                         <button type="button" class="btn btn-link waves-effect">שמור</button>
@@ -493,28 +703,6 @@
                                     <input id="acceptTerms-2" name="acceptTerms" type="checkbox" required>
                                     <label for="acceptTerms-2">I agree with the Terms and Conditions.</label>
                                 </fieldset>
-                                <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4>ערוך מטרה</h4>
-                                                <h3 class="modal-title" id="defaultModalLabel">סנסומוטורי</h3>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="form-group">
-                                                    <div class="form-line">
-                                                        <input id="rephraseTar" value="this" class="form-control" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer" style="text-align:center">
-                                                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
-                                                <button type="button" class="btn btn-link waves-effect">שמור שינויים</button>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </form>
                         </div>
                     </div>
@@ -577,7 +765,6 @@
                             <span>עזרה</span>
                         </a>
                     </li>
-
                 </ul>
             </div>
             <!-- #Menu -->

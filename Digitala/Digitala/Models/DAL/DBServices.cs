@@ -53,7 +53,7 @@ namespace Digitala.Models.DAL
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
                 String selectSTR = "Select T.*, FA.FunctionArea, SFA.SubFunctionArea from Targets T"+
-                                    " inner join FunctionAreas FA on T.FASerial = FA.FASerial  inner join SubFunctionAreas SFA on T.SFASerial = SFA.SFASerial";
+                                    " inner join FunctionAreas FA on T.FASerial = FA.FASerial  inner join SubFunctionAreas SFA on T.SFASerial = SFA.SFASerial ORDER BY T.NumOfUses DESC";
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -1184,7 +1184,7 @@ namespace Digitala.Models.DAL
 
             }
 
-        }        
+        }
 
         public RecommendedTargets ActivateRecommendation(RecommendedTargets rt, int dis1, int dis2)
         {
@@ -1212,18 +1212,20 @@ namespace Digitala.Models.DAL
                     {
                         for (int j = 0; j < rt.NewStudentChars.Count; j++)
                         {
-                            for (int k = 1; k < dr.FieldCount; k++)
+                            if (rt.NewStudentChars[j].CharacteristicKey < dr.FieldCount - 2)
                             {
-                                string c = "char_" + k;
-                                if ("char_" + rt.NewStudentChars[j].CharacteristicKey == c)
+                                for (int k = 1; k < dr.FieldCount; k++)
                                 {
-                                    
-                                    if (Convert.ToInt32(dr[c]) == 1)
-                                        countMatch++;
-                                    else
-                                        disMatch++;
-                                    tablefull = 1;
-                                    break;
+                                    string c = "char_" + k;                               
+                                    if ("char_" + rt.NewStudentChars[j].CharacteristicKey == c)
+                                    {
+                                        if (Convert.ToInt32(dr[c]) == 1)
+                                            countMatch++;
+                                        else
+                                            disMatch++;
+                                        tablefull = 1;
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -1256,13 +1258,16 @@ namespace Digitala.Models.DAL
                         Chosen.MatchYear = item.MatchYear;
                     }
                 }
+
+                if(Chosen.CountMatch > (dr.FieldCount - 2)*0.25)
                     Chosen.Recommendations = ReadTargetsById(Chosen);
-                
-                if(tablefull==0)
+
+                if (tablefull == 0 || Chosen.CountMatch <= (dr.FieldCount - 2 - rt.NewStudentChars.Count) * 0.25)
                 {
                     List <Targets> TargetsList = ReadTargets();
                     List<Chararcteristics> chars= ReadChararcteristics();
                     List<Targets> recommended = new List<Targets>();
+
                     for (int i = 0; i < rt.NewStudentChars.Count; i++)
                     {
                         for (int j = 0; j < chars.Count; j++)
@@ -1272,20 +1277,24 @@ namespace Digitala.Models.DAL
                         }
                     }
 
-                    int max5 = 0;
+                    int max6 = 0;
+                    int max2 = 0;
                     for (int i = 0; i < rt.NewStudentChars.Count; i++)
                     {
+                        max2 = 0;
                         for (int j = 0; j < TargetsList.Count; j++)
                         {
                             if (rt.NewStudentChars[i].SfaSerial == TargetsList[j].SfaSerial)
                             {
-                                max5++;
+                                max6++;
+                                max2++;
                                 recommended.Add(TargetsList[j]);
-                                break;
+                                if(max2 == 2)
+                                    break;
                             }
                         }
 
-                        if (max5 >= 5)
+                        if (max6 == 6)
                             break;
                     }
                     Chosen.Recommendations = recommended;
@@ -1296,8 +1305,7 @@ namespace Digitala.Models.DAL
                 Chosen.NewStudentChars = rt.NewStudentChars;
 
                 //*******MOVE TO INSERT TALA FUNCTION*********//
-
-                InsertChararcteristics(rt.NewStudentChars, rt.NewStudentId, rt.CurrentYear);
+                //InsertChararcteristics(rt.NewStudentChars, rt.NewStudentId, rt.CurrentYear);
 
 
                 return Chosen;

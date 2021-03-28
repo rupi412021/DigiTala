@@ -1,6 +1,38 @@
-﻿div, h2, p, span {
+﻿div, h2, p, span, input {
     font-family: Calibri;
+}
 
+#tarsMultiPick::-webkit-input-placeholder {
+    font-family: FontAwesome;
+    font-weight: normal;
+    overflow: visible;
+    vertical-align: top;
+    display: inline-block !important;
+    padding-left: 5px;
+    padding-top: 2px;
+    color: #F4A55C;
+}
+
+#tarsMultiPick::-moz-placeholder {
+    font-family: FontAwesome;
+    font-weight: normal;
+    overflow: visible;
+    vertical-align: top;
+    display: inline-block !important;
+    padding-left: 5px;
+    padding-top: 2px;
+    color: #F4A55C;
+}
+
+#tarsMultiPick:-ms-input-placeholder {
+    font-family: FontAwesome;
+    font-weight: normal;
+    overflow: visible;
+    vertical-align: top;
+    display: inline-block !important;
+    padding-left: 5px;
+    padding-top: 2px;
+    color: #F4A55C;
 }
 optgroup {
     font-size: 18px;
@@ -88,6 +120,13 @@ span, datalist {
     width: auto;
     box-shadow: 0 0 0 0;
     font-size: 18px;
+}
+
+.btn.waves-effect.filterBtn {
+    text-align: center;
+    width: auto;
+    box-shadow: 0 0 0 0;
+    margin: 2px;
 }
 #cancelBTN {
     box-shadow: 0 0 0 rgba(0, 0, 0, 0), 0 2px 10px rgba(0, 0, 0, 0);
