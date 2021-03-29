@@ -80,6 +80,21 @@
                         ajaxCall("POST", "../api/Chararcteristics", JSON.stringify(newStudentChars), GetRecommendationsSuccess, error);
                     }
                 }
+                if ($("#wizard_with_validation-p-2").hasClass("body current")) {
+                    if (TargetForTala.length == 0) {
+                        swal({
+                            title: "לא נבחרו מטרות לתלמיד",
+                            text: "חזור לבחירת מטרות מתאימות",
+                            type: "error",
+                            confirmButtonText: "חזור"
+                        }, function () {
+                            document.getElementById("previous").click();
+                        });
+                    }
+                    else {
+                        //function: render targets to add tools and goals
+                    }
+                }
             });
 
             $(document).on("click", "#saveTargetsToTala", function () {
@@ -89,6 +104,34 @@
         });
 
         function EditDelTargets() {
+            $(document).on("click", "#addNewTar", function () {
+                swal({
+                    title: "הוסף מטרה חדשה",
+                    text: 'אם ברצונף לשנות את התחום, לחץ על "סגור" והוסף מטרה חדשה',
+                    type: "input",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    confirmButtonText: "שמור שינויים",
+                    cancelButtonText: "סגור",
+                    animation: "slide-from-top",
+                    inputValue: "1",
+                    inputValue: "2",
+                }, function (inputValue) {
+                    if (inputValue === false) return false;
+                    if (inputValue === "") {
+                        swal.showInputError("נוסח המטרה לא השתנה"); return false
+                    }
+                    swal({
+                        title: "נוסח המטרה השתנה בהצלחה",
+                        type: "success",
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    TargetForTala[tarIndex].Target = inputValue;
+                    renderTargetsToPage(TargetForTala);
+                });
+            });
+
             $(document).on("click", ".updateBtn", function () {
                 var tarId = this.getAttribute('data-tarId');
                 var tarVal;
@@ -173,8 +216,6 @@
                 document.getElementById(filterBtnId).classList.add("bg-grey");
 
                 filterMainBtnIdLast = filterBtnId;
-                $("#TargetsByArea").hide();
-
                 renderSubAreasListByArea(filterBtnId);
             });
 
@@ -236,7 +277,7 @@
         function tagsCharsButtons() {          
             $(document).on("change", "#charsMultiPick", function () {
                 let tempVal = $("#charsMultiPick").val();
-                let tempID = $('#charsMultiPickList option[value="' + tempVal + '"]').attr('id');
+                let tempID = $('#charsMultiPickList option[value="' + tempVal + '"]').attr('char-id');
 
                 if (tempID > 0) {
                     ObjTemp = {
@@ -254,7 +295,7 @@
                 }
 
                 CharsChosen.push(ObjTemp);
-                let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + ObjTemp.CharacteristicKey + '">X</button> ' + ObjTemp.Chararcteristic + '</span>';
+                let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagRemove" char-id="' + ObjTemp.CharacteristicKey + '">X</button> ' + ObjTemp.Chararcteristic + '</span>';
                 $("#phLabels").append(tampValString);
                 $("#charsMultiPick").val("");
 
@@ -272,7 +313,7 @@
 
             });
             $(document).on("click", ".tagRemove", function () {
-                let ValToRemove = this.getAttribute("id");
+                let ValToRemove = this.getAttribute("char-id");
                 let tagsList = "";
 
                 for (i = 0; i < CharsChosen.length; i++) {
@@ -284,7 +325,7 @@
                 }
 
                 for (var i = 0; i < CharsChosen.length; i++) {
-                    tagsList += '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + CharsChosen[i].CharacteristicKey + '">X</button> ' + CharsChosen[i].Chararcteristic + '</span>';
+                    tagsList += '<span class="tag label label-tag"><button class="btn-trans tagRemove" char-id="' + CharsChosen[i].CharacteristicKey + '">X</button> ' + CharsChosen[i].Chararcteristic + '</span>';
                 }
                 $("#phLabels").html(tagsList);
 
@@ -318,7 +359,7 @@
                 }
                 
                 TargetForTala.push(ObjTemp);
-                let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagTarRemove" id="' + ObjTemp.TarSerial + '">X</button> ' + ObjTemp.Target + '</span>';
+                let tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + ObjTemp.TarSerial + '">X</button> ' + ObjTemp.Target + '</span>';
                 $("#phTarsLabels").append(tampValString);
 
                 rederAllTargets(TargetsFullList);
@@ -336,11 +377,12 @@
                 }
 
                 for (var i = 0; i < TargetForTala.length; i++) {
-                    tagsList += '<span class="tag label label-tag"><button class="btn-trans tagTarRemove" id="' + TargetForTala[i].TarSerial + '">X</button> ' + TargetForTala[i].Target + '</span>';
+                    tagsList += '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + TargetForTala[i].TarSerial + '">X</button> ' + TargetForTala[i].Target + '</span>';
                 }
                 $("#phTarsLabels").html(tagsList);
 
                 rederAllTargets(TargetsFullList);
+                renderSubAreasListByArea(TargetsFullList);
             });
         }
 
@@ -352,7 +394,7 @@
             for (var i = 0; i < ChararcteristicsList.length; i++) {
                 for (var j = 0; j < SubAreasList.length; j++) {
                     if (SubAreasList[j].SubAreaId == ChararcteristicsList[i].SfaSerial) {
-                        charsList += "<option value='" + ChararcteristicsList[i].Chararcteristic + "' id=" + ChararcteristicsList[i].CharacteristicKey + ">תחום: " + SubAreasList[j].SubArea + "</option>";
+                        charsList += "<option value='" + ChararcteristicsList[i].Chararcteristic + "' char-id=" + ChararcteristicsList[i].CharacteristicKey + ">תחום: " + SubAreasList[j].SubArea + "</option>";
                         break;
                     }
                 }
@@ -397,7 +439,7 @@
             for (var i = 0; i < tempList.length; i++) {
                 for (var j = 0; j < SubAreasList.length; j++) {
                     if (SubAreasList[j].SubAreaId == tempList[i].SfaSerial) {
-                        charsList += "<option value='" + tempList[i].Chararcteristic + "' id=" + tempList[i].CharacteristicKey + ">תחום: " + SubAreasList[j].SubArea + "</option>";
+                        charsList += "<option value='" + tempList[i].Chararcteristic + "' char-id=" + tempList[i].CharacteristicKey + ">תחום: " + SubAreasList[j].SubArea + "</option>";
                         break;
                     }
                 }
@@ -443,7 +485,6 @@
                 }
             }
             $("#subareasFilter").html(renderSubAreasList);
-            $("#TargetsByArea").show();
 
         }
 
@@ -651,14 +692,10 @@
                                             <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h3 id="largeModalLabel">הוסף מטרה חדשה</h3>
+                                                        <h3 id="largeModalLabel">הוסף מטרה לתל"א</h3>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <div class="form-line">
-                                                                <!--<input value="מטרות שלא הושגו משנה שעברה" class="form-control" />-->
-                                                            </div>
-                                                        </div>
+                                                        <!--להוסיף מטרה חדשה + להציג מטרות שלא הושגו משנה שעברה-->
                                                         <div class="form-group">
                                                             <div>
                                                                 <button type="button" id="filterMainBTN1" class="btn bg-grey btn-lg waves-effect filterMainBtn">סנסומוטורי</button>
@@ -681,26 +718,25 @@
 
                                                         </div>
                                                         <div class="form-group">
-                                                            <div class="list-group" id="TargetsByArea">
-
-                                                            </div>
+                                                            <div class="list-group" id="TargetsByArea"></div>
                                                         </div>
+                                                        
                                                         <div class="form-group">
-                                                            <div class="form-line">
-                                                                <!--<input id="newTarget" value="מטרה חדשה" class="form-control" />-->
+                                                            <div id="phTarsLabels">
                                                             </div>
+                                                            <button type="button" class="btn waves-effect" id="addNewTar">
+                                                                <i class="material-icons">add</i>
+                                                                <span class="font-underline">הוסף מטרה שאינה במאגר</span>
+                                                            </button>
                                                         </div>
-                                                        <div class="form-group" id="phTarsLabels"></div>
                                                     </div>
-                                                    
                                                     <div class="modal-footer" style="text-align:center">
                                                         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
-                                                        <button type="button" id="saveTargetsToTala" class="btn btn-link waves-effect">שמור</button>
+                                                        <button type="button" id="saveTargetsToTala" class="btn btn-link waves-effect" data-dismiss="modal">שמור</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </fieldset>
                                 <h3><b>הגדרת יעדים ואמצעים</b></h3>
