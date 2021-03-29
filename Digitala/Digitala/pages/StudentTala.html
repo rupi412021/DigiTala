@@ -57,7 +57,7 @@
                     return false;
                 }
             });
-         
+
             $(document).on("click", "#next", function () {
                 if ($("#wizard_with_validation-p-1").hasClass("body current")) {
                     if (CharsChosen.length == 0) {
@@ -100,36 +100,11 @@
             $(document).on("click", "#saveTargetsToTala", function () {
                 renderTargetsToPage(TargetForTala);
             });
-            
         });
 
         function EditDelTargets() {
             $(document).on("click", "#addNewTar", function () {
-                swal({
-                    title: "הוסף מטרה חדשה",
-                    text: 'אם ברצונף לשנות את התחום, לחץ על "סגור" והוסף מטרה חדשה',
-                    type: "input",
-                    showCancelButton: true,
-                    closeOnConfirm: false,
-                    confirmButtonText: "שמור שינויים",
-                    cancelButtonText: "סגור",
-                    animation: "slide-from-top",
-                    inputValue: "1",
-                    inputValue: "2",
-                }, function (inputValue) {
-                    if (inputValue === false) return false;
-                    if (inputValue === "") {
-                        swal.showInputError("נוסח המטרה לא השתנה"); return false
-                    }
-                    swal({
-                        title: "נוסח המטרה השתנה בהצלחה",
-                        type: "success",
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-                    TargetForTala[tarIndex].Target = inputValue;
-                    renderTargetsToPage(TargetForTala);
-                });
+                
             });
 
             $(document).on("click", ".updateBtn", function () {
@@ -687,7 +662,6 @@
                                             <i class="material-icons">add</i>
                                             <span>הוסף מטרה חדשה</span>
                                         </button>
-
                                         <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" >
                                             <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content">
