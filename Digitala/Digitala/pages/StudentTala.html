@@ -82,11 +82,9 @@
                 }
             });
 
-            $(document).on("change", "#tarsMultiPick", function () {
-                $("#TargetsByArea").show();
+            $(document).on("click", "#saveTargetsToTala", function () {
+                renderTargetsToPage(TargetForTala);
             });
-
-            
             
         });
 
@@ -198,6 +196,7 @@
 
         function GetRecommendationsSuccess(recommendationsData) {
             console.log(recommendationsData);
+            
             TargetForTala = recommendationsData.Recommendations;
             if (TargetForTala.length == 0) {
                 swal({
@@ -207,7 +206,9 @@
                     confirmButtonText: "אשר"
                 });
             }
-            renderTargetsToPage(TargetForTala);
+            if (TargetForTala.length>0)
+                renderTargetsToPage(TargetForTala);
+            rederAllTargets(TargetsFullList);
         }
 
         function renderTargetsToPage(targetsList) {
@@ -292,63 +293,55 @@
         }
 
         function tagsTarsButtons() {
-            //$(document).on("change", "#", function () {
-            //    let tempVal = $("#charsMultiPick").val();
-            //    let tempID = $('#charsMultiPickList option[value="' + tempVal + '"]').attr('id');
+            $(document).on("change", "#tarsMultiPick", function () {
+                let tempVal = $("#tarsMultiPick").val();
+                let tempID = $('#tarsMultiPickList option[value="' + tempVal + '"]').attr('id');
 
+                if (tempID == undefined)
+                    tempID = unknownTarId;
+                unknownTarId++;
+                $("#tarsMultiPick").val("");
+                renderTagTar(tempID, tempVal)
+            });
+
+            $(document).on("click", ".tagNewTarget", function () {
+                let tempID = this.getAttribute("id");
+                let tempVal = document.getElementById(tempID).value;
+
+                renderTagTar(tempID, tempVal)
+            });
+
+            function renderTagTar(tempID, tempVal) {              
+                ObjTemp = {
+                    Target: tempVal,
+                    TarSerial: tempID
+                }
                 
-            //    if (tempID > 0) {
-            //        ObjTemp = {
-            //            Chararcteristic: tempVal,
-            //            CharacteristicKey: tempID
-            //        }
-            //    }
-            //    else {
-            //        ObjTemp = {
-            //            Chararcteristic: tempVal,
-            //            CharacteristicKey: unknownTarId
-            //        }
-            //        unknownTarId++;
-            //    }
+                TargetForTala.push(ObjTemp);
+                let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagTarRemove" id="' + ObjTemp.TarSerial + '">X</button> ' + ObjTemp.Target + '</span>';
+                $("#phTarsLabels").append(tampValString);
 
-            //    CharsChosen.push(ObjTemp);
-            //    let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + ObjTemp.CharacteristicKey + '">X</button> ' + ObjTemp.Chararcteristic + '</span>';
-            //    $("#phTarsLabels").append(tampValString);
-            //    $("#charsMultiPick").val("");
+                rederAllTargets(TargetsFullList);
+            }
 
-            //    indexHidden = [];
-            //    for (var j = 0; j < CharsChosen.length; j++) {
-            //        for (var i = 0; i < ChararcteristicsList.length; i++) {
-            //            if (ChararcteristicsList[i].CharacteristicKey == CharsChosen[j].CharacteristicKey) {
-            //                indexHidden.push(ChararcteristicsList[i].CharacteristicKey);
-            //                break
-            //            }
-            //        }
-            //    }
-            //    if (indexHidden.length > 0)
-            //        renderDataListChars(indexHidden);
+            $(document).on("click", ".tagTarRemove", function () {
+                let ValToRemove = this.getAttribute("id");
+                let tagsList = "";
 
-            //});
+                for (i = 0; i < TargetForTala.length; i++) {
+                    if (TargetForTala[i].TarSerial == ValToRemove) {
+                        TargetForTala.splice(i, 1);
+                        break;
+                    }
+                }
 
-            //$(document).on("click", ".tagRemove", function () {
-            //    let ValToRemove = this.getAttribute("id");
-            //    let tagsList = "";
+                for (var i = 0; i < TargetForTala.length; i++) {
+                    tagsList += '<span class="tag label label-tag"><button class="btn-trans tagTarRemove" id="' + TargetForTala[i].TarSerial + '">X</button> ' + TargetForTala[i].Target + '</span>';
+                }
+                $("#phTarsLabels").html(tagsList);
 
-            //    for (i = 0; i < CharsChosen.length; i++) {
-            //        if (CharsChosen[i].CharacteristicKey == ValToRemove) {
-            //            indexHidden.splice(i, 1);
-            //            CharsChosen.splice(i, 1);
-            //            break;
-            //        }
-            //    }
-
-            //    for (var i = 0; i < CharsChosen.length; i++) {
-            //        tagsList += '<span class="tag label label-tag"><button class="btn-trans tagRemove" id="' + CharsChosen[i].CharacteristicKey + '">X</button> ' + CharsChosen[i].Chararcteristic + '</span>';
-            //    }
-            //    $("#phLabels").html(tagsList);
-
-            //    renderDataListChars(indexHidden);
-            //});
+                rederAllTargets(TargetsFullList);
+            });
         }
 
         function getChararcteristicsSuccess(ChararcteristicsData) {
@@ -415,9 +408,20 @@
 
         function renderTargetsListByArea(SubAreaFilterId) {
             var renderTargetsList = "";
-            for (var i = 0; i < TargetsFullList.length; i++) {
-                if ("filterSubBTN" + TargetsFullList[i].SfaSerial == SubAreaFilterId)
-                    renderTargetsList += '<button type="button" id=' + TargetsFullList[i].TarSerial + ' class="list-group-item tagNewTarget">' + TargetsFullList[i].Target + '</button>';
+            targetAfterSlice = TargetsFullList.slice();
+            if (TargetForTala.length>0)
+                for (var i = 0; i < targetAfterSlice.length; i++) {
+                    for (var j = 0; j < TargetForTala.length; j++) {
+                        if (TargetForTala[j].TarSerial == targetAfterSlice[i].TarSerial) {
+                            TargetForTala[j] = targetAfterSlice[i];
+                            targetAfterSlice.splice(i, 1);
+                            break;
+                        }
+                }
+            }
+            for (var i = 0; i < targetAfterSlice.length; i++) {
+                if ("filterSubBTN" + targetAfterSlice[i].SfaSerial == SubAreaFilterId)
+                    renderTargetsList += '<button type="button" id=' + targetAfterSlice[i].TarSerial + ' class="list-group-item tagNewTarget">' + targetAfterSlice[i].Target + '</button>';
                 $("#TargetsByArea").html(renderTargetsList);
             }
         }
@@ -448,26 +452,27 @@
             console.log(allTargets);
             unknownTarId = TargetsFullList.length + 1000;
             renderSubAreasListByArea("filterMainBTN1");
-            rederAllTargets(TargetsFullList);
         }
 
         function rederAllTargets(targetsList) {
             var renderTargetsList = "";
             for (var i = 0; i < targetsList.length; i++) {
-                for (var k = 0; k < TargetForTala.length; i++) {
-                    if (TargetForTala[k].TarSerial == TargetForTala[i].TarSerial) {
+                for (var k = 0; k < TargetForTala.length; k++) {
+                    if (TargetForTala[k].TarSerial == targetsList[i].TarSerial) {
+                        TargetForTala[k] = targetsList[i];
+                        targetsList.splice(i, 1);
                         break;
                     }
-                    else {
-                        for (var j = 0; j < SubAreasList.length; j++) {
-                            if (SubAreasList[j].SubAreaId == targetsList[i].SfaSerial) {
-                                renderTargetsList += "<option value='" + targetsList[i].Target + "' id=" + targetsList[i].TarSerial + "></option>";
-                                break;
-                            }
-                        }
-                    }
-                }    
+                }
             }
+            for (var i = 0; i < targetsList.length; i++) {
+                for (var j = 0; j < SubAreasList.length; j++) {
+                    if (SubAreasList[j].SubAreaId == targetsList[i].SfaSerial) {
+                        renderTargetsList += "<option value='" + targetsList[i].Target + "' id=" + targetsList[i].TarSerial + "></option>";
+                        break;
+                    }
+                }
+            }                              
             $("#tarsMultiPickList").html(renderTargetsList);
         }
 
@@ -690,7 +695,7 @@
                                                     
                                                     <div class="modal-footer" style="text-align:center">
                                                         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
-                                                        <button type="button" class="btn btn-link waves-effect">שמור</button>
+                                                        <button type="button" id="saveTargetsToTala" class="btn btn-link waves-effect">שמור</button>
                                                     </div>
                                                 </div>
                                             </div>
