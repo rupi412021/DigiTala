@@ -72,7 +72,7 @@
                     }
                     else {
                         let newStudentChars = {
-                            NewStudentId: "254859527",
+                            NewStudentId: studentIdAtPage,
                             CurrentYear: 2021,
                             NewStudentChars: CharsChosen,
                         }
@@ -101,9 +101,14 @@
                 renderTargetsToPage(TargetForTala);
             });
 
-           
         });
 
+        //function getStudentSuccess(studentsList) {
+        //    for (var i = 0; i < studentsList.length; i++) {
+        //        if (studentsList[i].StudentId == studentIdAtPage)
+        //            $("#studentName").html(studentsList[i].SFirstName + " " + studentsList[i].SLastName)               
+        //    }
+        //}
         function EditDelTargets() {
             $(document).on("click", "#addNewTar", function () {
                 
@@ -542,7 +547,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <h3>סבינה אלפסי</h3>
+                            <h3 id="studentName"></h3>
                         </div>
                         <div class="body">
                             <form id="wizard_with_validation">
