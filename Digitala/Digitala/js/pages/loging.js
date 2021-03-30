@@ -46,13 +46,13 @@ function getStudentError(error) {
     console.log(error);
 }
 
-$(document).on("click", ".openManually", function () {
+$(document).on("click", ".openStudentManually", function () {
     eleId = this.getAttribute('id');
     arr = document.getElementsByClassName("ml-menu");
 
     if ($("#" + eleId).hasClass("toggled")) {
-        document.getElementById(eleId).classList.remove("toggled");
-        document.getElementById(eleId).parentNode.classList.remove("active");
+        this.classList.remove("toggled");
+        this.parentNode.classList.remove("active");
         for (var i = 0; i < arr.length; i++) {
             if (arr[i].id == eleId) {
                 arr[i].setAttribute("style", "display: none;");
@@ -61,8 +61,8 @@ $(document).on("click", ".openManually", function () {
     }
 
     else {
-        document.getElementById(eleId).classList.add("toggled");
-        document.getElementById(eleId).parentNode.classList.add("active");
+        this.classList.add("toggled");
+        this.parentNode.classList.add("active");
         for (var i = 0; i < arr.length; i++) {
             if (arr[i].id == eleId)
                 arr[i].setAttribute("style", "display: block;");
@@ -70,12 +70,30 @@ $(document).on("click", ".openManually", function () {
     }
 });
 
+$(document).on("click", ".openTalaManually", function () {
+    arr = document.getElementsByClassName("openTalaManually");
+    for (var i = 0; i < arr.length; i++) {
+        arr[i].parentNode.classList.remove("active");
+    }
+    this.parentNode.classList.add("active");   
+});
+
+$(document).on("click", ".openProfileManually", function () {
+    arr = document.getElementsByClassName("openProfileManually");
+    for (var i = 0; i < arr.length; i++) {
+        arr[i].parentNode.classList.remove("active");
+        arr[i].classList.remove("toggled");
+    }
+    this.parentNode.classList.add("active");
+    this.classList.ad("toggled");
+});
+
 function getStudentSuccess(Students) {
     str = '';
 
     for (var i = 0; i < Students.length; i++) {
-        str += '<li><a href="javascript:void(0);" class="menu-toggle waves-effect waves-block openManually" id=' + Students[i].StudentId +'><span>' + Students[i].SFirstName + ' ' + Students[i].SLastName + "</span></a>" +
-            '<ul class="ml-menu" id=' + Students[i].StudentId +'><li><a href="StudentProfile.html">תיק אישי</a></li><li><a href="StudentTala.html">תל"א</a></li></ul></li>';
+        str += '<li><a href="javascript:void(0);" class="menu-toggle waves-effect waves-block openStudentManually" id=' + Students[i].StudentId +'><span>' + Students[i].SFirstName + ' ' + Students[i].SLastName + "</span></a>" +
+            '<ul class="ml-menu" id=' + Students[i].StudentId +'><li><a class="waves-effect waves-block openProfileManually" href="StudentProfile.html">תיק אישי</a></li><li><a class="waves-effect waves-block openTalaManually" href="StudentTala.html">תל"א</a></li></ul></li>';
     }
 
     $("#renderStudentsinMenu").html(str);

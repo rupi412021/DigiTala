@@ -12,7 +12,21 @@
     padding-top: 2px;
     color: #F4A55C;
 }
+#smallModal > .modal-sm > .modal-content {
+    border-radius: 15px;
+}
 
+#smallModal{
+    background-color: rgba(0, 0, 0, 0.52);
+}
+.modal-sm>.modal-content>.modal-body>.form-group>.form-line {
+    width: 100%;
+}
+
+#smallModalLabel {
+    font-size: 20px;
+    color: #F46549
+}
 span.tag.label.label-tag.tar {
     font-weight: normal;
     font-size: 15px;

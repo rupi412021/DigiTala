@@ -72,7 +72,7 @@
                     }
                     else {
                         let newStudentChars = {
-                            NewStudentId: studentIdAtPage,
+                            NewStudentId: "204318679",
                             CurrentYear: 2021,
                             NewStudentChars: CharsChosen,
                         }
@@ -101,18 +101,28 @@
                 renderTargetsToPage(TargetForTala);
             });
 
+            TargetToBankForm();
+
+
         });
 
-        //function getStudentSuccess(studentsList) {
-        //    for (var i = 0; i < studentsList.length; i++) {
-        //        if (studentsList[i].StudentId == studentIdAtPage)
-        //            $("#studentName").html(studentsList[i].SFirstName + " " + studentsList[i].SLastName)               
-        //    }
-        //}
-        function EditDelTargets() {
-            $(document).on("click", "#addNewTar", function () {
-                
+        function TargetToBankForm() {
+            $(document).on("change", "#areas", function () {
+                var area = $("#areas").val();
+                var renderSubAreasList = "";
+                for (var i = 0; i < SubAreasList.length; i++) {
+                    if (SubAreasList[i].AreaId == area)
+                        renderSubAreasList += "<option value='" + SubAreasList[i].SubArea + "' id=" + SubAreasList[i].SubAreaId + "></option>";
+                }
+                $("#subareasList").html(renderSubAreasList);
+
             });
+            
+            $(document).on("click", "#saveNewTarToBank", function () {
+                //save target to array + set the tag
+            });
+        }
+        function EditDelTargets() {
 
             $(document).on("click", ".updateBtn", function () {
                 var tarId = this.getAttribute('data-tarId');
@@ -665,11 +675,11 @@
                                         </div>
                                     </div>
                                     <div id="OpenTargetsListToAddNew">
-                                        <button type="button" class="btn waves-effect" id="addNewTarToTala" data-toggle="modal" data-target="#largeModal">
+                                        <button type="button" class="btn waves-effect" id="addNewTarToTala" data-toggle="modal" data-allow-outside-click="false" data-target="#largeModal">
                                             <i class="material-icons">add</i>
                                             <span>הוסף מטרה חדשה</span>
                                         </button>
-                                        <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" >
+                                        <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
                                             <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -701,19 +711,61 @@
                                                         <div class="form-group">
                                                             <div class="list-group" id="TargetsByArea"></div>
                                                         </div>
-                                                        
+
                                                         <div class="form-group">
                                                             <div id="phTarsLabels">
                                                             </div>
-                                                            <button type="button" class="btn waves-effect" id="addNewTar">
+                                                            <button type="button" class="btn waves-effect" id="addNewTar" data-toggle="modal" data-allow-outside-click="false" data-target="#smallModal">
                                                                 <i class="material-icons">add</i>
                                                                 <span class="font-underline">הוסף מטרה שאינה במאגר</span>
                                                             </button>
                                                         </div>
                                                     </div>
-                                                    <div class="modal-footer" style="text-align:center">
+                                                    <div class="modal-footer">
                                                         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
                                                         <button type="button" id="saveTargetsToTala" class="btn btn-link waves-effect" data-dismiss="modal">שמור</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal fade in" id="smallModal" tabindex="-1" role="dialog">
+                                            <div class="modal-dialog modal-sm" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 id="smallModalLabel">הוסף מטרה חדשה</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <div class="form-line">
+                                                                <label>תחום תפקוד</label>
+                                                                <select id="areas" class="form-control">
+                                                                    <option value="0">בחר תחום מרשימה</option>
+                                                                    <option value="1">סנסומוטורי</option>
+                                                                    <option value="2">כישורי חיים</option>
+                                                                    <option value="3">חברתי</option>
+                                                                    <option value="4">תקשורתי שפתי</option>
+                                                                    <option value="5">התנהגותי רגשי</option>
+                                                                    <option value="6">קוגניטיבי לימודי</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="form-line">
+                                                                <label>תת-תחום</label>
+                                                                <input id="subareas" list="subareasList" placeholder="בחר מרשימה או הקלד ערך חדש" class="form-control" />
+                                                                <datalist id="subareasList"></datalist>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="form-line">
+                                                                <label>מטרה</label>
+                                                                <input id="targetToBank" placeholder="נסח מטרה חדשה" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
+                                                        <button type="button" id="saveNewTarToBank" class="btn btn-link waves-effect" data-dismiss="modal">שמור</button>
                                                     </div>
                                                 </div>
                                             </div>
