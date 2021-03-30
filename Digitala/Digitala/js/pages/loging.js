@@ -71,21 +71,31 @@ $(document).on("click", ".openStudentManually", function () {
 });
 
 $(document).on("click", ".openTalaManually", function () {
+    CurrentStudentId = this.parentNode.parentNode.getAttribute('id');
     arr = document.getElementsByClassName("openTalaManually");
     for (var i = 0; i < arr.length; i++) {
         arr[i].parentNode.classList.remove("active");
+        arr[i].classList.remove("toggled");
     }
-    this.parentNode.classList.add("active");   
+    this.parentNode.classList.add("active");
+    this.classList.add("toggled");
+
+    if (document.URL.includes("StudentTala.html"))
+        event.preventDefault();
 });
 
 $(document).on("click", ".openProfileManually", function () {
+    CurrentStudentId = this.parentNode.parentNode.getAttribute('id');
     arr = document.getElementsByClassName("openProfileManually");
     for (var i = 0; i < arr.length; i++) {
         arr[i].parentNode.classList.remove("active");
         arr[i].classList.remove("toggled");
     }
     this.parentNode.classList.add("active");
-    this.classList.ad("toggled");
+    this.classList.add("toggled");
+
+    if (document.URL.includes("StudentProfile.html"))
+        event.preventDefault();
 });
 
 function getStudentSuccess(Students) {

@@ -119,7 +119,21 @@
             });
             
             $(document).on("click", "#saveNewTarToBank", function () {
-                //save target to array + set the tag
+                var areaId = $("#areas").val();
+                var subarea = $("#subareas").val();
+                var newTarget = $("#targetToBank").val();
+
+                ObjTemp = {
+                    TarSerial: unknownTarId,
+                    Target: newTarget,
+                    FaSerial: areaId,
+                    SubFunctionArea: subarea
+                }
+                unknownTarId++;
+                TargetForTala.push(ObjTemp);
+
+                let tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + ObjTemp.TarSerial + '">X</button> ' + ObjTemp.Target + '</span>';
+                $("#phTarsLabels").append(tampValString);
             });
         }
         function EditDelTargets() {
