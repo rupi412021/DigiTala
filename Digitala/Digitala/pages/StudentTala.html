@@ -72,7 +72,7 @@
                     }
                     else {
                         let newStudentChars = {
-                            NewStudentId: "204318679",
+                            NewStudentId: "303087886",
                             CurrentYear: 2021,
                             NewStudentChars: CharsChosen,
                         }
@@ -92,7 +92,18 @@
                         });
                     }
                     else {
-                        //function: render targets *TargetForTala* to add tools and goals
+                        targetsforToolsAndGoals = "<h4>בחר לכל מטרה את היעדים והאמצעים להשגתה</h4>";
+                        targetsforToolsAndGoals += '<div class="panel-group" id="accordion_19" role="tablist" aria-multiselectable="true">';
+
+                        for (var i = 0; i < TargetForTala.length; i++) {
+                            targetsforToolsAndGoals += '<div class="panel panel-col-light-grey" id="collapse_' + i + '"> ';
+                            targetsforToolsAndGoals += '<div class="panel-heading" role="tab" id="heading' + i + '_19"><h4 class="panel-title">';
+                            targetsforToolsAndGoals += '<a class="collapsed" role="button" data-toggle="collapse" href="#collapse' + i + '_19" aria-expanded="false" aria-controls="collapse' + i + '_19">' + TargetForTala[i].Target + '</a></h4></div>';
+                            targetsforToolsAndGoals += '<div id="collapse' + i + '_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading' + i + '_19">';
+                            targetsforToolsAndGoals += '<div class="panel-body"><div class="list-group" id="target_' + TargetForTala[i].TarSerial + '"></div></div></div>';
+                        }
+                        targetsforToolsAndGoals += "</div>";
+                        $("#toolsAndGoals").html(targetsforToolsAndGoals);                                                                                                                                                             
                     }
                 }
             });
@@ -594,7 +605,7 @@
                                         <div class="panel panel-col-orange" id="collapse_1" hidden="hidden">
                                             <div class="panel-heading" role="tab" id="headingOne_19">
                                                 <h4 class="panel-title">
-                                                    <a class="collapsed" role="button" data-toggle="collapse" href="#collapseOne_19" aria-expanded="false" aria-controls="collapseFour_19">
+                                                    <a class="collapsed" role="button" data-toggle="collapse" href="#collapseOne_19" aria-expanded="false" aria-controls="collapseOne_19">
                                                         סנסומוטורי
                                                     </a>
                                                 </h4>
@@ -610,7 +621,7 @@
                                         <div class="panel panel-col-red" id="collapse_2" hidden="hidden">
                                             <div class="panel-heading" role="tab" id="headingTwo_19">
                                                 <h4 class="panel-title">
-                                                    <a role="button" data-toggle="collapse" href="#collapseTwo_19" aria-expanded="true" aria-controls="collapseOne_19">
+                                                    <a role="button" data-toggle="collapse" href="#collapseTwo_19" aria-expanded="true" aria-controls="collapseTwo_19">
                                                         כישורי חיים
                                                     </a>
                                                 </h4>
@@ -626,7 +637,7 @@
                                         <div class="panel panel-col-light-blue" id="collapse_3" hidden="hidden">
                                             <div class="panel-heading" role="tab" id="headingThree_19">
                                                 <h4 class="panel-title">
-                                                    <a class="collapsed" role="button" data-toggle="collapse" href="#collapseThree_19" aria-expanded="true" aria-controls="collapseTwo_19">
+                                                    <a class="collapsed" role="button" data-toggle="collapse" href="#collapseThree_19" aria-expanded="true" aria-controls="collapseThree_19">
                                                         חברתי
                                                     </a>
                                                 </h4>
@@ -658,7 +669,7 @@
                                         <div class="panel panel-col-grey" id="collapse_5" hidden="hidden">
                                             <div class="panel-heading" role="tab" id="headingFive_19">
                                                 <h4 class="panel-title">
-                                                    <a class="collapsed" role="button" data-toggle="collapse" href="#collapseFive_19" aria-expanded="true" aria-controls="collapseTwo_19">
+                                                    <a class="collapsed" role="button" data-toggle="collapse" href="#collapseFive_19" aria-expanded="true" aria-controls="collapseFive_19">
                                                         התנהגותי רגשי
                                                     </a>
                                                 </h4>
@@ -674,7 +685,7 @@
                                         <div class="panel panel-col-yellow" id="collapse_6" hidden="hidden">
                                             <div class="panel-heading" role="tab" id="headingSix_19">
                                                 <h4 class="panel-title">
-                                                    <a class="collapsed" role="button" data-toggle="collapse" href="#collapseSix_19" aria-expanded="true" aria-controls="collapseThree_19">
+                                                    <a class="collapsed" role="button" data-toggle="collapse" href="#collapseSix_19" aria-expanded="true" aria-controls="collapseSix_19">
                                                         קוגניטיבי לימודי
                                                     </a>
                                                 </h4>
@@ -717,7 +728,7 @@
                                                         </div>
                                                         <div class="form-group" style="float:right">
                                                             <div class="form-line">
-                                                                <input id="tarsMultiPick" list="tarsMultiPickList" placeholder="&#xf002" Class="form-control" />
+                                                                <input id="tarsMultiPick" list="tarsMultiPickList" placeholder="&#xf002 הקלד ערך לחיפוש" Class="form-control" />
                                                                 <datalist id="tarsMultiPickList"></datalist>
                                                             </div>
 
@@ -788,8 +799,9 @@
                                 </fieldset>
                                 <h3><b>הגדרת יעדים ואמצעים</b></h3>
                                 <fieldset>
-                                    <input id="acceptTerms-2" name="acceptTerms" type="checkbox" required>
-                                    <label for="acceptTerms-2">I agree with the Terms and Conditions.</label>
+                                    <div id="toolsAndGoals">
+
+                                    </div>
                                 </fieldset>
                             </form>
                         </div>

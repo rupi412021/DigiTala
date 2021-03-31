@@ -1194,7 +1194,7 @@ namespace Digitala.Models.DAL
             RecommendedTargets Chosen = new RecommendedTargets();
             int tablefull = 0;
             int countMatch = 0;
-            int disMatch = 0;
+            int ones = 0;
             double score = 0;
             try
             {
@@ -1210,19 +1210,25 @@ namespace Digitala.Models.DAL
                 {
                     if ((string)dr["StudentId"] != rt.NewStudentId)
                     {
+                        for (int i = 1; i < dr.FieldCount-2; i++)
+                        {
+                            if (Convert.ToInt32(dr["char_" + i]) == 1)
+                                ones++;
+                        }
                         for (int j = 0; j < rt.NewStudentChars.Count; j++)
                         {
                             if (rt.NewStudentChars[j].CharacteristicKey < dr.FieldCount - 2)
                             {
                                 for (int k = 1; k < dr.FieldCount; k++)
                                 {
-                                    string c = "char_" + k;                               
+                                    string c = "char_" + k;
                                     if ("char_" + rt.NewStudentChars[j].CharacteristicKey == c)
                                     {
                                         if (Convert.ToInt32(dr[c]) == 1)
+                                        {
                                             countMatch++;
-                                        else
-                                            disMatch++;
+                                            ones--;
+                                        }                                      
                                         tablefull = 1;
                                         break;
                                     }
@@ -1230,7 +1236,7 @@ namespace Digitala.Models.DAL
                             }
                         }
 
-                        score = countMatch * 0.75 + (dr.FieldCount - 2 - countMatch - disMatch) * 0.25;
+                        score = countMatch * 0.75 + (dr.FieldCount - 2 - countMatch - ones) * 0.25;
 
                         RecommendedTargets tempR = new RecommendedTargets();
 
@@ -1241,7 +1247,7 @@ namespace Digitala.Models.DAL
                         MatchStudentsList.Add(tempR);
 
                         countMatch = 0;
-                        disMatch = 0;
+                        ones = 0;
                         score = 0;
                     }
                 }

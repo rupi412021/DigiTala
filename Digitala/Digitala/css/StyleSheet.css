@@ -14,6 +14,7 @@
 }
 #smallModal > .modal-sm > .modal-content {
     border-radius: 15px;
+    border: solid #ffc107 2px;
 }
 
 #smallModal{

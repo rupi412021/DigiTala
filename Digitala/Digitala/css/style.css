@@ -4740,6 +4740,20 @@ section.content {
   .panel-group .panel-col-amber .panel-body {
     border-top-color: transparent !important; }
 
+.panel-group .panel-col-light-grey .panel-title {
+    background-color: #eee !important;
+    color: #000;
+    border-radius: 10px;
+}
+
+.panel-group .panel-col-light-grey .panel-title > a {
+    font-size: 15px;
+    font-weight: normal;
+}
+    .panel-group .panel-col-light-grey .panel-body {
+        border-top-color: transparent !important;
+    }
+
 .panel-group .panel-col-orange {
    
 }
