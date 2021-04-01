@@ -12,6 +12,14 @@
     padding-top: 2px;
     color: #F4A55C;
 }
+#SetGoal, #SetTool{
+    cursor: pointer;
+}
+.input-group.col-sm-6{
+    width: 50%;
+    float: right;
+}
+
 #smallModal > .modal-sm > .modal-content {
     border-radius: 15px;
     border: solid #ffc107 2px;

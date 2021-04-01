@@ -100,10 +100,15 @@
                             targetsforToolsAndGoals += '<div class="panel-heading" role="tab" id="heading' + i + '_19"><h4 class="panel-title">';
                             targetsforToolsAndGoals += '<a class="collapsed" role="button" data-toggle="collapse" href="#collapse' + i + '_19" aria-expanded="false" aria-controls="collapse' + i + '_19">' + TargetForTala[i].Target + '</a></h4></div>';
                             targetsforToolsAndGoals += '<div id="collapse' + i + '_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading' + i + '_19">';
-                            targetsforToolsAndGoals += '<div class="panel-body"><div class="list-group" id="target_' + TargetForTala[i].TarSerial + '"></div></div></div>';
+                            targetsforToolsAndGoals += '<div class="panel-body"><div class="input-group col-sm-6"><div class="form-line"><input type="text" class="form-control date goals" placeholder="הזן יעד להשגת המטרה">';
+                            targetsforToolsAndGoals +='</div><span class="input-group-addon" id="SetGoal"><i class="material-icons">chevron_left</i></span></div><div class="goalsList" id="target_' + TargetForTala[i].TarSerial + '" ></div > ';
+                            targetsforToolsAndGoals += '<div class="input-group col-sm-6"><div class="form-line"><input type="text" class="form-control date tools" placeholder="הגדר אמצעי להשגת המטרה">';
+                            targetsforToolsAndGoals += '</div><span class="input-group-addon" id="SetTool"><i class="material-icons">chevron_left</i></span></div>';
+                            targetsforToolsAndGoals += '<div class="toolsList" id="target_' + TargetForTala[i].TarSerial + '" ></div></div></div>';
                         }
                         targetsforToolsAndGoals += "</div>";
-                        $("#toolsAndGoals").html(targetsforToolsAndGoals);                                                                                                                                                             
+                        $("#toolsAndGoals").html(targetsforToolsAndGoals);                      
+                        
                     }
                 }
             });
@@ -259,14 +264,16 @@
             if (TargetForTala.length == 0) {
                 swal({
                     title: "לא נמצאו מטרות מתאימות",
-                    text: "ניתן לחזור לאחור ולבחור מאפיינים נוספים או להוסיף מטרות חדשות",
+                    text: "ניתן להוסיף מטרות חדשות או לחזור לאחור ולבחור מאפיינים נוספים",
                     type: "warning",
                     confirmButtonText: "אשר"
                 });
             }
-            if (TargetForTala.length>0)
+            if (TargetForTala.length > 0) 
                 renderTargetsToPage(TargetForTala);
+               
             rederAllTargets(TargetsFullList);
+
         }
 
         function renderTargetsToPage(targetsList) {
@@ -275,6 +282,7 @@
             }
             for (var j = 0; j < MainAreasList.length; j++) {
                 renderTargets = "";
+                let tampValString = "";
                 for (var i = 0; i < targetsList.length; i++) {
                     if (MainAreasList[j].AreaId == targetsList[i].FaSerial) {
                         renderTargets += '<div class="list-group-item">';
@@ -282,6 +290,8 @@
                         renderTargets += "<button type='button' class='deleteBtn btn-trans' data-tarId=" + targetsList[i].TarSerial + "><i class='material-icons'>delete</i></button>";
                         renderTargets += "<button type='button' class='updateBtn btn-trans' data-tarId=" + targetsList[i].TarSerial + "><i class='material-icons'>create</i></button>";
                         renderTargets += "</div>";
+                        tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + targetsList[i].TarSerial + '">X</button> ' + targetsList[i].Target + '</span>';
+                        $("#phTarsLabels").append(tampValString);
                     }
                 }
                 if (renderTargets.length > 0) {
