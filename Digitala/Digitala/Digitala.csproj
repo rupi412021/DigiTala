@@ -294,6 +294,7 @@
     <Content Include="js\pages\loging.js" />
     <Content Include="pages\Admin.html" />
     <Content Include="pages\index.html" />
+    <Content Include="pages\helpPage.html" />
     <Content Include="pages\SetNewPass.html" />
     <Content Include="pages\StudentProfile.html" />
     <Content Include="pages\StudentTala.html" />
