@@ -46,6 +46,18 @@ function getStudentError(error) {
     console.log(error);
 }
 
+function getStudentSuccess(Students) {
+    str = '';
+    stundetlist = Students;
+    for (var i = 0; i < Students.length; i++) {
+        str += '<li><a href="javascript:void(0);" class="menu-toggle waves-effect waves-block openStudentManually" id=' + Students[i].StudentId + '><span>' + Students[i].SFirstName + ' ' + Students[i].SLastName + "</span></a>" +
+            '<ul class="ml-menu" id=' + Students[i].StudentId + '><li><a class="waves-effect waves-block openProfileManually" href="StudentProfile.html">תיק אישי</a></li><li><a class="waves-effect waves-block openTalaManually" href="StudentTala.html">תל"א</a></li></ul></li>';
+    }
+
+    $("#renderStudentsinMenu").html(str);
+
+}
+
 $(document).on("click", ".openStudentManually", function () {
     eleId = this.getAttribute('id');
     arr = document.getElementsByClassName("ml-menu");
@@ -71,7 +83,14 @@ $(document).on("click", ".openStudentManually", function () {
 
     localStorage.setItem("StudentID", eleId);
 
-
+    for (var i = 0; i < stundetlist.length; i++) {
+        if (stundetlist[i].StudentId == eleId) {
+            let fName = stundetlist[i].SFirstName;
+            let lName = stundetlist[i].SLastName;
+            let fullName = fName + " " + lName;
+            localStorage.setItem("StudentFName", fullName);
+        }
+    }
 });
 
 $(document).on("click", ".openTalaManually", function () {
@@ -102,15 +121,6 @@ $(document).on("click", ".openProfileManually", function () {
         event.preventDefault();
 });
 
-function getStudentSuccess(Students) {
-    str = '';
 
-    for (var i = 0; i < Students.length; i++) {
-        str += '<li><a href="javascript:void(0);" class="menu-toggle waves-effect waves-block openStudentManually" id=' + Students[i].StudentId +'><span>' + Students[i].SFirstName + ' ' + Students[i].SLastName + "</span></a>" +
-            '<ul class="ml-menu" id=' + Students[i].StudentId +'><li><a class="waves-effect waves-block openProfileManually" href="StudentProfile.html">תיק אישי</a></li><li><a class="waves-effect waves-block openTalaManually" href="StudentTala.html">תל"א</a></li></ul></li>';
-    }
-
-    $("#renderStudentsinMenu").html(str);
-}
 
  
