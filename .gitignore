@@ -48,8 +48,6 @@ Generated\ Files/
 TestResult.xml
 nunit-*.xml
 
-*.config
-
 # Build Results of an ATL Project
 [Dd]ebugPS/
 [Rr]eleasePS/
@@ -67,6 +65,7 @@ artifacts/
 StyleCopReport.xml
 
 # Files built by Visual Studio
+*.config
 *_i.c
 *_p.c
 *_h.h
