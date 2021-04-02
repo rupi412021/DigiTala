@@ -62,8 +62,16 @@
             $("#studentName").html(studentName1);
 
             $(document).on("click", ".openTalaManually", function () {
-                let studentName = localStorage["StudentName"];
-                $("#studentName").html(studentName);
+                arr = document.getElementsByClassName("openStudentManually");
+                newID = this.parentNode.parentNode.getAttribute('id');
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].id == newID) {
+                        studentName = arr[i].innerText;
+                        $("#studentName").html(studentName);
+                    }
+                    localStorage.setItem("StudentName", studentName);
+                    localStorage.setItem("StudentID", newID);
+                }
             });
 
             $(document).on("click", "#next", function () {
