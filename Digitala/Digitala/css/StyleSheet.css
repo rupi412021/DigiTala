@@ -12,9 +12,25 @@
     padding-top: 2px;
     color: #F4A55C;
 }
-#SetGoal, #SetTool{
-    cursor: pointer;
+
+.goalItem, .toolItem {
+    border: solid 1px lightgrey;
+    width: 95%;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+    font-size: 15px;
 }
+
+    .goalItem > i, .toolItem > i {
+        float: left;
+        font-size: 20px;
+        color: #F46549;
+        cursor: pointer;
+    }
+    #SetGoal, #SetTool {
+        cursor: pointer;
+    }
 .input-group.col-sm-6{
     width: 50%;
     float: right;

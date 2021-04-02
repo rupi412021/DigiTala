@@ -71,7 +71,6 @@ $(document).on("click", ".openStudentManually", function () {
             }
         }
     }
-
     else {
         this.classList.add("toggled");
         this.parentNode.classList.add("active");
@@ -101,9 +100,8 @@ $(document).on("click", ".openTalaManually", function () {
         arr[i].classList.remove("toggled");
     }
     this.parentNode.classList.add("active");
-    this.classList.add("toggled");
+    this.classList.add("toggled");   
 
-   
 });
 
 $(document).on("click", ".openProfileManually", function () {
@@ -116,8 +114,6 @@ $(document).on("click", ".openProfileManually", function () {
     this.parentNode.classList.add("active");
     this.classList.add("toggled");
 
-    //if (document.URL.includes("StudentProfile.html"))
-    //    event.preventDefault();
 });
 
 
