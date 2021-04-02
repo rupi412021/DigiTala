@@ -48,8 +48,7 @@ Generated\ Files/
 TestResult.xml
 nunit-*.xml
 
-git rm --cached web.config
-
+*.config
 
 # Build Results of an ATL Project
 [Dd]ebugPS/
