@@ -68,6 +68,10 @@ $(document).on("click", ".openStudentManually", function () {
                 arr[i].setAttribute("style", "display: block;");
         }
     }
+
+    localStorage.setItem("StudentID", eleId);
+
+
 });
 
 $(document).on("click", ".openTalaManually", function () {
