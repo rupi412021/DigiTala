@@ -80,6 +80,7 @@ optgroup {
     float: left;
     box-shadow: none;
     color: white;
+    cursor: pointer;
 }
 .studentDetalis{
     margin-right: 45px;
