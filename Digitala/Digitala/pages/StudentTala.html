@@ -58,8 +58,13 @@
                 }
             });
 
-            let studantName = localStorage["StudentName"];
-            $("#studentName").html(studantName);
+            let studentName1 = localStorage["StudentName"];
+            $("#studentName").html(studentName1);
+
+            $(document).on("click", ".openTalaManually", function () {
+                let studentName = localStorage["StudentName"];
+                $("#studentName").html(studentName);
+            });
 
             $(document).on("click", "#next", function () {
                 if ($("#wizard_with_validation-p-1").hasClass("body current")) {
