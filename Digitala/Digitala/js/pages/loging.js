@@ -103,8 +103,7 @@ $(document).on("click", ".openTalaManually", function () {
     this.parentNode.classList.add("active");
     this.classList.add("toggled");
 
-    if (document.URL.includes("StudentTala.html"))
-        event.preventDefault();
+   
 });
 
 $(document).on("click", ".openProfileManually", function () {
@@ -117,8 +116,8 @@ $(document).on("click", ".openProfileManually", function () {
     this.parentNode.classList.add("active");
     this.classList.add("toggled");
 
-    if (document.URL.includes("StudentProfile.html"))
-        event.preventDefault();
+    //if (document.URL.includes("StudentProfile.html"))
+    //    event.preventDefault();
 });
 
 

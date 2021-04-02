@@ -40,7 +40,7 @@
             TargetForTala = [];
             indexHidden = [];
             filterMainBtnIdLast = "filterMainBTN1";
-            
+
             ajaxCall("GET", "../api/FuncAreas/2", "", getSubAreasSuccess, error);
 
             tagsCharsButtons();
@@ -58,20 +58,28 @@
                 }
             });
 
-            let studentName1 = localStorage["StudentName"];
-            $("#studentName").html(studentName1);
+            studentName = localStorage["StudentName"];
+            newID = localStorage["StudentID"]
+            $("#studentName").html(studentName);
 
             $(document).on("click", ".openTalaManually", function () {
-                arr = document.getElementsByClassName("openStudentManually");
-                newID = this.parentNode.parentNode.getAttribute('id');
-                for (var i = 0; i < arr.length; i++) {
-                    if (arr[i].id == newID) {
-                        studentName = arr[i].innerText;
-                        $("#studentName").html(studentName);
+                if (document.URL.includes("StudentTala.html") && localStorage["StudentID"] == this.parentNode.parentNode.getAttribute('id'))
+                    event.preventDefault();
+                else {
+                    if (newID == this.parentNode.parentNode.getAttribute('id'))
+                        refresh = 1;
+                    arr = document.getElementsByClassName("openStudentManually");
+                    newID = this.parentNode.parentNode.getAttribute('id');
+                    for (var i = 0; i < arr.length; i++) {
+                        if (arr[i].id == newID) {
+                            studentName = arr[i].innerText;
+                            $("#studentName").html(studentName);
+                        }
+                        localStorage.setItem("StudentName", studentName);
+                        localStorage.setItem("StudentID", newID);
                     }
-                    localStorage.setItem("StudentName", studentName);
-                    localStorage.setItem("StudentID", newID);
-                }
+                }           
+            
             });
 
             $(document).on("click", "#next", function () {
@@ -88,7 +96,7 @@
                     }
                     else {
                         let newStudentChars = {
-                            NewStudentId: localStorage["StudentID"],
+                            NewStudentId: newID,
                             CurrentYear: 2021,
                             NewStudentChars: CharsChosen,
                         }
@@ -108,23 +116,7 @@
                         });
                     }
                     else {
-                        targetsforToolsAndGoals = "<h4>בחר לכל מטרה את היעדים והאמצעים להשגתה</h4>";
-                        targetsforToolsAndGoals += '<div class="panel-group" id="accordion_19" role="tablist" aria-multiselectable="true">';
-
-                        for (var i = 0; i < TargetForTala.length; i++) {
-                            targetsforToolsAndGoals += '<div class="panel panel-col-light-grey" id="collapse_' + i + '"> ';
-                            targetsforToolsAndGoals += '<div class="panel-heading" role="tab" id="heading' + i + '_19"><h4 class="panel-title">';
-                            targetsforToolsAndGoals += '<a class="collapsed" role="button" data-toggle="collapse" href="#collapse' + i + '_19" aria-expanded="false" aria-controls="collapse' + i + '_19">' + TargetForTala[i].Target + '</a></h4></div>';
-                            targetsforToolsAndGoals += '<div id="collapse' + i + '_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading' + i + '_19">';
-                            targetsforToolsAndGoals += '<div class="panel-body"><div class="input-group col-sm-6"><div class="form-line"><input type="text" class="form-control date goals" placeholder="הזן יעד להשגת המטרה">';
-                            targetsforToolsAndGoals +='</div><span class="input-group-addon" id="SetGoal"><i class="material-icons">chevron_left</i></span></div><div class="goalsList" id="target_' + TargetForTala[i].TarSerial + '" ></div > ';
-                            targetsforToolsAndGoals += '<div class="input-group col-sm-6"><div class="form-line"><input type="text" class="form-control date tools" placeholder="הגדר אמצעי להשגת המטרה">';
-                            targetsforToolsAndGoals += '</div><span class="input-group-addon" id="SetTool"><i class="material-icons">chevron_left</i></span></div>';
-                            targetsforToolsAndGoals += '<div class="toolsList" id="target_' + TargetForTala[i].TarSerial + '" ></div></div></div>';
-                        }
-                        targetsforToolsAndGoals += "</div>";
-                        $("#toolsAndGoals").html(targetsforToolsAndGoals);                      
-                        
+                        renderChooseGoalsNTools();                                  
                     }
                 }
             });
@@ -137,6 +129,25 @@
 
 
         });
+
+        function renderChooseGoalsNTools(){
+            targetsforToolsAndGoals = "<h4>בחר לכל מטרה את היעדים והאמצעים להשגתה</h4>";
+            targetsforToolsAndGoals += '<div class="panel-group" id="accordion_19" role="tablist" aria-multiselectable="true">';
+
+            for (var i = 0; i < TargetForTala.length; i++) {
+                targetsforToolsAndGoals += '<div class="panel panel-col-light-grey" id="collapse_' + i + '"> ';
+                targetsforToolsAndGoals += '<div class="panel-heading" role="tab" id="heading' + i + '_19"><h4 class="panel-title">';
+                targetsforToolsAndGoals += '<a class="collapsed" role="button" data-toggle="collapse" href="#collapse' + i + '_19" aria-expanded="false" aria-controls="collapse' + i + '_19">' + TargetForTala[i].Target + '</a></h4></div>';
+                targetsforToolsAndGoals += '<div id="collapse' + i + '_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading' + i + '_19">';
+                targetsforToolsAndGoals += '<div class="panel-body"><div class="input-group col-sm-6"><div class="form-line"><input type="text" class="form-control date goals" placeholder="הזן יעד להשגת המטרה">';
+                targetsforToolsAndGoals += '</div><span class="input-group-addon" id="SetGoal"><i class="material-icons">chevron_left</i></span></div><div class="goalsList" id="target_' + TargetForTala[i].TarSerial + '" ></div > ';
+                targetsforToolsAndGoals += '<div class="input-group col-sm-6"><div class="form-line"><input type="text" class="form-control date tools" placeholder="הגדר אמצעי להשגת המטרה">';
+                targetsforToolsAndGoals += '</div><span class="input-group-addon" id="SetTool"><i class="material-icons">chevron_left</i></span></div>';
+                targetsforToolsAndGoals += '<div class="toolsList" id="target_' + TargetForTala[i].TarSerial + '" ></div></div></div>';
+            }
+            targetsforToolsAndGoals += "</div>";
+            $("#toolsAndGoals").html(targetsforToolsAndGoals);    
+        }
 
         function TargetToBankForm() {
             $(document).on("change", "#areas", function () {
