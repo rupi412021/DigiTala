@@ -88,7 +88,7 @@ $(document).on("click", ".openStudentManually", function () {
             let fName = stundetlist[i].SFirstName;
             let lName = stundetlist[i].SLastName;
             let fullName = fName + " " + lName;
-            localStorage.setItem("StudentFName", fullName);
+            localStorage.setItem("StudentName", fullName);
         }
     }
 });

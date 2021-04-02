@@ -58,6 +58,9 @@
                 }
             });
 
+            let studantName = localStorage["StudentName"];
+            $("#studentName").html(studantName);
+
             $(document).on("click", "#next", function () {
                 if ($("#wizard_with_validation-p-1").hasClass("body current")) {
                     if (CharsChosen.length == 0) {
