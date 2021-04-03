@@ -6256,13 +6256,14 @@ fieldset[disabled] .form-control {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     -ms-border-radius: 0;
-    border-radius: 0; }
+    border-radius: 7px; }
 
     .wizard .steps .done a {
         background-color: #bdd7e3;
     }
         .wizard .steps .done a:hover, .wizard .steps .done a:active, .wizard .steps .done a:focus {
             background-color: rgba(189, 215, 227, 0.87);
+            border-radius: 7px;
         }
 
     .wizard .steps .error a {
@@ -6274,6 +6275,7 @@ fieldset[disabled] .form-control {
     }
         .wizard .steps .current a:active, .wizard .steps .current a:focus, .wizard .steps .current a:hover {
             background-color: rgba(101, 154, 154, 0.75);
+            border-radius: 7px;
         }
 
 /* Waves ======================================= */

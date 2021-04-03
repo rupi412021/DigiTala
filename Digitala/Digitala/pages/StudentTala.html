@@ -98,21 +98,41 @@
                         });
                     }
                     else {
-                        renderChooseGoalsNTools();                                  
+                        renderChooseGoalsNTools();
+                        GoalsAndTools();
                     }
                 }
+            });
+
+            $(document).on("click", "#finish", function () {
+
             });
 
             $(document).on("click", "#saveTargetsToTala", function () {
                 renderTargetsToPage(TargetForTala);
             });
 
-            TargetToBankForm();
-
-            GoalsAndTools();
-  
-
+            NewTargetToBankForm();
         });
+
+        function renderChooseGoalsNTools() {
+            targetsforToolsAndGoals = "<h4>בחר לכל מטרה את היעדים והאמצעים להשגתה</h4>";
+            targetsforToolsAndGoals += '<div class="panel-group" id="accordion_19" role="tablist" aria-multiselectable="true">';
+
+            for (var i = 0; i < TargetForTala.length; i++) {
+                targetsforToolsAndGoals += '<div class="panel panel-col-light-grey" id="collapse_' + i + '"> ';
+                targetsforToolsAndGoals += '<div class="panel-heading" role="tab" id="heading' + i + '_19"><h4 class="panel-title">';
+                targetsforToolsAndGoals += '<a class="collapsed" role="button" data-toggle="collapse" href="#collapse' + i + '_19" aria-expanded="false" aria-controls="collapse' + i + '_19"><i class="material-icons Itar">gps_fixed</i>' + TargetForTala[i].Target + '</a></h4></div>';
+                targetsforToolsAndGoals += '<div id="collapse' + i + '_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading' + i + '_19">';
+                targetsforToolsAndGoals += '<div class="panel-body"><div class="input-group col-sm-6" tar-ser=' + TargetForTala[i].TarSerial + '><div class="form-line"><input type="text" class="form-control date goals" id="goal' + TargetForTala[i].TarSerial + '" placeholder="הזן יעד להשגת המטרה">';
+                targetsforToolsAndGoals += '</div><span class="input-group-addon" id="SetGoal"><i class="material-icons">arrow_back_ios_new</i></span></div>';
+                targetsforToolsAndGoals += '<div class="input-group col-sm-6" tar-ser=' + TargetForTala[i].TarSerial + '><div class="form-line"><input type="text" class="form-control date tools" id="tool' + TargetForTala[i].TarSerial + '" placeholder="הגדר אמצעי להשגת המטרה">';
+                targetsforToolsAndGoals += '</div><span class="input-group-addon" id="SetTool"><i class="material-icons">arrow_back_ios_new</i></span></div>';
+                targetsforToolsAndGoals += '<div class="toolsList col-sm-6" id="target_' + TargetForTala[i].TarSerial + '"></div><div class="goalsList col-sm-6" id="target_' + TargetForTala[i].TarSerial + '" ></div ></div></div>';
+            }
+            targetsforToolsAndGoals += "</div>";
+            $("#toolsAndGoals").html(targetsforToolsAndGoals);
+        }
 
         function GoalsAndTools() {
             $(document).on("click", "#SetGoal", function () {
@@ -121,6 +141,13 @@
                 if (tempGoal.length > 0) {
                     $("#target_" + tempGoalTarId + ".goalsList").append('<div class="goalItem" id=' + tempGoalTarId+'>' + tempGoal + '<i class="material-icons clearItem">clear</i></div>');
                     tempGoal = $("#goal" + tempGoalTarId).val("");
+
+                    NewGoal = {
+                        nGoal: tempGoal,
+                        tTarId: tempGoalTarId
+                    }
+
+                    Goals.push(NewGoal);
                 }
             });
 
@@ -130,34 +157,32 @@
                 if (tempTool.length > 0) {
                     $("#target_" + tempToolTarId + ".toolsList").append('<div class="toolItem" id=' + tempGoalTarId +'>' + tempTool + '<i class="material-icons clearItem">clear</i></div>');
                     tempGoal = $("#tool" + tempGoalTarId).val("");
+
+                    NewTool = {
+                        nTool: tempTool,
+                        tTarId: tempToolTarId
+                    }
+
+                    Tools.push(NewTool);
                 }
             });
 
             $(document).on("click", ".clearItem", function () {
+                if (this.parentNode.hasClass("goalItem"))
+                    for (var i = 0; i < Goals.length; i++) {
+                        if ("target_" + Goals[i].tTarId == this.parentNode.parentNode.getAttribute('id'))
+                            Goals.splice(i, 1);
+                    }
+                if (this.parentNode.hasClass("toolItem"))
+                    for (var i = 0; i < Tools.length; i++) {
+                        if ("target_" + Tool[i].tTarId == this.parentNode.parentNode.getAttribute('id'))
+                            Tools.splice(i, 1);
+                    }
                 this.parentNode.remove();
             });
-        }
+        }       
 
-        function renderChooseGoalsNTools(){
-            targetsforToolsAndGoals = "<h4>בחר לכל מטרה את היעדים והאמצעים להשגתה</h4>";
-            targetsforToolsAndGoals += '<div class="panel-group" id="accordion_19" role="tablist" aria-multiselectable="true">';
-
-            for (var i = 0; i < TargetForTala.length; i++) {
-                targetsforToolsAndGoals += '<div class="panel panel-col-light-grey" id="collapse_' + i + '"> ';
-                targetsforToolsAndGoals += '<div class="panel-heading" role="tab" id="heading' + i + '_19"><h4 class="panel-title">';
-                targetsforToolsAndGoals += '<a class="collapsed" role="button" data-toggle="collapse" href="#collapse' + i + '_19" aria-expanded="false" aria-controls="collapse' + i + '_19">' + TargetForTala[i].Target + '</a></h4></div>';
-                targetsforToolsAndGoals += '<div id="collapse' + i + '_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading' + i + '_19">';
-                targetsforToolsAndGoals += '<div class="panel-body"><div class="input-group col-sm-6" tar-ser=' + TargetForTala[i].TarSerial + '><div class="form-line"><input type="text" class="form-control date goals" id="goal' + TargetForTala[i].TarSerial +'" placeholder="הזן יעד להשגת המטרה">';
-                targetsforToolsAndGoals += '</div><span class="input-group-addon" id="SetGoal"><i class="material-icons">chevron_left</i></span></div>';
-                targetsforToolsAndGoals += '<div class="input-group col-sm-6" tar-ser=' + TargetForTala[i].TarSerial + '><div class="form-line"><input type="text" class="form-control date tools" id="tool' + TargetForTala[i].TarSerial+'" placeholder="הגדר אמצעי להשגת המטרה">';
-                targetsforToolsAndGoals += '</div><span class="input-group-addon" id="SetTool"><i class="material-icons">chevron_left</i></span></div>';
-                targetsforToolsAndGoals += '<div class="toolsList col-sm-6" id="target_' + TargetForTala[i].TarSerial + '"></div><div class="goalsList col-sm-6" id="target_' + TargetForTala[i].TarSerial + '" ></div ></div></div>';
-            }
-            targetsforToolsAndGoals += "</div>";
-            $("#toolsAndGoals").html(targetsforToolsAndGoals);    
-        }
-
-        function TargetToBankForm() {
+        function NewTargetToBankForm() {
             $(document).on("change", "#areas", function () {
                 var area = $("#areas").val();
                 var renderSubAreasList = "";
@@ -178,7 +203,8 @@
                     TarSerial: unknownTarId,
                     Target: newTarget,
                     FaSerial: areaId,
-                    SubFunctionArea: subarea
+                    SubFunctionArea: subarea,
+                    NewTar: True
                 }
                 unknownTarId++;
                 TargetForTala.push(ObjTemp);
@@ -390,7 +416,6 @@
                     tagsList += '<span class="tag label label-tag"><button class="btn-trans tagRemove" char-id="' + CharsChosen[i].CharacteristicKey + '">X</button> ' + CharsChosen[i].Chararcteristic + '</span>';
                 }
                 $("#phLabels").html(tagsList);
-
                 renderDataListChars(indexHidden);
             });
         }
@@ -773,7 +798,7 @@
                                                         </div>
                                                         <div class="form-group" style="float:right">
                                                             <div class="form-line">
-                                                                <input id="tarsMultiPick" list="tarsMultiPickList" placeholder="&#xf002 הקלד ערך לחיפוש" Class="form-control" />
+                                                                <input id="tarsMultiPick" list="tarsMultiPickList" placeholder="&#xf002" Class="form-control" />
                                                                 <datalist id="tarsMultiPickList"></datalist>
                                                             </div>
 
