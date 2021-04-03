@@ -415,6 +415,126 @@ namespace Digitala.Models.DAL
 
         }
 
+        public int Insert(Talas tala)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildInsertCommand(tala);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                InsertChararcteristics(tala.StudentChars, tala.StudentId, tala.CurrentYear);
+                InsertToTala(tala.Targets);
+
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("תלא לא התווספה למערכת", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildInsertCommand(Talas tala)
+        {
+           
+                String command;
+                String prefix;
+                StringBuilder sb = new StringBuilder();
+
+                sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", teacher.TeacherID, teacher.TeacherFname, teacher.TeacherSurName, teacher.TeacherEmail, teacher.TeacherPassword, teacher.TeacherSchoolId);
+                prefix = "INSERT INTO Teachers " + "([TId], [TFirstName], [TLastName], [TEmail], [TPassword], [TSchool])";
+
+
+                command = prefix + sb.ToString();
+
+
+
+                return command;
+        }
+
+        public int InsertToTala(List<Targets> targets)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildInsertToTalaCommand(targets);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("מטרה לא התווספה", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildInsertToTalaCommand(List<Targets> t)
+        {
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", t.FaSerial, t.SfaSerial, t.Target, t.Suitability, t.Originality, t.NumOfUses);
+            prefix = "INSERT INTO Targets " + "([FASerial], [SFASerial], [TargetText], [Suitability], [Originality], [NumOfUses])";
+
+            command = prefix + sb.ToString();
+
+            return command;
+
+        }
+
         private String BuildInsertCommand(Teachers teacher)
         {
             //check if id alredy exsist in DB
@@ -1144,10 +1264,13 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "Select T.*, FA.FunctionArea from TargetsInTala TT join Targets T on T.Tserial=TT.Tserial join FunctionAreas FA on FA.FASerial=T.FASerial"
+                String selectSTR = "Select T.*, TT.NewPhrase, FA.FunctionArea from TargetsInTala TT join Targets T on T.Tserial=TT.Tserial join FunctionAreas FA on FA.FASerial=T.FASerial"
                     + " where TT.StudentId = " + r.MatchStudentId + " and TT.TYear = " + r.MatchYear;
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                //String count = "Select count(Tserial) from Targets";
+                //SqlCommand cmd2 = new SqlCommand(count, con);
 
                 // get a reader
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
@@ -1156,10 +1279,13 @@ namespace Digitala.Models.DAL
                 {   // Read till the end of the data into a row
                     Targets t = new Targets();
 
+                    if((string)(dr["NewPhrase"]) == "")
+                        t.Target = (string)(dr["TargetText"]);
+                    else
+                        t.Target = (string)(dr["NewPhrase"]);
                     t.TarSerial = Convert.ToInt32(dr["TSerial"]);
                     t.FaSerial = Convert.ToInt32(dr["FASerial"]);
                     t.SfaSerial = Convert.ToInt32(dr["SFASerial"]);
-                    t.Target = (string)(dr["TargetText"]);
                     t.Suitability = Convert.ToDouble(dr["Suitability"]);
                     t.Originality = Convert.ToDouble(dr["Originality"]);
                     t.NumOfUses = Convert.ToInt32(dr["NumOfUses"]);
@@ -1309,10 +1435,6 @@ namespace Digitala.Models.DAL
                 Chosen.CurrentYear = rt.CurrentYear;
                 Chosen.NewStudentId = rt.NewStudentId;
                 Chosen.NewStudentChars = rt.NewStudentChars;
-
-                //*******MOVE TO INSERT TALA FUNCTION*********//
-                //InsertChararcteristics(rt.NewStudentChars, rt.NewStudentId, rt.CurrentYear);
-
 
                 return Chosen;
 
