@@ -40,8 +40,8 @@
             TargetForTala = [];
             indexHidden = [];
             filterMainBtnIdLast = "filterMainBTN1";
-            Tools = [];
-            Goals = [];
+            ToolsArr = [];
+            GoalsArr = [];
             ajaxCall("GET", "../api/FuncAreas/2", "", getSubAreasSuccess, error);
 
             tagsCharsButtons();
@@ -105,17 +105,17 @@
             });
 
             $(document).on("click", "#finish", function () {
-                for (var i = 0; i < Goals.length; i++) {
+                for (var i = 0; i < GoalsArr.length; i++) {
                     for (var j = 0; j < TargetForTala.length; j++) {
-                        if (TargetForTala[j].TarSerial == Goals[i].tTarId)
-                            TargetForTala[j].Goals.push(Goals[i].nGoal);
+                        if (TargetForTala[j].TarSerial == GoalsArr[i].tTarId)
+                            TargetForTala[j].Goals.push(GoalsArr[i].nGoal);
                     }  
                 }
 
-                for (var i = 0; i < Tools.length; i++) {
+                for (var i = 0; i < ToolsArr.length; i++) {
                     for (var j = 0; j < TargetForTala.length; j++) {
-                        if (TargetForTala[j].TarSerial == Tools[i].tTarId)
-                            TargetForTala[j].Tools.push(Tools[i].nTool);
+                        if (TargetForTala[j].TarSerial == ToolsArr[i].tTarId)
+                            TargetForTala[j].Tools.push(ToolsArr[i].nTool);
                     }
                 }
                 TalaObj = {
@@ -171,7 +171,7 @@
                         tTarId: tempGoalTarId
                     }
 
-                    Goals.push(NewGoal);
+                    GoalsArr.push(NewGoal);
                 }
             });
 
@@ -187,20 +187,20 @@
                         tTarId: tempToolTarId
                     }
 
-                    Tools.push(NewTool);
+                    ToolsArr.push(NewTool);
                 }
             });
 
             $(document).on("click", ".clearItem", function () {
                 if (this.parentNode.hasClass("goalItem"))
-                    for (var i = 0; i < Goals.length; i++) {
-                        if ("target_" + Goals[i].tTarId == this.parentNode.parentNode.getAttribute('id'))
-                            Goals.splice(i, 1);
+                    for (var i = 0; i < GoalsArr.length; i++) {
+                        if ("target_" + GoalsArr[i].tTarId == this.parentNode.parentNode.getAttribute('id'))
+                            GoalsArr.splice(i, 1);
                     }
                 if (this.parentNode.hasClass("toolItem"))
-                    for (var i = 0; i < Tools.length; i++) {
+                    for (var i = 0; i < ToolsArr.length; i++) {
                         if ("target_" + Tool[i].tTarId == this.parentNode.parentNode.getAttribute('id'))
-                            Tools.splice(i, 1);
+                            ToolsArr.splice(i, 1);
                     }
                 this.parentNode.remove();
             });

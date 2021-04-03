@@ -1529,7 +1529,7 @@ namespace Digitala.Models.DAL
                 {   // Read till the end of the data into a row
                     Targets t = new Targets();
 
-                    if((string)dr["NewPhrase"] == null)
+                    if((string)dr["NewPhrase"] == "")
                         t.Target = (string)(dr["TargetText"]);
                     else
                         t.Target = (string)(dr["NewPhrase"]);
