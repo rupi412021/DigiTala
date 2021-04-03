@@ -71,6 +71,7 @@ $(document).on("click", ".openStudentManually", function () {
             }
         }
     }
+
     else {
         this.classList.add("toggled");
         this.parentNode.classList.add("active");
@@ -80,16 +81,7 @@ $(document).on("click", ".openStudentManually", function () {
         }
     }
 
-    localStorage.setItem("StudentID", eleId);
-
-    for (var i = 0; i < stundetlist.length; i++) {
-        if (stundetlist[i].StudentId == eleId) {
-            let fName = stundetlist[i].SFirstName;
-            let lName = stundetlist[i].SLastName;
-            let fullName = fName + " " + lName;
-            localStorage.setItem("StudentName", fullName);
-        }
-    }
+  
 });
 
 $(document).on("click", ".openTalaManually", function () {
@@ -100,8 +92,10 @@ $(document).on("click", ".openTalaManually", function () {
         arr[i].classList.remove("toggled");
     }
     this.parentNode.classList.add("active");
-    this.classList.add("toggled");   
+    this.classList.add("toggled");
 
+    if (document.URL.includes("StudentTala.html"))
+        event.preventDefault();
 });
 
 $(document).on("click", ".openProfileManually", function () {
@@ -114,6 +108,8 @@ $(document).on("click", ".openProfileManually", function () {
     this.parentNode.classList.add("active");
     this.classList.add("toggled");
 
+    if (document.URL.includes("StudentProfile.html"))
+        event.preventDefault();
 });
 
 
