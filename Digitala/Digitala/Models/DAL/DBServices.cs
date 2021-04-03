@@ -470,7 +470,7 @@ namespace Digitala.Models.DAL
                 String prefix;
                 StringBuilder sb = new StringBuilder();
 
-                sb.AppendFormat("Values('{0}', '{1}', '{2}')", tala.CurrentYear, tala.StudentId);
+                sb.AppendFormat("Values('{0}', '{1}')", tala.CurrentYear, tala.StudentId);
                 prefix = "INSERT INTO Tala " + "([TYear], [StudentId])";
 
                 command = prefix + sb.ToString();
