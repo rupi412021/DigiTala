@@ -51,8 +51,8 @@
 
         function getLogInSuccess(data) {
             console.log(data)
-
-            let email = $("#email").val();
+            let getEmail = $("#email").val();
+            let email = getEmail.toLowerCase();
             let passWord = $("#password").val();
             let hit = 0;
             for (var i = 0; i < data.length; i++) {
