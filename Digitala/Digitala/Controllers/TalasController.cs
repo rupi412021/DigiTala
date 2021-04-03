@@ -23,7 +23,7 @@ namespace Digitala.Controllers
         public string Post([FromBody]Talas t)
         {
             t.Insert();
-            return "ok";
+            return "Tala Updated!";
         }
     }
 }
