@@ -1514,23 +1514,19 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "Select TT.*, T.Suitability, T.Originality, T.NumOfUses, FA.FunctionArea from TargetsInTala TT left join Targets T on T.Tserial=TT.Tserial join FunctionAreas FA on FA.FASerial=TT.FASerial"
+                String selectSTR = "Select TT.*, T.Suitability, T.Originality, T.NumOfUses, T.TargetText, FA.FunctionArea from TargetsInTala TT left join Targets T on T.Tserial=TT.Tserial join FunctionAreas FA on FA.FASerial=TT.FASerial"
                     + " where TT.StudentId = " + r.MatchStudentId + " and TT.TYear = " + r.MatchYear;
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
-
-                //String count = "Select count(Tserial) from Targets";
-                //SqlCommand cmd2 = new SqlCommand(count, con);
 
                 // get a reader
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
 
                 while (dr.Read())
                 {   // Read till the end of the data into a row
-                    Targets t = new Targets();
-
-                    if((string)dr["NewPhrase"] == "")
-                        t.Target = (string)(dr["TargetText"]);
+                    Targets t = new Targets();                 
+                    if (dr["NewPhrase"] == DBNull.Value)
+                        t.Target = (string)(dr["TargetText"]);                  
                     else
                         t.Target = (string)(dr["NewPhrase"]);
 

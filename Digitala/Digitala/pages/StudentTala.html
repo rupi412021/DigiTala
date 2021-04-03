@@ -105,6 +105,14 @@
             });
 
             $(document).on("click", "#finish", function () {
+                goalsList = $(document).getElementsByClassName("goalItem");
+                for (var i = 0; i < goalsList.length; i++) {
+                    for (var j = 0; j < TargetForTala.length; j++) {
+                        if ("target_" + TargetForTala[j].TarSerial == goalsList[i].parentNode.getAttribute('id'))
+                            TargetForTala[j].Goals.push(goalsList[i].val())
+                    }
+                }
+
                 for (var i = 0; i < GoalsArr.length; i++) {
                     for (var j = 0; j < TargetForTala.length; j++) {
                         if (TargetForTala[j].TarSerial == GoalsArr[i].tTarId)
@@ -118,6 +126,7 @@
                             TargetForTala[j].Tools.push(ToolsArr[i].nTool);
                     }
                 }
+
                 TalaObj = {
                     studentChars: CharsChosen,
                     StudentId: newID,
@@ -164,7 +173,7 @@
                 tempGoal = $("#goal" + tempGoalTarId).val();
                 if (tempGoal.length > 0) {
                     $("#target_" + tempGoalTarId + ".goalsList").append('<div class="goalItem" id=' + tempGoalTarId+'>' + tempGoal + '<i class="material-icons clearItem">clear</i></div>');
-                    tempGoal = $("#goal" + tempGoalTarId).val("");
+                    $("#goal" + tempGoalTarId).val("");
 
                     NewGoal = {
                         nGoal: tempGoal,
@@ -179,8 +188,8 @@
                 tempToolTarId = this.parentNode.getAttribute("tar-ser");
                 tempTool = $("#tool" + tempToolTarId).val();
                 if (tempTool.length > 0) {
-                    $("#target_" + tempToolTarId + ".toolsList").append('<div class="toolItem" id=' + tempGoalTarId +'>' + tempTool + '<i class="material-icons clearItem">clear</i></div>');
-                    tempGoal = $("#tool" + tempGoalTarId).val("");
+                    $("#target_" + tempToolTarId + ".toolsList").append('<div class="toolItem" id=' + tempToolTarId +'>' + tempTool + '<i class="material-icons clearItem">clear</i></div>');
+                    $("#tool" + tempToolTarId).val("");
 
                     NewTool = {
                         nTool: tempTool,
@@ -192,12 +201,12 @@
             });
 
             $(document).on("click", ".clearItem", function () {
-                if (this.parentNode.hasClass("goalItem"))
+                if (this.parentNode.classList.hasClass("goalItem"))
                     for (var i = 0; i < GoalsArr.length; i++) {
                         if ("target_" + GoalsArr[i].tTarId == this.parentNode.parentNode.getAttribute('id'))
                             GoalsArr.splice(i, 1);
                     }
-                if (this.parentNode.hasClass("toolItem"))
+                else if (this.parentNode.classList.hasClass("toolItem"))
                     for (var i = 0; i < ToolsArr.length; i++) {
                         if ("target_" + Tool[i].tTarId == this.parentNode.parentNode.getAttribute('id'))
                             ToolsArr.splice(i, 1);
