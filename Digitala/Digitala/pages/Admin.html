@@ -44,6 +44,8 @@
 
 
         $(document).ready(function () {
+            localStorage.removeItem("StudentName");
+            localStorage.removeItem("StudentID");
             allMainAreas = [];
             mode = "";
             $("#editTarDiv").hide();

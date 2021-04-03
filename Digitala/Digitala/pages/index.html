@@ -35,6 +35,8 @@
         $(document).ready(function () {
             //צריך להביא רק תלמידים של המורה בשנת הלימודים הנוכחית, כרגע מביא את כל התלמידים במערכת
             ajaxCall("GET", "../api/Students", "", getStudentsSuccess, error);
+            localStorage.removeItem("StudentName");
+            localStorage.removeItem("StudentID");
         });
 
         function getStudentsSuccess(StudsentsData) {
