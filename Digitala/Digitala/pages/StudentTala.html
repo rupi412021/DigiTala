@@ -105,25 +105,25 @@
             });
 
             $(document).on("click", "#finish", function () {
-                goalsList = $(document).getElementsByClassName("goalItem");
-                for (var i = 0; i < goalsList.length; i++) {
-                    for (var j = 0; j < TargetForTala.length; j++) {
-                        if ("target_" + TargetForTala[j].TarSerial == goalsList[i].parentNode.getAttribute('id'))
-                            TargetForTala[j].Goals.push(goalsList[i].val())
+
+                //goalsList = document.getElementsByClassName("goalItem");
+                //for (var i = 0; i < goalsList.length; i++) {
+                //    for (var j = 0; j < TargetForTala.length; j++) {
+                //        if ("target_" + TargetForTala[j].TarSerial == goalsList[i].parentNode.getAttribute('id'))
+                //            TargetForTala[j].Goals.push(goalsList[i].)
+                //    }
+                //}
+
+                for (var i = 0; i < TargetForTala.length; i++) {
+                    TargetForTala[i].Goals = [];
+                    TargetForTala[i].Tools = [];
+                    for (var j = 0; j < GoalsArr.length; j++) {
+                        if (TargetForTala[i].TarSerial == GoalsArr[j].tTarId)
+                            TargetForTala[i].Goals.push(GoalsArr[j].nGoal);
                     }
-                }
-
-                for (var i = 0; i < GoalsArr.length; i++) {
-                    for (var j = 0; j < TargetForTala.length; j++) {
-                        if (TargetForTala[j].TarSerial == GoalsArr[i].tTarId)
-                            TargetForTala[j].Goals.push(GoalsArr[i].nGoal);
-                    }  
-                }
-
-                for (var i = 0; i < ToolsArr.length; i++) {
-                    for (var j = 0; j < TargetForTala.length; j++) {
-                        if (TargetForTala[j].TarSerial == ToolsArr[i].tTarId)
-                            TargetForTala[j].Tools.push(ToolsArr[i].nTool);
+                    for (var j = 0; j < ToolsArr.length; j++) {
+                        if (TargetForTala[i].TarSerial == ToolsArr[j].tTarId)
+                            TargetForTala[i].Tools.push(ToolsArr[j].nTool);
                     }
                 }
 
@@ -201,12 +201,12 @@
             });
 
             $(document).on("click", ".clearItem", function () {
-                if (this.parentNode.classList.hasClass("goalItem"))
+                if (this.parentNode.getAttribute("class")=="goalItem")
                     for (var i = 0; i < GoalsArr.length; i++) {
                         if ("target_" + GoalsArr[i].tTarId == this.parentNode.parentNode.getAttribute('id'))
                             GoalsArr.splice(i, 1);
                     }
-                else if (this.parentNode.classList.hasClass("toolItem"))
+                else if (this.parentNode.getAttribute("class")=="toolItem")
                     for (var i = 0; i < ToolsArr.length; i++) {
                         if ("target_" + Tool[i].tTarId == this.parentNode.parentNode.getAttribute('id'))
                             ToolsArr.splice(i, 1);
