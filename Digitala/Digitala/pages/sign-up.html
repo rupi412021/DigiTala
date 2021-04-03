@@ -51,8 +51,6 @@
         }
 
         function getSchoolSuccess(schoolsList) {
-            console.log(schoolsList);
-
             str = "";
 
             for (var i = 0; i < schoolsList.length; i++) {
@@ -89,6 +87,7 @@
         function AddTeacherSuccess(data) {
             username = $("#email").val();
             localStorage.setItem("UserName", username);
+            window.location.href = 'index.html';
         }
 
         function f1() {
@@ -170,7 +169,7 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-block btn-lg bg-pink waves-effect" type="submit" id="sign_up">רשום אותי</button>
+                    <button class="btn btn-block btn-lg bg-pink waves-effect" type="submit" id="sign_upBtn">רשום אותי</button>
 
                     <div class="m-t-25 m-b--5 align-center">
                         <a href="sign-in.html">משתמש רשום</a>
@@ -194,7 +193,7 @@
     <script src="../plugins/jquery-validation/additional-methods.js"></script>-->
     <!-- Custom Js -->
     <script src="../js/admin.js"></script>
-    <script src="../js/pages/examples/sign-up.js"></script>
+    <!--<script src="../js/pages/examples/sign-up.js"></script>-->
 
     <!-- Select Plugin Js -->
     <!--<script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>-->
