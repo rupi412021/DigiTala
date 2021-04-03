@@ -22,7 +22,7 @@ namespace Digitala.Models
         List<string> tools;
         List<string> goals;
 
-        public Targets(int tarSerial, int faSerial, int sfaSerial, string target, string functionArea, string subFunctionArea, double suitability, double originality, int numOfUses, bool newTar, List<string> tools, List<string> goals)
+        public Targets(int tarSerial, int faSerial, int sfaSerial, string target, string functionArea, string subFunctionArea, double suitability, double originality, int numOfUses, bool newTar, bool newPhrase, List<string> tools, List<string> goals)
         {
             TarSerial = tarSerial;
             FaSerial = faSerial;
@@ -36,6 +36,7 @@ namespace Digitala.Models
             NewTar = newTar;
             Tools = tools;
             Goals = goals;
+            NewPhrase = newPhrase;
         }
 
         public Targets() { }
@@ -50,6 +51,7 @@ namespace Digitala.Models
         public double Originality { get => originality; set => originality = value; }
         public int NumOfUses { get => numOfUses; set => numOfUses = value; }
         public bool NewTar { get => newTar; set => newTar = value; }
+        public bool NewPhrase { get => newPhrase; set => newPhrase = value; }
         public List<string> Tools { get => tools; set => tools = value; }
         public List<string> Goals { get => goals; set => goals = value; }
 

@@ -439,7 +439,10 @@ namespace Digitala.Models.DAL
             {
                 int numEffected = cmd.ExecuteNonQuery(); // execute the command
                 InsertChararcteristics(tala.StudentChars, tala.StudentId, tala.CurrentYear);
-                InsertToTala(tala.Targets);
+                for (int i = 0; i < tala.Targets.Count(); i++)
+                {
+                    InsertToTala(tala.Targets[i], tala.StudentId, tala.CurrentYear);
+                }
 
                 return numEffected;
             }
@@ -467,18 +470,15 @@ namespace Digitala.Models.DAL
                 String prefix;
                 StringBuilder sb = new StringBuilder();
 
-                sb.AppendFormat("Values('{0}', '{1}', '{2}')", tala.CurrentYear, tala.StudentId, 1);
-                prefix = "INSERT INTO Teachers " + "([TYear], [StudentId], [IsCreated])";
-
+                sb.AppendFormat("Values('{0}', '{1}', '{2}')", tala.CurrentYear, tala.StudentId);
+                prefix = "INSERT INTO Tala " + "([TYear], [StudentId])";
 
                 command = prefix + sb.ToString();
-
-
 
                 return command;
         }
 
-        public int InsertToTala(List<Targets> targets)
+        public int InsertToTala(Targets target, string StudentId, int CurrentYear)
         {
 
             SqlConnection con;
@@ -494,7 +494,7 @@ namespace Digitala.Models.DAL
                 throw new Exception("Could not connect to DB", ex);
             }
 
-            String cStr = BuildInsertToTalaCommand(targets);      // helper method to build the insert string
+            String cStr = BuildInsertToTalaCommand(target,StudentId, CurrentYear);      // helper method to build the insert string
 
             cmd = CreateCommand(cStr, con);             // create the command
 
@@ -520,19 +520,269 @@ namespace Digitala.Models.DAL
 
         }
 
-        private String BuildInsertToTalaCommand(List<Targets> t)
+        private String BuildInsertToTalaCommand(Targets t, string StudentId, int CurrentYear)
         {
             String command;
             String prefix;
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", t.FaSerial, t.SfaSerial, t.Target, t.Suitability, t.Originality, t.NumOfUses);
-            prefix = "INSERT INTO Targets " + "([FASerial], [SFASerial], [TargetText], [Suitability], [Originality], [NumOfUses])";
+            if (t.NewPhrase)
+            {
+                sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')",t.TarSerial, t.FaSerial, t.SfaSerial, t.Target, StudentId, CurrentYear);
+                prefix = "INSERT INTO TargetsInTala " + "([Tserial], [FASerial], [SFASerial], [NewPhrase], [StudentId], [TYear])";
+
+            }
+            if (t.NewTar)
+            {
+                sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')",0, t.FaSerial, t.SfaSerial, t.Target, StudentId, CurrentYear);
+                prefix = "INSERT INTO TargetsInTala " + "(([Tserial], [FASerial], [SFASerial], [NewPhrase], [StudentId], [TYear])";
+            }
+            else
+            {
+                sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}')", t.TarSerial, t.FaSerial, t.SfaSerial, StudentId, CurrentYear);
+                prefix = "INSERT INTO TargetsInTala " + "([Tserial], [FASerial], [SFASerial], [StudentId], [TYear])";
+
+                UpdateNumOfUses(t.TarSerial);
+            }
 
             command = prefix + sb.ToString();
 
             return command;
+        }
 
+        public void InsertToolsAndGoals(List<Targets> targets, string StudentId, int CurrentYear)
+        {
+
+            SqlConnection con = null;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM TargetsInTala WHERE StudentId = " + StudentId + " and TYear = " + CurrentYear;
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    if (Convert.ToInt32(dr["Tserial"]) > 0)
+                    {
+                        for (int i = 0; i < targets.Count(); i++)
+                        {
+                            if (targets[i].TarSerial == Convert.ToInt32(dr["Tserial"]))
+                            {
+                                for (int j = 0; j < targets[i].Goals.Count; j++)
+                                {
+                                    InsertGoal(Convert.ToInt32(dr["Tindex"]), StudentId, targets[i].Goals[j], CurrentYear);
+                                }
+                                for (int j = 0; j < targets[i].Tools.Count; j++)
+                                {
+                                    InsertTool(Convert.ToInt32(dr["Tindex"]), StudentId, targets[i].Tools[j], CurrentYear);
+                                }
+                            }
+                        }  
+                    }
+                    else
+                    {
+                        for (int i = 0; i < targets.Count(); i++)
+                        {
+                            if (targets[i].Target == (string)(dr["NewPhrase"]))
+                            {
+                                for (int j = 0; j < targets[i].Goals.Count; j++)
+                                {
+                                    InsertGoal(Convert.ToInt32(dr["Tindex"]), StudentId, targets[i].Goals[j], CurrentYear);
+                                }
+                                for (int j = 0; j < targets[i].Tools.Count; j++)
+                                {
+                                    InsertTool(Convert.ToInt32(dr["Tindex"]), StudentId, targets[i].Tools[j], CurrentYear);
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET TT Areas from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
+        public int InsertGoal(int ttSerial, string StudentId, string goal, int CurrentYear)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildInsertGoalCommand(goal, ttSerial, StudentId, CurrentYear);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("תלא לא התווספה למערכת", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildInsertGoalCommand(string goal, int ttSerial, string StudentId, int CurrentYear)
+        {
+
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}')", goal, ttSerial, StudentId, CurrentYear);
+            prefix = "INSERT INTO Goals " + "([Goal], [TalaSerial], [StudentId], [TYear])";
+
+            command = prefix + sb.ToString();
+
+            return command;
+        }
+
+        public int InsertTool(int ttSerial, string StudentId, string tool, int CurrentYear)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildInsertToolCommand(tool, ttSerial, StudentId, CurrentYear);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("תלא לא התווספה למערכת", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildInsertToolCommand(string tool, int ttSerial, string StudentId, int CurrentYear)
+        {
+
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}')", tool, ttSerial, StudentId, CurrentYear);
+            prefix = "INSERT INTO Tools " + "([Tool], [TalaSerial], [StudentId], [TYear])";
+
+            command = prefix + sb.ToString();
+
+            return command;
+        }
+
+        public int UpdateNumOfUses(int targetSer)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildUpdateNumOfUsesCommand(targetSer);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("מטרה לא התעדכנה", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildUpdateNumOfUsesCommand(int targetSer)
+        {
+            String command;
+            command = "UPDATE Targets SET NumOfUses = NumOfUses+1 WHERE Tserial = " + targetSer;
+
+            return command;
         }
 
         private String BuildInsertCommand(Teachers teacher)
@@ -1264,7 +1514,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "Select T.*, TT.NewPhrase, FA.FunctionArea from TargetsInTala TT join Targets T on T.Tserial=TT.Tserial join FunctionAreas FA on FA.FASerial=T.FASerial"
+                String selectSTR = "Select TT.*, T.Suitability, T.Originality, T.NumOfUses, FA.FunctionArea from TargetsInTala TT left join Targets T on T.Tserial=TT.Tserial join FunctionAreas FA on FA.FASerial=TT.FASerial"
                     + " where TT.StudentId = " + r.MatchStudentId + " and TT.TYear = " + r.MatchYear;
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
@@ -1279,7 +1529,7 @@ namespace Digitala.Models.DAL
                 {   // Read till the end of the data into a row
                     Targets t = new Targets();
 
-                    if((string)dr["NewPhrase"] == "")
+                    if((string)dr["NewPhrase"] == null)
                         t.Target = (string)(dr["TargetText"]);
                     else
                         t.Target = (string)(dr["NewPhrase"]);
@@ -1287,9 +1537,19 @@ namespace Digitala.Models.DAL
                     t.TarSerial = Convert.ToInt32(dr["TSerial"]);
                     t.FaSerial = Convert.ToInt32(dr["FASerial"]);
                     t.SfaSerial = Convert.ToInt32(dr["SFASerial"]);
-                    t.Suitability = Convert.ToDouble(dr["Suitability"]);
-                    t.Originality = Convert.ToDouble(dr["Originality"]);
-                    t.NumOfUses = Convert.ToInt32(dr["NumOfUses"]);
+                    if (Convert.ToDouble(dr["Suitability"]) > 0)
+                        t.Suitability = Convert.ToDouble(dr["Suitability"]);
+                    else
+                        t.Suitability = 0;
+                    if (Convert.ToDouble(dr["Originality"]) > 0)
+                        t.Originality = Convert.ToDouble(dr["Originality"]);
+                    else
+                        t.Originality = 0;
+                    if (Convert.ToDouble(dr["NumOfUses"]) > 0)
+                        t.NumOfUses = Convert.ToInt32(dr["NumOfUses"]);
+                    else
+                        t.NumOfUses = 0;
+
                     t.FunctionArea = (string)(dr["FunctionArea"]);
 
                     targetList.Add(t);

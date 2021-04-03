@@ -105,6 +105,27 @@
             });
 
             $(document).on("click", "#finish", function () {
+                for (var i = 0; i < Goals.length; i++) {
+                    for (var j = 0; j < TargetForTala.length; j++) {
+                        if (TargetForTala[j].TarSerial == Goals[i].tTarId)
+                            TargetForTala[j].Goals.push(Goals[i].nGoal);
+                    }  
+                }
+
+                for (var i = 0; i < Tools.length; i++) {
+                    for (var j = 0; j < TargetForTala.length; j++) {
+                        if (TargetForTala[j].TarSerial == Tools[i].tTarId)
+                            TargetForTala[j].Tools.push(Tools[i].nTool);
+                    }
+                }
+                TalaObj = {
+                    studentChars: CharsChosen,
+                    StudentId: newID,
+                    CurrentYear: 2021,
+                    Targets: TargetForTala
+                }
+
+                ajaxCall("POST", "../api/Talas", JSON.stringify(TalaObj), getTalaSuccess, error);
 
             });
 
@@ -115,6 +136,9 @@
             NewTargetToBankForm();
         });
 
+        function getTalaSuccess(data) {
+            console.log(data);
+        }
         function renderChooseGoalsNTools() {
             targetsforToolsAndGoals = "<h4>בחר לכל מטרה את היעדים והאמצעים להשגתה</h4>";
             targetsforToolsAndGoals += '<div class="panel-group" id="accordion_19" role="tablist" aria-multiselectable="true">';
@@ -204,7 +228,7 @@
                     Target: newTarget,
                     FaSerial: areaId,
                     SubFunctionArea: subarea,
-                    NewTar: True
+                    NewTar: 1
                 }
                 unknownTarId++;
                 TargetForTala.push(ObjTemp);
@@ -250,6 +274,7 @@
                         showConfirmButton: false
                     });
                     TargetForTala[tarIndex].Target = inputValue;
+                    TargetForTala[tarIndex].newPhrase = 1;
                     renderTargetsToPage(TargetForTala);
                 });
             });
