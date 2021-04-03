@@ -18,6 +18,7 @@ namespace Digitala.Models
         double originality;
         int numOfUses;
         bool newTar;
+        bool newPhrase;
         List<string> tools;
         List<string> goals;
 

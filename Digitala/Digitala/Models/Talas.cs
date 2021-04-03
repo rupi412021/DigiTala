@@ -31,7 +31,7 @@ namespace Digitala.Models
         public Talas Insert()
         {
             DBServices dbs = new DBServices();
-            dbs.Insert();
+            dbs.Insert(this);
             Talas Tala = Read(StudentId, CurrentYear);
                     
             return Tala;

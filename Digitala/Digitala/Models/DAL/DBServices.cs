@@ -467,8 +467,8 @@ namespace Digitala.Models.DAL
                 String prefix;
                 StringBuilder sb = new StringBuilder();
 
-                sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", teacher.TeacherID, teacher.TeacherFname, teacher.TeacherSurName, teacher.TeacherEmail, teacher.TeacherPassword, teacher.TeacherSchoolId);
-                prefix = "INSERT INTO Teachers " + "([TId], [TFirstName], [TLastName], [TEmail], [TPassword], [TSchool])";
+                sb.AppendFormat("Values('{0}', '{1}', '{2}')", tala.CurrentYear, tala.StudentId, 1);
+                prefix = "INSERT INTO Teachers " + "([TYear], [StudentId], [IsCreated])";
 
 
                 command = prefix + sb.ToString();
@@ -1279,10 +1279,11 @@ namespace Digitala.Models.DAL
                 {   // Read till the end of the data into a row
                     Targets t = new Targets();
 
-                    if((string)(dr["NewPhrase"]) == "")
+                    if((string)dr["NewPhrase"] == "")
                         t.Target = (string)(dr["TargetText"]);
                     else
                         t.Target = (string)(dr["NewPhrase"]);
+
                     t.TarSerial = Convert.ToInt32(dr["TSerial"]);
                     t.FaSerial = Convert.ToInt32(dr["FASerial"]);
                     t.SfaSerial = Convert.ToInt32(dr["SFASerial"]);

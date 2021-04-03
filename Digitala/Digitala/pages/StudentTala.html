@@ -351,10 +351,10 @@
                         renderTargets += "<button type='button' class='deleteBtn btn-trans' data-tarId=" + targetsList[i].TarSerial + "><i class='material-icons'>delete</i></button>";
                         renderTargets += "<button type='button' class='updateBtn btn-trans' data-tarId=" + targetsList[i].TarSerial + "><i class='material-icons'>create</i></button>";
                         renderTargets += "</div>";
-                        tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + targetsList[i].TarSerial + '">X</button> ' + targetsList[i].Target + '</span>';
-                        $("#phTarsLabels").append(tampValString);
+                        tampValString += '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + targetsList[i].TarSerial + '">X</button> ' + targetsList[i].Target + '</span>';                      
                     }
                 }
+                $("#phTarsLabels").html(tampValString);
                 if (renderTargets.length > 0) {
                     $("#collapse_" + MainAreasList[j].AreaId).show();
                     $("#area_" + MainAreasList[j].AreaId).html(renderTargets);
@@ -425,31 +425,25 @@
                 let tempVal = $("#tarsMultiPick").val();
                 let tempID = $('#tarsMultiPickList option[value="' + tempVal + '"]').attr('id');
 
-                if (tempID == undefined)
-                    tempID = unknownTarId;
-                unknownTarId++;
                 $("#tarsMultiPick").val("");
-                renderTagTar(tempID, tempVal)
+
+                renderTagTar(tempID)
             });
 
             $(document).on("click", ".tagNewTarget", function () {
                 let tempID = this.getAttribute("id");
-                let tempVal = document.getElementById(tempID).value;
-
-                renderTagTar(tempID, tempVal)
+                renderTagTar(tempID)
             });
 
-            function renderTagTar(tempID, tempVal) {              
-                ObjTemp = {
-                    Target: tempVal,
-                    TarSerial: tempID
+            function renderTagTar(tempID) { 
+                for (var i = 0; i < TargetsFullList.length; i++) {
+                    if (TargetsFullList[i].TarSerial == tempID) {
+                        TargetForTala.push(TargetsFullList[i]);
+                        let tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + TargetsFullList[i].TarSerial + '">X</button> ' + TargetsFullList[i].Target + '</span>';
+                        $("#phTarsLabels").append(tampValString);
+                        rederAllTargets(TargetsFullList);
+                    }
                 }
-                
-                TargetForTala.push(ObjTemp);
-                let tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + ObjTemp.TarSerial + '">X</button> ' + ObjTemp.Target + '</span>';
-                $("#phTarsLabels").append(tampValString);
-
-                rederAllTargets(TargetsFullList);
             }
 
             $(document).on("click", ".tagTarRemove", function () {
@@ -468,8 +462,7 @@
                 }
                 $("#phTarsLabels").html(tagsList);
 
-                rederAllTargets(TargetsFullList);
-                renderSubAreasListByArea(TargetsFullList);
+                rederAllTargets(TargetsFullList);                
             });
         }
 
@@ -557,7 +550,7 @@
 
         function renderSubAreasListByArea(AreaFilterId) {
             var renderSubAreasList = "";
-            let first = 0;
+            let first = 0;            
             for (var i = 0; i < SubAreasList.length; i++) {
                 if ("filterMainBTN" + SubAreasList[i].AreaId == AreaFilterId) {
                     if (first == 0) {
@@ -571,6 +564,7 @@
                     }
                 }
             }
+
             $("#subareasFilter").html(renderSubAreasList);
 
         }
