@@ -143,11 +143,25 @@
             });
 
             NewTargetToBankForm();
+
+            ajaxCall("GET", "../api/Talas/" + newID + "/2021", "", getTalaSuccess, error);
+
         });
 
         function getTalaSuccess(data) {
             console.log(data);
+            if (data.StudentId == newID) {
+                swal({
+                    title: "ל" + studentName + ' כבר יש תל"א',
+                    type: "warning",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                $(".body").hide();
+            }
+
         }
+
         function renderChooseGoalsNTools() {
             targetsforToolsAndGoals = "<h4>בחר לכל מטרה את היעדים והאמצעים להשגתה</h4>";
             targetsforToolsAndGoals += '<div class="panel-group" id="accordion_19" role="tablist" aria-multiselectable="true">';
@@ -263,7 +277,7 @@
                 }
                 swal({
                     title: "ערוך מטרה בתחום: " + tarArea,
-                    text: 'אם ברצונף לשנות את התחום, לחץ על "סגור" והוסף מטרה חדשה',
+                    text: 'אם ברצונך לשנות את התחום, לחץ על "סגור" והוסף מטרה חדשה',
                     type: "input",
                     showCancelButton: true,
                     closeOnConfirm: false,

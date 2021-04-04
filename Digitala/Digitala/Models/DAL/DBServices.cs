@@ -1364,7 +1364,47 @@ namespace Digitala.Models.DAL
 
             }
         }
+        
 
+            public Talas ReadTala(string studentId, int year)
+        {
+            Talas t = new Talas();
+            SqlConnection con = null;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM Tala WHERE StudentId="+ studentId +" and TYear="+ year;
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+
+                    t.CurrentYear = Convert.ToInt32(dr["TYear"]);
+                    t.StudentId = (string)(dr["StudentId"]);     
+                }
+
+                return t;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Students from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
         public int Insert(Students Student)
         {
 

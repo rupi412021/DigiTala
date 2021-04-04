@@ -10,20 +10,19 @@ namespace Digitala.Controllers
 {
     public class TalasController : ApiController
     {
-        //[HttpGet]
-        //[Route("api/Talas/{studentId}/{year}")]
-        //public Talas Get(string studentId, int year)
-        //{
-        //    Talas t = new Talas();
-        //    return t.Read(studentId, year);
-        //}
+        [HttpGet]
+        [Route("api/Talas/{studentId}/{year}")]
+        public Talas Get(string studentId, int year)
+        {
+            Talas t = new Talas();
+            return t.Read(studentId, year);
+        }
 
         [HttpPost]
         [Route("api/Talas")]
-        public string Post([FromBody]Talas t)
+        public Talas Post([FromBody]Talas t)
         {
-            t.Insert();
-            return "Tala Updated!";
+            return t.Insert();
         }
     }
 }

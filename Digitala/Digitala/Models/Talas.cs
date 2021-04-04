@@ -28,22 +28,22 @@ namespace Digitala.Models
         public List<Chararcteristics> StudentChars { get => studentChars; set => studentChars = value; }
         public List<Targets> Targets { get => targets; set => targets = value; }
 
-        public void Insert()
+        public Talas Insert()
         {
             DBServices dbs = new DBServices();
             dbs.Insert(this);
             dbs.InsertToolsAndGoals(targets, StudentId, CurrentYear);
 
-            //Talas Tala = Read(StudentId, CurrentYear);                  
-            //return Tala;
+            Talas Tala = Read(StudentId, CurrentYear);
+            return Tala;
         }
 
-        //public Talas Read(string studentId, int year)
-        //{
-        //    DBServices dbs = new DBServices();
-        //    Talas Tala = dbs.ReadTala(studentId, year);
+        public Talas Read(string studentId, int year)
+        {
+            DBServices dbs = new DBServices();
+            Talas Tala = dbs.ReadTala(studentId, year);
 
-        //    return Tala;
-        //}
+            return Tala;
+        }
     }
 }
