@@ -32,7 +32,7 @@ namespace Digitala.Models
         {
             DBServices dbs = new DBServices();
             dbs.Insert(this);
-            dbs.InsertToolsAndGoals(targets, StudentId, CurrentYear);
+            dbs.InsertToolsAndGoals(Targets, StudentId, CurrentYear);
 
             Talas Tala = Read(StudentId, CurrentYear);
             return Tala;
