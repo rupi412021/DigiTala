@@ -215,7 +215,7 @@
                     }
                 else if (this.parentNode.getAttribute("class")=="toolItem")
                     for (var i = 0; i < ToolsArr.length; i++) {
-                        if ("target_" + Tool[i].tTarId == this.parentNode.parentNode.getAttribute('id'))
+                        if ("target_" + ToolsArr[i].tTarId == this.parentNode.parentNode.getAttribute('id'))
                             ToolsArr.splice(i, 1);
                     }
                 this.parentNode.remove();
