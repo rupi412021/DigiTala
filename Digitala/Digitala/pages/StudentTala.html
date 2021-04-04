@@ -106,14 +106,6 @@
 
             $(document).on("click", "#finish", function () {
 
-                //goalsList = document.getElementsByClassName("goalItem");
-                //for (var i = 0; i < goalsList.length; i++) {
-                //    for (var j = 0; j < TargetForTala.length; j++) {
-                //        if ("target_" + TargetForTala[j].TarSerial == goalsList[i].parentNode.getAttribute('id'))
-                //            TargetForTala[j].Goals.push(goalsList[i].)
-                //    }
-                //}
-
                 for (var i = 0; i < TargetForTala.length; i++) {
                     TargetForTala[i].Goals = [];
                     TargetForTala[i].Tools = [];
@@ -152,12 +144,13 @@
             console.log(data);
             if (data.StudentId == newID) {
                 swal({
-                    title: "ל" + studentName + ' כבר יש תל"א',
-                    type: "warning",
+                    title: "ל" + studentName + ' יש תל"א',
+                    type: "success",
                     timer: 2000,
                     showConfirmButton: false
                 });
-                $(".body").hide();
+                if ($("#wizard_with_validation-p-0").hasClass("body current"))
+                    $(".body").hide();
             }
 
         }
