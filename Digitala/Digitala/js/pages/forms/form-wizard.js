@@ -61,9 +61,9 @@ $(function () {
             form.validate().settings.ignore = ':disabled';
             return form.valid();
         },
-        onFinished: function (event, currentIndex) {
-            swal("Good job!", "Submitted!", "success");
-        }
+        //onFinished: function (event, currentIndex) {
+        //    swal("Good job!", "Submitted!", "success");
+        //}
     });
 
     form.validate({
