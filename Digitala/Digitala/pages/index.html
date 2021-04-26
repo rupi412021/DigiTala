@@ -57,10 +57,23 @@
         function getStudentsSuccess(StudsentsData) {
             StudsentsList = StudsentsData;
             console.log(StudsentsData);
+            talasCount = 0;
+            for (var i = 0; i < StudsentsList.length; i++) {
+                ajaxCall("GET", "../api/Talas/" + StudsentsList[i].StudentId +"/2021", "", getTalaSuccess, error);
+            } 
+        }
 
-            RenderStudentsCards(StudsentsData);
+        function getTalaSuccess(data){
+            for (var i = 0; i < StudsentsList.length; i++) {
+                if (StudsentsList[i].StudentId == data.StudentId)
+                    StudsentsList[i].HasTala = true;
+            }
+            console.log(StudsentsList);
 
-            ajaxCall("GET", "../api/Talas/2021", "", getAllTalaSuccess, error);
+            talasCount++;
+
+            if (talasCount == StudsentsList.length)
+                RenderStudentsCards(StudsentsList);
         }
 
         function RenderStudentsCards(StudsentsData) {
@@ -79,7 +92,11 @@
                     studentsStrRight += '<div><i class="material-icons">cake</i><span class="icon-name studentIcons">' + bd.getDate() + "/" + months[bd.getMonth()] + "/" + bd.getFullYear() + '</span></div>';
                     studentsStrRight += '<div><i class="material-icons">phone</i><span class="icon-name studentIcons">' + StudsentsData[i].SPhone + '</span></div>';
                     studentsStrRight += '</div><div class="body DivStudentTala">';
-                    studentsStrRight += '<button type="button" std-id=' + StudsentsData[i].StudentId +' class="btn-trans waves-effect personalTalaBTN"><img src="../images/talaEmpty.png"/></button>';                    
+                    studentsStrRight += '<button type="button" std-id=' + StudsentsData[i].StudentId + ' class="btn-trans waves-effect personalTalaBTN">';
+                    if (StudsentsData[i].HasTala == true)
+                        studentsStrRight += '<img src="../images/talaFull.png" /></button>';
+                    else
+                        studentsStrRight += '<img src="../images/talaEmpty.png" /></button>';
                     studentsStrRight += "</div></div></div>";
                 }
                 
@@ -93,7 +110,11 @@
                     studentsStrLeft += '<div><i class="material-icons">cake</i><span class="icon-name studentIcons">' + bd.getDate() + "/" + months[bd.getMonth()] + "/" + bd.getFullYear() + '</span></div>';
                     studentsStrLeft += '<div><i class="material-icons">phone</i><span class="icon-name studentIcons">' + StudsentsData[i].SPhone + '</span></div>';
                     studentsStrLeft += '</div><div class="body DivStudentTala">';
-                    studentsStrLeft += '<button type="button" std-id=' + StudsentsData[i].StudentId + ' class="btn-trans waves-effect personalTalaBTN"><img src="../images/talaFull.png"/></button>';                    
+                    studentsStrLeft += '<button type="button" std-id=' + StudsentsData[i].StudentId + ' class="btn-trans waves-effect personalTalaBTN">'
+                    if (StudsentsData[i].HasTala == true)
+                        studentsStrLeft += '<img src="../images/talaFull.png" /></button>';
+                    else
+                        studentsStrLeft += '<img src="../images/talaEmpty.png" /></button>';
                     studentsStrLeft += "</div></div></div>";
                 }
             }

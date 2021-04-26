@@ -1374,7 +1374,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "SELECT SIC.SCstdID FROM Teachers T inner join StudentsInClass SIC on T.TSchool = SIC.SCSchId and T.TYear = SIC.SCYear and T.TClass = SIC.SCName " +
+                String selectSTR = "SELECT S.* FROM Teachers T inner join StudentsInClass SIC on T.TSchool = SIC.SCSchId and T.TYear = SIC.SCYear and T.TClass = SIC.SCName " +
                                     "inner join Student S on SIC.SCstdID = S.StudentId WHERE T.TId = " + teacherId + " and T.TYear = " + year;
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
@@ -1385,6 +1385,7 @@ namespace Digitala.Models.DAL
                 while (dr.Read())
                 {   // Read till the end of the data into a row
                     Students s = new Students();
+
                     s.Dis1st = Convert.ToInt32(dr["1stDis"]);
                     s.Dis2nd = Convert.ToInt32(dr["2ndDis"]);
                     s.StudentId = (string)(dr["StudentId"]);
