@@ -51,6 +51,34 @@
                 window.location.href = "StudentTala.html";
                 
             });
+
+            $(document).on("click", "#AllStudents", function () {
+                RenderStudentsCards(StudsentsList);               
+
+                if ($("#AllStudents").hasClass("bg-blue-grey")) {
+                    $("#AllStudents").addClass("bg-grey");
+                    $("#AllStudents").removeClass("bg-blue-grey");
+                    $("#StudentsWithNoTala").removeClass("bg-grey");
+                    $("#StudentsWithNoTala").addClass("bg-blue-grey");
+                }
+                 
+            });
+
+            $(document).on("click", "#StudentsWithNoTala", function () {
+                NoTalaStudents = [];
+                for (var i = 0; i < StudsentsList.length; i++) {
+                    if (StudsentsList[i].HasTala == false)
+                        NoTalaStudents.push(StudsentsList[i]);
+                }
+
+                if ($("#StudentsWithNoTala").hasClass("bg-blue-grey")) {
+                    $("#StudentsWithNoTala").addClass("bg-grey");
+                    $("#StudentsWithNoTala").removeClass("bg-blue-grey");
+                    $("#AllStudents").removeClass("bg-grey");
+                    $("#AllStudents").addClass("bg-blue-grey");
+                }
+                RenderStudentsCards(NoTalaStudents);
+            });
             
         });
 
@@ -167,8 +195,8 @@
             </div>
             <div class="row clearfix">
                 <div class="col-sm-8 col-xs-12" id="filetButtons" style="float:right">
-                    <button type="button" class="btn bg-grey btn-lg waves-effect">כל התלמידים</button>
-                    <button type="button" class="btn bg-blue-grey btn-lg waves-effect">תלמידים ללא תל"א</button>
+                    <button type="button" id="AllStudents" class="btn bg-grey btn-lg waves-effect">כל התלמידים</button>
+                    <button type="button" id="StudentsWithNoTala" class="btn bg-blue-grey btn-lg waves-effect">תלמידים ללא תל"א</button>
                 </div>
             </div>
             <div class="row clearfix">
