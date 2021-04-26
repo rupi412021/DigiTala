@@ -34,15 +34,33 @@
     <script>
         $(document).ready(function () {
             //צריך להביא רק תלמידים של המורה בשנת הלימודים הנוכחית, כרגע מביא את כל התלמידים במערכת
-            ajaxCall("GET", "../api/Students", "", getStudentsSuccess, error);
+            ajaxCall("GET", "../api/Students/204318679/2021", "", getStudentsSuccess, error);
             localStorage.removeItem("StudentName");
             localStorage.removeItem("StudentID");
+
+            $(document).on("click", ".personalTalaBTN", function () {
+                std_id = this.getAttribute("std-id");
+                for (var i = 0; i < StudsentsList.length; i++) {
+                    if (StudsentsList[i].StudentId == std_id)
+                        studentName = StudsentsList[i].SFirstName + " " + StudsentsList[i].SLastName;
+                }
+
+                localStorage.setItem("StudentName", studentName);
+                localStorage.setItem("StudentID", std_id);
+
+                window.location.href = "StudentTala.html";
+                
+            });
+            
         });
 
         function getStudentsSuccess(StudsentsData) {
             StudsentsList = StudsentsData;
             console.log(StudsentsData);
+
             RenderStudentsCards(StudsentsData);
+
+            ajaxCall("GET", "../api/Talas/2021", "", getAllTalaSuccess, error);
         }
 
         function RenderStudentsCards(StudsentsData) {
@@ -75,7 +93,7 @@
                     studentsStrLeft += '<div><i class="material-icons">cake</i><span class="icon-name studentIcons">' + bd.getDate() + "/" + months[bd.getMonth()] + "/" + bd.getFullYear() + '</span></div>';
                     studentsStrLeft += '<div><i class="material-icons">phone</i><span class="icon-name studentIcons">' + StudsentsData[i].SPhone + '</span></div>';
                     studentsStrLeft += '</div><div class="body DivStudentTala">';
-                    studentsStrLeft += '<button type="button" std-id=' + StudsentsData[i].StudentId + ' class="btn-trans waves-effect personalTalaBTN"><img src="../images/talaEmpty.png"/></button>';                    
+                    studentsStrLeft += '<button type="button" std-id=' + StudsentsData[i].StudentId + ' class="btn-trans waves-effect personalTalaBTN"><img src="../images/talaFull.png"/></button>';                    
                     studentsStrLeft += "</div></div></div>";
                 }
             }

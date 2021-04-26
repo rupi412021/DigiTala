@@ -1364,9 +1364,60 @@ namespace Digitala.Models.DAL
 
             }
         }
-        
 
-            public Talas ReadTala(string studentId, int year)
+        public List<Students> ReadStudentsPerTecher(string teacherId, int year)
+        {
+            List<Students> StudentsList = new List<Students>();
+            SqlConnection con = null;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT SIC.SCstdID FROM Teachers T inner join StudentsInClass SIC on T.TSchool = SIC.SCSchId and T.TYear = SIC.SCYear and T.TClass = SIC.SCName " +
+                                    "inner join Student S on SIC.SCstdID = S.StudentId WHERE T.TId = " + teacherId + " and T.TYear = " + year;
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Students s = new Students();
+                    s.Dis1st = Convert.ToInt32(dr["1stDis"]);
+                    s.Dis2nd = Convert.ToInt32(dr["2ndDis"]);
+                    s.StudentId = (string)(dr["StudentId"]);
+                    s.SFirstName = (string)(dr["SFirstName"]);
+                    s.SLastName = (string)(dr["SLastName"]);
+                    s.SEmail = (string)(dr["SEmail"]);
+                    s.SGender = (string)(dr["SGender"]);
+                    s.SAddress = (string)(dr["SAddress"]);
+                    s.SPhone = (string)(dr["SPhone"]);
+                    s.SDescripion = (string)(dr["SDescripion"]);
+                    s.SBirthDate = Convert.ToDateTime(dr["SBirthDate"]);
+
+                    StudentsList.Add(s);
+                }
+
+                return StudentsList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Students from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+
+        public Talas ReadTala(string studentId, int year)
         {
             Talas t = new Talas();
             SqlConnection con = null;
@@ -1405,6 +1456,7 @@ namespace Digitala.Models.DAL
 
             }
         }
+
         public int Insert(Students Student)
         {
 

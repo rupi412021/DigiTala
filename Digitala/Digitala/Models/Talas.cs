@@ -45,5 +45,6 @@ namespace Digitala.Models
 
             return Tala;
         }
+
     }
 }

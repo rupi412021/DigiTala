@@ -19,6 +19,15 @@ namespace Digitala.Controllers
             return slist;
         }
 
+        [HttpGet]
+        [Route("api/Students/{teacherId}/{year}")]
+        public List<Students> Get(string teacherId, int year)
+        {
+            Students s = new Students();
+            List<Students> slist = s.ReadStudentsForTeacherPerYear(teacherId, year);
+            return slist;
+        }
+
         [HttpPost]
         [Route("api/Students")]
         public List<Students> Post([FromBody]Students s)

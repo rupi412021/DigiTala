@@ -17,6 +17,7 @@ namespace Digitala.Controllers
             Talas t = new Talas();
             return t.Read(studentId, year);
         }
+
         [HttpPost]
         [Route("api/Talas")]
         public Talas Post([FromBody]Talas t)

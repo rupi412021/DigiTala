@@ -250,6 +250,8 @@
     <Content Include="images\DigitalaLogo.bmp" />
     <Content Include="images\F.png" />
     <Content Include="images\M.png" />
+    <Content Include="images\talaEmpty.png" />
+    <Content Include="images\talaFull.png" />
     <Content Include="images\user-img-background.jpg" />
     <Content Include="js\pages\loging.js" />
     <Content Include="pages\Admin.html" />

@@ -19,9 +19,9 @@ namespace Digitala.Models
         string sDescripion;
         int dis1st;
         int dis2nd;
-        
+        bool hasTala;
 
-        public Students(string studentId, string sFirstName, string sLastName, string sEmail, DateTime sBirthDate, string sGender, string sAddress, string sPhone, string sDescripion, int dis1st, int dis2nd)
+        public Students(string studentId, string sFirstName, string sLastName, string sEmail, DateTime sBirthDate, string sGender, string sAddress, string sPhone, string sDescripion, int dis1st, int dis2nd, bool hasTala)
         {
             StudentId = studentId;
             SFirstName = sFirstName;
@@ -34,6 +34,7 @@ namespace Digitala.Models
             SDescripion = sDescripion;
             Dis1st = dis1st;
             Dis2nd = dis2nd;
+            HasTala = hasTala;
         }
 
         public Students() { }
@@ -49,6 +50,7 @@ namespace Digitala.Models
         public string SDescripion { get => sDescripion; set => sDescripion = value; }
         public int Dis1st { get => dis1st; set => dis1st = value; }
         public int Dis2nd { get => dis2nd; set => dis2nd = value; }
+        public bool HasTala { get => hasTala; set => hasTala = value; }
 
         public List<Students> Read()
         {
@@ -69,6 +71,14 @@ namespace Digitala.Models
             DBServices dbs = new DBServices();
             dbs.Update(this);
             return Read();
+        }
+
+        public List<Students> ReadStudentsForTeacherPerYear(string teacherId, int year)
+        {
+            DBServices dbs = new DBServices();
+            List<Students> sList = dbs.ReadStudentsPerTecher(teacherId, year);
+
+            return sList;
         }
     }
 }
