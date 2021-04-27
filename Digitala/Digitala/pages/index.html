@@ -33,8 +33,9 @@
 
     <script>
         $(document).ready(function () {
-            //צריך להביא רק תלמידים של המורה בשנת הלימודים הנוכחית, כרגע מביא את כל התלמידים במערכת
-            ajaxCall("GET", "../api/Students/204318679/2021", "", getStudentsSuccess, error);
+            TeachID = localStorage["TeacherID"];
+
+            ajaxCall("GET", "../api/Students/" + TeachID +"/2021", "", getStudentsSuccess, error);
             localStorage.removeItem("StudentName");
             localStorage.removeItem("StudentID");
 

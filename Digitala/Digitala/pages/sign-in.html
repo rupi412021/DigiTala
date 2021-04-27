@@ -59,6 +59,7 @@
                 if (data[i].TeacherEmail == email) {
                     if (data[i].TeacherPassword == passWord) {
                         localStorage.setItem("UserName", email);
+                        localStorage.setItem("TeacherID", data[i].TeacherID);
                         hit = 1;
                         window.location.href = 'index.html';
                     }
