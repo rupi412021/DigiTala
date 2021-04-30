@@ -97,19 +97,9 @@
 
             $("#saveBTN").submit(onSubmitFunc);
             $("#saveSubAreaBTN").submit(saveNewSubArea);
-            $("#saveAreaBTNandAddSub").click(saveAndMoveToSubArea);
 
 
         });
-
-        function saveAndMoveToSubArea() {
-            tar = null;
-            $("#editSubAreaDiv").show();
-            $("#NewSubArea").val("");
-            $("#AreaPickForNewSubArea").val("");
-            $("#editSubAreaDiv :input").prop("disabled", false);
-            $("#AreaPickForNewSubAreaList").html(areas);
-        }
 
         function saveNewSubArea() {
             mode = "newsubarea";
@@ -280,6 +270,12 @@
 
             $("#areaPickList").html(areas);
             if (mode == "newsubarea") {
+                swal({
+                    title: "תת תחום חדש נוסף בהצלחה",
+                    type: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
                 $("#editSubAreaDiv").hide();
             }
         }
@@ -475,8 +471,9 @@
                                         <p><b>מטרה</b></p>
                                         <div class="form-group form-group-lg">
                                             <div class="form-line">
-                                                <input type="text" class="form-control" id="target" required oninvalid="this.setCustomValidity('הזן מטרה')" oninput="this.setCustomValidity('')">
+                                                <input type="text" class="form-control" id="target" pattern="^[א-ת\s]*$" required oninvalid="this.setCustomValidity('הזן מטרה')" oninput="this.setCustomValidity('')">
                                             </div>
+                                            <div class="help-info">אותיות בעברית בלבד, ללא סימנים</div>
                                         </div>
                                     </div>
                                 </div>
@@ -547,8 +544,9 @@
                                         <p><b>הזן תת-תחום חדש</b></p>
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" class="form-control" id="NewSubArea" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('הזן תת-תחום')">
+                                                <input type="text" class="form-control" pattern="^[א-ת\s]*$" id="NewSubArea" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('הזן תת-תחום')">
                                             </div>
+                                            <div class="help-info">אותיות בעברית בלבד, ללא סימנים</div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
