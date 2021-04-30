@@ -2,25 +2,40 @@
     font-family: Calibri;
 }
 
-.studentsFields {
+.card .body .col-sm-5.studentsFields,
+.card .body .col-sm-2.studentsFields,
+.card .body .col-sm-4.studentsFields,
+.card .body .col-sm-3.studentsFields{
     float: right;
+    margin-bottom: 5px;
 }
     .studentsFields > .form-group .form-line {
         width: 80%;
+        
     }
     .studentsFields > .demo-radio-button > label {
         min-width: 10px;
         margin-top: 5px;
     }
-
+.studentsFields.demo-checkbox > label {
+    min-width: 10px;
+    margin-top: 5px;
+}
 [type="radio"].radio-col-female:checked + label:after {
-    background-color: #F46549;
-    border-color: #F46549;
+    background-color: #96C4DA;
+    border-color: #96C4DA;
 }
 
 [type="radio"].radio-col-male:checked + label:after {
     background-color: #96C4DA;
     border-color: #96C4DA;
+}
+
+.contactsHeader {
+    margin-bottom: 20px;
+    padding-right: 15px;
+    font-weight: bold;
+    color: #F46549;
 }
 #tarsMultiPick::-webkit-input-placeholder {
     font-family: FontAwesome;
