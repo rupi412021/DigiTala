@@ -98,7 +98,7 @@ $(document).on("click", ".openTalaManually", function () {
     newID = localStorage["StudentID"]
     $("#studentName").html(studentName);
 
-    if (newID == this.parentNode.parentNode.getAttribute('id')) {
+    if (newID == this.parentNode.parentNode.getAttribute('id') && this.parentNode.parentNode.hasClass('active')) {
         event.preventDefault();
     }
     else {
@@ -127,10 +127,25 @@ $(document).on("click", ".openProfileManually", function () {
     this.parentNode.classList.add("active");
     this.classList.add("toggled");
 
-    if (document.URL.includes("StudentProfile.html"))
+    studentName = localStorage["StudentName"];
+    newID = localStorage["StudentID"]
+    $("#studentName").html(studentName);
+
+    if (newID == this.parentNode.parentNode.getAttribute('id') && this.parentNode.parentNode.hasClass('active')) {
         event.preventDefault();
+    }
+    else {
+        if (newID == this.parentNode.parentNode.getAttribute('id'))
+            refresh = 1;
+        arr = document.getElementsByClassName("openStudentManually");
+        newID = this.parentNode.parentNode.getAttribute('id');
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i].id == newID) {
+                studentName = arr[i].innerText;
+                $("#studentName").html(studentName);
+            }
+            localStorage.setItem("StudentName", studentName);
+            localStorage.setItem("StudentID", newID);
+        }
+    }
 });
-
-
-
- 

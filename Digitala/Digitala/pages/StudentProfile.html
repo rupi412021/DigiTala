@@ -5,31 +5,40 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>דיגיתל"א - פרופיל תלמיד</title>
+    <title>דיגיתל"א - תיק אישי לתלמיד</title>
     <!-- Favicon-->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
+    <script src="../Scripts/jquery-3.3.1.min.js"></script>
+    <script src="../Scripts/ajaxCallsWithKey.js"></script>
+
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap Core Css -->
     <link href="../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
     <!-- Waves Effect Css -->
     <link href="../plugins/node-waves/waves.css" rel="stylesheet" />
-    <!-- Animation Css -->
-    <link href="../plugins/animate-css/animate.css" rel="stylesheet" />
-    <!-- Morris Chart Css-->
-    <link href="../plugins/morrisjs/morris.css" rel="stylesheet" />
+    <link href="../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <!-- Bootstrap Tagsinput Css -->
+    <link href="../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+    <!-- Sweetalert Css -->
+    <link href="../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+
     <!-- Custom Css -->
     <link href="../css/style.css" rel="stylesheet">
+
+    <link href="../css/StyleSheet.css" rel="stylesheet" />
+
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
-    <link href="../css/StyleSheet.css" rel="stylesheet" />
-    <script src="../Scripts/jquery-3.3.1.min.js"></script>
-    <script src="../Scripts/ajaxCallsWithKey.js"></script>
+
     <script src="../js/pages/loging.js"></script>
     <script>
         $(document).ready(function () {
+            studentName = localStorage["StudentName"];
+            newID = localStorage["StudentID"]
+            $("#studentName").html(studentName);
 
         });
     </script>
@@ -53,9 +62,6 @@
         </div>
     </div>
     <!-- #END# Page Loader -->
-    <!-- Overlay For Sidebars -->
-    <div class="overlay"></div>
-    <!-- #END# Overlay For Sidebars -->
     <!-- Top Bar -->
     <nav class="navbar">
         <div class="container-fluid">
@@ -71,59 +77,149 @@
             <div class="block-header">
                 <h1>פרופיל תלמיד</h1>
             </div>
-            <!-- Widgets -->
-            <!--<div class="row clearfix">
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-pink hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">playlist_add_check</i>
+            <div class="row clearfix" id="mainDIV">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h3 id="studentName"></h3>
                         </div>
-                        <div class="content">
-                            <div class="text">NEW TASKS</div>
-                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-cyan hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">help</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">NEW TICKETS</div>
-                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-light-green hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">forum</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">NEW COMMENTS</div>
-                            <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-orange hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">person_add</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">NEW VISITORS</div>
-                            <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
-            <!-- #END# Widgets -->
+                        <div class="body">
+                            <div class="panel-group" id="accordion_19" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-col-light-blue" id="collapse_1">
+                                    <div class="panel-heading" role="tab" id="headingOne_19">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse" href="#collapseOne_19" aria-expanded="true" aria-controls="collapseOne_19">
+                                                פרטים אישיים ואנשי קשר
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseOne_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_19">
+                                        <div class="panel-body">
+                                            <div class="list-group" id="area_1">
+                                                <div class="row clearfix">
+                                                    <div class="col-sm-5 studentsFields">
+                                                        <div class="form-group ">
+                                                            <div class="form-line">
+                                                                <input type="text" placeholder="שם פרטי" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-5 studentsFields">
+                                                        <div class="form-group">
+                                                            <div class="form-line">
+                                                                <input type="text" placeholder="שם משפחה" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2 studentsFields">
+                                                        <div class="demo-radio-button">
+                                                            <input name="group4" type="radio" id="radio_7" class="radio-col-female" />
+                                                            <label for="radio_7">נקבה</label>
+                                                            <input name="group4" type="radio" id="radio_8" class="radio-col-male" />
+                                                            <label for="radio_8">זכר</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row clearfix">
+                                                    <div class="col-sm-4 studentsFields">
+                                                        <div class="form-group ">
+                                                            <div class="form-line">
+                                                                <input type="text" placeholder="תעודת זהות" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4 studentsFields demo-masked-input">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="form-line">
+                                                                    <input type="text" class="form-control date" placeholder="תאריך לידה">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4 studentsFields">
+                                                        <div class="form-group">
+                                                            <div class="form-line">
+                                                                <input type="text" placeholder="כתובת מגורים" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row clearfix">
+                                                    <div class="col-sm-5 studentsFields">
+                                                        <div class="form-group">
+                                                            <div class="form-line">
+                                                                <input type="text" placeholder="מספר טלפון" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-5 studentsFields demo-masked-input">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="form-line">
+                                                                    <input type="text" class="form-control email" placeholder="כתובת מייל">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-col-teal" id="collapse_2">
+                                    <div class="panel-heading" role="tab" id="headingTwo_19">
+                                        <h4 class="panel-title">
+                                            <a role="button" data-toggle="collapse" href="#collapseTwo_19" aria-expanded="true" aria-controls="collapseTwo_19">
+                                                לקויות ואבחונים
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwo_19" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo_19">
+                                        <div class="panel-body">
+                                            <div class="list-group" id="area_2">
 
-            <div class="row clearfix">
-            </div>
-            <div class="row clearfix">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-col-grey" id="collapse_3">
+                                    <div class="panel-heading" role="tab" id="headingThree_19">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse" href="#collapseThree_19" aria-expanded="true" aria-controls="collapseThree_19">
+                                                התאמות
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseThree_19" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree_19">
+                                        <div class="panel-body">
+                                            <div class="list-group" id="area_3">
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-col-orange" id="collapse_4">
+                                    <div class="panel-heading" role="tab" id="headingFour_19">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse" href="#collapseFour_19" aria-expanded="true" aria-controls="collapseThree_19">
+                                                תוכנית לימודים אישית
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseFour_19" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour_19">
+                                        <div class="panel-body">
+                                            <div class="list-group" id="area_4">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -203,32 +299,37 @@
     <script src="../plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap Core Js -->
     <script src="../plugins/bootstrap/js/bootstrap.js"></script>
-    <!-- Select Plugin Js -->
-    <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
     <!-- Slimscroll Plugin Js -->
     <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="../plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Dropzone Plugin Js -->
+    <script src="../plugins/dropzone/dropzone.js"></script>
+    <!-- Jquery Validation Plugin Css -->
+    <script src="../plugins/jquery-validation/jquery.validate.js"></script>
+    <!-- JQuery Steps Plugin Js -->
+    <script src="../plugins/jquery-steps/jquery.steps.js"></script>
+    <!-- Bootstrap Tags Input Plugin Js -->
+    <script src="../plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+    <!-- Bootstrap Notify Plugin Js -->
+    <script src="../plugins/bootstrap-notify/bootstrap-notify.js"></script>
+    <!-- Input Mask Plugin Js -->
+    <script src="../plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
     <!-- Waves Effect Plugin Js -->
     <script src="../plugins/node-waves/waves.js"></script>
-    <!-- Jquery CountTo Plugin Js -->
-    <script src="../plugins/jquery-countto/jquery.countTo.js"></script>
-    <!-- Morris Plugin Js -->
-    <script src="../plugins/raphael/raphael.min.js"></script>
-    <script src="../plugins/morrisjs/morris.js"></script>
-    <!-- ChartJs -->
-    <script src="../plugins/chartjs/Chart.bundle.js"></script>
-    <!-- Flot Charts Plugin Js -->
-    <script src="../plugins/flot-charts/jquery.flot.js"></script>
-    <script src="../plugins/flot-charts/jquery.flot.resize.js"></script>
-    <script src="../plugins/flot-charts/jquery.flot.pie.js"></script>
-    <script src="../plugins/flot-charts/jquery.flot.categories.js"></script>
-    <script src="../plugins/flot-charts/jquery.flot.time.js"></script>
-    <!-- Sparkline Chart Plugin Js -->
-    <script src="../plugins/jquery-sparkline/jquery.sparkline.js"></script>
     <!-- Custom Js -->
     <script src="../js/admin.js"></script>
-    <script src="../js/pages/index.js"></script>
+    <script src="../js/pages/forms/advanced-form-elements.js"></script>
+    <script src="../js/pages/forms/basic-form-elements.js"></script>
+    <script src="../js/pages/forms/form-wizard.js"></script>
+    <script src="../js/pages/ui/modals.js"></script>
+
     <!-- Demo Js -->
     <script src="../js/demo.js"></script>
+
+
+
 </body>
 
 </html>

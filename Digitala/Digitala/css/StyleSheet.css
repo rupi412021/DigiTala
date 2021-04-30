@@ -2,6 +2,26 @@
     font-family: Calibri;
 }
 
+.studentsFields {
+    float: right;
+}
+    .studentsFields > .form-group .form-line {
+        width: 80%;
+    }
+    .studentsFields > .demo-radio-button > label {
+        min-width: 10px;
+        margin-top: 5px;
+    }
+
+[type="radio"].radio-col-female:checked + label:after {
+    background-color: #F46549;
+    border-color: #F46549;
+}
+
+[type="radio"].radio-col-male:checked + label:after {
+    background-color: #96C4DA;
+    border-color: #96C4DA;
+}
 #tarsMultiPick::-webkit-input-placeholder {
     font-family: FontAwesome;
     font-weight: normal;
@@ -110,7 +130,7 @@ optgroup {
 }
 
 .body.studentDetalis {
-    padding-right: 0px;
+    padding-right: 0;
     color: dimgray;
     width:60%;
 }
@@ -169,7 +189,7 @@ span, datalist {
     border-radius: 8px;
     text-align: right;
     font-size: 16px;
-    padding: 0px 10px 10px 10px;
+    padding: 0 10px 10px 10px;
 }
 .header.studentHeader h2 {
     text-align: center;
@@ -190,7 +210,7 @@ span, datalist {
 }
 .body.DivStudentTala{
     width:40%;
-    padding-right:0px;
+    padding-right:0;
 }
 .btn.waves-effect.filterBtn {
     text-align: center;
