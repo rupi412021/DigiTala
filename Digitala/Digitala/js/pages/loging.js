@@ -7,6 +7,7 @@
         location.replace("sign-in.html");
     }
 
+    studentsWithTala = [];
 });
 
 function getUserSuccess(data) {
@@ -55,15 +56,6 @@ function getStudentSuccess(Students) {
     }
 
     $("#renderStudentsinMenu").html(str);
-
-    for (var i = 0; i < Students.length; i++) {
-        ajaxCall("GET", "../api/Talas/" + Students[i].StudentId + "/2021", "", getTalaSuccess, getStudentError);
-    }
-
-}
-
-function getTalaSuccess(talas) {
-    studentsWithTala = talas;
 }
 
 $(document).on("click", ".openStudentManually", function () {
@@ -93,34 +85,32 @@ $(document).on("click", ".openStudentManually", function () {
 });
 
 $(document).on("click", ".openTalaManually", function () {
-    newID = localStorage["StudentID"]
     CurrentStudentId = this.parentNode.parentNode.getAttribute('id');
-    if (newID == CurrentStudentId && this.parentNode.parentNode.hasClass('active')) {
+    arr = document.getElementsByClassName("openTalaManually");
+    for (var i = 0; i < arr.length; i++) {
+        arr[i].parentNode.classList.remove("active");
+        arr[i].classList.remove("toggled");
+    }
+    this.parentNode.classList.add("active");
+    this.classList.add("toggled");
+
+    studentName = localStorage["StudentName"];
+    newID = localStorage["StudentID"]
+    $("#studentName").html(studentName);
+
+    if (newID == CurrentStudentId && window.location.pathname == "/pages/StudentTala.html") {
         event.preventDefault();
     }
-
     else {
-        arr = document.getElementsByClassName("openTalaManually");
-        for (var i = 0; i < arr.length; i++) {
-            arr[i].parentNode.classList.remove("active");
-            arr[i].classList.remove("toggled");
-        }
-        this.parentNode.classList.add("active");
-        this.classList.add("toggled");
-
         arr = document.getElementsByClassName("openStudentManually");
+        newID = this.parentNode.parentNode.getAttribute('id');
         for (var i = 0; i < arr.length; i++) {
-            if (arr[i].id == CurrentStudentId) {
+            if (arr[i].id == newID) {
                 studentName = arr[i].innerText;
                 $("#studentName").html(studentName);
             }
             localStorage.setItem("StudentName", studentName);
-            localStorage.setItem("StudentID", CurrentStudentId);
-        }
-
-        for (var i = 0; i < studentsWithTala.length; i++) {
-            if (studentsWithTala[i].StudentId == CurrentStudentId)
-                window.location.href("StudentProfile.html")
+            localStorage.setItem("StudentID", newID);
         }
     }
 });
@@ -139,7 +129,7 @@ $(document).on("click", ".openProfileManually", function () {
     newID = localStorage["StudentID"]
     $("#studentName").html(studentName);
 
-    if (newID == this.parentNode.parentNode.getAttribute('id') && this.parentNode.parentNode.hasClass('active')) {
+    if (newID == CurrentStudentId && window.location.pathname == "/pages/StudentProfile.html") {
         event.preventDefault();
     }
     else {

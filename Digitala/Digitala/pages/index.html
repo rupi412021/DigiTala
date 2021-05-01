@@ -103,6 +103,7 @@
 
             if (talasCount == StudsentsList.length) {
                 RenderStudentsCards(StudsentsList);
+                talasCount = 0;
             }
         }
 
@@ -122,7 +123,7 @@
                     studentsStrRight += '<div><i class="material-icons">cake</i><span class="icon-name studentIcons">' + bd.getDate() + "/" + months[bd.getMonth()] + "/" + bd.getFullYear() + '</span></div>';
                     studentsStrRight += '<div><i class="material-icons">phone</i><span class="icon-name studentIcons">' + StudsentsData[i].SPhone + '</span></div>';
                     studentsStrRight += '</div><div class="body DivStudentTala">';
-                    studentsStrRight += '<button type="button" std-id=' + StudsentsData[i].StudentId + ' class="btn-trans waves-effect personalTalaBTN">';
+                    studentsStrRight += '<button type="button" std-id=' + StudsentsData[i].StudentId + ' class="btn-trans waves-effect personalTalaBTN openTalaManually">';
                     if (StudsentsData[i].HasTala == true)
                         studentsStrRight += '<img src="../images/talaFull.png" /></button>';
                     else
@@ -140,7 +141,7 @@
                     studentsStrLeft += '<div><i class="material-icons">cake</i><span class="icon-name studentIcons">' + bd.getDate() + "/" + months[bd.getMonth()] + "/" + bd.getFullYear() + '</span></div>';
                     studentsStrLeft += '<div><i class="material-icons">phone</i><span class="icon-name studentIcons">' + StudsentsData[i].SPhone + '</span></div>';
                     studentsStrLeft += '</div><div class="body DivStudentTala">';
-                    studentsStrLeft += '<button type="button" std-id=' + StudsentsData[i].StudentId + ' class="btn-trans waves-effect personalTalaBTN">'
+                    studentsStrLeft += '<button type="button" std-id=' + StudsentsData[i].StudentId + ' class="btn-trans waves-effect personalTalaBTN openTalaManually">'
                     if (StudsentsData[i].HasTala == true)
                         studentsStrLeft += '<img src="../images/talaFull.png" /></button>';
                     else
