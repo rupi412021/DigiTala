@@ -269,8 +269,7 @@
                     }
                 }
                 swal({
-                    title: "ערוך מטרה בתחום: " + tarArea,
-                    text: 'אם ברצונך לשנות את התחום, לחץ על "סגור" והוסף מטרה חדשה',
+                    title: "ערוך מטרה",
                     type: "input",
                     showCancelButton: true,
                     closeOnConfirm: false,
@@ -363,7 +362,7 @@
             console.log(recommendationsData);
             
             TargetForTala = recommendationsData.Recommendations;
-            if (TargetForTala.length == 0) {
+            if (TargetForTala.length == null) {
                 swal({
                     title: "לא נמצאו מטרות מתאימות",
                     text: "ניתן להוסיף מטרות חדשות או לחזור לאחור ולבחור מאפיינים נוספים",
@@ -371,7 +370,7 @@
                     confirmButtonText: "אשר"
                 });
             }
-            if (TargetForTala.length > 0) 
+            else if (TargetForTala.length > 0) 
                 renderTargetsToPage(TargetForTala);
                
             rederAllTargets(TargetsFullList);
@@ -868,7 +867,7 @@
                                                         <div class="form-group">
                                                             <div class="form-line">
                                                                 <label>תחום תפקוד</label>
-                                                                <select id="areas" class="form-control">
+                                                                <select id="areas" class="form-control" required>
                                                                     <option value="0">בחר תחום מרשימה</option>
                                                                     <option value="1">סנסומוטורי</option>
                                                                     <option value="2">כישורי חיים</option>
@@ -882,19 +881,21 @@
                                                         <div class="form-group">
                                                             <div class="form-line">
                                                                 <label>תת-תחום</label>
-                                                                <input id="subareas" list="subareasList" placeholder="בחר מרשימה או הקלד ערך חדש" class="form-control" />
+                                                                <input id="subareas" list="subareasList" pattern="^[א-ת\s]*$" placeholder="בחר מרשימה או הקלד ערך חדש" class="form-control" required/>
                                                                 <datalist id="subareasList"></datalist>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="form-line">
                                                                 <label>מטרה</label>
-                                                                <input id="targetToBank" placeholder="נסח מטרה חדשה" class="form-control" />
+                                                                <input id="targetToBank" pattern="^[א-ת\s]*$" placeholder="נסח מטרה חדשה" class="form-control" required/>
                                                             </div>
+                                                            <div class="help-info">אותיות בעברית בלבד, ללא סימנים</div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
+                                                        <!--<input type="submit" class="btn btn-primary btn-lg" value="שמור">-->
                                                         <button type="button" id="saveNewTarToBank" class="btn btn-link waves-effect" data-dismiss="modal">שמור</button>
                                                     </div>
                                                 </div>

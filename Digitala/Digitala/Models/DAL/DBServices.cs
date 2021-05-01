@@ -494,7 +494,7 @@ namespace Digitala.Models.DAL
                 throw new Exception("Could not connect to DB", ex);
             }
 
-            String cStr = BuildInsertToTalaCommand(target,StudentId, CurrentYear);      // helper method to build the insert string
+            String cStr = BuildInsertToTalaCommand(target, StudentId, CurrentYear);      // helper method to build the insert string
 
             cmd = CreateCommand(cStr, con);             // create the command
 
@@ -528,14 +528,14 @@ namespace Digitala.Models.DAL
 
             if (t.NewPhrase)
             {
-                sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')",t.TarSerial, t.FaSerial, t.SfaSerial, t.Target, StudentId, CurrentYear);
+                sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", t.TarSerial, t.FaSerial, t.SfaSerial, t.Target, StudentId, CurrentYear);
                 prefix = "INSERT INTO TargetsInTala " + "([Tserial], [FASerial], [SFASerial], [NewPhrase], [StudentId], [TYear])";
 
             }
-            if (t.NewTar)
+            else if (t.NewTar)
             {
                 sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')",0, t.FaSerial, t.SfaSerial, t.Target, StudentId, CurrentYear);
-                prefix = "INSERT INTO TargetsInTala " + "(([Tserial], [FASerial], [SFASerial], [NewPhrase], [StudentId], [TYear])";
+                prefix = "INSERT INTO TargetsInTala " + "([Tserial], [FASerial], [SFASerial], [NewPhrase], [StudentId], [TYear])";
             }
             else
             {
@@ -1106,7 +1106,6 @@ namespace Digitala.Models.DAL
         {
             String command;
             command = "UPDATE Teachers SET TPassword = '" + tPass +"' WHERE TEmail = '" + tMail + "'";
-
             return command;
         }
 
@@ -1207,7 +1206,6 @@ namespace Digitala.Models.DAL
 
             sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", t.FaSerial, t.SfaSerial, t.Target, t.Suitability, t.Originality, t.NumOfUses);
             prefix = "INSERT INTO Targets " + "([FASerial], [SFASerial], [TargetText], [Suitability], [Originality], [NumOfUses])";
-
             command = prefix + sb.ToString();
 
             return command;

@@ -35,6 +35,7 @@ namespace Digitala.Models
             dbs.InsertToolsAndGoals(Targets, StudentId, CurrentYear);
 
             Talas Tala = Read(StudentId, CurrentYear);
+
             return Tala;
         }
 

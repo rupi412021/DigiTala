@@ -7,7 +7,6 @@
         location.replace("sign-in.html");
     }
 
-    ajaxCall("GET", "../api/Students", "", getStudentSuccess, getStudentError)
 });
 
 function getUserSuccess(data) {
@@ -21,6 +20,7 @@ function getUserSuccess(data) {
             isadmin = data[i].TeacherAdmin;
             tEmail = data[i].TeacherEmail;
             tname = data[i].TeacherFname;
+            ajaxCall("GET", "../api/Students/" + data[i].TeacherID + "/2021", "", getStudentSuccess, getStudentError);
         }
 
     }
@@ -56,6 +56,14 @@ function getStudentSuccess(Students) {
 
     $("#renderStudentsinMenu").html(str);
 
+    for (var i = 0; i < Students.length; i++) {
+        ajaxCall("GET", "../api/Talas/" + Students[i].StudentId + "/2021", "", getTalaSuccess, getStudentError);
+    }
+
+}
+
+function getTalaSuccess(talas) {
+    studentsWithTala = talas;
 }
 
 $(document).on("click", ".openStudentManually", function () {
@@ -85,36 +93,36 @@ $(document).on("click", ".openStudentManually", function () {
 });
 
 $(document).on("click", ".openTalaManually", function () {
-    CurrentStudentId = this.parentNode.parentNode.getAttribute('id');
-    arr = document.getElementsByClassName("openTalaManually");
-    for (var i = 0; i < arr.length; i++) {
-        arr[i].parentNode.classList.remove("active");
-        arr[i].classList.remove("toggled");
-    }
-    this.parentNode.classList.add("active");
-    this.classList.add("toggled");
-
-    studentName = localStorage["StudentName"];
     newID = localStorage["StudentID"]
-    $("#studentName").html(studentName);
-
-    if (newID == this.parentNode.parentNode.getAttribute('id') && this.parentNode.parentNode.hasClass('active')) {
+    CurrentStudentId = this.parentNode.parentNode.getAttribute('id');
+    if (newID == CurrentStudentId && this.parentNode.parentNode.hasClass('active')) {
         event.preventDefault();
     }
+
     else {
-        if (newID == this.parentNode.parentNode.getAttribute('id'))
-            refresh = 1;
-        arr = document.getElementsByClassName("openStudentManually");
-        newID = this.parentNode.parentNode.getAttribute('id');
+        arr = document.getElementsByClassName("openTalaManually");
         for (var i = 0; i < arr.length; i++) {
-            if (arr[i].id == newID) {
+            arr[i].parentNode.classList.remove("active");
+            arr[i].classList.remove("toggled");
+        }
+        this.parentNode.classList.add("active");
+        this.classList.add("toggled");
+
+        arr = document.getElementsByClassName("openStudentManually");
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i].id == CurrentStudentId) {
                 studentName = arr[i].innerText;
                 $("#studentName").html(studentName);
             }
             localStorage.setItem("StudentName", studentName);
-            localStorage.setItem("StudentID", newID);
+            localStorage.setItem("StudentID", CurrentStudentId);
         }
-    }           
+
+        for (var i = 0; i < studentsWithTala.length; i++) {
+            if (studentsWithTala[i].StudentId == CurrentStudentId)
+                window.location.href("StudentProfile.html")
+        }
+    }
 });
 
 $(document).on("click", ".openProfileManually", function () {
@@ -135,8 +143,6 @@ $(document).on("click", ".openProfileManually", function () {
         event.preventDefault();
     }
     else {
-        if (newID == this.parentNode.parentNode.getAttribute('id'))
-            refresh = 1;
         arr = document.getElementsByClassName("openStudentManually");
         newID = this.parentNode.parentNode.getAttribute('id');
         for (var i = 0; i < arr.length; i++) {
