@@ -157,6 +157,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ChararcteristicsController.cs" />
     <Compile Include="Controllers\FuncAreasController.cs" />
+    <Compile Include="Controllers\GoalsController.cs" />
     <Compile Include="Controllers\SchoolsController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\TalasController.cs" />
@@ -167,6 +168,7 @@
     </Compile>
     <Compile Include="Models\Chararcteristics.cs" />
     <Compile Include="Models\DAL\DBServices.cs" />
+    <Compile Include="Models\Goals.cs" />
     <Compile Include="Models\RecommendedTargets.cs" />
     <Compile Include="Models\Schools.cs" />
     <Compile Include="Models\FuncAreas.cs" />

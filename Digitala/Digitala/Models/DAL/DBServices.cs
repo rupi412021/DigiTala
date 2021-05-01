@@ -1456,6 +1456,53 @@ namespace Digitala.Models.DAL
             }
         }
 
+        public List<Goals> ReadGoals(string studentId, int year)
+        {
+            List<Goals> gList = new List<Goals>();
+            SqlConnection con = null;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM Goals WHERE StudentId=" + studentId + " and TYear=" + year;
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Goals g = new Goals();
+
+                    g.GoalId = Convert.ToInt32(dr["GId"]);
+                    g.SerialTarget = Convert.ToInt32(dr["TalaSerial"]);
+                    g.Year = Convert.ToInt32(dr["TYear"]);
+                    g.StudentId = (string)(dr["StudentId"]);
+                    g.Goal = (string)(dr["Goal"]);
+                    g.GoalStatus = (string)(dr["Status"]);
+
+                    gList.Add(g);
+                }
+
+                return gList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Goals for student from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+
         public int Insert(Students Student)
         {
 

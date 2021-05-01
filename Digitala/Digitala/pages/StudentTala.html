@@ -143,15 +143,9 @@
         function getTalaSuccess(data) {
             console.log(data);
             if (data.StudentId == newID) {
+                if ($("#wizard_with_validation-p-0").hasClass("body current"))
+                    $(".body").hide();
                 window.location.assign("StudentProfile.html");
-                //swal({
-                //    title: "ל" + studentName + ' יש תל"א',
-                //    type: "success",
-                //    timer: 2000,
-                //    showConfirmButton: false
-                //});
-                //if ($("#wizard_with_validation-p-0").hasClass("body current"))
-                //    $(".body").hide();
             }
 
         }
