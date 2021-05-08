@@ -18,5 +18,12 @@ namespace Digitala.Controllers
             List<Goals> glist = g.Read(studentId, year);
             return glist;
         }
+
+        [HttpPut]
+        [Route("api/Goals")]
+        public List<Goals> Put([FromBody]Goals g)
+        {
+            return g.Update();
+        }
     }
 }

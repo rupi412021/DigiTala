@@ -61,10 +61,11 @@
                             AllGoalsForStudent[i].GoalStatus = "E";
                             $("#" + thisStatusId).html("<i class='material-icons'>star_border</i></button>");
                         }
+                        ajaxCall("POST", "../api/Goals/" + newID + "/2021", "", getGoalsForStudentSuccess, error);
                         break;
                     }
                 }
-
+                
 
             });
         });
