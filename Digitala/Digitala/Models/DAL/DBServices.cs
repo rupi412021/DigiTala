@@ -1890,9 +1890,9 @@ namespace Digitala.Models.DAL
         private String BuildUpdateCommand(Goals g)
         {
             String command;
-            command = "UPDATE Goals SET Goal = " + g.Goal +
-                ", Status = " + g.GoalStatus + ", TalaSerial = '" + g.SerialTarget + "', StudentId = " + g.StudentId +
-                ", TYear = " + g.Year + " WHERE GIg = " + g.GoalId;
+            command = "UPDATE Goals SET Goal = '" + g.Goal +
+                "', Status = " + g.GoalStatus + ", TalaSerial = " + g.SerialTarget + ", StudentId = '" + g.StudentId +
+                "', TYear = " + g.Year + " WHERE GIg = " + g.GoalId;
 
             return command;
         }

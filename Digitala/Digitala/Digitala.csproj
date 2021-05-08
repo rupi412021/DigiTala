@@ -3281,9 +3281,6 @@
     <Content Include="plugins\node-waves\waves.js" />
     <Content Include="plugins\node-waves\waves.min.css" />
     <Content Include="plugins\node-waves\waves.min.js" />
-    <Content Include="plugins\nouislider\nouislider.js" />
-    <Content Include="plugins\nouislider\nouislider.min.css" />
-    <Content Include="plugins\nouislider\nouislider.min.js" />
     <Content Include="plugins\raphael\Gruntfile.js" />
     <Content Include="plugins\raphael\raphael.js" />
     <Content Include="plugins\raphael\raphael.min.js" />

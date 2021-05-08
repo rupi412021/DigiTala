@@ -63,6 +63,7 @@
                         }
 
                         let GoalObj = {
+                            Goal: AllGoalsForStudent[i].Goal,
                             GoalId: AllGoalsForStudent[i].GoalId,
                             GoalStatus: AllGoalsForStudent[i].GoalStatus,
                             SerialTarget: AllGoalsForStudent[i].SerialTarget,
@@ -118,7 +119,7 @@
         }
 
         function error(data) {
-            console.log(data);
+            console.log("ERROR");
         }
 
     </script>
