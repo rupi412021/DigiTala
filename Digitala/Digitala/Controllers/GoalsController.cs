@@ -11,7 +11,7 @@ namespace Digitala.Controllers
     public class GoalsController : ApiController
     {
         [HttpGet]
-        [Route("api/Talas/{studentId}/{year}")]
+        [Route("api/Goals/{studentId}/{year}")]
         public List<Goals> Get(string studentId, int year)
         {
             Goals g = new Goals();

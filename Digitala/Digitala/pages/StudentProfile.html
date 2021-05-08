@@ -14,13 +14,14 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap Core Css -->
     <link href="../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet">
     <!-- Waves Effect Css -->
     <link href="../plugins/node-waves/waves.css" rel="stylesheet" />
 
-    <link href="../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet">
     <!-- Sweetalert Css -->
     <link href="../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
@@ -32,6 +33,7 @@
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
 
+
     <script src="../js/pages/loging.js"></script>
 
     <script>
@@ -42,7 +44,29 @@
 
             ajaxCall("GET", "../api/Talas/" + newID + "/2021", "", getTalaSuccess, error);
 
+            $(document).on("click", ".UpdateStatusGoal", function () {
+                thisStatusId = this.getAttribute('id');
 
+                for (var i = 0; i < AllGoalsForStudent.length; i++) {
+                    if ("goalId-"+AllGoalsForStudent[i].GoalId == thisStatusId) {
+                        if (AllGoalsForStudent[i].GoalStatus == "E") {
+                            AllGoalsForStudent[i].GoalStatus = "P";
+                            $("#" + thisStatusId).html("<i class='material-icons'>star_half</i></button>");
+                        }
+                        else if (AllGoalsForStudent[i].GoalStatus == "P") {
+                            AllGoalsForStudent[i].GoalStatus = "F";
+                            $("#" + thisStatusId).html("<i class='material-icons'>star</i></button>");
+                        }
+                        else {
+                            AllGoalsForStudent[i].GoalStatus = "E";
+                            $("#" + thisStatusId).html("<i class='material-icons'>star_border</i></button>");
+                        }
+                        break;
+                    }
+                }
+
+
+            });
         });
 
         function getTalaSuccess(studentsTala) {
@@ -58,6 +82,24 @@
 
         function getGoalsForStudentSuccess(goalsForStudent) {
             console.log(goalsForStudent);
+            AllGoalsForStudent = goalsForStudent;
+            renderGoalsForStatus = '<p style="text-align: left">סטטוס יעד<p>';
+            for (var i = 0; i < AllGoalsForStudent.length; i++) {
+                renderGoalsForStatus += '<div class="list-group-item" style="text-align: right">';
+                renderGoalsForStatus += '<span id="goal-' + AllGoalsForStudent[i].GoalId + '"><b>' + AllGoalsForStudent[i].Goal + '</b></span>';
+                renderGoalsForStatus += "<button type='button' class='UpdateStatusGoal btn-trans' id='goalId-" + AllGoalsForStudent[i].GoalId + "'>";
+                if (AllGoalsForStudent[i].GoalStatus == "E")
+                    renderGoalsForStatus += "<i class='material-icons'>star_border</i></button>";
+                else if (AllGoalsForStudent[i].GoalStatus == "P")
+                    renderGoalsForStatus += "<i class='material-icons'>star_half</i></button>";
+                else
+                    renderGoalsForStatus += "<i class='material-icons'>star</i></button>";
+                renderGoalsForStatus += "</div>";
+            }
+
+            $("#area_4").html(renderGoalsForStatus);
+            $("#talaHeader").html("עמידה ביעדי תוכנית הלימודים");
+
         }
 
         function error(data) {
@@ -407,7 +449,7 @@
                                 <div class="panel panel-col-orange" id="collapse_4">
                                     <div class="panel-heading" role="tab" id="headingFour_19">
                                         <h4 class="panel-title">
-                                            <a class="collapsed" role="button" data-toggle="collapse" href="#collapseFour_19" aria-expanded="false" aria-controls="collapseThree_19">
+                                            <a class="collapsed" role="button" data-toggle="collapse" href="#collapseFour_19" aria-expanded="false" aria-controls="collapseThree_19" id="talaHeader">
                                                 תוכנית לימודים אישית
                                             </a>
                                         </h4>
@@ -521,7 +563,8 @@
 
     <!-- Input Mask Plugin Js -->
     <script src="../plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
-
+    <!-- Multi Select Plugin Js -->
+    <script src="../plugins/multi-select/js/jquery.multi-select.js"></script>
     <!-- Waves Effect Plugin Js -->
     <script src="../plugins/node-waves/waves.js"></script>
     <!-- Custom Js -->

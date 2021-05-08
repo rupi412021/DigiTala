@@ -253,7 +253,6 @@
             $(document).on("click", ".updateBtn", function () {
                 var tarId = this.getAttribute('data-tarId');
                 var tarVal;
-                var tarArea;
                 var tarIndex;
                 for (var i = 0; i < TargetForTala.length; i++) {
                     if (TargetForTala[i].TarSerial == tarId) {
@@ -357,7 +356,10 @@
             console.log(recommendationsData);
             
             TargetForTala = recommendationsData.Recommendations;
-            if (TargetForTala.length == null) {
+            if (TargetForTala.length > 0)
+                renderTargetsToPage(TargetForTala);
+            else 
+            {
                 swal({
                     title: "לא נמצאו מטרות מתאימות",
                     text: "ניתן להוסיף מטרות חדשות או לחזור לאחור ולבחור מאפיינים נוספים",
@@ -365,9 +367,7 @@
                     confirmButtonText: "אשר"
                 });
             }
-            else if (TargetForTala.length > 0) 
-                renderTargetsToPage(TargetForTala);
-               
+
             rederAllTargets(TargetsFullList);
 
         }

@@ -264,6 +264,9 @@ span, datalist {
     width: max-content;
 }
 
+.UpdateStatusGoal{
+    float: left;
+}
 xx {
     color: #73A4A4;
     color: #96C4DA;
