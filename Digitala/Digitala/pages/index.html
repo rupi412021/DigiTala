@@ -42,14 +42,16 @@
             $(document).on("click", ".personalTalaBTN", function () {
                 std_id = this.getAttribute("std-id");
                 for (var i = 0; i < StudsentsList.length; i++) {
-                    if (StudsentsList[i].StudentId == std_id)
+                    if (StudsentsList[i].StudentId == std_id) {
                         studentName = StudsentsList[i].SFirstName + " " + StudsentsList[i].SLastName;
-                }
-
-                localStorage.setItem("StudentName", studentName);
-                localStorage.setItem("StudentID", std_id);
-                //if(this.chils)
-                window.location.href = "StudentTala.html";  
+                        localStorage.setItem("StudentName", studentName);
+                        localStorage.setItem("StudentID", std_id);
+                        if (StudsentsList[i].HasTala == true)
+                            window.location.href = "StudentProfile.html";
+                        else
+                            window.location.href = "StudentTala.html";
+                    }
+                }          
             });
 
             $(document).on("click", "#AllStudents", function () {
