@@ -1891,8 +1891,8 @@ namespace Digitala.Models.DAL
         {
             String command;
             command = "UPDATE Goals SET Goal = '" + g.Goal +
-                "', Status = " + g.GoalStatus + ", TalaSerial = " + g.SerialTarget + ", StudentId = '" + g.StudentId +
-                "', TYear = " + g.Year + " WHERE GIg = " + g.GoalId;
+                "', Status = '" + g.GoalStatus + "', TalaSerial = " + g.SerialTarget + ", StudentId = '" + g.StudentId +
+                "', TYear = " + g.Year + " WHERE GId = " + g.GoalId;
 
             return command;
         }
