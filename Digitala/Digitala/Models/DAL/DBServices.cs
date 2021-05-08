@@ -1848,6 +1848,55 @@ namespace Digitala.Models.DAL
             }
         }
 
+        public int Update(Goals goal)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildUpdateCommand(goal);   
+
+            cmd = CreateCommand(cStr, con);  
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); 
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("יעד לא עודכן", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildUpdateCommand(Goals g)
+        {
+            String command;
+            command = "UPDATE Goals SET Goal = " + g.Goal +
+                ", Status = " + g.GoalStatus + ", TalaSerial = '" + g.SerialTarget + "', StudentId = " + g.StudentId +
+                ", TYear = " + g.Year + " WHERE GIg = " + g.GoalId;
+
+            return command;
+        }
+
         //public int TEMP(int id)
         //{
 

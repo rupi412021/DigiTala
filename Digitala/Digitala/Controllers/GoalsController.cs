@@ -21,9 +21,9 @@ namespace Digitala.Controllers
 
         [HttpPut]
         [Route("api/Goals")]
-        public List<Goals> Put([FromBody]Goals g)
+        public void Put([FromBody]Goals g)
         {
-            return g.Update();
+            g.Update();
         }
     }
 }

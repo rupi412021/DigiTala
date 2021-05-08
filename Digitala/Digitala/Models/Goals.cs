@@ -40,5 +40,11 @@ namespace Digitala.Models
 
             return gList;
         }
+
+        public void Update()
+        {
+            DBServices dbs = new DBServices();
+            dbs.Update(this);
+        }
     }
 }

@@ -61,7 +61,17 @@
                             AllGoalsForStudent[i].GoalStatus = "E";
                             $("#" + thisStatusId).html("<i class='material-icons'>star_border</i></button>");
                         }
-                        ajaxCall("POST", "../api/Goals/" + newID + "/2021", "", getGoalsForStudentSuccess, error);
+
+                        let GoalObj = {
+                            GoalId: AllGoalsForStudent[i].GoalId,
+                            GoalStatus: AllGoalsForStudent[i].GoalStatus,
+                            SerialTarget: AllGoalsForStudent[i].SerialTarget,
+                            StudentId: AllGoalsForStudent[i].StudentId,
+                            Year: AllGoalsForStudent[i].Year
+                        }
+
+                        ajaxCall("PUT", "../api/Goals", JSON.stringify(GoalObj), updateGoalSuccess, error);
+
                         break;
                     }
                 }
@@ -69,6 +79,10 @@
 
             });
         });
+
+        function updateGoalSuccess(data) {
+
+        }
 
         function getTalaSuccess(studentsTala) {
             if (studentsTala.CurrentYear > 0) {
