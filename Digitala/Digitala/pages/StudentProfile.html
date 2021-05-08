@@ -41,12 +41,12 @@
             studentName = localStorage["StudentName"];
             newID = localStorage["StudentID"]
             $("#studentName").html(studentName);
-
+            
             ajaxCall("GET", "../api/Talas/" + newID + "/2021", "", getTalaSuccess, error);
 
             $(document).on("click", ".UpdateStatusGoal", function () {
                 thisStatusId = this.getAttribute('id');
-
+               
                 for (var i = 0; i < AllGoalsForStudent.length; i++) {
                     if ("goalId-"+AllGoalsForStudent[i].GoalId == thisStatusId) {
                         if (AllGoalsForStudent[i].GoalStatus == "E") {
@@ -70,22 +70,38 @@
                             StudentId: AllGoalsForStudent[i].StudentId,
                             Year: AllGoalsForStudent[i].Year
                         }
-
                         ajaxCall("PUT", "../api/Goals", JSON.stringify(GoalObj), updateGoalSuccess, error);
-
                         break;
                     }
                 }
-                
-
             });
+
+            window.setTimeout(toggleMenu, 1000);
         });
+
+        function toggleMenu() {
+            toggleNames = document.getElementsByClassName("menu-toggle");
+            mlNames = document.getElementsByClassName("ml-menu");
+            for (var i = 0; i < toggleNames.length; i++) {
+                if (toggleNames[i].id == newID) {
+                    toggleNames[i].parentNode.classList.add("active");
+                    for (var j = 0; j < mlNames.length; j++) {
+                        if (toggleNames[i].id == mlNames[j].id) {
+                            mlNames[j].setAttribute("style", "display: block;");
+                            mlNames[j].childNodes[0].childNodes[0].classList.add("toggled");
+                        }
+                    }
+
+                }
+            }
+        }
 
         function updateGoalSuccess(data) {
             console.log("יעד עודכן בהצלחה");
         }
 
         function getTalaSuccess(studentsTala) {
+              
             if (studentsTala.CurrentYear > 0) {
                 document.getElementById("collapseOne_19").classList.remove("in");
                 document.getElementById("collapseOne_19").setAttribute("aria-expanded", "false");
@@ -115,7 +131,7 @@
 
             $("#area_4").html(renderGoalsForStatus);
             $("#talaHeader").html("עמידה ביעדי תוכנית הלימודים");
-
+            
         }
 
         function error(data) {

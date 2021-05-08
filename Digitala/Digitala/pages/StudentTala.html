@@ -137,8 +137,26 @@
             NewTargetToBankForm();
 
             ajaxCall("GET", "../api/Talas/" + newID + "/2021", "", getTalaSuccess, error);
-
+            window.setTimeout(toggleMenu, 1000);
+            
         });
+
+        function toggleMenu() {
+            toggleNames = document.getElementsByClassName("menu-toggle");
+            mlNames = document.getElementsByClassName("ml-menu");
+            for (var i = 0; i < toggleNames.length; i++) {
+                if (toggleNames[i].id == newID) {
+                    toggleNames[i].parentNode.classList.add("active");
+                    for (var j = 0; j < mlNames.length; j++) {
+                        if (toggleNames[i].id == mlNames[j].id) {
+                            mlNames[j].setAttribute("style", "display: block;");
+                            mlNames[j].childNodes[1].childNodes[0].classList.add("toggled");
+                        }
+                    }
+
+                }
+            }
+        }
 
         function getTalaSuccess(data) {
             console.log(data);
@@ -516,7 +534,6 @@
             }
 
             $("#charsMultiPickList").html(charsList);
-
             //for (var i = 0; i < ChararcteristicsData.length; i++) {
             //    ajaxCall("POST", "../api/Chararcteristics/" + ChararcteristicsData[i].CharacteristicKey, "", SuccessSuccess, error);
             //}
@@ -536,7 +553,7 @@
             SubAreasList = allSubAreas;
             ajaxCall("GET", "../api/FuncAreas/1", "", getAreasSuccess, error);
             ajaxCall("GET", "../api/Targets", "", getTargetsSuccess, error);
-
+            
         }
 
         function renderDataListChars(indexHidden) {

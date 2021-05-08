@@ -38,7 +38,6 @@ function getUserSuccess(data) {
     }
 }
 
-
 function getUserError(error) {
     console.log(error);
 }
@@ -74,7 +73,7 @@ $(document).on("click", ".openStudentManually", function () {
 
     else {
         this.classList.add("toggled");
-        this.parentNode.classList.add("active");
+
         for (var i = 0; i < arr.length; i++) {
             if (arr[i].id == eleId)
                 arr[i].setAttribute("style", "display: block;");
@@ -86,18 +85,9 @@ $(document).on("click", ".openStudentManually", function () {
 
 $(document).on("click", ".openTalaManually", function () {
     CurrentStudentId = this.parentNode.parentNode.getAttribute('id');
-    arr = document.getElementsByClassName("openTalaManually");
-    for (var i = 0; i < arr.length; i++) {
-        arr[i].parentNode.classList.remove("active");
-        arr[i].classList.remove("toggled");
-    }
-    this.parentNode.classList.add("active");
+    toggle_actice_menus();
+    this.parentNode.parentNode.parentNode.classList.add("active");
     this.classList.add("toggled");
-
-    studentName = localStorage["StudentName"];
-    newID = localStorage["StudentID"]
-    $("#studentName").html(studentName);
-
     if (newID == CurrentStudentId && window.location.pathname == "/pages/StudentTala.html") {
         event.preventDefault();
     }
@@ -116,19 +106,10 @@ $(document).on("click", ".openTalaManually", function () {
 });
 
 $(document).on("click", ".openProfileManually", function () {
-    CurrentStudentId = this.parentNode.parentNode.getAttribute('id');
-    arr = document.getElementsByClassName("openProfileManually");
-    for (var i = 0; i < arr.length; i++) {
-        arr[i].parentNode.classList.remove("active");
-        arr[i].classList.remove("toggled");
-    }
-    this.parentNode.classList.add("active");
+    CurrentStudentId = this.parentNode.parentNode.getAttribute('id');    
+    toggle_actice_menus();
+    this.parentNode.parentNode.parentNode.classList.add("active");
     this.classList.add("toggled");
-
-    studentName = localStorage["StudentName"];
-    newID = localStorage["StudentID"]
-    $("#studentName").html(studentName);
-
     if (newID == CurrentStudentId && window.location.pathname == "/pages/StudentProfile.html") {
         event.preventDefault();
     }
@@ -145,3 +126,22 @@ $(document).on("click", ".openProfileManually", function () {
         }
     }
 });
+
+function toggle_actice_menus() {
+    arr = document.getElementsByClassName("openProfileManually");
+    arr2 = document.getElementsByClassName("openTalaManually");
+    for (var i = 0; i < arr.length; i++) {
+        arr[i].parentNode.classList.remove("active");
+        arr[i].classList.remove("toggled");
+    }
+    for (var i = 0; i < arr2.length; i++) {
+        arr2[i].parentNode.classList.remove("active");
+        arr2[i].classList.remove("toggled");
+    }
+
+
+    studentName = localStorage["StudentName"];
+    newID = localStorage["StudentID"]
+    $("#studentName").html(studentName);
+}
+
