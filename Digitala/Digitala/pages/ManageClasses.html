@@ -31,11 +31,79 @@
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
     <script src="./path/to/dropzone.js"></script>
     <script src="../js/pages/loging.js"></script>
+    <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
     <script>
         $(document).ready(function () {
             localStorage.removeItem("StudentName");
             localStorage.removeItem("StudentID");
         });
+
+        function ExportToTable() {//הכנסת קובץ אקסל
+            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xlsx|.xls)$/;
+            //Checks whether the file is a valid excel file/
+            if (regex.test($("#excelfile").val().toLowerCase())) {
+                var xlsxflag = false; //Flag for checking whether excel is .xls format or .xlsx format/
+                if ($("#excelfile").val().toLowerCase().indexOf(".xlsx") > 0) {
+                    xlsxflag = true;
+                }
+                //Checks whether the browser supports HTML5/
+                if (typeof (FileReader) != "undefined") {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var data = e.target.result;
+                        //Converts the excel data in to object/
+                        if (xlsxflag) {
+                            var workbook = XLSX.read(data, { type: 'binary' });
+                        }
+                        else {
+                            var workbook = XLS.read(data, { type: 'binary' });
+                        }
+                        //Gets all the sheetnames of excel in to a variable/
+                        var sheet_name_list = workbook.SheetNames;
+
+                        var cnt = 0; //This is used for restricting the script to consider only first sheet of excel/
+                        sheet_name_list.forEach(function (y) {
+                            //Iterate through all sheets/
+                            // Convert the cell value to Json /
+                            if (xlsxflag) {
+                                var exceljson = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
+                            }
+                            else {
+                                var exceljson = XLS.utils.sheet_to_row_object_array(workbook.Sheets[y]);
+                            }
+                            if (exceljson.length > 0 && cnt == 0) {
+                                AddStudentsEXCEL(exceljson, '#exceltable');
+                                cnt++;
+                            }
+                        });
+                        $('#exceltable').show();
+                    }
+                    if (xlsxflag) {
+                        //If excel file is .xlsx extension than creates a Array Buffer from excel/
+                        reader.readAsArrayBuffer($("#excelfile")[0].files[0]);
+                    }
+                    else {
+                        reader.readAsBinaryString($("#excelfile")[0].files[0]);
+                    }
+                }
+                else {
+                    alert("Sorry! Your browser does not support HTML5!");
+                }
+            }
+            else {
+                alert("Please upload a valid Excel file!");
+            }
+
+        }
+
+        function AddStudentsEXCEL(jsondata, tableid) {
+            /Function used to convert the JSON array to Html Table/
+            Jsondata = jsondata;
+            console.log(Jsondata);//ג'ייוסן דאטה
+
+
+        }
+
     </script>
 </head>
 
@@ -75,54 +143,6 @@
             <div class="block-header">
                 <h1>ניהול כיתות</h1>
             </div>
-            <!-- Widgets -->
-            <!--<div class="row clearfix">
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-pink hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">playlist_add_check</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">NEW TASKS</div>
-                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-cyan hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">help</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">NEW TICKETS</div>
-                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-light-green hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">forum</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">NEW COMMENTS</div>
-                            <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-orange hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">person_add</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">NEW VISITORS</div>
-                            <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
-            <!-- #END# Widgets -->
             <!-- File Upload | Drag & Drop OR With Click & Choose -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -145,6 +165,10 @@
                             </ul>-->
                         </div>
                         <div class="body">
+
+                            <input type="file" id="excelfile" required />
+                            <input type="button" id="viewfile" value="Save Class" onclick="ExportToTable()" required />
+
                             <form action="/" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
                                 <div class="dz-message">
                                     <div class="drag-icon-cph">
