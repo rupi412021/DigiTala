@@ -104,7 +104,34 @@
             Jsondata = jsondata;
             console.log(Jsondata);//ג'ייוסן דאטה
 
+            for (var i = 0; i < Jsondata.length; i++) {
+                let NewS = {
+                    studentId: Jsondata[i].studentId,
+                    sFirstName: Jsondata[i].sFirstName,
+                    sLastName: Jsondata[i].sLastName,
+                    sEmail: Jsondata[i].sEmail,
+                    sBirthDate: Jsondata[i].sBirthDate,
+                    sGender: Jsondata[i].sGender,
+                    sAddress: Jsondata[i].sAddress,
+                    sPhone: Jsondata[i].sPhone,
+                    SDescripion: jsondata[i].SDescripion,
+                    Dis1st: jsondata[i].Dis1st,
+                    Dis2st: jsondata[i].Dis2st,
 
+                }
+
+                ajaxCall("POST", "../api/Students", JSON.stringify(NewS), postSutdentSuccess, postSutdentError);
+            }
+
+
+        }
+
+        function postSutdentSuccess() {
+            console.log("success")
+        }
+
+        function postSutdentError() {
+            console.log("error")
         }
 
     </script>
