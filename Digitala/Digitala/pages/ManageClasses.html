@@ -24,6 +24,8 @@
     <link href="../css/style.css" rel="stylesheet">
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <!-- Dropzone Css -->
+    <script src="../plugins/sweetalert/sweetalert.min.js"></script>
+    <link href="../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
     <link href="../../plugins/dropzone/dropzone.css" rel="stylesheet">
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
     <link href="../css/StyleSheet.css" rel="stylesheet" />
@@ -75,11 +77,10 @@
                                 var exceljson = XLS.utils.sheet_to_row_object_array(workbook.Sheets[y]);
                             }
                             if (exceljson.length > 0 && cnt == 0) {
-                                AddStudentsEXCEL(exceljson, '#exceltable');
+                                AddStudentsEXCEL(exceljson);
                                 cnt++;
                             }
                         });
-                        $('#exceltable').show();
                     }
                     if (xlsxflag) {
                         //If excel file is .xlsx extension than creates a Array Buffer from excel/
@@ -90,19 +91,18 @@
                     }
                 }
                 else {
-                    alert("Sorry! Your browser does not support HTML5!");
+                    swal("HTML5הדפדפן שלך אינו תומך ב", "מתנצלים", "error");
                 }
             }
             else {
-                alert("Please upload a valid Excel file!");
+                swal("נא להעלות קובץ", "נסה שנית", "error");
             }
 
         }
 
         function AddStudentsEXCEL(jsondata, tableid) {
-            /Function used to convert the JSON array to Html Table/
             Jsondata = jsondata;
-            console.log(Jsondata);//ג'ייוסן דאטה
+            console.log(Jsondata);
 
             for (var i = 0; i < Jsondata.length; i++) {
                 let NewS = {
@@ -127,11 +127,11 @@
         }
 
         function postSutdentSuccess() {
-            console.log("success")
+            swal("הקובץ הועלאה בהצלחה", "הצלחה", "success");
         }
 
         function postSutdentError() {
-            console.log("error")
+            swal("משהו השתבש", "נסה שנית", "error");
         }
 
     </script>
@@ -196,21 +196,10 @@
                         </div>
                         <div class="body">
 
-                            <input type="file" id="excelfile" required />
-                            <input type="button" id="viewfile" value="Save Class" onclick="ExportToTable()" required />
+                            <input type="file" id="excelfile" required /><input type="button" id="viewfile" value="טען כיתה" onclick="ExportToTable()" required />
+                            
 
-                            <form action="/" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
-                                <div class="dz-message">
-                                    <div class="drag-icon-cph">
-                                        <i class="material-icons">touch_app</i>
-                                    </div>
-                                    <h3>גרור קובץ או הקלק לבחירת קובץ</h3>
-                                    <!--<em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>-->
-                                </div>
-                                <div class="fallback">
-                                    <input name="file" type="file" multiple />
-                                </div>
-                            </form>
+                         
                         </div>
                     </div>
                 </div>
