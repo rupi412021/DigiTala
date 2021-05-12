@@ -61,7 +61,7 @@
                 TeacherSurName: $("#surname").val(),
                 TeacherEmail: nEmail,
                 TeacherPassword: $("#password").val(),
-                TeacherSchoolId: $("#schOpt").val()
+                
             }
 
             ajaxCall("POST", "../api/Teachers", JSON.stringify(Teacher), AddTeacherSuccess, AddTeacherError);

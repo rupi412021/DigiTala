@@ -127,14 +127,16 @@
         }
 
         function AddStudentsEXCEL(jsondata) {
-            Jsondata = jsondata;
-            console.log(Jsondata);
+            if ($("#schOpt").val() == "" || $("#classNa").val() == "" || $("#classNum").val() == "") {
+                swal("אנא מלאו את כל הפרטים", "נסה שנית", "error");
+            }
+            else {
+                Jsondata = jsondata;
+                console.log(Jsondata);
 
-            ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
-
+                ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
+            }    
         }
-
-
 
         function getStudentsSuccess(Students) {
             hit = 0;
@@ -174,10 +176,6 @@
             }
 
         }
-
-
-
-
 
         function getStudentsError() {
             swal("משהו השתבש", "נסה שנית", "error");
@@ -241,13 +239,13 @@
 
                         </div>
                         <div class="body">
-                            <h4>אנא בחר בית ספר</h4>
+                            <h4>אנא בחר סמל בית ספר</h4>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">school</i>
                                 </span>
-                                <div class="form-line">
-                                    <input id="schOpt" list="schOptList" class="form-control" placeholder="בחר בית ספר" required>
+                                <div class="col-sm-2 studentsFields">
+                                    <input id="schOpt" list="schOptList" class="form-control" placeholder="סמל בית ספר" required>
                                     <datalist id="schOptList">
                                     </datalist>
                                 </div>
@@ -257,26 +255,23 @@
                                 <span class="input-group-addon">
                                     <i class="material-icons">school</i>
                                 </span>
-                                <div class="form-line">
+                                <div class="col-sm-2 studentsFields">
                                     <input id="classNa" list="className" class="form-control" placeholder="כיתה" required>
                                     <datalist id="className">
                                     </datalist>
                                 </div>
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">school</i>
-                                </span>
-                                <div class="form-line">
-                                    <input id="classNum" list="classNumber" class="form-control" placeholder="כיתה" required>
+                                <div class="col-sm-2 studentsFields">
+                                    <input id="classNum" list="classNumber" class="form-control" placeholder="מספר" required>
                                     <datalist id="classNumber">
                                     </datalist>
                                 </div>
+                            </div>
+                            <h4>להורדת טמפלייט להעלאת כיתה <a href="../File/Template.xlsx" download> הקלק </a></h4>
+                            <div class="input-group">
+                             בחר קובץ <input type="file" id="excelfile" required />
+                             <input type="button" id="viewfile" value="טען כיתה" onclick="ExportToTable()" required />
 
                             </div>
-                            <a href="../File/Template.xlsx" download> הקלק להורדת הטמפלייט </a>
-                            <input type="file" id="excelfile" required />
-                            <input type="button" id="viewfile" value="טען כיתה" onclick="ExportToTable()" required />
 
                         </div>
                     </div>
