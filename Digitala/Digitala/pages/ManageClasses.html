@@ -34,9 +34,23 @@
 
     <script>
         $(document).ready(function () {
+            ajaxCall("GET", "../api/Schools", "", getSchoolSuccess, getSchoolerror);
             localStorage.removeItem("StudentName");
             localStorage.removeItem("StudentID");
+            makeLists()
         });
+
+        function makeLists() {
+            numbers = "";
+            for (var i = 1; i < 16; i++) {
+                numbers += "<option value='" + i + "'>" + i;
+            }
+            $("#classNumber").html(numbers);
+
+            name = "<option value='א'><option value='ב'><option value='ג'><option value='ד'><option value='ה'><option value='ו'><option value='ז'><option value='ח'><option value='ט'><option value='י'><option value='יא'><option value='יב'>";
+            $("#className").html(name);
+        }
+
 
         function ExportToTable() {//הכנסת קובץ אקסל
             var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xlsx|.xls)$/;
@@ -95,6 +109,23 @@
 
         }
 
+        function getSchoolSuccess(schoolsList) {
+            str = "";
+
+            for (var i = 0; i < schoolsList.length; i++) {
+                let _schName = schoolsList[i].SchoolName;
+                let _schId = schoolsList[i].SchoolId;
+                str += "<option value='" + _schId + "'>" + _schName;
+            }
+
+            $("#schOptList").html(str);
+
+
+        }
+        function getSchoolerror(err) {
+            alert("Error: " + err);
+        }
+
         function AddStudentsEXCEL(jsondata) {
             Jsondata = jsondata;
             console.log(Jsondata);
@@ -103,7 +134,7 @@
 
         }
 
-        
+
 
         function getStudentsSuccess(Students) {
             hit = 0;
@@ -117,8 +148,8 @@
                     }
                 }
 
-               
-                if (hit == 0) {                 
+
+                if (hit == 0) {
                     let NewS = {
                         studentId: Jsondata[i].תעודת_זהות,
                         sFirstName: Jsondata[i].שם_פרטי,
@@ -146,7 +177,7 @@
         }
 
 
-        
+
 
 
         function getStudentsError() {
@@ -211,13 +242,46 @@
 
                         </div>
                         <div class="body">
+                            <h4>אנא בחר בית ספר</h4>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">school</i>
+                                </span>
+                                <div class="form-line">
+                                    <input id="schOpt" list="schOptList" class="form-control" placeholder="בחר בית ספר" required>
+                                    <datalist id="schOptList">
+                                    </datalist>
+                                </div>
+                            </div>
+                            <h4>אנא בחר כיתה</h4>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">school</i>
+                                </span>
+                                <div class="form-line">
+                                    <input id="classNa" list="className" class="form-control" placeholder="כיתה" required>
+                                    <datalist id="className">
+                                    </datalist>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">school</i>
+                                </span>
+                                <div class="form-line">
+                                    <input id="classNum" list="classNumber" class="form-control" placeholder="כיתה" required>
+                                    <datalist id="classNumber">
+                                    </datalist>
+                                </div>
 
-                            <input type="file" id="excelfile" required /><input type="button" id="viewfile" value="טען כיתה" onclick="ExportToTable()" required />
+                            </div>
 
 
+                            <a href="../File/Template.xlsx" download> הקלק להורדת הטמפלייט </a>
+                            <input type="file" id="excelfile" required />
+                            <input type="button" id="viewfile" value="טען כיתה" onclick="ExportToTable()" required />
 
                         </div>
-                    </div>
                 </div>
             </div>
             <!-- #END# File Upload  -->
