@@ -102,31 +102,35 @@
             ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
 
         }
+
+        
+
         function getStudentsSuccess(Students) {
             hit = 0;
             count = 0;
             for (i = 0; i < Jsondata.length; i++) {
                 for (var x = 0; x < Students.length; x++) {
-                    if (Jsondata[i].studentId == Students[x].StudentId) {
+                    if (Jsondata[i].תעודת_זהות == Students[x].StudentId) {
                         hit = 1;
                         count++;
                         break;
                     }
                 }
 
-                if (hit == 0) {
+               
+                if (hit == 0) {                 
                     let NewS = {
-                        studentId: Jsondata[i].studentId,
-                        sFirstName: Jsondata[i].sFirstName,
-                        sLastName: Jsondata[i].sLastName,
-                        sEmail: Jsondata[i].sEmail,
-                        sBirthDate: Jsondata[i].sBirthDate,
-                        sGender: Jsondata[i].sGender,
-                        sAddress: Jsondata[i].sAddress,
-                        sPhone: Jsondata[i].sPhone,
-                        SDescripion: Jsondata[i].SDescripion,
-                        Dis1st: Jsondata[i].Dis1st,
-                        Dis2nd: Jsondata[i].Dis2nd,
+                        studentId: Jsondata[i].תעודת_זהות,
+                        sFirstName: Jsondata[i].שם_פרטי,
+                        sLastName: Jsondata[i].שם_משפחה,
+                        sEmail: Jsondata[i].אימייל,
+                        sBirthDate: Jsondata[i].תאריך_לידה,
+                        sGender: Jsondata[i].מין,
+                        sAddress: Jsondata[i].כתובת,
+                        sPhone: Jsondata[i].פלאפון,
+                        SDescripion: Jsondata[i].תיאור,
+                        Dis1st: Jsondata[i].לקות_ראשית,
+                        Dis2nd: Jsondata[i].לקות_משנית,
 
                     }
                     ajaxCall("POST", "../api/Students", JSON.stringify(NewS), postSutdentSuccess, postSutdentError);
