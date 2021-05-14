@@ -91,20 +91,39 @@
                         cancelButtonText: "ביטול",
                         closeOnConfirm: false
                     }, function () {
-                        
-                        //ajax > remove everything to the AJAX success;
-                        mode = "";
-                        $(".EditStudentProfile").html("<i class='material-icons'>edit</i>")
-                        $("#collapse_1").addClass("panel-col-light-blue");
-                        $("#collapse_2").addClass("panel-col-teal");
-                        $("#collapse_3").addClass("panel-col-grey");
-                        $("#collapse_1").removeClass("panel-col-yellow");
-                        $("#collapse_2").removeClass("panel-col-yellow");
-                        $("#collapse_3").removeClass("panel-col-yellow");
-                        $(".personalStudentDetails").attr('disabled', true);
-                    });
-                    
+                        gen = '';
+                        if ($(".radio-col-female").is(':checked'))
+                            gen = 'F';
+                        else if ($(".radio-col-male").is(':checked'))
+                            gen = 'M';
+                        for (var i = 0; i < document.getElementById("Dis1List").options.length; i++) {
+                            if (document.getElementById("Dis1List").options.item(i).value == $("#SDis1").val())
+                                dis1ID = document.getElementById("Dis1List").options.item(i).id;
+                        }
+                        for (var i = 0; i < document.getElementById("Dis2List").options.length; i++) {
+                            if (document.getElementById("Dis2List").options.item(i).value == $("#SDis2").val())
+                                dis2ID = document.getElementById("Dis2List").options.item(i).id;
+                        }
+
+                        studentObj = {
+                            SFirstName: $("#firstSName").val(),
+                            SLastName: $("#lastSName").val(),
+                            StudentId: $("#SID").val(),
+                            SAddress: $("#SAddress").val(),
+                            SEmail: $("#SEmail").val(),
+                            SPhone: $("#SMobile").val(),
+                            SDescripion: $("#SDescription").val(),
+                            Dis1st: dis1ID[5] + dis1ID[6],
+                            Dis2nd: dis2ID[5] + dis2ID[6],
+                            SBirthDate: $("#SBDay").val(),
+                            SGender: gen
+                        }
+
+                        ajaxCall("PUT", "../api/Students", JSON.stringify(studentObj), updateStudentSuccess, error);
+                       
+                    });                    
                 }
+
                 else {
                     mode = "edit";
                     $(".personalStudentDetails").attr('disabled', false);
@@ -199,6 +218,18 @@
                 }
             }
 
+            $(".personalStudentDetails").attr('disabled', true);
+        }
+
+        function updateStudentSuccess(data) {
+            mode = "";
+            $(".EditStudentProfile").html("<i class='material-icons'>edit</i>")
+            $("#collapse_1").addClass("panel-col-light-blue");
+            $("#collapse_2").addClass("panel-col-teal");
+            $("#collapse_3").addClass("panel-col-grey");
+            $("#collapse_1").removeClass("panel-col-yellow");
+            $("#collapse_2").removeClass("panel-col-yellow");
+            $("#collapse_3").removeClass("panel-col-yellow");
             $(".personalStudentDetails").attr('disabled', true);
         }
 

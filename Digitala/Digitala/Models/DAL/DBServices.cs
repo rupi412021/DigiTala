@@ -1606,9 +1606,9 @@ namespace Digitala.Models.DAL
         private String BuildUpdateCommand(Students s)
         {
             String command;
-            command = "UPDATE Student SET 1stDis = " + s.Dis1st + ", 2ndDis = " + s.Dis2nd + ", SDescripion = '" + s.SDescripion + "', SGender = " + s.SGender +
-                ", SFirstName = '" + s.SFirstName + "', SLastName = '" + s.SLastName + "', SEmail = '" + s.SEmail + "', SAddress = '" + s.SAddress +
-                "', SPhone = " + s.SPhone + ", SBirthDate = " + s.SBirthDate +  " WHERE StudentId = " + s.StudentId;
+            command = "UPDATE Student SET 1stDis = " + s.Dis1st + ", 2ndDis = " + s.Dis2nd + ", SDescripion = '" + s.SDescripion + "', SGender = '" + s.SGender +
+                "', SFirstName = '" + s.SFirstName + "', SLastName = '" + s.SLastName + "', SEmail = '" + s.SEmail + "', SAddress = '" + s.SAddress +
+                "', SPhone = '" + s.SPhone + "', SBirthDate = " + Convert.ToDateTime(s.SBirthDate) +  " WHERE StudentId = " + s.StudentId;
             return command;
         }
 
