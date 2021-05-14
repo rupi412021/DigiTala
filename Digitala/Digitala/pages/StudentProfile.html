@@ -38,11 +38,14 @@
 
     <script>
         $(document).ready(function () {
+            TeachID = localStorage["TeacherID"];            
             studentName = localStorage["StudentName"];
             newID = localStorage["StudentID"]
             $("#studentName").html(studentName);
-            
+            mode = "";
             ajaxCall("GET", "../api/Talas/" + newID + "/2021", "", getTalaSuccess, error);
+
+            ajaxCall("GET", "../api/Students/" + TeachID + "/2021", "", getStudentsByTeacherSuccess, error);
 
             $(document).on("click", ".UpdateStatusGoal", function () {
                 thisStatusId = this.getAttribute('id');
@@ -76,6 +79,46 @@
                 }
             });
 
+            $(document).on("click", ".EditStudentProfile", function () {
+                if (mode == "edit") {
+                    
+                    swal({
+                        title: "האם ברצונך לשמור את השינויים?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#73A4A4",
+                        confirmButtonText: "שמירה",
+                        cancelButtonText: "ביטול",
+                        closeOnConfirm: false
+                    }, function () {
+                        
+                        //ajax > remove everything to the AJAX success;
+                        mode = "";
+                        $(".EditStudentProfile").html("<i class='material-icons'>edit</i>")
+                        $("#collapse_1").addClass("panel-col-light-blue");
+                        $("#collapse_2").addClass("panel-col-teal");
+                        $("#collapse_3").addClass("panel-col-grey");
+                        $("#collapse_1").removeClass("panel-col-yellow");
+                        $("#collapse_2").removeClass("panel-col-yellow");
+                        $("#collapse_3").removeClass("panel-col-yellow");
+                        $(".personalStudentDetails").attr('disabled', true);
+                    });
+                    
+                }
+                else {
+                    mode = "edit";
+                    $(".personalStudentDetails").attr('disabled', false);
+                    $(".EditStudentProfile").html("<i class='material-icons'>save</i>");
+                    $("#collapse_1").removeClass("panel-col-light-blue");
+                    $("#collapse_2").removeClass("panel-col-teal");
+                    $("#collapse_3").removeClass("panel-col-grey");
+                    $("#collapse_1").addClass("panel-col-yellow");
+                    $("#collapse_2").addClass("panel-col-yellow");
+                    $("#collapse_3").addClass("panel-col-yellow");
+                }
+
+            });
+            
             window.setTimeout(toggleMenu, 1000);
         });
 
@@ -97,7 +140,7 @@
         }
 
         function updateGoalSuccess(data) {
-            console.log("יעד עודכן בהצלחה");
+            console.log("סטטוס יעד עודכן בהצלחה");
         }
 
         function getTalaSuccess(studentsTala) {
@@ -132,6 +175,31 @@
             $("#area_4").html(renderGoalsForStatus);
             $("#talaHeader").html("עמידה ביעדי תוכנית הלימודים");
             
+        }
+
+        function getStudentsByTeacherSuccess(studentsList) {
+            var months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            for (var i = 0; i < studentsList.length; i++) {
+                if (studentsList[i].StudentId == newID) {
+                    var bd = new Date(Date.parse(studentsList[i].SBirthDate));
+                    $("#firstSName").val(studentsList[i].SFirstName);
+                    $("#SBDay").val(bd.getDate() + "/" + months[bd.getMonth()] + "/" + bd.getFullYear());
+                    $("#lastSName").val(studentsList[i].SLastName);
+                    $("#SID").val(studentsList[i].StudentId);
+                    $("#SEmail").val(studentsList[i].SEmail);
+                    $("#SAddress").val(studentsList[i].SAddress);
+                    $("#SMobile").val(studentsList[i].SPhone);
+                    $("#SDescription").val(studentsList[i].SDescripion);                    
+                    $("#SDis1").val($("#dis1_" + studentsList[i].Dis1st).val());
+                    $("#SDis2").val($("#dis2_" + studentsList[i].Dis2nd).val());
+                    if (studentsList[i].SGender == 'F')
+                        $(".radio-col-female").attr('checked', true);
+                    else if (studentsList[i].SGender == 'M')
+                        $(".radio-col-male").attr('checked', true);
+                }
+            }
+
+            $(".personalStudentDetails").attr('disabled', true);
         }
 
         function error(data) {
@@ -178,6 +246,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
+                            <button type="button" class="EditStudentProfile btn-trans" id="goalId-1"><i class="material-icons">edit</i></button>
                             <h3 id="studentName"></h3>
                         </div>
                         <div class="body">
@@ -197,22 +266,22 @@
                                                     <div class="col-sm-5 studentsFields">
                                                         <div class="form-group ">
                                                             <div class="form-line">
-                                                                <input type="text" placeholder="שם פרטי" class="form-control" />
+                                                                <input type="text" placeholder="שם פרטי" class="form-control personalStudentDetails" id="firstSName"/>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-5 studentsFields">
                                                         <div class="form-group">
                                                             <div class="form-line">
-                                                                <input type="text" placeholder="שם משפחה" class="form-control" />
+                                                                <input type="text" placeholder="שם משפחה" class="form-control personalStudentDetails" id="lastSName" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 studentsFields">
                                                         <div class="demo-radio-button">
-                                                            <input name="group4" type="radio" id="radio_7" class="radio-col-female" />
+                                                            <input name="group4" type="radio" id="radio_7" class="radio-col-female personalStudentDetails" />
                                                             <label for="radio_7">נקבה</label>
-                                                            <input name="group4" type="radio" id="radio_8" class="radio-col-male" />
+                                                            <input name="group4" type="radio" id="radio_8" class="radio-col-male personalStudentDetails" />
                                                             <label for="radio_8">זכר</label>
                                                         </div>
                                                     </div>
@@ -221,7 +290,7 @@
                                                     <div class="col-sm-4 studentsFields">
                                                         <div class="form-group ">
                                                             <div class="form-line">
-                                                                <input type="text" placeholder="תעודת זהות" class="form-control" />
+                                                                <input type="text" placeholder="תעודת זהות" class="form-control personalStudentDetails" id="SID" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -229,7 +298,7 @@
                                                         <div class="form-group">
                                                             <div class="input-group">
                                                                 <div class="form-line">
-                                                                    <input type="text" class="form-control date" placeholder="תאריך לידה">
+                                                                    <input type="text" class="form-control date personalStudentDetails" placeholder="תאריך לידה" id="SBDay">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -237,7 +306,7 @@
                                                     <div class="col-sm-4 studentsFields">
                                                         <div class="form-group">
                                                             <div class="form-line">
-                                                                <input type="text" placeholder="כתובת מגורים" class="form-control" />
+                                                                <input type="text" placeholder="כתובת מגורים" class="form-control personalStudentDetails" id="SAddress" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -246,14 +315,7 @@
                                                     <div class="col-sm-4 studentsFields">
                                                         <div class="form-group">
                                                             <div class="form-line">
-                                                                <input type="text" placeholder="טלפון בבית" class="form-control" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4 studentsFields">
-                                                        <div class="form-group">
-                                                            <div class="form-line">
-                                                                <input type="text" placeholder="סלולרי" class="form-control" />
+                                                                <input type="text" placeholder="סלולרי" class="form-control personalStudentDetails" id="SMobile" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -261,7 +323,7 @@
                                                         <div class="form-group">
                                                             <div class="input-group">
                                                                 <div class="form-line">
-                                                                    <input type="text" class="form-control email" placeholder="כתובת מייל">
+                                                                    <input type="text" class="form-control email personalStudentDetails" placeholder="כתובת מייל" id="SEmail">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -338,41 +400,41 @@
                                                         <p>
                                                             <b>לקות ראשית</b>
                                                         </p>
-                                                        <input list="Dis1" placeholder="הקלד כאן..." class="form-control" />
-                                                        <datalist id="Dis1">
-                                                            <option value="משכל גבולי">51</option>
-                                                            <option value="פיגור קשה/עמוק">54</option>
-                                                            <option value="הפרעה התנהגותית-רגשתית">55</option>
-                                                            <option value="PDD/אוטיזם">56</option>
-                                                            <option value="הפרעות נפשיות">57</option>
-                                                            <option value="לקות למידה מורכבת">58</option>
-                                                            <option value="שיתוק מוחין/נכות פיזית קשה">59</option>
-                                                            <option value="חירשות/כבדות שמיעה">60</option>
-                                                            <option value="עיוורון/לקות ראייה">61</option>
-                                                            <option value="עיכוב התפתחותי">62</option>
-                                                            <option value="עיכוב שפתי">63</option>
-                                                            <option value="ADHD">64</option>
-                                                            <option value="מחלות נדירות"></option>
+                                                        <input list="Dis1List" placeholder="הקלד כאן..." class="form-control personalStudentDetails" id="SDis1" />
+                                                        <datalist id="Dis1List">
+                                                            <option value="משכל גבולי" id="dis1_51">51</option>
+                                                            <option value="פיגור קשה/עמוק" id="dis1_54">54</option>
+                                                            <option value="הפרעה התנהגותית-רגשתית" id="dis1_55">55</option>
+                                                            <option value="PDD/אוטיזם" id="dis1_56">56</option>
+                                                            <option value="הפרעות נפשיות" id="dis1_57">57</option>
+                                                            <option value="לקות למידה מורכבת" id="dis1_58">58</option>
+                                                            <option value="שיתוק מוחין/נכות פיזית קשה" id="dis1_59">59</option>
+                                                            <option value="חירשות/כבדות שמיעה" id="dis1_60">60</option>
+                                                            <option value="עיוורון/לקות ראייה" id="dis1_61">61</option>
+                                                            <option value="עיכוב התפתחותי" id="dis1_62">62</option>
+                                                            <option value="עיכוב שפתי" id="dis1_63">63</option>
+                                                            <option value="ADHD" id="dis1_64">64</option>
+                                                            <option value="מחלות נדירות" id="dis1_98"></option>
                                                         </datalist>
                                                     </div>
                                                     <div class="col-sm-4 studentsFields">
                                                         <p>
                                                             <b>לקות משנית</b>
                                                         </p>
-                                                        <input list="Dis2" placeholder="הקלד כאן..." class="form-control" />
-                                                        <datalist id="Dis2">
-                                                            <option value="משכל גבולי">51</option>
-                                                            <option value="הפרעה התנהגותית-רגשתית">55</option>
-                                                            <option value="PDD/אוטיזם">56</option>
-                                                            <option value="הפרעות נפשיות">57</option>
-                                                            <option value="לקות למידה מורכבת">58</option>
-                                                            <option value="שיתוק מוחין/נכות פיזית קשה">59</option>
-                                                            <option value="חירשות/כבדות שמיעה">60</option>
-                                                            <option value="עיוורון/לקות ראייה">61</option>
-                                                            <option value="עיכוב התפתחותי">62</option>
-                                                            <option value="עיכוב שפתי">63</option>
-                                                            <option value="ADHD">64</option>
-                                                            <option value="מחלות נדירות"></option>
+                                                        <input list="Dis2List" placeholder="הקלד כאן..." class="form-control personalStudentDetails" id="SDis2"/>
+                                                        <datalist id="Dis2List">
+                                                            <option value="משכל גבולי" id="dis2_51">51</option>
+                                                            <option value="הפרעה התנהגותית-רגשתית" id="dis2_55">55</option>
+                                                            <option value="PDD/אוטיזם" id="dis2_56">56</option>
+                                                            <option value="הפרעות נפשיות" id="dis2_57">57</option>
+                                                            <option value="לקות למידה מורכבת" id="dis2_58">58</option>
+                                                            <option value="שיתוק מוחין/נכות פיזית קשה" id="dis2_59">59</option>
+                                                            <option value="חירשות/כבדות שמיעה" id="dis2_60">60</option>
+                                                            <option value="עיוורון/לקות ראייה" id="dis2_61">61</option>
+                                                            <option value="עיכוב התפתחותי" id="dis2_62">62</option>
+                                                            <option value="עיכוב שפתי" id="dis2_63">63</option>
+                                                            <option value="ADHD" id="dis2_64">64</option>
+                                                            <option value="מחלות נדירות" id="dis2_98"></option>
                                                         </datalist>
                                                     </div>
                                                 </div>
@@ -381,7 +443,7 @@
                                                         <p><b>תיאור מילולי של התלמיד</b></p>
                                                         <div class="form-group">
                                                             <div class="form-line">
-                                                                <textarea rows="3" class="form-control no-resize auto-growth"></textarea>
+                                                                <textarea rows="3" class="form-control auto-growth personalStudentDetails" id="SDescription"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>

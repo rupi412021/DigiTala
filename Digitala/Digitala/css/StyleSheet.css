@@ -46,6 +46,11 @@ span.input-group-addon {
     border-color: #96C4DA;
 }
 
+.EditStudentProfile {
+    float: left;
+    color: #555555
+}
+
 .contactsHeader {
     margin-bottom: 20px;
     padding-right: 15px;
@@ -268,12 +273,12 @@ span, datalist {
     float: left;
 }
 xx {
-    color: #73A4A4;
-    color: #96C4DA;
-    color: #5D7373;
-    color: #F4D657;
-    color: #F4A55C;
-    color: #F46549;
+    color: #73A4A4; /*טורקיז*/
+    color: #96C4DA; /*תכלת*/
+    color: #5D7373; /*אפור*/
+    color: #F4D657; /*צהוב*/
+    color: #F4A55C; /*כתום*/
+    color: #F46549; /*אדום*/
 }
 .custom-control-label {
     padding-right: 10px;
