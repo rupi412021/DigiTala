@@ -11,7 +11,7 @@
 
     <script src="../Scripts/jquery-3.3.1.min.js"></script>
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
-
+    <script language="javascript" type="text/javascript" src="~/Scripts/date.js"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
@@ -38,7 +38,7 @@
 
     <script>
         $(document).ready(function () {
-            TeachID = localStorage["TeacherID"];            
+            TeachID = localStorage["TeacherID"];
             studentName = localStorage["StudentName"];
             newID = localStorage["StudentID"]
             $("#studentName").html(studentName);
@@ -49,9 +49,9 @@
 
             $(document).on("click", ".UpdateStatusGoal", function () {
                 thisStatusId = this.getAttribute('id');
-               
+
                 for (var i = 0; i < AllGoalsForStudent.length; i++) {
-                    if ("goalId-"+AllGoalsForStudent[i].GoalId == thisStatusId) {
+                    if ("goalId-" + AllGoalsForStudent[i].GoalId == thisStatusId) {
                         if (AllGoalsForStudent[i].GoalStatus == "E") {
                             AllGoalsForStudent[i].GoalStatus = "P";
                             $("#" + thisStatusId).html("<i class='material-icons'>star_half</i></button>");
@@ -81,7 +81,7 @@
 
             $(document).on("click", ".EditStudentProfile", function () {
                 if (mode == "edit") {
-                    
+
                     swal({
                         title: "האם ברצונך לשמור את השינויים?",
                         type: "warning",
@@ -104,6 +104,15 @@
                             if (document.getElementById("Dis2List").options.item(i).value == $("#SDis2").val())
                                 dis2ID = document.getElementById("Dis2List").options.item(i).id;
                         }
+                        bday = $("#SBDay").val();
+                        let year = bday[6] + bday[7] + bday[8] + bday[9];
+                        let month = bday[3] + bday[4];
+                        let day = bday[0] + bday[1];
+
+                        var monthsAfter = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+                        month = monthsAfter[parseInt(month)-1];
+
+                        bday = new Date(year, month, day);
 
                         studentObj = {
                             SFirstName: $("#firstSName").val(),
@@ -115,13 +124,13 @@
                             SDescripion: $("#SDescription").val(),
                             Dis1st: dis1ID[5] + dis1ID[6],
                             Dis2nd: dis2ID[5] + dis2ID[6],
-                            SBirthDate: $("#SBDay").val(),
+                            SBirthDate: bday.toDateString(),
                             SGender: gen
                         }
 
                         ajaxCall("PUT", "../api/Students", JSON.stringify(studentObj), updateStudentSuccess, error);
-                       
-                    });                    
+
+                    });
                 }
 
                 else {
@@ -137,7 +146,7 @@
                 }
 
             });
-            
+
             window.setTimeout(toggleMenu, 1000);
         });
 
@@ -163,7 +172,7 @@
         }
 
         function getTalaSuccess(studentsTala) {
-              
+
             if (studentsTala.CurrentYear > 0) {
                 document.getElementById("collapseOne_19").classList.remove("in");
                 document.getElementById("collapseOne_19").setAttribute("aria-expanded", "false");
@@ -193,7 +202,7 @@
 
             $("#area_4").html(renderGoalsForStatus);
             $("#talaHeader").html("עמידה ביעדי תוכנית הלימודים");
-            
+
         }
 
         function getStudentsByTeacherSuccess(studentsList) {
@@ -208,7 +217,7 @@
                     $("#SEmail").val(studentsList[i].SEmail);
                     $("#SAddress").val(studentsList[i].SAddress);
                     $("#SMobile").val(studentsList[i].SPhone);
-                    $("#SDescription").val(studentsList[i].SDescripion);                    
+                    $("#SDescription").val(studentsList[i].SDescripion);
                     $("#SDis1").val($("#dis1_" + studentsList[i].Dis1st).val());
                     $("#SDis2").val($("#dis2_" + studentsList[i].Dis2nd).val());
                     if (studentsList[i].SGender == 'F')
