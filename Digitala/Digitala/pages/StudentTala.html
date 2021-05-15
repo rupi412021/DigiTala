@@ -296,6 +296,12 @@
             $(document).on("click", "#saveNewTarToBank", function () {               
                 var areaId = $("#areas").val();
                 var subarea = $("#subareas").val();
+             
+                for (var i = 0; i < SubAreasList.length; i++) {
+                    if (SubAreasList[i].SubArea == subarea)
+                        subarea = SubAreasList[i].SubAreaId;
+                }
+
                 var newTarget = $("#targetToBank").val();
 
                 if (areaId == 0) {
@@ -315,7 +321,7 @@
                         TarSerial: unknownTarId,
                         Target: newTarget,
                         FaSerial: areaId,
-                        SubFunctionArea: subarea,
+                        SfaSerial: subarea,
                         NewTar: 1
                     }
 

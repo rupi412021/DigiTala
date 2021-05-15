@@ -609,7 +609,7 @@ namespace Digitala.Models.DAL
 
             for (int i = 0; i < surveyTeachers.Count; i++)
             {
-                sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", t.FaSerial, t.SfaSerial, t.Target, TargetID, surveyTeachers[i]);
+                sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}')", t.FaSerial, t.SfaSerial, t.Target, TargetID, surveyTeachers[i].TeacherID);
                 prefix = "INSERT INTO TargetsSurvey " + "([FASerial], [SFASerial], [TargetText], [TargetId], [TeacherId])";
                 command = command + " " + prefix + sb.ToString();
             }
