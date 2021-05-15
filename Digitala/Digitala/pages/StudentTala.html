@@ -106,11 +106,11 @@
             });
 
             $(document).on("click", "#finish", function () {
-                $("#SetGoal").children[0].attr("style", "color:gray");
-                $("#SetTool").children[0].attr("style", "color:gray");
+                $(".arrowGoal").attr("style", "color:gray");
+                $(".arrowTool").attr("style", "color:gray");
 
                 if (GoalsArr.length == 0) {
-                    $("#SetGoal").children[0].attr("style", "color:red")
+                    $(".arrowGoal").attr("style", "color:red");
                     swal({
                         title: "לא נבחרו יעדים",
                         type: "error",
@@ -119,15 +119,13 @@
                     });
                 }
                 else if (ToolsArr.length == 0) {
-                    if (GoalsArr.length == 0) {
-                        $("#SetTool").children[0].attr("style", "color:red")
-                        swal({
-                            title: "לא נבחרו אמצעים",
-                            type: "error",
-                            timer: 1500,
-                            showConfirmButton: false
-                        });
-                    }
+                    $(".arrowTool").attr("style", "color:red");
+                    swal({
+                        title: "לא נבחרו אמצעים",
+                        type: "error",
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
                 }
                 else {
                     for (var i = 0; i < TargetForTala.length; i++) {
@@ -201,9 +199,9 @@
                 targetsforToolsAndGoals += '<a class="collapsed" role="button" data-toggle="collapse" href="#collapse' + i + '_19" aria-expanded="false" aria-controls="collapse' + i + '_19"><i class="material-icons Itar">gps_fixed</i>' + TargetForTala[i].Target + '</a></h4></div>';
                 targetsforToolsAndGoals += '<div id="collapse' + i + '_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading' + i + '_19">';
                 targetsforToolsAndGoals += '<div class="panel-body"><div class="input-group col-sm-6" tar-ser=' + TargetForTala[i].TarSerial + '><div class="form-line"><input type="text" class="form-control date goals" id="goal' + TargetForTala[i].TarSerial + '" placeholder="הזן יעד להשגת המטרה">';
-                targetsforToolsAndGoals += '</div><span class="input-group-addon" id="SetGoal"><i class="material-icons">arrow_back_ios_new</i></span></div>';
+                targetsforToolsAndGoals += '</div><span class="input-group-addon" id="SetGoal"><i class="material-icons arrowGoal">arrow_back_ios_new</i></span></div>';
                 targetsforToolsAndGoals += '<div class="input-group col-sm-6" tar-ser=' + TargetForTala[i].TarSerial + '><div class="form-line"><input type="text" class="form-control date tools" id="tool' + TargetForTala[i].TarSerial + '" placeholder="הגדר אמצעי להשגת המטרה">';
-                targetsforToolsAndGoals += '</div><span class="input-group-addon" id="SetTool"><i class="material-icons">arrow_back_ios_new</i></span></div>';
+                targetsforToolsAndGoals += '</div><span class="input-group-addon" id="SetTool"><i class="material-icons arrowTool">arrow_back_ios_new</i></span></div>';
                 targetsforToolsAndGoals += '<div class="toolsList col-sm-6" id="target_' + TargetForTala[i].TarSerial + '"></div><div class="goalsList col-sm-6" id="target_' + TargetForTala[i].TarSerial + '" ></div ></div></div>';
             }
             targetsforToolsAndGoals += "</div>";

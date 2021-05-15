@@ -634,7 +634,7 @@ namespace Digitala.Models.DAL
             double c = allteachers.Count / 3;
             for (int i = 0; i < Math.Round(c); i++)
             {
-                surveyTeachers.Add(allteachers[r.Next(0, 100)]);
+                surveyTeachers.Add(allteachers[r.Next(0, allteachers.Count-1)]);
             }
 
             return surveyTeachers;
@@ -1868,18 +1868,18 @@ namespace Digitala.Models.DAL
                     t.TarSerial = Convert.ToInt32(dr["TSerial"]);
                     t.FaSerial = Convert.ToInt32(dr["FASerial"]);
                     t.SfaSerial = Convert.ToInt32(dr["SFASerial"]);
-                    if (Convert.ToDouble(dr["Suitability"]) > 0)
-                        t.Suitability = Convert.ToDouble(dr["Suitability"]);
-                    else
+                    if (t.TarSerial == 0)
+                    {
                         t.Suitability = 0;
-                    if (Convert.ToDouble(dr["Originality"]) > 0)
-                        t.Originality = Convert.ToDouble(dr["Originality"]);
-                    else
                         t.Originality = 0;
-                    if (Convert.ToDouble(dr["NumOfUses"]) > 0)
-                        t.NumOfUses = Convert.ToInt32(dr["NumOfUses"]);
-                    else
                         t.NumOfUses = 0;
+                    }
+                    else
+                    {
+                        t.Suitability = Convert.ToDouble(dr["Suitability"]);
+                        t.Originality = Convert.ToDouble(dr["Originality"]);
+                        t.NumOfUses = Convert.ToInt32(dr["NumOfUses"]);
+                    }
 
                     t.FunctionArea = (string)(dr["FunctionArea"]);
 
