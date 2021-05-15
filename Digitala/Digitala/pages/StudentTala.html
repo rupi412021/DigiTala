@@ -252,20 +252,36 @@
                 var subarea = $("#subareas").val();
                 var newTarget = $("#targetToBank").val();
 
-                ObjTemp = {
-                    TarSerial: unknownTarId,
-                    Target: newTarget,
-                    FaSerial: areaId,
-                    SubFunctionArea: subarea,
-                    NewTar: 1
+                if (areaId == 0) {
+                    $(".newTargetModal").modal({ "backdrop": "static" });
+                    $("#areas").attr("style", "color: red");
                 }
-                unknownTarId++;
-                TargetForTala.push(ObjTemp);
+                else if (subarea == "") {
+                    $(".newTargetModal").modal({ "backdrop": "static" });
+                    $("#subareas").attr("style", "color: red");
+                }
+                else if (newTarget == "") {
+                    $(".newTargetModal").modal({ "backdrop": "static" });
+                    $("#targetToBank").attr("style", "color: red");
+                }
+                else {
+                    ObjTemp = {
+                        TarSerial: unknownTarId,
+                        Target: newTarget,
+                        FaSerial: areaId,
+                        SubFunctionArea: subarea,
+                        NewTar: 1
+                    }
 
-                let tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + ObjTemp.TarSerial + '">X</button> ' + ObjTemp.Target + '</span>';
-                $("#phTarsLabels").append(tampValString);
+                    unknownTarId++;
+                    TargetForTala.push(ObjTemp);
+
+                    let tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + ObjTemp.TarSerial + '">X</button> ' + ObjTemp.Target + '</span>';
+                    $("#phTarsLabels").append(tampValString);
+                }
             });
         }
+
         function EditDelTargets() {
 
             $(document).on("click", ".updateBtn", function () {
@@ -374,20 +390,18 @@
             console.log(recommendationsData);
             
             TargetForTala = recommendationsData.Recommendations;
-            if (TargetForTala.length > 0)
-                renderTargetsToPage(TargetForTala);
-            else 
-            {
+            if (TargetForTala == null) {
                 swal({
                     title: "לא נמצאו מטרות מתאימות",
-                    text: "ניתן להוסיף מטרות חדשות או לחזור לאחור ולבחור מאפיינים נוספים",
+                    text: "ניתן להוסיף מטרות חדשות באופן ידני או לחזור לאחור ולבחור מאפיינים נוספים",
                     type: "warning",
                     confirmButtonText: "אשר"
                 });
             }
-
-            rederAllTargets(TargetsFullList);
-
+            else {
+                renderTargetsToPage(TargetForTala);
+                rederAllTargets(TargetsFullList);
+            }
         }
 
         function renderTargetsToPage(targetsList) {
@@ -869,7 +883,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="modal fade in" id="smallModal" tabindex="-1" role="dialog">
+                                        <div class="modal fade in newTargetModal" id="smallModal" tabindex="-1" role="dialog">
                                             <div class="modal-dialog modal-sm" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -893,14 +907,14 @@
                                                         <div class="form-group">
                                                             <div class="form-line">
                                                                 <label>תת-תחום</label>
-                                                                <input id="subareas" list="subareasList" pattern="^[א-ת\s]*$" placeholder="בחר מרשימה או הקלד ערך חדש" class="form-control" required/>
+                                                                <input id="subareas" list="subareasList" pattern="^[א-ת\s]*$" placeholder="בחר מרשימה או הקלד ערך חדש" class="form-control" required />
                                                                 <datalist id="subareasList"></datalist>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="form-line">
                                                                 <label>מטרה</label>
-                                                                <input id="targetToBank" pattern="^[א-ת\s]*$" placeholder="נסח מטרה חדשה" class="form-control" required/>
+                                                                <input id="targetToBank" pattern="^[א-ת\s]*$" placeholder="נסח מטרה חדשה" class="form-control" required />
                                                             </div>
                                                             <div class="help-info">אותיות בעברית בלבד, ללא סימנים</div>
                                                         </div>
@@ -908,7 +922,7 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
                                                         <!--<input type="submit" class="btn btn-primary btn-lg" value="שמור">-->
-                                                        <button type="button" id="saveNewTarToBank" class="btn btn-link waves-effect" data-dismiss="modal">שמור</button>
+                                                        <button type="submit" id="saveNewTarToBank" class="btn btn-link waves-effect" data-dismiss="modal">שמור</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1025,6 +1039,7 @@
     <script src="../js/admin.js"></script>
     <script src="../js/pages/forms/form-wizard.js"></script>
     <script src="../js/pages/ui/modals.js"></script>
+
     <!-- Demo Js -->
     <script src="../js/demo.js"></script>
 
