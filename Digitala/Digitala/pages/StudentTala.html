@@ -38,6 +38,7 @@
         $(document).ready(function () {
             CharsChosen = [];
             TargetForTala = [];
+            indicator = 0;
             indexHidden = [];
             filterMainBtnIdLast = "filterMainBTN1";
             ToolsArr = [];
@@ -252,7 +253,13 @@
             });
 
             $(document).on("change", "#targetToBank", function () {
+                validVal = $("#targetToBank").val();
                 $("#target-error").attr("hidden", true);
+                for (var i = 0; i < validVal.length; i++) {
+                    if (validVal[i] == "'" || validVal[i] == ";" || validVal[i] == '"') {
+                        $("#target-error").attr("hidden", false);
+                    }
+                }
             });
 
             $(document).on("click", "#addNewTar", function () {
@@ -298,6 +305,10 @@
 
                     let tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + ObjTemp.TarSerial + '">X</button> ' + ObjTemp.Target + '</span>';
                     $("#phTarsLabels").append(tampValString);
+                    $(".newTargetModal").modal("hide");
+                    $("#areas").val(0);
+                    $("#subareas").val("");
+                    $("#targetToBank").val("");
                 }
             });
 
@@ -408,10 +419,9 @@
         }
 
         function GetRecommendationsSuccess(recommendationsData) {
-            console.log(recommendationsData);
-            
-            TargetForTala = recommendationsData.Recommendations;
-            if (TargetForTala == null) {
+            console.log(recommendationsData); 
+        
+            if (recommendationsData.Recommendations == null && indicator == 0) {
                 swal({
                     title: "לא נמצאו מטרות מתאימות",
                     text: "ניתן להוסיף מטרות חדשות באופן ידני או לחזור לאחור ולבחור מאפיינים נוספים",
@@ -419,10 +429,39 @@
                     confirmButtonText: "אשר"
                 });
             }
+            else if (recommendationsData.Recommendations != null && indicator == 0) {
+                TargetForTala = recommendationsData.Recommendations;
+                renderTargetsToPage(TargetForTala);
+            }
+
+            else if (recommendationsData.Recommendations != null && indicator == 1) {
+                swal({
+                    title: "האם ברצונך למחוק את המטרות הקיימות ולהביא חדשות?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#73A4A4",
+                    confirmButtonText: "מחק",
+                    cancelButtonText: "בטל",
+                    closeOnConfirm: true
+                }, function () {
+                    TargetForTala = recommendationsData.Recommendations;
+                    renderTargetsToPage(TargetForTala);
+                });
+            }
+            else if (indicator == 1 && TargetForTala.length == 0){
+                swal({
+                    title: "לא נמצאו מטרות מתאימות",
+                    text: "ניתן להוסיף מטרות חדשות באופן ידני או לחזור לאחור ולבחור מאפיינים נוספים",
+                    type: "warning",
+                    confirmButtonText: "אשר"
+                });
+            }
+
             else {
                 renderTargetsToPage(TargetForTala);
-                rederAllTargets(TargetsFullList);
             }
+            rederAllTargets(TargetsFullList);
+            indicator = 1; 
         }
 
         function renderTargetsToPage(targetsList) {
@@ -526,6 +565,8 @@
             function renderTagTar(tempID) { 
                 for (var i = 0; i < TargetsFullList.length; i++) {
                     if (TargetsFullList[i].TarSerial == tempID) {
+                        if (TargetForTala == null)
+                            TargetForTala = [];
                         TargetForTala.push(TargetsFullList[i]);
                         let tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + TargetsFullList[i].TarSerial + '">X</button> ' + TargetsFullList[i].Target + '</span>';
                         $("#phTarsLabels").append(tampValString);
@@ -862,7 +903,7 @@
                                                         <h3 id="largeModalLabel">הוסף מטרה לתל"א</h3>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <!--להוסיף מטרה חדשה + להציג מטרות שלא הושגו משנה שעברה-->
+                                                        <!--להציג מטרות שלא הושגו משנה שעברה-->
                                                         <div class="form-group">
                                                             <div>
                                                                 <button type="button" id="filterMainBTN1" class="btn bg-grey btn-lg waves-effect filterMainBtn">סנסומוטורי</button>
@@ -937,9 +978,9 @@
                                                         <div class="form-group">
                                                             <div class="form-line">
                                                                 <label>מטרה</label>
-                                                                <input id="targetToBank" pattern="^[א-ת\s]*$" placeholder="נסח מטרה חדשה" class="form-control" />
+                                                                <input type="text" id="targetToBank" pattern="^[א-ת\s]*$" placeholder="נסח מטרה חדשה" class="form-control" />
                                                             </div>
-                                                            <label id="target-error" hidden="hidden">אנא נסח מטרה </label>
+                                                            <label id="target-error" hidden="hidden">אנא נסח מטרה</label>
                                                             <div class="help-info">אותיות בעברית בלבד, ללא סימנים</div>
                                                         </div>
                                                     </div>
