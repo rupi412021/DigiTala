@@ -2,6 +2,11 @@
     font-family: Calibri;
 }
 
+#target-error, #area-error, #subarea-error {
+    color: red;
+    font-size: 12px;
+    font-weight: normal;
+}
 .colRight {
     float: right;
     padding: 0;
