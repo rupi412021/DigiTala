@@ -621,8 +621,10 @@ namespace Digitala.Models.DAL
         public int helpPickTargetIDForSurvey()
         {
             List<TargetsSurvey> targetForSurvey = ReadTargetsForSurveys();
-
-            return targetForSurvey[targetForSurvey.Count - 1].TarSerial;
+            if (targetForSurvey.Count == 0)
+                return 1;
+            else
+                return targetForSurvey[targetForSurvey.Count - 1].TarSerial;
         }
 
         public List<Teachers> helpPickTechersForSurvey()
@@ -631,8 +633,8 @@ namespace Digitala.Models.DAL
 
             List<Teachers> allteachers = ReadTeachers();
             List<Teachers> surveyTeachers = new List<Teachers>();
-            double c = allteachers.Count / 3;
-            for (int i = 0; i < Math.Round(c); i++)
+            float c = allteachers.Count;
+            for (int i = 0; i < Math.Round(c * 0.33); i++)
             {
                 surveyTeachers.Add(allteachers[r.Next(0, allteachers.Count-1)]);
             }
