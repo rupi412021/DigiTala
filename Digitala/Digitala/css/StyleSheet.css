@@ -46,7 +46,7 @@ span.input-group-addon {
     border-color: #96C4DA;
 }
 
-.EditStudentProfile {
+.EditStudentProfile, .CancelEditsStudentProfile {
     float: left;
     color: #555555
 }

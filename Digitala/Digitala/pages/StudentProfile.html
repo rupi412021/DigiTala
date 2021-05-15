@@ -81,7 +81,6 @@
 
             $(document).on("click", ".EditStudentProfile", function () {
                 if (mode == "edit") {
-
                     swal({
                         title: "האם ברצונך לשמור את השינויים?",
                         type: "warning",
@@ -136,6 +135,7 @@
                 else {
                     mode = "edit";
                     $(".personalStudentDetails").attr('disabled', false);
+                    $(".CancelEditsStudentProfile").attr('hidden', false);                  
                     $(".EditStudentProfile").html("<i class='material-icons'>save</i>");
                     $("#collapse_1").removeClass("panel-col-light-blue");
                     $("#collapse_2").removeClass("panel-col-teal");
@@ -143,10 +143,44 @@
                     $("#collapse_1").addClass("panel-col-yellow");
                     $("#collapse_2").addClass("panel-col-yellow");
                     $("#collapse_3").addClass("panel-col-yellow");
+                    document.getElementById("collapseOne_19").classList.add("in");
+                    document.getElementById("collapseOne_19").setAttribute("aria-expanded", "true");
+                    document.getElementById("collapseTwo_19").classList.add("in");
+                    document.getElementById("collapseTwo_19").setAttribute("aria-expanded", "true");
+                    document.getElementById("collapseThree_19").classList.add("in");
+                    document.getElementById("collapseThree_19").setAttribute("aria-expanded", "true");
+                    document.getElementById("collapseFour_19").classList.remove("in");
+                    document.getElementById("collapseFour_19").setAttribute("aria-expanded", "false");  
                 }
 
             });
 
+            $(document).on("click", ".CancelEditsStudentProfile", function () {
+                swal({
+                    title: "יציאה ממצב עריכה",
+                    text: "השינויים שביצעת לא יישמרו",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#F46549",
+                    confirmButtonText: "יציאה",
+                    cancelButtonText: "ביטול",
+                    closeOnConfirm: true
+                }, function () {
+                    mode = "";
+                    $(".EditStudentProfile").html("<i class='material-icons'>edit</i>")
+                    $("#collapse_1").addClass("panel-col-light-blue");
+                    $("#collapse_2").addClass("panel-col-teal");
+                    $("#collapse_3").addClass("panel-col-grey");
+                    $("#collapse_1").removeClass("panel-col-yellow");
+                    $("#collapse_2").removeClass("panel-col-yellow");
+                    $("#collapse_3").removeClass("panel-col-yellow");
+                    $(".CancelEditsStudentProfile").attr('hidden', true);
+
+                    getStudentsByTeacherSuccess(AllStudents);
+
+                });
+            });
+            
             window.setTimeout(toggleMenu, 1000);
         });
 
@@ -206,6 +240,7 @@
         }
 
         function getStudentsByTeacherSuccess(studentsList) {
+            AllStudents = studentsList;
             var months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
             for (var i = 0; i < studentsList.length; i++) {
                 if (studentsList[i].StudentId == newID) {
@@ -224,6 +259,7 @@
                         $(".radio-col-female").attr('checked', true);
                     else if (studentsList[i].SGender == 'M')
                         $(".radio-col-male").attr('checked', true);
+                    break;
                 }
             }
 
@@ -240,6 +276,7 @@
             $("#collapse_2").removeClass("panel-col-yellow");
             $("#collapse_3").removeClass("panel-col-yellow");
             $(".personalStudentDetails").attr('disabled', true);
+            $(".CancelEditsStudentProfile").attr('hidden', true); 
         }
 
         function error(data) {
@@ -286,6 +323,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
+                            <button type="button" hidden="hidden" class="CancelEditsStudentProfile btn-trans" id="goalId-1"><i class="material-icons">close</i></button>
                             <button type="button" class="EditStudentProfile btn-trans" id="goalId-1"><i class="material-icons">edit</i></button>
                             <h3 id="studentName"></h3>
                         </div>
