@@ -1995,7 +1995,6 @@ namespace Digitala.Models.DAL
 
 
         //}
-
         public int Insert(Custodian Cust)
         {
 
@@ -2052,6 +2051,62 @@ namespace Digitala.Models.DAL
             return command;
 
         }
+
+        public int insertSinClass(int s, string c, int y, int i)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildInsertCommand(s, c, y, i);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("לא ניתן לעדכן כיתה", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
+        private String BuildInsertCommand(int s, string c, int y, int i)
+        {
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}')", s, c, y, i );
+            prefix = "INSERT INTO StudentsInClass " + "([SCSchId], [SCName], [SCYear], [SCstdID])";
+
+
+            command = prefix + sb.ToString();
+
+            return command;
+
+        }
+
     }
    
 }

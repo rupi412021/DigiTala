@@ -41,5 +41,14 @@ namespace Digitala.Controllers
         {
             return s.Update();
         }
+
+        [HttpPost]
+        [Route("api/Students/{sschool}/{sclass}/{syear}/{sId}")]
+        public void InsertStudentInClass(int sschool, string sclass, int syear, int sId)
+        {
+            Students s = new Students();
+            s.updateClass(sschool, sclass, syear, sId);
+        }
+
     }
 }

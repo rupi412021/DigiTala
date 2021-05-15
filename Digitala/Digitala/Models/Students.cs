@@ -80,5 +80,11 @@ namespace Digitala.Models
 
             return sList;
         }
+
+        public void updateClass(int s, string c, int y, int i)
+        {
+            DBServices dbs = new DBServices();
+            dbs.insertSinClass(s, c, y, i);
+        }
     }
 }
