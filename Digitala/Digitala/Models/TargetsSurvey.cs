@@ -53,36 +53,30 @@ namespace Digitala.Models
         public string TeacherId { get => teacherId; set => teacherId = value; }
         public DateTime CreationDate { get => creationDate; set => creationDate = value; }
 
+        //public List<TargetsSurvey> Read()
+        //{
+        //    DBServices dbs = new DBServices();
+        //    List<TargetsSurvey> tList = dbs.ReadTargetsSurvey();
+        //    return tList;
+        //}
 
+        //public void Delete()
+        //{
+        //    DBServices dbs = new DBServices();
+        //    dbs.DeleteTarget(this.TarSerial);
+        //}
 
-
-        public List<TargetsSurvey> Read()
-        {
-            DBServices dbs = new DBServices();
-            List<TargetsSurvey> tList = dbs.ReadTargetsSurvey();
-            return tList;
-        }
-
-        public List<TargetsSurvey> Delete()
-        {
-            DBServices dbs = new DBServices();
-            dbs.DeleteTarget(this.TarSerial);
-            return Read();
-        }
-
-        public List<TargetsSurvey> Insert()
+        public void Insert()
         {
             DBServices dbs = new DBServices();
             dbs.Insert(this);
-            return Read();
         }
 
-        public List<TargetsSurvey> Update()
-        {
-            DBServices dbs = new DBServices();
-            dbs.Update(this);
-            return Read();
-        }
-    
-}
+        //public void Update()
+        //{
+        //    DBServices dbs = new DBServices();
+        //    dbs.Update(this);
+        //}
+
+    }
 }

@@ -162,6 +162,7 @@
     <Compile Include="Controllers\SchoolsController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\TalasController.cs" />
+    <Compile Include="Controllers\TargetsSurveyController.cs" />
     <Compile Include="Controllers\TargetsController.cs" />
     <Compile Include="Controllers\TeachersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -176,6 +177,7 @@
     <Compile Include="Models\FuncAreas.cs" />
     <Compile Include="Models\Students.cs" />
     <Compile Include="Models\Talas.cs" />
+    <Compile Include="Models\TargetsSurvey.cs" />
     <Compile Include="Models\Targets.cs" />
     <Compile Include="Models\Teachers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

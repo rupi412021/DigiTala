@@ -106,29 +106,52 @@
             });
 
             $(document).on("click", "#finish", function () {
+                $("#SetGoal").children[0].attr("style", "color:gray");
+                $("#SetTool").children[0].attr("style", "color:gray");
 
-                for (var i = 0; i < TargetForTala.length; i++) {
-                    TargetForTala[i].Goals = [];
-                    TargetForTala[i].Tools = [];
-                    for (var j = 0; j < GoalsArr.length; j++) {
-                        if (TargetForTala[i].TarSerial == GoalsArr[j].tTarId)
-                            TargetForTala[i].Goals.push(GoalsArr[j].nGoal);
-                    }
-                    for (var j = 0; j < ToolsArr.length; j++) {
-                        if (TargetForTala[i].TarSerial == ToolsArr[j].tTarId)
-                            TargetForTala[i].Tools.push(ToolsArr[j].nTool);
+                if (GoalsArr.length == 0) {
+                    $("#SetGoal").children[0].attr("style", "color:red")
+                    swal({
+                        title: "לא נבחרו יעדים",
+                        type: "error",
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }
+                else if (ToolsArr.length == 0) {
+                    if (GoalsArr.length == 0) {
+                        $("#SetTool").children[0].attr("style", "color:red")
+                        swal({
+                            title: "לא נבחרו אמצעים",
+                            type: "error",
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
                     }
                 }
+                else {
+                    for (var i = 0; i < TargetForTala.length; i++) {
+                        TargetForTala[i].Goals = [];
+                        TargetForTala[i].Tools = [];
+                        for (var j = 0; j < GoalsArr.length; j++) {
+                            if (TargetForTala[i].TarSerial == GoalsArr[j].tTarId)
+                                TargetForTala[i].Goals.push(GoalsArr[j].nGoal);
+                        }
+                        for (var j = 0; j < ToolsArr.length; j++) {
+                            if (TargetForTala[i].TarSerial == ToolsArr[j].tTarId)
+                                TargetForTala[i].Tools.push(ToolsArr[j].nTool);
+                        }
+                    }
 
-                TalaObj = {
-                    studentChars: CharsChosen,
-                    StudentId: newID,
-                    CurrentYear: localStorage["TeacherYear"],
-                    Targets: TargetForTala
+                    TalaObj = {
+                        studentChars: CharsChosen,
+                        StudentId: newID,
+                        CurrentYear: localStorage["TeacherYear"],
+                        Targets: TargetForTala
+                    }
+
+                    ajaxCall("POST", "../api/Talas", JSON.stringify(TalaObj), getTalaSuccess, error);
                 }
-
-                ajaxCall("POST", "../api/Talas", JSON.stringify(TalaObj), getTalaSuccess, error);
-
             });
 
             $(document).on("click", "#saveTargetsToTala", function () {

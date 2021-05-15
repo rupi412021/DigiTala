@@ -10,34 +10,34 @@ namespace Digitala.Controllers
 {
     public class TargetsSurveyController : ApiController
     {
-        [HttpGet]
-        [Route("api/TargetsSurvey")]
-        public List<TargetsSurvey> Get()
-        {
-            TargetsSurvey t = new TargetsSurvey();
-            List<TargetsSurvey> tlist = t.Read();
-            return tlist;
-        }
+        //[HttpGet]
+        //[Route("api/TargetsSurvey")]
+        //public List<TargetsSurvey> Get()
+        //{
+        //    TargetsSurvey t = new TargetsSurvey();
+        //    List<TargetsSurvey> tlist = t.Read();
+        //    return tlist;
+        //}
 
-        [HttpDelete]
-        [Route("api/TargetsSurvey")]
-        public List<TargetsSurvey> Delete([FromBody]TargetsSurvey t)
-        {
-            return t.Delete();
-        }
+        //[HttpDelete]
+        //[Route("api/TargetsSurvey")]
+        //public void Delete([FromBody]TargetsSurvey t)
+        //{
+        //    t.Delete();
+        //}
 
         [HttpPost]
         [Route("api/TargetsSurvey")]
-        public List<TargetsSurvey> Post([FromBody]TargetsSurvey t)
+        public void Post([FromBody]TargetsSurvey t)
         {
-            return t.Insert();
+            t.Insert();
         }
 
-        [HttpPut]
-        [Route("api/TargetsSurvey")]
-        public List<TargetsSurvey> Put([FromBody]TargetsSurvey t)
-        {
-            return t.Update();
-        }
+        //[HttpPut]
+        //[Route("api/TargetsSurvey")]
+        //public void Put([FromBody]TargetsSurvey t)
+        //{
+        //    t.Update();
+        //}
     }
 }
