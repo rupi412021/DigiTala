@@ -17,14 +17,20 @@ function getUserSuccess(data) {
     tname = "";
 
     for (var i = 0; i < data.length; i++) {
-        if (data[i].TeacherEmail == user) {
+        if (data[i].TeacherEmail == user) { 
             isadmin = data[i].TeacherAdmin;
             tEmail = data[i].TeacherEmail;
             tname = data[i].TeacherFname;
-            ajaxCall("GET", "../api/Students/" + data[i].TeacherID + "/2021", "", getStudentSuccess, getStudentError);
-        }
+            tyear = data[i].TeacherYear;
+            tclass = data[i].TeacherClass;
 
+            ajaxCall("GET", "../api/Students/" + data[i].TeacherID + "/" + tyear , "", getStudentSuccess, getStudentError);
+        }
+        
     }
+
+    localStorage.setItem("TeacherYear", tyear);
+    localStorage.setItem("TeacherClass", tclass);
 
     str = "<div class='name' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'> שלום " + tname + " </div>" +
         "<div class='email' >" + tEmail + "</div>";

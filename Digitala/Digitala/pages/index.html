@@ -34,8 +34,8 @@
     <script>
         $(document).ready(function () {
             TeachID = localStorage["TeacherID"];
-
-            ajaxCall("GET", "../api/Students/" + TeachID +"/2021", "", getStudentsSuccess, error);
+            teacherYear = localStorage["TeacherYear"];
+            ajaxCall("GET", "../api/Students/" + TeachID + "/" + teacherYear, "", getStudentsSuccess, error);
             localStorage.removeItem("StudentName");
             localStorage.removeItem("StudentID");
 
@@ -53,6 +53,10 @@
                     }
                 }          
             });
+
+            classnamet = localStorage["TeacherClass"];
+            classInfo = "כיתה " + classnamet;
+            $("#tcname").html(classInfo);
 
             $(document).on("click", "#AllStudents", function () {
                 RenderStudentsCards(StudsentsList);               
@@ -89,7 +93,7 @@
             console.log(StudsentsData);
             talasCount = 0;
             for (var i = 0; i < StudsentsList.length; i++) {
-                ajaxCall("GET", "../api/Talas/" + StudsentsList[i].StudentId +"/2021", "", getTalaSuccess, error);
+                ajaxCall("GET", "../api/Talas/" + StudsentsList[i].StudentId + "/" + teacherYear, "", getTalaSuccess, error);
             } 
         }
 
@@ -195,7 +199,7 @@
     <section class="content" style="direction: rtl">
         <div class="container-fluid-general">
             <div class="block-header">
-                <h1>כיתה ה' 3</h1>
+                <h1 id="tcname"></h1>
             </div>
             <div class="row clearfix">
                 <div class="col-sm-8 col-xs-12" id="filetButtons" style="float:right">

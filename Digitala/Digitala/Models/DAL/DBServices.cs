@@ -1135,6 +1135,10 @@ namespace Digitala.Models.DAL
                         t.TeacherEmail = (string)dr["TEmail"];
                         t.TeacherPassword = (string)dr["TPassword"];
                         t.TeacherAdmin = (bool)dr["TIsAdmin"];
+                        t.TeacherSchoolId = Convert.ToInt32(dr["TSchool"]);
+                        t.TeacherYear = Convert.ToInt32(dr["TYear"]);
+                        t.TeacherClass = (string)dr["TClass"];
+
                     teachersList.Add(t);
                 }
                 return teachersList;

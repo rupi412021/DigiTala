@@ -42,10 +42,11 @@
             studentName = localStorage["StudentName"];
             newID = localStorage["StudentID"]
             $("#studentName").html(studentName);
+            year = localStorage["TeacherYear"]
             mode = "";
-            ajaxCall("GET", "../api/Talas/" + newID + "/2021", "", getTalaSuccess, error);
+            ajaxCall("GET", "../api/Talas/" + newID + "/" + year, "", getTalaSuccess, error);
 
-            ajaxCall("GET", "../api/Students/" + TeachID + "/2021", "", getStudentsByTeacherSuccess, error);
+            ajaxCall("GET", "../api/Students/" + TeachID + "/" + year, "", getStudentsByTeacherSuccess, error);
 
             $(document).on("click", ".UpdateStatusGoal", function () {
                 thisStatusId = this.getAttribute('id');
@@ -213,7 +214,7 @@
                 document.getElementById("collapseFour_19").setAttribute("aria-expanded", "true");
                 document.getElementById("collapseFour_19").classList.add("in");
 
-                ajaxCall("GET", "../api/Goals/" + newID + "/2021", "", getGoalsForStudentSuccess, error);
+                ajaxCall("GET", "../api/Goals/" + newID + "/" + year, "", getGoalsForStudentSuccess, error);
             }
         }
 

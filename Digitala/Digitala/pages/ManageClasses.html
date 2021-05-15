@@ -127,7 +127,7 @@
         }
 
         function AddStudentsEXCEL(jsondata) {
-            if ($("#schOpt").val() == "" || $("#classNa").val() == "" || $("#classNum").val() == "") {
+            if ($("#schOpt").val() == "" || $("#classNa").val() == "" || $("#classNum").val() == "" || $("#year").val() == ""){
                 swal("אנא מלאו את כל הפרטים", "נסה שנית", "error");
             }
             else {
@@ -175,6 +175,12 @@
                     }
 
                     ajaxCall("POST", "../api/Custodian", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
+
+                    //let school = $("#schOpt").val();
+                    //let studentClass = $("#classNa").val() + "`" + $("#classNum").val();
+                    //let year = $("#year").val()
+
+                    //ajaxCall("POST", "../api/Students", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
                 }
 
                 if (count == Jsondata.length) {
@@ -282,10 +288,20 @@
                                     </datalist>
                                 </div>
                             </div>
+                            <h4>אנא הזן שנה</h4>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">person</i>
+                                </span>
+                                <div class="col-sm-2 studentsFields">
+                                    <input type="text" class="form-control" name="username" id="year" placeholder="שנה" required>
+                                </div>
+                            </div>
+
                             <h4>להורדת טמפלייט להעלאת כיתה <a href="../File/Template.xlsx" download> הקלק </a></h4>
                             <div class="input-group">
-                             בחר קובץ <input type="file" id="excelfile" required />
-                             <input type="button" id="viewfile" value="טען כיתה" onclick="ExportToTable()" required />
+                                בחר קובץ <input type="file" id="excelfile" required />
+                                <input type="button" id="viewfile" value="טען כיתה" onclick="ExportToTable()" required />
 
                             </div>
 

@@ -16,11 +16,13 @@ namespace Digitala.Models
         string teacherPassword;
         bool teacherAdmin;
         int teacherSchoolId;
+        int teacherYear;
+        string teacherClass;
 
 
         public Teachers(){}
 
-        public Teachers(int teacherID, string teacherFname, string teacherSurName, string teacherEmail, string teacherPassword, bool teacherAdmin,  int teacherSchoolId)
+        public Teachers(int teacherID, string teacherFname, string teacherSurName, string teacherEmail, string teacherPassword, bool teacherAdmin,  int teacherSchoolId, int teacherYear, string teacherClass)
         {
             TeacherID = teacherID;
             TeacherFname = teacherFname;
@@ -29,6 +31,8 @@ namespace Digitala.Models
             TeacherPassword = teacherPassword;
             TeacherAdmin = teacherAdmin;
             TeacherSchoolId =  teacherSchoolId;
+            TeacherYear = teacherYear;
+            TeacherClass = teacherClass;
         }
 
         public int TeacherSchoolId { get => teacherSchoolId; set => teacherSchoolId = value; }
@@ -38,6 +42,8 @@ namespace Digitala.Models
         public string TeacherEmail { get => teacherEmail; set => teacherEmail = value; }
         public string TeacherPassword { get => teacherPassword; set => teacherPassword = value; }
         public bool TeacherAdmin { get => teacherAdmin; set => teacherAdmin = value; }
+        public int TeacherYear { get => teacherYear; set => teacherYear = value; }
+        public string TeacherClass { get => teacherClass; set => teacherClass = value; }
 
         public void Insert()
         {
