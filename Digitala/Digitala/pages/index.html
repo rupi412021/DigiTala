@@ -54,6 +54,10 @@
                 }          
             });
 
+            classnamet = localStorage["TeacherClass"];
+            classInfo = "כיתה " + classnamet;
+            $("#tcname").html(classInfo);
+
             $(document).on("click", "#AllStudents", function () {
                 RenderStudentsCards(StudsentsList);               
 
@@ -195,7 +199,7 @@
     <section class="content" style="direction: rtl">
         <div class="container-fluid-general">
             <div class="block-header">
-                <h1>כיתה ה' 3</h1>
+                <h1 id="tcname"></h1>
             </div>
             <div class="row clearfix">
                 <div class="col-sm-8 col-xs-12" id="filetButtons" style="float:right">
