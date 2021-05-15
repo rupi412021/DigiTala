@@ -1993,7 +1993,7 @@ namespace Digitala.Models.DAL
             StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}')", c.CEmail, c.CName, c.CPhone, c.CSID);
-            prefix = "INSERT INTO Student " + "([CEmail], [CFullName], [CPhone], [StudentId])";
+            prefix = "INSERT INTO Custodian " + "([CEmail], [CFullName], [CPhone], [StudentId])";
 
 
             command = prefix + sb.ToString();
