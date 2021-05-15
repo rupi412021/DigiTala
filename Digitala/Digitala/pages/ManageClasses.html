@@ -166,6 +166,15 @@
 
                     }
                     ajaxCall("POST", "../api/Students", JSON.stringify(NewS), postSutdentSuccess, postSutdentError);
+
+                    let NewC = {
+                        cEmail: Jsondata[i].אימייל_האופוטרופוס,
+                        cName: Jsondata[i].שם_האופוטרופוס,
+                        cPhone: Jsondata[i].פלאפון_האופוטרופוס,
+                        cSID: Jsondata[i].תעודת_זהות,
+                    }
+
+                    ajaxCall("POST", "../api/Custodian", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
                 }
 
                 if (count == Jsondata.length) {
@@ -189,6 +198,13 @@
             swal("משהו השתבש", "נסה שנית", "error");
         }
 
+        function postCustodianSuccess() {
+            swal("הקובץ הועלאה בהצלחה", "הצלחה", "success");
+        }
+
+        function postCustodianError() {
+            swal("משהו השתבש", "נסה שנית", "error");
+        }
     </script>
 </head>
 
