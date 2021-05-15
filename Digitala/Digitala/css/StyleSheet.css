@@ -269,7 +269,12 @@ span, datalist {
     width: max-content;
 }
 
-.UpdateStatusGoal{
+.contactemailicon {
+    color: #73a4a4;
+    vertical-align: bottom;
+}
+
+.UpdateStatusGoal {
     float: left;
 }
 xx {
