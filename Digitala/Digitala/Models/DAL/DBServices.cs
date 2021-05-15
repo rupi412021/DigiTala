@@ -1837,10 +1837,10 @@ namespace Digitala.Models.DAL
                     }
                 }
 
-                if(Chosen.CountMatch > (dr.FieldCount - 2)*0.25)
+                if(Chosen.CountMatch >= (dr.FieldCount - 2)*0.25)
                     Chosen.Recommendations = ReadTargetsById(Chosen);
 
-                if (tablefull == 0 || Chosen.CountMatch <= (dr.FieldCount - 2 - rt.NewStudentChars.Count) * 0.25)
+                if (tablefull == 0 || Chosen.CountMatch < (dr.FieldCount - 2 - rt.NewStudentChars.Count) * 0.25)
                 {
                     List <Targets> TargetsList = ReadTargets();
                     List<Chararcteristics> chars= ReadChararcteristics();
