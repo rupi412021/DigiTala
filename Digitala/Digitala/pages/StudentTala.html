@@ -238,6 +238,7 @@
         function NewTargetToBankForm() {
             $(document).on("change", "#areas", function () {
                 var area = $("#areas").val();
+                $("#area-error").attr("hidden", true);
                 var renderSubAreasList = "";
                 for (var i = 0; i < SubAreasList.length; i++) {
                     if (SubAreasList[i].AreaId == area)
@@ -247,23 +248,24 @@
 
             });
             
-            $(document).on("click", "#saveNewTarToBank", function () {
+            $(document).on("click", "#saveNewTarToBank", function () {               
                 var areaId = $("#areas").val();
                 var subarea = $("#subareas").val();
                 var newTarget = $("#targetToBank").val();
 
                 if (areaId == 0) {
-                    $(".newTargetModal").modal({ "backdrop": "static" });
-                    $("#areas").attr("style", "color: red");
-                }
-                else if (subarea == "") {
-                    $(".newTargetModal").modal({ "backdrop": "static" });
-                    $("#subareas").attr("style", "color: red");
+                    event.preventDefault();
+                    $("#area-error").attr("hidden", false);
                 }
                 else if (newTarget == "") {
-                    $(".newTargetModal").modal({ "backdrop": "static" });
+                    event.preventDefault();
                     $("#targetToBank").attr("style", "color: red");
                 }
+                else if (subarea == "") {
+                    event.preventDefault();
+                    $("#subareas").attr("style", "color: red");
+                }
+               
                 else {
                     ObjTemp = {
                         TarSerial: unknownTarId,
@@ -280,6 +282,7 @@
                     $("#phTarsLabels").append(tampValString);
                 }
             });
+
         }
 
         function EditDelTargets() {
@@ -903,6 +906,7 @@
                                                                     <option value="6">קוגניטיבי לימודי</option>
                                                                 </select>
                                                             </div>
+                                                            <label id="area-error" hidden="hidden" class="error" for="target">אנא בחר תחום</label>
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="form-line">
@@ -910,19 +914,20 @@
                                                                 <input id="subareas" list="subareasList" pattern="^[א-ת\s]*$" placeholder="בחר מרשימה או הקלד ערך חדש" class="form-control" required />
                                                                 <datalist id="subareasList"></datalist>
                                                             </div>
+                                                            <label id="subarea-error" hidden="hidden" class="error" for="target">אנא הזן תת-תחום</label>
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="form-line">
                                                                 <label>מטרה</label>
                                                                 <input id="targetToBank" pattern="^[א-ת\s]*$" placeholder="נסח מטרה חדשה" class="form-control" required />
                                                             </div>
+                                                            <label id="target-error" hidden="hidden" class="error" for="target">אנא נסח מטרה</label>
                                                             <div class="help-info">אותיות בעברית בלבד, ללא סימנים</div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
-                                                        <!--<input type="submit" class="btn btn-primary btn-lg" value="שמור">-->
-                                                        <button type="submit" id="saveNewTarToBank" class="btn btn-link waves-effect" data-dismiss="modal">שמור</button>
+                                                        <button type="button" id="saveNewTarToBank" class="btn btn-link waves-effect">שמור</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1002,14 +1007,17 @@
             </div>
             <!-- #Menu -->
             <!-- Footer -->
-            <!--<div class="legal" dir="ltr">
-                <div class="copyright">
-                    &copy; 2016 - 2017 <a href="javascript:void(0);">AdminBSB - Material Design</a>
+            <div class="legal">
+                <div>
+                    <i class='material-icons contactemailicon'>email</i>
+                    <a href="mailto:itamar.ashey@jer-art-school.org.il">איתמר אשי</a><br>
                 </div>
-                <div class="version">
-                    <b>Version: </b> 1.0.5
+                <div>
+                    <i class='material-icons contactemailicon'>email</i>
+                    <a href="mailto:ronny.ya@gmail.com">רוני יעיש</a><br>
                 </div>
-            </div>-->
+
+            </div>
             <!-- #Footer -->
         </aside>
         <!-- #END# Left Sidebar -->
