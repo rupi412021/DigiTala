@@ -1101,11 +1101,58 @@ namespace Digitala.Models.DAL
                 }
             }
         }
-
+     
         private String BuildUpdateCommand(string tPass, string tMail)
         {
             String command;
             command = "UPDATE Teachers SET TPassword = '" + tPass +"' WHERE TEmail = '" + tMail + "'";
+            return command;
+        }
+
+        public int updateTinfo(int tS, string tC, int tY, string tE)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildUpdateCommand(tS, tC, tY, tE);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("לא ניתן לעדכן כיתה", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+        }
+
+        private String BuildUpdateCommand(int tS, string tC, int tY, string tE)
+        {
+            String command;
+            command = "UPDATE Teachers SET TSchool = '" + tS + "', TYear ='" +tY + "', TClass ='" + tC +  "' WHERE TEmail = '" + tE + "'";
             return command;
         }
 

@@ -28,6 +28,13 @@ namespace Digitala.Controllers
             t.setTpass(passWord, email);
         }
 
+        [HttpPut]
+        [Route("api/Teachers/{tschool}/{tclass}/{tyear}/{temail}")]
+        public void ChangeClassInfo(int tschool, string tclass, int tyear, string temail)
+        {
+            Teachers t = new Teachers();
+            t.updateClass(tschool, tclass, tyear, temail); ;
+        }
         public void Post([FromBody] Teachers t)
         {
             t.Insert();

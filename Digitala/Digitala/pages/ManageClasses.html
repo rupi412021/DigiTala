@@ -176,11 +176,12 @@
 
                     ajaxCall("POST", "../api/Custodian", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
 
-                    //let school = $("#schOpt").val();
-                    //let studentClass = $("#classNa").val() + "`" + $("#classNum").val();
-                    //let year = $("#year").val()
+                    let school = $("#schOpt").val();
+                    let cclass = $("#classNa").val() + "`" + $("#classNum").val();
+                    let year = $("#year").val()
+                    let temail = localStorage["UserName"];
 
-                    //ajaxCall("POST", "../api/Students", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
+                    ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail, "", putTeacherInfoSuccess, putTeacherInfoError);
                 }
 
                 if (count == Jsondata.length) {
@@ -191,7 +192,15 @@
             }
 
         }
+        function putTeacherInfoSuccess() {
+            console.log("Teacher info updated")
 
+        }
+
+        function putTeacherInfoError() {
+            console.log("Teacher info was not updated")
+
+        }
         function getStudentsError() {
             swal("משהו השתבש", "נסה שנית", "error");
         }

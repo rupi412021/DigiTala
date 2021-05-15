@@ -83,5 +83,10 @@ namespace Digitala.Models
             return res.ToString();
         }
 
+        public void updateClass(int s, string c, int y, string e)
+        {
+            DBServices dbs = new DBServices();
+            dbs.updateTinfo(s,c,y,e);
+        }
     }
 }
