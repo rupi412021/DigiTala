@@ -247,7 +247,26 @@
                 $("#subareasList").html(renderSubAreasList);
 
             });
-            
+            $(document).on("change", "#subareas", function () {
+                $("#subarea-error").attr("hidden", true);
+            });
+
+            $(document).on("change", "#targetToBank", function () {
+                $("#target-error").attr("hidden", true);
+            });
+
+            $(document).on("click", "#addNewTar", function () {
+                $("#area-error").attr("hidden", true);
+                $("#target-error").attr("hidden", true);
+                $("#subarea-error").attr("hidden", true);
+            });
+
+            $(document).on("click", "#closeNewTarModal", function () {
+                $("#areas").val(0);
+                $("#subareas").val("");
+                $("#targetToBank").val("");
+            });
+
             $(document).on("click", "#saveNewTarToBank", function () {               
                 var areaId = $("#areas").val();
                 var subarea = $("#subareas").val();
@@ -257,15 +276,14 @@
                     event.preventDefault();
                     $("#area-error").attr("hidden", false);
                 }
-                else if (newTarget == "") {
-                    event.preventDefault();
-                    $("#targetToBank").attr("style", "color: red");
-                }
                 else if (subarea == "") {
                     event.preventDefault();
-                    $("#subareas").attr("style", "color: red");
+                    $("#subarea-error").attr("hidden", false);
                 }
-               
+                else if (newTarget == "") {
+                    event.preventDefault();
+                    $("#target-error").attr("hidden", false);
+                }
                 else {
                     ObjTemp = {
                         TarSerial: unknownTarId,
@@ -896,7 +914,7 @@
                                                         <div class="form-group">
                                                             <div class="form-line">
                                                                 <label>תחום תפקוד</label>
-                                                                <select id="areas" class="form-control" required>
+                                                                <select id="areas" class="form-control">
                                                                     <option value="0">בחר תחום מרשימה</option>
                                                                     <option value="1">סנסומוטורי</option>
                                                                     <option value="2">כישורי חיים</option>
@@ -906,27 +924,27 @@
                                                                     <option value="6">קוגניטיבי לימודי</option>
                                                                 </select>
                                                             </div>
-                                                            <label id="area-error" hidden="hidden" class="error" for="target">אנא בחר תחום</label>
+                                                            <label id="area-error" hidden="hidden">אנא בחר תחום תפקוד</label>
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="form-line">
                                                                 <label>תת-תחום</label>
-                                                                <input id="subareas" list="subareasList" pattern="^[א-ת\s]*$" placeholder="בחר מרשימה או הקלד ערך חדש" class="form-control" required />
+                                                                <input id="subareas" list="subareasList" pattern="^[א-ת\s]*$" placeholder="בחר מרשימה או הקלד ערך חדש" class="form-control" />
                                                                 <datalist id="subareasList"></datalist>
                                                             </div>
-                                                            <label id="subarea-error" hidden="hidden" class="error" for="target">אנא הזן תת-תחום</label>
+                                                            <label id="subarea-error" hidden="hidden">אנא הזן תת-תחום</label>
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="form-line">
                                                                 <label>מטרה</label>
-                                                                <input id="targetToBank" pattern="^[א-ת\s]*$" placeholder="נסח מטרה חדשה" class="form-control" required />
+                                                                <input id="targetToBank" pattern="^[א-ת\s]*$" placeholder="נסח מטרה חדשה" class="form-control" />
                                                             </div>
-                                                            <label id="target-error" hidden="hidden" class="error" for="target">אנא נסח מטרה </label>
+                                                            <label id="target-error" hidden="hidden">אנא נסח מטרה </label>
                                                             <div class="help-info">אותיות בעברית בלבד, ללא סימנים</div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
+                                                        <button type="button" id="closeNewTarModal" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
                                                         <button type="button" id="saveNewTarToBank" class="btn btn-link waves-effect">שמור</button>
                                                     </div>
                                                 </div>
