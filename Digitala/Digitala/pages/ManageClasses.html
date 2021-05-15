@@ -182,6 +182,9 @@
                     let temail = localStorage["UserName"];
 
                     ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail, "", putTeacherInfoSuccess, putTeacherInfoError);
+
+                    ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + Jsondata[i].תעודת_זהות, "", postStudentClassSuccess, postStudentClassError);
+
                 }
 
                 if (count == Jsondata.length) {
@@ -213,12 +216,20 @@
             swal("משהו השתבש", "נסה שנית", "error");
         }
 
+        function postStudentClassSuccess() {
+            swal("תלמיד הוכנס לכיתה", "הצלחה", "success");
+        }
+
+        function postStudentClassError() {
+            swal("לא ניתן להכניס תלמיד לכיתה משהו השתבש", "נסה שנית", "error");
+        }
+
         function postCustodianSuccess() {
-            swal("הקובץ הועלאה בהצלחה", "הצלחה", "success");
+            console.log("אופוטרופוס הוזן")
         }
 
         function postCustodianError() {
-            swal("משהו השתבש", "נסה שנית", "error");
+            console.log("אופוטרופוס לא הוזן")
         }
     </script>
 </head>
