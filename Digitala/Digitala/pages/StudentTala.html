@@ -79,7 +79,7 @@
                     else {
                         let newStudentChars = {
                             NewStudentId: newID,
-                            CurrentYear: 2021,
+                            CurrentYear: localStorage["TeacherYear"],
                             NewStudentChars: CharsChosen,
                         }
 
@@ -122,7 +122,7 @@
                 TalaObj = {
                     studentChars: CharsChosen,
                     StudentId: newID,
-                    CurrentYear: 2021,
+                    CurrentYear: localStorage["TeacherYear"],
                     Targets: TargetForTala
                 }
 
@@ -135,8 +135,8 @@
             });
 
             NewTargetToBankForm();
-
-            ajaxCall("GET", "../api/Talas/" + newID + "/2021", "", getTalaSuccess, error);
+            year = localStorage["TeacherYear"];
+            ajaxCall("GET", "../api/Talas/" + newID + "/" + year, "", getTalaSuccess, error);
             window.setTimeout(toggleMenu, 1000);
             
         });

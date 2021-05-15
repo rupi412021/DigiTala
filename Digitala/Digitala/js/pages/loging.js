@@ -17,7 +17,7 @@ function getUserSuccess(data) {
     tname = "";
 
     for (var i = 0; i < data.length; i++) {
-        if (data[i].TeacherEmail == user) {
+        if (data[i].TeacherEmail == user) { 
             isadmin = data[i].TeacherAdmin;
             tEmail = data[i].TeacherEmail;
             tname = data[i].TeacherFname;
