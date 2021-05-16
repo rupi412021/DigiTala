@@ -36,6 +36,8 @@
             TeachID = localStorage["TeacherID"];
             teacherYear = localStorage["TeacherYear"];
             ajaxCall("GET", "../api/Students/" + TeachID + "/" + teacherYear, "", getStudentsSuccess, error);
+            ajaxCall("GET", "../api/TargetsSurvey/" + TeachID, "", getSSurveySuccess, error);
+
             localStorage.removeItem("StudentName");
             localStorage.removeItem("StudentID");
 
@@ -157,6 +159,11 @@
 
             $("#studentsCardsRight").html(studentsStrRight);
             $("#studentsCardsLeft").html(studentsStrLeft);
+        }
+
+        function getSSurveySuccess(Survey) {
+            surveyTargetsList = Survey;
+
         }
 
         function error(err) {
