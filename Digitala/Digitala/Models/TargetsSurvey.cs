@@ -53,12 +53,12 @@ namespace Digitala.Models
         public string TeacherId { get => teacherId; set => teacherId = value; }
         public DateTime CreationDate { get => creationDate; set => creationDate = value; }
 
-        //public List<TargetsSurvey> Read()
-        //{
-        //    DBServices dbs = new DBServices();
-        //    List<TargetsSurvey> tList = dbs.ReadTargetsSurvey();
-        //    return tList;
-        //}
+        public List<TargetsSurvey> Read(string teacherId)
+        {
+            DBServices dbs = new DBServices();
+            List<TargetsSurvey> tList = dbs.ReadTargetsSurvey(teacherId);
+            return tList;
+        }
 
         //public void Delete()
         //{

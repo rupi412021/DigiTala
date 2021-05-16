@@ -10,14 +10,14 @@ namespace Digitala.Controllers
 {
     public class TargetsSurveyController : ApiController
     {
-        //[HttpGet]
-        //[Route("api/TargetsSurvey")]
-        //public List<TargetsSurvey> Get()
-        //{
-        //    TargetsSurvey t = new TargetsSurvey();
-        //    List<TargetsSurvey> tlist = t.Read();
-        //    return tlist;
-        //}
+        [HttpGet]
+        [Route("api/TargetsSurvey/{teacherId}")]
+        public List<TargetsSurvey> Get(string teacherId)
+        {
+            TargetsSurvey t = new TargetsSurvey();
+            List<TargetsSurvey> tlist = t.Read(teacherId);
+            return tlist;
+        }
 
         //[HttpDelete]
         //[Route("api/TargetsSurvey")]

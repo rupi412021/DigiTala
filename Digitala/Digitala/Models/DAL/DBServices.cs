@@ -95,6 +95,62 @@ namespace Digitala.Models.DAL
 
         }
 
+        public List<TargetsSurvey> ReadTargetsSurvey(string teacherId)
+        {
+
+            SqlConnection con = null;
+            List<TargetsSurvey> targetList = new List<TargetsSurvey>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "Select T.*, FA.FunctionArea, SFA.SubFunctionArea from TargetsSurvey T" +
+                                    " inner join FunctionAreas FA on T.FASerial = FA.FASerial inner join SubFunctionAreas Where TeacherId = "+ teacherId + "and Suitability=0 and Originality=0";
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    TargetsSurvey t = new TargetsSurvey();
+
+                    t.TarSerial = Convert.ToInt32(dr["Serial"]);
+                    t.TarId = Convert.ToInt32(dr["TargetId"]);
+                    t.FaSerial = Convert.ToInt32(dr["FASerial"]);
+                    t.SfaSerial = Convert.ToInt32(dr["SFASerial"]);
+                    t.Target = (string)(dr["TargetText"]);
+                    t.Suitability = Convert.ToDouble(dr["Suitability"]);
+                    t.Originality = Convert.ToDouble(dr["Originality"]);
+                    t.NumOfUses = Convert.ToInt32(dr["NumOfUses"]);
+                    t.FunctionArea = (string)(dr["FunctionArea"]);
+                    t.SubFunctionArea = (string)(dr["SubFunctionArea"]);
+                    t.TeacherId = (string)(dr["TeacherId"]);
+                    t.CreationDate = Convert.ToDateTime(dr["CreationDate"]);
+
+                    targetList.Add(t);
+                }
+
+                return targetList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Targets from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
         public int DeleteTarget(int id)
         {
 
@@ -556,6 +612,7 @@ namespace Digitala.Models.DAL
 
             return command;
         }
+
         public int Insert(TargetsSurvey TS)
         {
 
