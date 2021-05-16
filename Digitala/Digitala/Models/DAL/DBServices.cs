@@ -106,7 +106,7 @@ namespace Digitala.Models.DAL
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
                 String selectSTR = "Select T.*, FA.FunctionArea, SFA.SubFunctionArea from TargetsSurvey T" +
-                                    " inner join FunctionAreas FA on T.FASerial = FA.FASerial inner join SubFunctionAreas Where TeacherId = "+ teacherId + "and Suitability=0 and Originality=0";
+                                    " inner join FunctionAreas FA on T.FASerial = FA.FASerial inner join SubFunctionAreas SFA on T.SFASerial = SFA.SFASerial WHERE TeacherId = " + teacherId + "and Suitability=0 and Originality=0";
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -138,7 +138,7 @@ namespace Digitala.Models.DAL
             catch (Exception ex)
             {
                 // write to log
-                throw new Exception("Could not GET Targets from DB", ex);
+                throw new Exception("Could not GET Survey Targets from DB", ex);
             }
             finally
             {

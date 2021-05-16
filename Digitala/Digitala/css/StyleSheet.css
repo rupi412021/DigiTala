@@ -214,6 +214,17 @@ span, datalist {
     margin-bottom: 25px;
 }
 
+.surveyModal#smallModal {
+    text-align: center;
+    background-color: rgb(0 0 0 / 0%);
+}
+    .surveyModal#smallModal > .modal-sm > .modal-content {
+        border: solid #73A4A4 2px;
+    }
+
+#survey_area, #survey_subarea, #survey_target {
+    text-align: right;
+}
 .surveys {
     border-radius: 10px;
     background-color: #73A4A4;

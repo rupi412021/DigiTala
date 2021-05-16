@@ -36,7 +36,7 @@
             TeachID = localStorage["TeacherID"];
             teacherYear = localStorage["TeacherYear"];
             ajaxCall("GET", "../api/Students/" + TeachID + "/" + teacherYear, "", getStudentsSuccess, error);
-            ajaxCall("GET", "../api/TargetsSurvey/" + TeachID, "", getSSurveySuccess, error);
+            ajaxCall("GET", "../api/TargetsSurvey/" + TeachID, "", getSurveySuccess, error);
 
             localStorage.removeItem("StudentName");
             localStorage.removeItem("StudentID");
@@ -86,6 +86,26 @@
                     $("#AllStudents").addClass("bg-blue-grey");
                 }
                 RenderStudentsCards(NoTalaStudents);
+            });
+
+            $(document).on("click", ".extandSurvey", function () {
+                tarid = this.getAttribute("id");
+                for (var i = 0; i < surveyTargetsList.length; i++) {
+                    if (tarid == "surTar" + surveyTargetsList[i].TarSerial) {
+                        $("#survey_area").html("<label>תחום תפקוד:</label><p>  " + surveyTargetsList[i].FunctionArea+"</p>");
+                        $("#survey_subarea").html("<label>תת-תחום:</label><p>  " + surveyTargetsList[i].SubFunctionArea + "</p>");
+                        $("#survey_target").html("<label>מטרה:</label><p>  " + surveyTargetsList[i].Target + "</p>");
+                    }
+                }
+
+                    //<div id="survey_suitability">
+
+                    //</div>
+
+                    //<div id="survey_originality">
+
+                    //</div>
+                
             });
             
         });
@@ -161,13 +181,21 @@
             $("#studentsCardsLeft").html(studentsStrLeft);
         }
 
-        function getSSurveySuccess(Survey) {
+        function getSurveySuccess(Survey) {
             surveyTargetsList = Survey;
-
+            console.log(Survey);
+            renderTargets = "";
+            for (var i = 0; i < surveyTargetsList.length; i++) {
+                renderTargets += '<div class="card">';
+                renderTargets += '<button type="button" class="extandSurvey btn-trans" id=surTar' + surveyTargetsList[i].TarSerial+' data-toggle="modal" data-allow-outside-click="false" data-target="#smallModal">';
+                renderTargets += '<i class="material-icons">more_horiz</i></button>';
+                renderTargets += '<p>' + surveyTargetsList[i].Target+'</p></div>';
+            }
+            $("#surveyTargets").html(renderTargets);
         }
 
         function error(err) {
-            alert("Error: " + err);
+            console.log("ERROR");
         }
     </script>
 </head>
@@ -224,22 +252,45 @@
                         <div class="header">
                             <h2>מטרות חדשות לדירוג</h2>
                         </div>
-                        <div class="body">
-                            <div class="card">
-                                <i class="material-icons">more_horiz</i>
-                                <p>לימוד ותרגול טכניקות להרגעה עצמית באמצעות נשימות, אמירות מרגיעות</p>
+                        <div class="body" id="surveyTargets">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade in surveyModal" id="smallModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 id="smallModalLabel">דרג מטרה חדשה</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <div id="survey_area">
+                                    
+                                </div>
+                                <div id="survey_subarea">
+                                   
+                                </div>
+                                <div id="survey_target">
+                                    
+                                </div>
+                                <div>
+                                    <label><b>דרג את מידת ההתאמה של המטרה לתחום ולתת-תחום</b></label>
+                                </div>
+                                <div id="survey_suitability">
+
+                                </div>
+                                <div>
+                                    <label><b>דרג את מקוריות המטרה</b></label>
+                                </div>
+                                <div id="survey_originality">
+
+                                </div>
                             </div>
-                            <div class="card">
-                                <i class="material-icons">more_horiz</i>
-                                <p>שיפור שיתוף פעולה תנועתי בפעולות יומיום כמו להושיט יד בזמן לבישת סוודר</p>
-                            </div>
-                            <div class="card">
-                                <i class="material-icons">more_horiz</i>
-                                <p>זיהוי המשתנים המשפיעים על אינטראקציה חברתית: זמן, מקום, משתתפים וכו</p>
-                            </div>
-                            <div class="card">
-                                <i class="material-icons">more_horiz</i>
-                                <p>זיהוי מחשבות אוטומטיות: זיהוי המחשבה, תיאור המחשבה ושליטה בה</p>
+                            <div class="modal-footer">
+                                <button type="button" id="closeSurveyModal" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
+                                <button type="button" id="saveSurvey" class="btn btn-link waves-effect">שמור דירוג</button>
                             </div>
                         </div>
                     </div>
