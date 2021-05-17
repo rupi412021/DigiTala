@@ -267,32 +267,60 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <table>
-                                    <tr id="survey_area">
-                                       
-                                    </tr>
-                                    <tr id="survey_subarea">
-                                       
-                                    </tr>
-                                    <tr id="survey_target">
-                                        
-                                    </tr>
+                                    <tr id="survey_area"></tr>                                                                 
+                                    <tr id="survey_subarea"></tr>
+                                    <tr id="survey_target"></tr>
                                 </table>
-                                <div>
-                                    <label><b>דרג את מידת ההתאמה של המטרה לתחום ולתת-תחום</b></label>
-                                </div>
                                 <div id="survey_suitability">
-
-                                </div>
-                                <div>
-                                    <label><b>דרג את מקוריות המטרה</b></label>
+                                    <table class="surveytables">
+                                        <tr>
+                                            <td colspan="5">
+                                                <label>דרג את מידת ההתאמה של המטרה לתחום ולתת-תחום</label>
+                                            </td>
+                                        </tr>
+                                        <tr class="surBTN">
+                                            <td><button type="button" class="survey_suitability btn-trans" id="surFive"><img src="../images/five.png" /></button></td>
+                                            <td><button type="button" class="survey_suitability btn-trans" id="surFour"><img src="../images/four.png" /></button></td>
+                                            <td><button type="button" class="survey_suitability btn-trans" id="surThree"><img src="../images/three.png" /></button></td>
+                                            <td><button type="button" class="survey_suitability btn-trans" id="surTwo"><img src="../images/two.png" /></button></td>
+                                            <td><button type="button" class="survey_suitability btn-trans" id="surOne"><img src="../images/one.png" /></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>מתאים מאוד</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>כלל לא</td>
+                                        </tr>
+                                    </table>
                                 </div>
                                 <div id="survey_originality">
-
+                                    <table class="surveytables">
+                                        <tr>
+                                            <td colspan="5">
+                                                <label>דרג את מקוריות המטרה</label>
+                                            </td>
+                                        </tr>
+                                        <tr class="surBTN">
+                                            <td><button type="button" class="survey_originality btn-trans" id="surFive"><img src="../images/five.png" /></button></td>
+                                            <td><button type="button" class="survey_originality btn-trans" id="surFour"><img src="../images/four.png" /></button></td>
+                                            <td><button type="button" class="survey_originality btn-trans" id="surThree"><img src="../images/three.png" /></button></td>
+                                            <td><button type="button" class="survey_originality btn-trans" id="surTwo"><img src="../images/two.png" /></button></td>
+                                            <td><button type="button" class="survey_originality btn-trans" id="surOne"><img src="../images/one.png" /></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>מקורית מאוד</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>כלל לא</td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" id="closeSurveyModal" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
-                                <button type="button" id="saveSurvey" class="btn btn-link waves-effect">שמור דירוג</button>
+                                <button type="button" id="saveSurvey" class="btn btn-link waves-effect" data-dismiss="modal">שמור דירוג</button>
                             </div>
                         </div>
                     </div>

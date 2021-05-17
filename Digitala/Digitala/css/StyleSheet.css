@@ -213,7 +213,10 @@ span, datalist {
     border-radius: 10px;
     margin-bottom: 25px;
 }
-
+.surveytables {
+    width: 100%;
+    margin-top: 20px;
+}
 .surveyModal#smallModal {
     text-align: center;
     background-color: rgb(0 0 0 / 0%);
@@ -227,6 +230,14 @@ span, datalist {
     #survey_area, #survey_subarea, #survey_target {
         text-align: right;
     }
+
+.surveyModal#smallModal > .modal-dialog{
+    width: 400px;
+}
+.surBTN>td{
+    width: 20%;
+}
+
 .surveys {
     border-radius: 10px;
     background-color: #73A4A4;
