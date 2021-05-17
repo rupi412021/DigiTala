@@ -35,6 +35,9 @@
         $(document).ready(function () {
             TeachID = localStorage["TeacherID"];
             teacherYear = localStorage["TeacherYear"];
+
+            surDict = { "surOne": "one", "surTwo": "two", "surThree": "three", "surFour": "four", "surFive": "five" };
+
             ajaxCall("GET", "../api/Students/" + TeachID + "/" + teacherYear, "", getStudentsSuccess, error);
             ajaxCall("GET", "../api/TargetsSurvey/" + TeachID, "", getSurveySuccess, error);
 
@@ -88,27 +91,38 @@
                 RenderStudentsCards(NoTalaStudents);
             });
 
+            SurveyFunctions();
+            
+            
+        });
+
+        function SurveyFunctions() {
+
             $(document).on("click", ".extandSurvey", function () {
                 tarid = this.getAttribute("id");
                 for (var i = 0; i < surveyTargetsList.length; i++) {
                     if (tarid == "surTar" + surveyTargetsList[i].TarSerial) {
-                        $("#survey_area").html("<td><label>תחום:</label></td><td><p>" + surveyTargetsList[i].FunctionArea+"</p></td>");
+                        $("#survey_area").html("<td><label>תחום:</label></td><td><p>" + surveyTargetsList[i].FunctionArea + "</p></td>");
                         $("#survey_subarea").html("<td><label>תת-תחום:</label></td><td><p>" + surveyTargetsList[i].SubFunctionArea + "</p></td>");
                         $("#survey_target").html("<td><label>מטרה:</label</td><td><p>" + surveyTargetsList[i].Target + "</p></td>");
                     }
                 }
-
-                    //<div id="survey_suitability">
-
-                    //</div>
-
-                    //<div id="survey_originality">
-
-                    //</div>
-                
             });
-            
-        });
+
+            $(document).on("click", ".survey_suitability", function () {
+
+                suitID = this.getAttribute("id");
+                for (var i = 0; i < surDict.length; i++) {
+                    $("#" + suitID).html('<img src="../images/'+ surDict[i] + '.png" />');                   
+                }
+                $("#" + suitID).html('<img src="../images/' + surDict[suitID] + '_chosen.png" />');
+                    
+            });
+
+            $(document).on("click", ".survey_originality ", function () {
+                originalID = this.getAttribute("id");
+            });
+        }
 
         function getStudentsSuccess(StudsentsData) {
             StudsentsList = StudsentsData;
