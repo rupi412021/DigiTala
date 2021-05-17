@@ -613,6 +613,56 @@ namespace Digitala.Models.DAL
             return command;
         }
 
+        public int Update(TargetsSurvey ST)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildUpdateCommand(ST);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("דירוג סקר לא התעדכן", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildUpdateCommand(TargetsSurvey ST)
+        {
+            String command;
+            command = "UPDATE TargetsSurvey SET [Originality] = " + ST.Originality + ", [Suitability] = " + ST.Suitability + " WHERE Serial = " + ST.TarSerial;
+            return command;
+        }
+
+
         public int Insert(TargetsSurvey TS)
         {
 
@@ -2311,6 +2361,8 @@ namespace Digitala.Models.DAL
             return command;
 
         }
+
+
 
     }
    

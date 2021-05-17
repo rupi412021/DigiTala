@@ -36,7 +36,7 @@
             TeachID = localStorage["TeacherID"];
             teacherYear = localStorage["TeacherYear"];
 
-            surDict = { "surOne": "one", "surTwo": "two", "surThree": "three", "surFour": "four", "surFive": "five" };
+            surDuct = { 1: "one", 2: "two", 3: "three", 4: "four", 5: "five" };
 
             ajaxCall("GET", "../api/Students/" + TeachID + "/" + teacherYear, "", getStudentsSuccess, error);
             ajaxCall("GET", "../api/TargetsSurvey/" + TeachID, "", getSurveySuccess, error);
@@ -110,17 +110,52 @@
             });
 
             $(document).on("click", ".survey_suitability", function () {
+                suitID = this.getAttribute("id");                
+                $("#surSone").html('<img src="../images/one.png" />');
+                $("#surStwo").html('<img src="../images/two.png" />');
+                $("#surSthree").html('<img src="../images/three.png" />');
+                $("#surSfour").html('<img src="../images/four.png" />');
+                $("#surSfive").html('<img src="../images/five.png" />');
 
-                suitID = this.getAttribute("id");
-                for (var i = 0; i < surDict.length; i++) {
-                    $("#" + suitID).html('<img src="../images/'+ surDict[i] + '.png" />');                   
+                for (var i = 0; i < 5; i++) {
+                    if (suitID == "surS" + surDuct[i + 1]) {
+                        $("#" + suitID).html('<img src="../images/' + surDuct[i + 1] + '_chosen.png" />');
+                        for (var j = 0; j < surveyTargetsList.length; j++) {
+                            if (tarid == "surTar" + surveyTargetsList[j].TarSerial) {
+                                surveyTargetsList[j].Suitability = i + 1;
+                            }
+                        }
+                    }
                 }
-                $("#" + suitID).html('<img src="../images/' + surDict[suitID] + '_chosen.png" />');
-                    
             });
 
-            $(document).on("click", ".survey_originality ", function () {
+            $(document).on("click", ".survey_originality", function () {
                 originalID = this.getAttribute("id");
+                $("#surOone").html('<img src="../images/one.png" />');
+                $("#surOtwo").html('<img src="../images/two.png" />');
+                $("#surOthree").html('<img src="../images/three.png" />');
+                $("#surOfour").html('<img src="../images/four.png" />');
+                $("#surOfive").html('<img src="../images/five.png" />');
+
+                for (var i = 0; i < 5; i++) {
+                    if (originalID == "surO" + surDuct[i + 1]) {
+                        $("#" + originalID).html('<img src="../images/' + surDuct[i + 1] + '_chosen.png" />');
+                        for (var j = 0; j < surveyTargetsList.length; j++) {
+                            if (tarid == "surTar" + surveyTargetsList[j].TarSerial) {
+                                surveyTargetsList[j].Originality = i + 1;
+                            }
+                        }
+                    }
+                }               
+            });
+
+            
+            $(document).on("click", "#saveSurvey", function () {
+                for (var i = 0; i < surveyTargetsList.length; i++) {
+                    if (tarid == "surTar" + surveyTargetsList[i].TarSerial) {
+                        ajaxCall("PUT", "../api/TargetsSurvey", JSON.stringify(surveyTargetsList[i]), putTargetsSurveySuccess, error);
+                    }
+                }            
             });
         }
 
@@ -205,7 +240,17 @@
                 renderTargets += '<i class="material-icons">more_horiz</i></button>';
                 renderTargets += '<p>' + surveyTargetsList[i].Target+'</p></div>';
             }
+            
             $("#surveyTargets").html(renderTargets);
+        }
+
+        function putTargetsSurveySuccess(Survey) {
+            if (Survey != null)
+                getSurveySuccess(Survey);
+            else {
+                Survey = [];
+                getSurveySuccess(Survey);
+            }
         }
 
         function error(err) {
@@ -293,11 +338,11 @@
                                             </td>
                                         </tr>
                                         <tr class="surBTN">
-                                            <td><button type="button" class="survey_suitability btn-trans" id="surFive"><img src="../images/five.png" /></button></td>
-                                            <td><button type="button" class="survey_suitability btn-trans" id="surFour"><img src="../images/four.png" /></button></td>
-                                            <td><button type="button" class="survey_suitability btn-trans" id="surThree"><img src="../images/three.png" /></button></td>
-                                            <td><button type="button" class="survey_suitability btn-trans" id="surTwo"><img src="../images/two.png" /></button></td>
-                                            <td><button type="button" class="survey_suitability btn-trans" id="surOne"><img src="../images/one.png" /></button></td>
+                                            <td><button type="button" class="survey_suitability btn-trans" id="surSfive"><img src="../images/five.png" /></button></td>
+                                            <td><button type="button" class="survey_suitability btn-trans" id="surSfour"><img src="../images/four.png" /></button></td>
+                                            <td><button type="button" class="survey_suitability btn-trans" id="surSthree"><img src="../images/three.png" /></button></td>
+                                            <td><button type="button" class="survey_suitability btn-trans" id="surStwo"><img src="../images/two.png" /></button></td>
+                                            <td><button type="button" class="survey_suitability btn-trans" id="surSone"><img src="../images/one.png" /></button></td>
                                         </tr>
                                         <tr>
                                             <td>מתאים מאוד</td>
@@ -316,11 +361,11 @@
                                             </td>
                                         </tr>
                                         <tr class="surBTN">
-                                            <td><button type="button" class="survey_originality btn-trans" id="surFive"><img src="../images/five.png" /></button></td>
-                                            <td><button type="button" class="survey_originality btn-trans" id="surFour"><img src="../images/four.png" /></button></td>
-                                            <td><button type="button" class="survey_originality btn-trans" id="surThree"><img src="../images/three.png" /></button></td>
-                                            <td><button type="button" class="survey_originality btn-trans" id="surTwo"><img src="../images/two.png" /></button></td>
-                                            <td><button type="button" class="survey_originality btn-trans" id="surOne"><img src="../images/one.png" /></button></td>
+                                            <td><button type="button" class="survey_originality btn-trans" id="surOfive"><img src="../images/five.png" /></button></td>
+                                            <td><button type="button" class="survey_originality btn-trans" id="surOfour"><img src="../images/four.png" /></button></td>
+                                            <td><button type="button" class="survey_originality btn-trans" id="surOthree"><img src="../images/three.png" /></button></td>
+                                            <td><button type="button" class="survey_originality btn-trans" id="surOtwo"><img src="../images/two.png" /></button></td>
+                                            <td><button type="button" class="survey_originality btn-trans" id="surOone"><img src="../images/one.png" /></button></td>
                                         </tr>
                                         <tr>
                                             <td>מקורית מאוד</td>

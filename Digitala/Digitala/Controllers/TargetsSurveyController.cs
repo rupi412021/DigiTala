@@ -33,11 +33,11 @@ namespace Digitala.Controllers
             t.Insert();
         }
 
-        //[HttpPut]
-        //[Route("api/TargetsSurvey")]
-        //public void Put([FromBody]TargetsSurvey t)
-        //{
-        //    t.Update();
-        //}
+        [HttpPut]
+        [Route("api/TargetsSurvey")]
+        public void Put([FromBody]TargetsSurvey t)
+        {
+            t.Update();
+        }
     }
 }

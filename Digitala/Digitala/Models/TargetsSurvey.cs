@@ -72,11 +72,12 @@ namespace Digitala.Models
             dbs.Insert(this);
         }
 
-        //public void Update()
-        //{
-        //    DBServices dbs = new DBServices();
-        //    dbs.Update(this);
-        //}
+        public List<TargetsSurvey> Update()
+        {
+            DBServices dbs = new DBServices();
+            dbs.Update(this);
+            return Read(TeacherId);
+        }
 
     }
 }
