@@ -174,7 +174,6 @@
                         Dis2nd: Jsondata[i].לקות_משנית,
 
                     }
-                    
 
                     NewC = {
                         cEmail: Jsondata[i].אימייל_האופוטרופוס,
@@ -183,16 +182,26 @@
                         cSID: Jsondata[i].תעודת_זהות,
                     }
 
-                   
 
+                    ajaxCall("POST", "../api/Students", JSON.stringify(NewS), postSutdentSuccess, postSutdentError);           
+                    ajaxCall("POST", "../api/Custodian", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
                     let school = $("#schOpt").val();
                     let cclass = $("#classNa").val() + "`" + $("#classNum").val();
                     let year = $("#year").val()
                     let temail = localStorage["UserName"];
 
 
-                    ajaxCall("POST", "../api/Students", JSON.stringify(NewS), postSutdentSuccess, postSutdentError);
-                    ajaxCall("POST", "../api/Custodian", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
+                    ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail, "", putTeacherInfoSuccess, putTeacherInfoError);
+                    ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + Jsondata[i].תעודת_זהות, "", postStudentClassSuccess, postStudentClassError);
+                }
+                else {
+                   
+                    let school = $("#schOpt").val();
+                    let cclass = $("#classNa").val() + "`" + $("#classNum").val();
+                    let year = $("#year").val()
+                    let temail = localStorage["UserName"];
+
+                    
                     ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail, "", putTeacherInfoSuccess, putTeacherInfoError);
                     ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + Jsondata[i].תעודת_זהות, "", postStudentClassSuccess, postStudentClassError);
                 }

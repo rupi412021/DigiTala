@@ -51,10 +51,12 @@ span.input-group-addon {
     border-color: #96C4DA;
 }
 
-.EditStudentProfile, .CancelEditsStudentProfile {
+.EditStudentProfile, .CancelEditsStudentProfile, .DeleteStudent {
     float: left;
     color: #555555
 }
+
+
 
 .contactsHeader {
     margin-bottom: 20px;
