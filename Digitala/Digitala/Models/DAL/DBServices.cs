@@ -1807,13 +1807,13 @@ namespace Digitala.Models.DAL
             String prefix;
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}')", s.Dis1st, s.Dis2nd, s.StudentId, s.SFirstName, s.SLastName, s.SEmail, s.SGender, s.SAddress, s.SPhone, s.SDescripion, s.SBirthDate);
-            prefix = "INSERT INTO Student " + "([1stDis], [2ndDis], [StudentId], [SFirstName], [SLastName], [SEmail], [SGender], [SAddress], [SPhone], [SDescripion], [SBirthDate])";
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}' ,{10})", s.Dis1st, s.Dis2nd, s.StudentId, s.SFirstName, s.SLastName, s.SEmail, s.SGender, s.SAddress, s.SPhone, s.SDescripion,  s.SBirthDate.Day + "/" + s.SBirthDate.Month + "/" + s.SBirthDate.Year );
+            prefix = "INSERT INTO Student " + "([1stDis], [2ndDis], [StudentId], [SFirstName], [SLastName], [SEmail], [SGender], [SAddress], [SPhone],  [SDescripion],[SBirthDate])";
            
 
             command = prefix + sb.ToString();
 
-            return command;
+           return command;
 
         }
 

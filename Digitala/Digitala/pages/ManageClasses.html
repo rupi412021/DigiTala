@@ -149,6 +149,15 @@
                         break;
                     }
                 }
+                bday = Jsondata[i].תאריך_לידה;
+                let year = bday[6] + bday[7] + bday[8] + bday[9];
+                let month = bday[3] + bday[4];
+                let day = bday[0] + bday[1];
+
+                var monthsAfter = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+                month = monthsAfter[parseInt(month) - 1];
+
+                bday = new Date(year, month, day);
 
                 if (hit == 0) {
                     let NewS = {
@@ -156,7 +165,7 @@
                         sFirstName: Jsondata[i].שם_פרטי,
                         sLastName: Jsondata[i].שם_משפחה,
                         sEmail: Jsondata[i].אימייל,
-                        sBirthDate: Jsondata[i].תאריך_לידה,
+                        sBirthDate: bday.toDateString(),
                         sGender: Jsondata[i].מין,
                         sAddress: Jsondata[i].כתובת,
                         sPhone: Jsondata[i].פלאפון,
@@ -165,26 +174,27 @@
                         Dis2nd: Jsondata[i].לקות_משנית,
 
                     }
-                    ajaxCall("POST", "../api/Students", JSON.stringify(NewS), postSutdentSuccess, postSutdentError);
+                    
 
-                    let NewC = {
+                    NewC = {
                         cEmail: Jsondata[i].אימייל_האופוטרופוס,
                         cName: Jsondata[i].שם_האופוטרופוס,
                         cPhone: Jsondata[i].פלאפון_האופוטרופוס,
                         cSID: Jsondata[i].תעודת_זהות,
                     }
 
-                    ajaxCall("POST", "../api/Custodian", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
+                   
 
                     let school = $("#schOpt").val();
                     let cclass = $("#classNa").val() + "`" + $("#classNum").val();
                     let year = $("#year").val()
                     let temail = localStorage["UserName"];
 
-                    ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail, "", putTeacherInfoSuccess, putTeacherInfoError);
 
-                    ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + Jsondata[i].תעודת_זהות, "", postStudentClassSuccess, postStudentClassError);
-
+                    ajaxCall("POST", "../api/Students", JSON.stringify(NewS), postSutdentSuccess, postSutdentError);
+                    //ajaxCall("POST", "../api/Custodian", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
+                    //ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail, "", putTeacherInfoSuccess, putTeacherInfoError);
+                    //ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + Jsondata[i].תעודת_זהות, "", postStudentClassSuccess, postStudentClassError);
                 }
 
                 if (count == Jsondata.length) {
@@ -209,6 +219,7 @@
         }
 
         function postSutdentSuccess() {
+            
             console.log("Posted student")
         }
 
