@@ -128,9 +128,9 @@
                     });
                 }
                 else {
-                    for (var i = 0; i < TargetForTala.length; i++) {
-                        TargetForTala[i].Goals = [];
-                        TargetForTala[i].Tools = [];
+                    TargetForTala[i].Goals = [];
+                    TargetForTala[i].Tools = [];
+                    for (var i = 0; i < TargetForTala.length; i++) {                       
                         for (var j = 0; j < GoalsArr.length; j++) {
                             if (TargetForTala[i].TarSerial == GoalsArr[j].tTarId)
                                 TargetForTala[i].Goals.push(GoalsArr[j].nGoal);
