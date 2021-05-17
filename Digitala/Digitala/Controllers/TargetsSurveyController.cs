@@ -19,12 +19,13 @@ namespace Digitala.Controllers
             return tlist;
         }
 
-        //[HttpDelete]
-        //[Route("api/TargetsSurvey")]
-        //public void Delete([FromBody]TargetsSurvey t)
-        //{
-        //    t.Delete();
-        //}
+        [HttpDelete]
+        [Route("api/TargetsSurvey")]
+        public void Delete()
+        {
+            TargetsSurvey t = new TargetsSurvey();
+            t.Delete();
+        }
 
         [HttpPost]
         [Route("api/TargetsSurvey")]
@@ -35,9 +36,9 @@ namespace Digitala.Controllers
 
         [HttpPut]
         [Route("api/TargetsSurvey")]
-        public void Put([FromBody]TargetsSurvey t)
+        public List<TargetsSurvey> Put([FromBody]TargetsSurvey t)
         {
-            t.Update();
+            return t.Update();
         }
     }
 }

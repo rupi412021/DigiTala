@@ -127,10 +127,10 @@
                         showConfirmButton: false
                     });
                 }
-                else {
-                    TargetForTala[i].Goals = [];
-                    TargetForTala[i].Tools = [];
-                    for (var i = 0; i < TargetForTala.length; i++) {                       
+                else {                       
+                    for (var i = 0; i < TargetForTala.length; i++) {  
+                        TargetForTala[i].Goals = [];
+                        TargetForTala[i].Tools = [];
                         for (var j = 0; j < GoalsArr.length; j++) {
                             if (TargetForTala[i].TarSerial == GoalsArr[j].tTarId)
                                 TargetForTala[i].Goals.push(GoalsArr[j].nGoal);
@@ -175,7 +175,6 @@
                             mlNames[j].childNodes[1].childNodes[0].classList.add("toggled");
                         }
                     }
-
                 }
             }
         }
@@ -259,15 +258,15 @@
             $(document).on("change", "#areas", function () {
                 var area = $("#areas").val();
                 $("#area-error").attr("hidden", true);
-                var renderSubAreasList = "";
+                var renderSubAreasList = '<option value="0">בחר תת-תחום מרשימה</option>';
                 for (var i = 0; i < SubAreasList.length; i++) {
                     if (SubAreasList[i].AreaId == area)
-                        renderSubAreasList += "<option value='" + SubAreasList[i].SubArea + "' id=" + SubAreasList[i].SubAreaId + "></option>";
+                        renderSubAreasList += "<option value=" + SubAreasList[i].SubAreaId + ">" + SubAreasList[i].SubArea+"</option>";
                 }
                 $("#subareasList").html(renderSubAreasList);
 
             });
-            $(document).on("change", "#subareas", function () {
+            $(document).on("change", "#subareasList", function () {
                 $("#subarea-error").attr("hidden", true);
             });
 
@@ -289,26 +288,20 @@
 
             $(document).on("click", "#closeNewTarModal", function () {
                 $("#areas").val(0);
-                $("#subareas").val("");
+                $("#subareasList").val(0);
                 $("#targetToBank").val("");
             });
 
             $(document).on("click", "#saveNewTarToBank", function () {               
                 var areaId = $("#areas").val();
-                var subarea = $("#subareas").val();
-             
-                for (var i = 0; i < SubAreasList.length; i++) {
-                    if (SubAreasList[i].SubArea == subarea)
-                        subarea = SubAreasList[i].SubAreaId;
-                }
-
+                var subarea = $("#subareasList").val();
                 var newTarget = $("#targetToBank").val();
 
                 if (areaId == 0) {
                     event.preventDefault();
                     $("#area-error").attr("hidden", false);
                 }
-                else if (subarea == "") {
+                else if (subarea == 0) {
                     event.preventDefault();
                     $("#subarea-error").attr("hidden", false);
                 }
@@ -320,8 +313,10 @@
                     ObjTemp = {
                         TarSerial: unknownTarId,
                         Target: newTarget,
-                        FaSerial: areaId,
+                        FaSerial: areaId,                      
                         SfaSerial: subarea,
+                        Tools: [],
+                        Goals: [],
                         NewTar: 1
                     }
 
@@ -332,7 +327,7 @@
                     $("#phTarsLabels").append(tampValString);
                     $(".newTargetModal").modal("hide");
                     $("#areas").val(0);
-                    $("#subareas").val("");
+                    $("#subareasList").val(0);
                     $("#targetToBank").val("");
                 }
             });
@@ -635,14 +630,8 @@
             }
 
             $("#charsMultiPickList").html(charsList);
-            //for (var i = 0; i < ChararcteristicsData.length; i++) {
-            //    ajaxCall("POST", "../api/Chararcteristics/" + ChararcteristicsData[i].CharacteristicKey, "", SuccessSuccess, error);
-            //}
         }
 
-        //function SuccessSuccess(data) {
-        //    console.log(data);
-        //}
         function getAreasSuccess(allMainAreas) {
             console.log(allMainAreas);
             MainAreasList = allMainAreas;
@@ -995,8 +984,7 @@
                                                         <div class="form-group">
                                                             <div class="form-line">
                                                                 <label>תת-תחום</label>
-                                                                <input id="subareas" list="subareasList" pattern="^[א-ת\s]*$" placeholder="בחר מרשימה או הקלד ערך חדש" class="form-control" />
-                                                                <datalist id="subareasList"></datalist>
+                                                                <select id="subareasList" class="form-control"></select>
                                                             </div>
                                                             <label id="subarea-error" hidden="hidden">אנא הזן תת-תחום</label>
                                                         </div>

@@ -60,11 +60,64 @@ namespace Digitala.Models
             return tList;
         }
 
-        //public void Delete()
-        //{
-        //    DBServices dbs = new DBServices();
-        //    dbs.DeleteTarget(this.TarSerial);
-        //}
+        public void Delete()
+        {
+            DBServices dbs = new DBServices();
+            DateTime today = DateTime.Now;
+            List<TargetsSurvey> tList = dbs.ReadTargetsForSurveys();
+            List <int> tempList = new List<int>();
+
+            int count = 0;
+            int ind = 0;
+            double avgO = 0;
+            double avgS = 0;
+
+            for (int i = 0; i < tList.Count; i++)
+            {
+                if (tList[i].CreationDate.AddDays(14) <= today)
+                {
+                    for (int j = 0; j < tempList.Count; j++)
+                    {
+                        if (tempList[j] == tList[i].TarId)
+                            ind = 1;
+                    }
+                    if (ind == 0)
+                        tempList.Add(tList[i].TarId);
+                    ind = 0;
+                }                    
+            }
+            for (int j = 0; j < tempList.Count; j++)                
+            {
+                Targets target = new Targets();
+                for (int i = 0; i < tList.Count; i++)
+                {
+                    if(tList[i].TarId == tempList[j])
+                    {
+                        avgO = (avgO * count + tList[i].Originality) / (count + 1);
+                        avgS = (avgS * count + tList[i].Suitability) / (count + 1);
+                        count++;
+                        target.FaSerial = tList[i].FaSerial;
+                        target.SfaSerial = tList[i].SfaSerial;
+                        target.Target = tList[i].Target;
+                        target.TarSerial = tList[i].TarId;
+                    }
+                }
+
+                if (avgO * 0.5 + avgS * 0.5 >= 4)
+                {                    
+                    target.Suitability = avgS;
+                    target.Originality = avgO;
+                    target.NumOfUses = 1;
+                    
+                    dbs.Insert(target);
+                    dbs.DeleteSurvey(target.TarSerial);
+                }
+
+                count = 0;
+                avgO = 0;
+                avgS = 0;
+            }
+        }
 
         public void Insert()
         {

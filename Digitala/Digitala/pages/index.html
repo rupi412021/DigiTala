@@ -40,6 +40,7 @@
 
             ajaxCall("GET", "../api/Students/" + TeachID + "/" + teacherYear, "", getStudentsSuccess, error);
             ajaxCall("GET", "../api/TargetsSurvey/" + TeachID, "", getSurveySuccess, error);
+            ajaxCall("DELETE", "../api/TargetsSurvey", "", DeleteSurveySuccess, error);
 
             localStorage.removeItem("StudentName");
             localStorage.removeItem("StudentID");
@@ -245,17 +246,17 @@
         }
 
         function putTargetsSurveySuccess(Survey) {
-            if (Survey != null)
-                getSurveySuccess(Survey);
-            else {
-                Survey = [];
-                getSurveySuccess(Survey);
-            }
+            getSurveySuccess(Survey);
         }
 
         function error(err) {
             console.log("ERROR");
         }
+
+        function DeleteSurveySuccess() {
+            console.log("surveys table updated")
+        }
+
     </script>
 </head>
 

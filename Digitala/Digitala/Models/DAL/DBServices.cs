@@ -151,6 +151,52 @@ namespace Digitala.Models.DAL
 
         }
 
+        public int DeleteSurvey(int id)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildDeleteSurveyCommand(id);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("ERROR updating surveys table", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildDeleteSurveyCommand(int id)
+        {
+            String command;            
+            command = "Delete FROM TargetsSurvey WHERE TargetId = " +id;
+            return command;
+        }
+
         public int DeleteTarget(int id)
         {
 
@@ -662,7 +708,6 @@ namespace Digitala.Models.DAL
             return command;
         }
 
-
         public int Insert(TargetsSurvey TS)
         {
 
@@ -760,7 +805,7 @@ namespace Digitala.Models.DAL
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
                 String selectSTR = "Select T.*, FA.FunctionArea, SFA.SubFunctionArea from TargetsSurvey T" +
-                                    " inner join FunctionAreas FA on T.FASerial = FA.FASerial  inner join SubFunctionAreas SFA on T.SFASerial = SFA.SFASerial";
+                                    " inner join FunctionAreas FA on T.FASerial = FA.FASerial  inner join SubFunctionAreas SFA on T.SFASerial = SFA.SFASerial ORDER BY T.TargetId DESC";
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 

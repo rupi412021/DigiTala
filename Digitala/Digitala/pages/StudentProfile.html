@@ -232,7 +232,7 @@
                 document.getElementById("collapseOne_19").setAttribute("aria-expanded", "false");
                 document.getElementById("collapseFour_19").setAttribute("aria-expanded", "true");
                 document.getElementById("collapseFour_19").classList.add("in");
-
+                $(".DeleteStudent").attr("hidden", true);
                 ajaxCall("GET", "../api/Goals/" + newID + "/" + year, "", getGoalsForStudentSuccess, error);
             }
         }
