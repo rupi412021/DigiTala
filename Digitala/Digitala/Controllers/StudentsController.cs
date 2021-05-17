@@ -50,5 +50,13 @@ namespace Digitala.Controllers
             s.UpdateClass(sschool, sclass, syear, sId);
         }
 
+        [HttpDelete]
+        [Route("api/Students/{id}")]
+        public void Delete([FromBody] int id)
+        {
+            Students s = new Students();
+            s.Delete(id);
+        }
+
     }
 }

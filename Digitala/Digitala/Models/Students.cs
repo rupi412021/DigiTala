@@ -86,5 +86,12 @@ namespace Digitala.Models
             DBServices dbs = new DBServices();
             dbs.insertSinClass(s, c, y, i);
         }
+
+
+        public void Delete(int id)
+        {
+            DBServices dbs = new DBServices();
+            dbs.DeleteStudent(id);
+        }
     }
 }

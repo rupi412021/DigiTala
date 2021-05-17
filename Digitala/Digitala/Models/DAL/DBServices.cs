@@ -2362,7 +2362,51 @@ namespace Digitala.Models.DAL
 
         }
 
+        public int DeleteStudent(int sid)
+        {
 
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildDeleteStudentCommand(sid);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Faild removing item", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildDeleteStudentCommand(int sID)
+        {
+            String command;
+            command = "Delete FROM Custodian WHERE StudentId = '" + sID + "' Delete FROM StudentsInClass WHERE SCstdID = '" + sID + "' Delete FROM Student WHERE StudentId = '" + sID + "'";
+            return command;
+        }
 
     }
    
