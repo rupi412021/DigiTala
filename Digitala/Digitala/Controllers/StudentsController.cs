@@ -47,7 +47,7 @@ namespace Digitala.Controllers
         public void InsertStudentInClass(int sschool, string sclass, int syear, int sId)
         {
             Students s = new Students();
-            s.updateClass(sschool, sclass, syear, sId);
+            s.UpdateClass(sschool, sclass, syear, sId);
         }
 
     }

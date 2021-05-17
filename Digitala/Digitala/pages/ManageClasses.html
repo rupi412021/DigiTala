@@ -199,37 +199,37 @@
             console.log("Teacher info updated")
 
         }
-
+         
         function putTeacherInfoError() {
             console.log("Teacher info was not updated")
 
         }
         function getStudentsError() {
-            swal("משהו השתבש", "נסה שנית", "error");
+            console.log("Could not brig student")
         }
 
         function postSutdentSuccess() {
-            swal("הקובץ הועלאה בהצלחה", "הצלחה", "success");
+            console.log("Posted student")
         }
 
         function postSutdentError() {
-            swal("משהו השתבש", "נסה שנית", "error");
+            console.log("Could not post student")
         }
 
         function postStudentClassSuccess() {
-            swal("תלמיד הוכנס לכיתה", "הצלחה", "success");
+            swal("הקובץ הועלה בהצלחה", "הצלחה", "success");
         }
 
         function postStudentClassError() {
-            swal("לא ניתן להכניס תלמיד לכיתה משהו השתבש", "נסה שנית", "error");
+            swal( "משהו השתבש", "נסה שנית", "error");
         }
 
         function postCustodianSuccess() {
-            console.log("אופוטרופוס הוזן")
+            console.log("Custodian inserted")
         }
 
         function postCustodianError() {
-            console.log("אופוטרופוס לא הוזן")
+            console.log("Custodian not inserted")
         }
     </script>
 </head>
@@ -270,6 +270,23 @@
             <div class="block-header">
                 <h1>ניהול כיתות</h1>
             </div>
+            <!-- Manage class -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                ניהול כיתות
+                            </h2>
+
+                        </div>
+                        <div class="body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Manage class  -->
             <!-- File Upload -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -334,8 +351,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- #END# File Upload  -->
             </div>
+            <!-- #END# File Upload  -->
+
         </div>
     </section>
 
