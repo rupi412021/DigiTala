@@ -192,9 +192,9 @@
 
 
                     ajaxCall("POST", "../api/Students", JSON.stringify(NewS), postSutdentSuccess, postSutdentError);
-                    //ajaxCall("POST", "../api/Custodian", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
-                    //ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail, "", putTeacherInfoSuccess, putTeacherInfoError);
-                    //ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + Jsondata[i].תעודת_זהות, "", postStudentClassSuccess, postStudentClassError);
+                    ajaxCall("POST", "../api/Custodian", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
+                    ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail, "", putTeacherInfoSuccess, putTeacherInfoError);
+                    ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + Jsondata[i].תעודת_זהות, "", postStudentClassSuccess, postStudentClassError);
                 }
 
                 if (count == Jsondata.length) {
