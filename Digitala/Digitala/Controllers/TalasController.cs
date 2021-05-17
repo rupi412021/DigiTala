@@ -18,6 +18,14 @@ namespace Digitala.Controllers
             return t.Read(studentId, year);
         }
 
+        [HttpGet]
+        [Route("api/Talas/{studentId}")]
+        public Talas CheckTala(int studentId)
+        {
+            Talas t = new Talas();
+            return t.CheckIfTala(studentId);
+        }
+
         [HttpPost]
         [Route("api/Talas")]
         public Talas Post([FromBody]Talas t)

@@ -47,5 +47,13 @@ namespace Digitala.Models
             return Tala;
         }
 
+        public Talas CheckIfTala(int studentId)
+        {
+            DBServices dbs = new DBServices();
+            Talas Tala = dbs.CheckIfHasTala(studentId);
+
+            return Tala;
+        }
+
     }
 }

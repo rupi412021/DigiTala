@@ -46,6 +46,8 @@
             mode = "";
             ajaxCall("GET", "../api/Talas/" + newID + "/" + year, "", getTalaSuccess, error);
 
+            ajaxCall("GET", "../api/Talas/" + newID, "", getIfTalaSuccess, getIfTalaError);
+
             ajaxCall("GET", "../api/Students/" + TeachID + "/" + year, "", getStudentsByTeacherSuccess, error);
 
             $(document).on("click", ".UpdateStatusGoal", function () {
@@ -160,7 +162,7 @@
             $(document).on("click", ".DeleteStudent", function () {
                 swal({
                     title: "מחיקת סטודנט",
-                    text: "בסטודנט יימחק לצמיתות",
+                    text: "הסטודנט יימחק לצמיתות",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#F46549",
@@ -235,6 +237,16 @@
                 $(".DeleteStudent").attr("hidden", true);
                 ajaxCall("GET", "../api/Goals/" + newID + "/" + year, "", getGoalsForStudentSuccess, error);
             }
+        }
+
+        function getIfTalaSuccess(talas) {
+            if (talas.StudentId> 0) {
+                $(".DeleteStudent").attr("hidden", true);
+            }
+        }
+        
+        function getIfTalaError() {
+            console.log("Error if get tala")
         }
 
         function getGoalsForStudentSuccess(goalsForStudent) {

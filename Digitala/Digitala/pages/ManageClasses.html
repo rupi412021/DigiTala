@@ -122,6 +122,7 @@
 
 
         }
+
         function getSchoolerror(err) {
             alert("Error: " + err);
         }
@@ -182,15 +183,14 @@
                         cSID: Jsondata[i].תעודת_זהות,
                     }
 
-
-                    ajaxCall("POST", "../api/Students", JSON.stringify(NewS), postSutdentSuccess, postSutdentError);           
-                    ajaxCall("POST", "../api/Custodian", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
+     
                     let school = $("#schOpt").val();
                     let cclass = $("#classNa").val() + "`" + $("#classNum").val();
                     let year = $("#year").val()
                     let temail = localStorage["UserName"];
 
-
+                    ajaxCall("POST", "../api/Students", JSON.stringify(NewS), postSutdentSuccess, postSutdentError);
+                    ajaxCall("POST", "../api/Custodian", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
                     ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail, "", putTeacherInfoSuccess, putTeacherInfoError);
                     ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + Jsondata[i].תעודת_זהות, "", postStudentClassSuccess, postStudentClassError);
                 }
@@ -214,6 +214,7 @@
             }
 
         }
+
         function putTeacherInfoSuccess() {
             console.log("Teacher info updated")
 
@@ -223,6 +224,7 @@
             console.log("Teacher info was not updated")
 
         }
+
         function getStudentsError() {
             console.log("Could not brig student")
         }
@@ -296,7 +298,7 @@
                     <div class="card">
                         <div class="header">
                             <h2>
-                                ניהול כיתות
+                                טעינת תלמידים
                             </h2>
 
                         </div>
