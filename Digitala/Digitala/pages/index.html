@@ -92,9 +92,9 @@
                 tarid = this.getAttribute("id");
                 for (var i = 0; i < surveyTargetsList.length; i++) {
                     if (tarid == "surTar" + surveyTargetsList[i].TarSerial) {
-                        $("#survey_area").html("<label>תחום תפקוד:</label><p>  " + surveyTargetsList[i].FunctionArea+"</p>");
-                        $("#survey_subarea").html("<label>תת-תחום:</label><p>  " + surveyTargetsList[i].SubFunctionArea + "</p>");
-                        $("#survey_target").html("<label>מטרה:</label><p>  " + surveyTargetsList[i].Target + "</p>");
+                        $("#survey_area").html("<td><label>תחום:</label></td><td><p>" + surveyTargetsList[i].FunctionArea+"</p></td>");
+                        $("#survey_subarea").html("<td><label>תת-תחום:</label></td><td><p>" + surveyTargetsList[i].SubFunctionArea + "</p></td>");
+                        $("#survey_target").html("<td><label>מטרה:</label</td><td><p>" + surveyTargetsList[i].Target + "</p></td>");
                     }
                 }
 
@@ -266,15 +266,17 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                <div id="survey_area">
-                                    
-                                </div>
-                                <div id="survey_subarea">
-                                   
-                                </div>
-                                <div id="survey_target">
-                                    
-                                </div>
+                                <table>
+                                    <tr id="survey_area">
+                                       
+                                    </tr>
+                                    <tr id="survey_subarea">
+                                       
+                                    </tr>
+                                    <tr id="survey_target">
+                                        
+                                    </tr>
+                                </table>
                                 <div>
                                     <label><b>דרג את מידת ההתאמה של המטרה לתחום ולתת-תחום</b></label>
                                 </div>
