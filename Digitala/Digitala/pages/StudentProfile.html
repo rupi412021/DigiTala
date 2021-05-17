@@ -135,6 +135,7 @@
 
                 else {
                     mode = "edit";
+                    $(".DeleteStudent").attr('hidden', true);
                     $(".personalStudentDetails").attr('disabled', false);
                     $(".CancelEditsStudentProfile").attr('hidden', false);                  
                     $(".EditStudentProfile").html("<i class='material-icons'>save</i>");
@@ -156,6 +157,23 @@
 
             });
 
+            $(document).on("click", ".DeleteStudent", function () {
+                swal({
+                    title: "מחיקת סטודנט",
+                    text: "בסטודנט יימחק לצמיתות",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#F46549",
+                    confirmButtonText: "מחק",
+                    cancelButtonText: "ביטול",
+                    closeOnConfirm: true
+                }, function () {
+                        alert("It works");
+
+                });
+            });
+
+
             $(document).on("click", ".CancelEditsStudentProfile", function () {
                 swal({
                     title: "יציאה ממצב עריכה",
@@ -176,6 +194,7 @@
                     $("#collapse_2").removeClass("panel-col-yellow");
                     $("#collapse_3").removeClass("panel-col-yellow");
                     $(".CancelEditsStudentProfile").attr('hidden', true);
+                    $(".DeleteStudent").attr('hidden',false);
 
                     getStudentsByTeacherSuccess(AllStudents);
 
@@ -326,6 +345,7 @@
                         <div class="header">
                             <button type="button" hidden="hidden" class="CancelEditsStudentProfile btn-trans" id="goalId-1"><i class="material-icons">close</i></button>
                             <button type="button" class="EditStudentProfile btn-trans" id="goalId-1"><i class="material-icons">edit</i></button>
+                            <button type="button" class="DeleteStudent btn-trans" id="goalId-1"><i class="material-icons">delete</i></button>
                             <h3 id="studentName"></h3>
                         </div>
                         <div class="body">
