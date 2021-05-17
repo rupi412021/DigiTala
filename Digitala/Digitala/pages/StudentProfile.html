@@ -168,8 +168,8 @@
                     cancelButtonText: "ביטול",
                     closeOnConfirm: true
                 }, function () {
-                        
-                     ajaxCall("Delete", "../api/Students", "", deleteStudentsuccess, deleteStudenterror);
+                     studentId = localStorage["StudentID"]
+                     ajaxCall("Delete", "../api/Students/" + studentId, "", deleteStudentsuccess, deleteStudenterror);
                 });
             });
 
@@ -232,6 +232,7 @@
                 document.getElementById("collapseOne_19").setAttribute("aria-expanded", "false");
                 document.getElementById("collapseFour_19").setAttribute("aria-expanded", "true");
                 document.getElementById("collapseFour_19").classList.add("in");
+                $(".DeleteStudent").attr('hidden', true);
 
                 ajaxCall("GET", "../api/Goals/" + newID + "/" + year, "", getGoalsForStudentSuccess, error);
             }
@@ -304,11 +305,18 @@
         }
 
         function deleteStudentsuccess(data) {
-            console.log("student deleted")
+            swal({
+                title: "תלמיד נמחק בהצלחה",
+                type: "success",
+                timer: 1500,
+                showConfirmButton: false
+            });
+
+            window.location.assign("Index.html")
         }
 
         function deleteStudenterror(data) {
-            console.log("student was not deleted")
+            console.log("Student was not deleted")
         }
     </script>
 </head>

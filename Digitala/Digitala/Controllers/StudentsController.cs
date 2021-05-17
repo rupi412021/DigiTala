@@ -52,7 +52,7 @@ namespace Digitala.Controllers
 
         [HttpDelete]
         [Route("api/Students/{id}")]
-        public void Delete([FromBody] int id)
+        public void Delete(int id)
         {
             Students s = new Students();
             s.Delete(id);
