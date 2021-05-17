@@ -167,9 +167,9 @@
                     confirmButtonText: "מחק",
                     cancelButtonText: "ביטול",
                     closeOnConfirm: true
-                }, function () {
-                        
-                     ajaxCall("Delete", "../api/Students", "", deleteStudentsuccess, deleteStudenterror);
+                }, function () {                       
+                    studentId = localStorage["StudentID"];
+                    ajaxCall("Delete", "../api/Students/" + studentId, "", deleteStudentsuccess, deleteStudenterror);
                 });
             });
 
@@ -304,11 +304,18 @@
         }
 
         function deleteStudentsuccess(data) {
-            console.log("student deleted")
+            swal({
+                title: "תלמיד נמחק בהצלחה",
+                type: "success",
+                timer: 1500,
+                showConfirmButton: false
+            });
+
+            window.location.assign("Index.html")
         }
 
         function deleteStudenterror(data) {
-            console.log("student was not deleted")
+            console.log("student was not deleted");
         }
     </script>
 </head>
