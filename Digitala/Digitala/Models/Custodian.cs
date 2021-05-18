@@ -28,11 +28,24 @@ namespace Digitala.Models
         public string CPhone { get => cPhone; set => cPhone = value; }
         public string CSID { get => cSID; set => cSID = value; }
 
-        public List<Custodian> Insert()
+        public void Insert()
         {
             DBServices dbs = new DBServices();
             dbs.Insert(this);
-            return null; 
         }
+
+        public Custodian Read(string studentId)
+        {
+            DBServices dbs = new DBServices();
+            Custodian cust = dbs.ReadCustodiansForStudent(studentId);
+            return cust;
+        }
+
+        public void Update()
+        {
+            DBServices dbs = new DBServices();
+            dbs.Update(this);
+        }
+
     }
 }

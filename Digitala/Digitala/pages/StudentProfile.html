@@ -11,7 +11,6 @@
 
     <script src="../Scripts/jquery-3.3.1.min.js"></script>
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
-    <script language="javascript" type="text/javascript" src="~/Scripts/date.js"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
@@ -40,7 +39,7 @@
         $(document).ready(function () {
             TeachID = localStorage["TeacherID"];
             studentName = localStorage["StudentName"];
-            newID = localStorage["StudentID"]
+            newID = localStorage["StudentID"];
             $("#studentName").html(studentName);
             year = localStorage["TeacherYear"]
             mode = "";
@@ -49,6 +48,8 @@
             ajaxCall("GET", "../api/Talas/" + newID, "", getIfTalaSuccess, getIfTalaError);
 
             ajaxCall("GET", "../api/Students/" + TeachID + "/" + year, "", getStudentsByTeacherSuccess, error);
+
+            ajaxCall("GET", "../api/Custodian/" + newID, "", getStudentsCustodianSuccess, error);
 
             $(document).on("click", ".UpdateStatusGoal", function () {
                 thisStatusId = this.getAttribute('id');
@@ -132,6 +133,19 @@
 
                         ajaxCall("PUT", "../api/Students", JSON.stringify(studentObj), updateStudentSuccess, error);
 
+                        if ($("#contactEmail").val() != null) {
+                            custObj = {
+                                CSID: newID,
+                                CName: $("#contactName").val(),
+                                CPhone: $("#contactPhone").val(),
+                                CEmail: $("#contactEmail").val()
+                            }
+
+                            if (custodian.CEmail == null)
+                                ajaxCall("POST", "../api/Custodian", JSON.stringify(custObj), PutStudentsCustodianSuccess, error);
+                            else
+                                ajaxCall("PUT", "../api/Custodian", JSON.stringify(custObj), PutStudentsCustodianSuccess, error);
+                        }
                     });
                 }
 
@@ -139,7 +153,10 @@
                     mode = "edit";
                     $(".DeleteStudent").attr('hidden', true);
                     $(".personalStudentDetails").attr('disabled', false);
-                    $(".CancelEditsStudentProfile").attr('hidden', false);                  
+                    $(".CancelEditsStudentProfile").attr('hidden', false);  
+                    $("#contactName").attr('disabled', false);
+                    $("#contactPhone").attr('disabled', false);
+                    $("#contactEmail").attr('disabled', false);
                     $(".EditStudentProfile").html("<i class='material-icons'>save</i>");
                     $("#collapse_1").removeClass("panel-col-light-blue");
                     $("#collapse_2").removeClass("panel-col-teal");
@@ -175,7 +192,6 @@
                 });
             });
 
-
             $(document).on("click", ".CancelEditsStudentProfile", function () {
                 swal({
                     title: "יציאה ממצב עריכה",
@@ -205,6 +221,26 @@
             
             window.setTimeout(toggleMenu, 1000);
         });
+
+        function PutStudentsCustodianSuccess(custodianForStudent) {
+            $("#contactName").attr('disabled', true);
+            $("#contactPhone").attr('disabled', true);
+            $("#contactEmail").attr('disabled', true);
+        }
+
+        function getStudentsCustodianSuccess(custodianForStudent) {
+            custodian = custodianForStudent;
+            console.log(custodian);
+            if (custodian != null) {
+                $("#contactName").val(custodian.CName);
+                $("#contactPhone").val(custodian.CPhone);
+                $("#contactEmail").val(custodian.CEmail);
+
+                $("#contactName").attr('disabled', true);
+                $("#contactPhone").attr('disabled', true);
+                $("#contactEmail").attr('disabled', true);
+            }
+        }
 
         function toggleMenu() {
             toggleNames = document.getElementsByClassName("menu-toggle");
@@ -454,19 +490,19 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="contactsHeader">אנשי קשר</div>
+                                                <div class="contactsHeader">יצירת קשר</div>
                                                 <div class="row clearfix">
                                                     <div class="col-sm-4 studentsFields">
                                                         <div class="form-group">
                                                             <div class="form-line">
-                                                                <input type="text" placeholder="שם איש קשר" class="form-control" />
+                                                                <input type="text" placeholder="שם איש קשר" class="form-control" id="contactName"/>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4 studentsFields">
                                                         <div class="form-group">
                                                             <div class="form-line">
-                                                                <input type="text" placeholder="טלפון" class="form-control" />
+                                                                <input type="text" placeholder="טלפון איש קשר" class="form-control" id="contactPhone"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -474,13 +510,13 @@
                                                         <div class="form-group">
                                                             <div class="input-group">
                                                                 <div class="form-line">
-                                                                    <input type="text" class="form-control email" placeholder="מייל איש קשר">
+                                                                    <input type="text" class="form-control email" placeholder="מייל איש קשר" id="contactEmail">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row clearfix">
+                                                <!--<div class="row clearfix">
                                                     <div class="col-sm-4 studentsFields">
                                                         <div class="form-group">
                                                             <div class="form-line">
@@ -504,7 +540,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>-->
                                             </div>
                                         </div>
                                     </div>
@@ -594,60 +630,60 @@
                                                         <label class="custom-control-label" for="md_checkbox_1">תוספת זמן בבחינה</label>
                                                     </div>
                                                     <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_2" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_2">הקראת שאלון</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_3" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_3">מבחן מותאם</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_4" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_4">הכתבה לבוחן ניטרלי</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_5" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_5">מבחן בעל פה</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_6" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_6">הפחתה בשיעורי הבית</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_7" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_7">מבחן באמצעות הקלדה במחשב</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_8" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_8">היבחנות בחדר נפרד</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
                                                         <input type="checkbox" id="md_checkbox_9" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_9">טופס מוגדל במבחן</label>
+                                                        <label class="custom-control-label" for="md_checkbox_9">הקראת שאלון</label>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <input type="checkbox" id="md_checkbox_2" class="chk-col-blue-grey" />
+                                                        <label class="custom-control-label" for="md_checkbox_2">מבחן מותאם</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input type="checkbox" id="md_checkbox_10" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_10">היבחנות עם מלווה מוכר</label>
+                                                        <label class="custom-control-label" for="md_checkbox_10">הכתבה לבוחן ניטרלי</label>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <input type="checkbox" id="md_checkbox_3" class="chk-col-blue-grey" />
+                                                        <label class="custom-control-label" for="md_checkbox_3">מבחן בעל פה</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input type="checkbox" id="md_checkbox_11" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_11">נוסחאון מורחב במתמטיקה</label>
+                                                        <label class="custom-control-label" for="md_checkbox_11">הפחתה בשיעורי הבית</label>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <input type="checkbox" id="md_checkbox_4" class="chk-col-blue-grey" />
+                                                        <label class="custom-control-label" for="md_checkbox_4">מבחן באמצעות הקלדה במחשב</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input type="checkbox" id="md_checkbox_12" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_12">שימוש במילונית</label>
+                                                        <label class="custom-control-label" for="md_checkbox_12">היבחנות בחדר נפרד</label>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <input type="checkbox" id="md_checkbox_5" class="chk-col-blue-grey" />
+                                                        <label class="custom-control-label" for="md_checkbox_5">טופס מוגדל במבחן</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input type="checkbox" id="md_checkbox_13" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_13">התעלמות משגיאות כתיב</label>
+                                                        <label class="custom-control-label" for="md_checkbox_13">היבחנות עם מלווה מוכר</label>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <input type="checkbox" id="md_checkbox_6" class="chk-col-blue-grey" />
+                                                        <label class="custom-control-label" for="md_checkbox_6">נוסחאון מורחב במתמטיקה</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input type="checkbox" id="md_checkbox_14" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_14">יציאה משיעור ללא אישור</label>
+                                                        <label class="custom-control-label" for="md_checkbox_14">שימוש במילונית</label>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <input type="checkbox" id="md_checkbox_7" class="chk-col-blue-grey" />
+                                                        <label class="custom-control-label" for="md_checkbox_7">התעלמות משגיאות כתיב</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input type="checkbox" id="md_checkbox_15" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_15">היבחנות בחדר לליקוי שמיעה</label>
+                                                        <label class="custom-control-label" for="md_checkbox_15">יציאה משיעור ללא אישור</label>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <input type="checkbox" id="md_checkbox_8" class="chk-col-blue-grey" />
+                                                        <label class="custom-control-label" for="md_checkbox_8">היבחנות בחדר לליקוי שמיעה</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input type="checkbox" id="md_checkbox_16" class="chk-col-blue-grey" />

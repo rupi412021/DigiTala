@@ -12,9 +12,24 @@ namespace Digitala.Controllers
     {
         [HttpPost]
         [Route("api/Custodian")]
-        public List<Custodian> Post([FromBody] Custodian c)
+        public void Post([FromBody] Custodian c)
         {
-            return c.Insert();
+            c.Insert();
+        }
+
+        [HttpGet]
+        [Route("api/Custodian/{studentId}")]
+        public Custodian Get(string studentId)
+        {
+            Custodian cust = new Custodian();
+            return cust.Read(studentId);
+        }
+
+        [HttpPut]
+        [Route("api/Custodian")]
+        public void Put([FromBody]Custodian c)
+        {
+            c.Update();
         }
     }
 }

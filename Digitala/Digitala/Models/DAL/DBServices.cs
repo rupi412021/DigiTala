@@ -2286,53 +2286,6 @@ namespace Digitala.Models.DAL
             return command;
         }
 
-        //public int TEMP(int id)
-        //{
-
-        //    SqlConnection con;
-        //    SqlCommand cmd;
-
-        //    try
-        //    {
-        //        con = connect("DBConnectionString"); // create the connection
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception("Could not connect to DB", ex);
-        //    }
-
-        //    String cStr = BuildTEMPCommand(id);      // helper method to build the insert string
-
-        //    cmd = CreateCommand(cStr, con);             // create the command
-
-        //    try
-        //    {
-        //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-        //        return numEffected;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception("Faild removing item", ex);
-        //    }
-        //    finally
-        //    {
-        //        if (con != null)
-        //        {
-        //            // close the db connection
-        //            con.Close();
-        //        }
-        //    }
-
-        //}
-
-        //private String BuildTEMPCommand(int id)
-        //{
-        //    String command;
-        //    command = "ALTER TABLE dbo.[CharacteristicsMatrix] ADD char_" + id + " INT DEFAULT(0) NULL";
-        //    return command;
-
-
-        //}
         public int Insert(Custodian Cust)
         {
 
@@ -2374,6 +2327,7 @@ namespace Digitala.Models.DAL
             }
 
         }
+
         private String BuildInsertCommand(Custodian c)
         {
             String command;
@@ -2492,6 +2446,95 @@ namespace Digitala.Models.DAL
             return command;
         }
 
+        public Custodian ReadCustodiansForStudent(string studentId)
+        {
+            Custodian c = new Custodian();
+            SqlConnection con = null;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM Custodian WHERE StudentId=" + studentId;
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+
+                    c.CSID = (string)(dr["StudentId"]);
+                    c.CEmail = (string)(dr["CEmail"]);
+                    c.CName = (string)(dr["CFullName"]);
+                    c.CPhone = (string)(dr["CPhone"]);
+
+                }
+
+                return c;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Custodians from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+
+        public int Update(Custodian cust)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildUpdateCommand(cust);
+
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("איש קשר לא עודכן", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildUpdateCommand(Custodian c)
+        {
+            String command;
+            command = "UPDATE Custodian SET CEmail = '" + c.CEmail + "', CFullName = '" + c.CName + "', CPhone = '" + c.CPhone + "' WHERE StudentId = " + c.CSID;
+
+            return command;
+        }
     }
    
 }
