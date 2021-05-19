@@ -128,6 +128,7 @@
                             Dis1st: dis1ID[5] + dis1ID[6],
                             Dis2nd: dis2ID[5] + dis2ID[6],
                             SBirthDate: bday.toDateString(),
+                            MedicalSituation: $("#SMedical").val(),
                             SGender: gen
                         }
 
@@ -320,6 +321,7 @@
                     $("#SEmail").val(studentsList[i].SEmail);
                     $("#SAddress").val(studentsList[i].SAddress);
                     $("#SMobile").val(studentsList[i].SPhone);
+                    $("#SMedical").val(studentsList[i].MedicalSituation);                    
                     $("#SDescription").val(studentsList[i].SDescripion);
                     $("#SDis1").val($("#dis1_" + studentsList[i].Dis1st).val());
                     $("#SDis2").val($("#dis2_" + studentsList[i].Dis2nd).val());

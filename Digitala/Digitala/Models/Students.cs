@@ -20,8 +20,9 @@ namespace Digitala.Models
         int dis1st;
         int dis2nd;
         bool hasTala;
+        string medicalSituation;
 
-        public Students(string studentId, string sFirstName, string sLastName, string sEmail, DateTime sBirthDate, string sGender, string sAddress, string sPhone, string sDescripion, int dis1st, int dis2nd, bool hasTala)
+        public Students(string studentId, string sFirstName, string sLastName, string sEmail, DateTime sBirthDate, string sGender, string sAddress, string sPhone, string sDescripion, int dis1st, int dis2nd, bool hasTala, string medicalSituation)
         {
             StudentId = studentId;
             SFirstName = sFirstName;
@@ -35,6 +36,7 @@ namespace Digitala.Models
             Dis1st = dis1st;
             Dis2nd = dis2nd;
             HasTala = hasTala;
+            MedicalSituation = medicalSituation;
         }
 
         public Students() { }
@@ -51,6 +53,7 @@ namespace Digitala.Models
         public int Dis1st { get => dis1st; set => dis1st = value; }
         public int Dis2nd { get => dis2nd; set => dis2nd = value; }
         public bool HasTala { get => hasTala; set => hasTala = value; }
+        public string MedicalSituation { get => medicalSituation; set => medicalSituation = value; }
 
         public List<Students> Read()
         {
