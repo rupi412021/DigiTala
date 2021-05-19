@@ -58,15 +58,15 @@
                     if ("goalId-" + AllGoalsForStudent[i].GoalId == thisStatusId) {
                         if (AllGoalsForStudent[i].GoalStatus == "E") {
                             AllGoalsForStudent[i].GoalStatus = "P";
-                            $("#" + thisStatusId).html("<i class='material-icons'>star_half</i></button>");
+                            $("#" + thisStatusId).html('<img src="../images/three.png"/>');
                         }
                         else if (AllGoalsForStudent[i].GoalStatus == "P") {
                             AllGoalsForStudent[i].GoalStatus = "F";
-                            $("#" + thisStatusId).html("<i class='material-icons'>star</i></button>");
-                        }
+                            $("#" + thisStatusId).html('<img src="../images/five_chosen.png"/>');
+                        }                       
                         else {
                             AllGoalsForStudent[i].GoalStatus = "E";
-                            $("#" + thisStatusId).html("<i class='material-icons'>star_border</i></button>");
+                            $("#" + thisStatusId).html('<img src="../images/one.png"/>');
                         }
 
                         let GoalObj = {
@@ -295,11 +295,11 @@
                 renderGoalsForStatus += '<span id="goal-' + AllGoalsForStudent[i].GoalId + '"><b>' + AllGoalsForStudent[i].Goal + '</b></span>';
                 renderGoalsForStatus += "<button type='button' class='UpdateStatusGoal btn-trans' id='goalId-" + AllGoalsForStudent[i].GoalId + "'>";
                 if (AllGoalsForStudent[i].GoalStatus == "E")
-                    renderGoalsForStatus += "<i class='material-icons'>star_border</i></button>";
+                    renderGoalsForStatus += '<img src="../images/one.png"/></button>';
                 else if (AllGoalsForStudent[i].GoalStatus == "P")
-                    renderGoalsForStatus += "<i class='material-icons'>star_half</i></button>";
+                    renderGoalsForStatus += '<img src="../images/three.png"/></button>';
                 else
-                    renderGoalsForStatus += "<i class='material-icons'>star</i></button>";
+                    renderGoalsForStatus += '<img src="../images/five_chosen.png"/></button>';
                 renderGoalsForStatus += "</div>";
             }
 
