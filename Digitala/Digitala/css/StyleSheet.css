@@ -11,8 +11,11 @@
     float: right;
     padding: 0;
 }
-.col-sm-12.studentsFields{
-    margin-top:15px;
+#charsMultiPick{
+    margin-top: 25px;
+}
+.col-sm-12.studentsFields {
+    margin-top: 15px;
 }
 span.input-group-addon {
     padding-right: 0;
