@@ -2499,7 +2499,7 @@ section.content {
   -ms-border-radius: 2px;
   border-radius: 2px;
   border: none;
-  font-size: 13px;
+  font-size: 15px;
   outline: none; }
   .btn:not(.btn-link):not(.btn-circle):hover {
     outline: none; }
@@ -3010,7 +3010,7 @@ section.content {
     .card .header .col-xs-12 h2 {
       margin-top: 5px; }
   .card .body {
-    font-size: 14px;
+    font-size: 16px;
     color: #555;
     padding: 20px; }
     .card .body .col-xs-1,
@@ -3453,7 +3453,7 @@ section.content {
   padding-left: 26px;
   height: 25px;
   line-height: 21px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: normal; }
 
 [type="checkbox"]:checked + label:before {
@@ -3646,7 +3646,7 @@ section.content {
   padding-left: 26px;
   height: 25px;
   line-height: 25px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: normal; }
 
 [type="radio"]:checked + label {
@@ -4834,7 +4834,7 @@ section.content {
     .panel-group .panel .panel-heading a {
       display: block;
       padding: 10px 15px;
-      font-size: 18px;
+      font-size: 20px;
     }
       .panel-group .panel .panel-heading a:hover, .panel-group .panel .panel-heading a:focus, .panel-group .panel .panel-heading a:active {
         text-decoration: none; }
@@ -5051,7 +5051,7 @@ section.content {
       padding-left: 10px; }
   .input-group .help-info {
     float: right;
-    font-size: 12px;
+    font-size: 14px;
     margin-top: 5px;
     color: #999; }
   .input-group label.error {
@@ -5129,7 +5129,7 @@ section.content {
     padding-left: 0; }
   .form-group .help-info {
     float: right;
-    font-size: 12px;
+    font-size: 14px;
     margin-top: 5px;
     color: #999; }
   .form-group label.error {
@@ -6032,7 +6032,7 @@ fieldset[disabled] .form-control {
   position: relative;
   display: block;
   width: 100%;
-  font-size: large;
+  font-size: larger;
 }
 
 .wizard.vertical > .steps {
@@ -7733,7 +7733,7 @@ fieldset[disabled] .form-control {
           margin: 7px 0 7px 12px;
           color: #333;
           font-weight: bold;
-          font-size: 14px;
+          font-size: 16px;
           overflow: hidden; }
       .sidebar .menu .list .ml-menu {
         list-style: none;
@@ -7741,7 +7741,7 @@ fieldset[disabled] .form-control {
         padding-right: 0; }
         .sidebar .menu .list .ml-menu span {
           font-weight: normal;
-          font-size: 14px;
+          font-size: 16px;
           margin: 3px 0 1px 6px; }
         .sidebar .menu .list .ml-menu li a {
           padding-right: 55px;

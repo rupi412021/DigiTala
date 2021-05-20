@@ -1941,7 +1941,8 @@ namespace Digitala.Models.DAL
             String command;
             String prefix;
             StringBuilder sb = new StringBuilder();
-
+            if (s.MedicalSituation == null)
+                s.MedicalSituation = "";
             sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}' , '{10}', '{11}')", s.Dis1st, s.Dis2nd, s.StudentId, s.SFirstName, s.SLastName, s.SEmail, s.SGender, s.SAddress, s.MedicalSituation, s.SPhone, s.SDescripion,  s.SBirthDate.Year + "/" + s.SBirthDate.Month + "/" + s.SBirthDate.Day);
             prefix = "INSERT INTO Student " + "([1stDis], [2ndDis], [StudentId], [SFirstName], [SLastName], [SEmail], [SGender], [SAddress], [MedicalSituation], [SPhone], [SDescripion], [SBirthDate])";
 
@@ -1996,6 +1997,8 @@ namespace Digitala.Models.DAL
         private String BuildUpdateCommand(Students s)
         {
             String command;
+            if (s.MedicalSituation == null)
+                s.MedicalSituation = "";
             command = "UPDATE Student SET [1stDis] = " + s.Dis1st + ", [2ndDis] = " + s.Dis2nd + ", SDescripion = '" + s.SDescripion + "', SGender = '" + s.SGender +
                 "', SFirstName = '" + s.SFirstName + "', SLastName = '" + s.SLastName + "', SEmail = '" + s.SEmail + "', SAddress = '" + s.SAddress + "', MedicalSituation = '" + s.MedicalSituation +
                 "', SPhone = '" + s.SPhone + "', SBirthDate = '" + s.SBirthDate.Year+'/'+ s.SBirthDate.Month + '/' + s.SBirthDate.Day +  "' WHERE StudentId = " + s.StudentId;
