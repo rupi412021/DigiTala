@@ -112,6 +112,10 @@ namespace Digitala.Models
                     dbs.Insert(target);
                     dbs.DeleteSurvey(target.TarSerial);
                 }
+                else
+                {
+                    dbs.DeleteSurvey(target.TarSerial);
+                }
 
                 count = 0;
                 avgO = 0;
