@@ -19,6 +19,15 @@ namespace Digitala.Controllers
             return tlist;
         }
 
+        [HttpGet]
+        [Route("api/Targets/{studentId}/{year}")]
+        public List<Targets> Get(string studentId, int year)
+        {
+            Targets t = new Targets();
+            List<Targets> tlist = t.Read(studentId, year);
+            return tlist;
+        }
+
         [HttpDelete]
         [Route("api/Targets")]
         public List<Targets> Delete([FromBody]Targets t)

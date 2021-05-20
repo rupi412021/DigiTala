@@ -2035,7 +2035,7 @@ namespace Digitala.Models.DAL
             }
         }
 
-        public List<Targets> ReadTargetsById(RecommendedTargets r)
+        public List<Targets> ReadTargetsById(string matchStudentId, int matchYear)
         {
 
             SqlConnection con = null;
@@ -2046,7 +2046,7 @@ namespace Digitala.Models.DAL
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
                 String selectSTR = "Select TT.*, T.Suitability, T.Originality, T.NumOfUses, T.TargetText, FA.FunctionArea from TargetsInTala TT left join Targets T on T.Tserial=TT.Tserial join FunctionAreas FA on FA.FASerial=TT.FASerial"
-                    + " where TT.StudentId = " + r.MatchStudentId + " and TT.TYear = " + r.MatchYear;
+                    + " where TT.StudentId = " + matchStudentId + " and TT.TYear = " + matchYear;
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -2061,6 +2061,7 @@ namespace Digitala.Models.DAL
                     else
                         t.Target = (string)(dr["NewPhrase"]);
 
+                    t.TarTalaIndex = Convert.ToInt32(dr["Tindex"]);
                     t.TarSerial = Convert.ToInt32(dr["TSerial"]);
                     t.FaSerial = Convert.ToInt32(dr["FASerial"]);
                     t.SfaSerial = Convert.ToInt32(dr["SFASerial"]);
@@ -2180,7 +2181,7 @@ namespace Digitala.Models.DAL
                 }
 
                 if(Chosen.CountMatch > 0)
-                    Chosen.Recommendations = ReadTargetsById(Chosen);
+                    Chosen.Recommendations = ReadTargetsById(Chosen.MatchStudentId, Chosen.MatchYear);
 
                 else
                 {

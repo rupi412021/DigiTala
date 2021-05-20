@@ -21,8 +21,10 @@ namespace Digitala.Models
         bool newPhrase;
         List<string> tools;
         List<string> goals;
+        int tarTalaIndex;
+        string achieved;
 
-        public Targets(int tarSerial, int faSerial, int sfaSerial, string target, string functionArea, string subFunctionArea, double suitability, double originality, int numOfUses, bool newTar, bool newPhrase, List<string> tools, List<string> goals)
+        public Targets(int tarSerial, int faSerial, int sfaSerial, string target, string functionArea, string subFunctionArea, double suitability, double originality, int numOfUses, bool newTar, bool newPhrase, List<string> tools, List<string> goals, int tarTalaIndex, string achieved)
         {
             TarSerial = tarSerial;
             FaSerial = faSerial;
@@ -37,6 +39,8 @@ namespace Digitala.Models
             Tools = tools;
             Goals = goals;
             NewPhrase = newPhrase;
+            TarTalaIndex = tarTalaIndex;
+            Achieved = achieved;
         }
 
         public Targets() { }
@@ -54,12 +58,20 @@ namespace Digitala.Models
         public bool NewPhrase { get => newPhrase; set => newPhrase = value; }
         public List<string> Tools { get => tools; set => tools = value; }
         public List<string> Goals { get => goals; set => goals = value; }
-
+        public int TarTalaIndex { get => tarTalaIndex; set => tarTalaIndex = value; }
+        public string Achieved { get => achieved; set => achieved = value; }
 
         public List<Targets> Read()
         {
             DBServices dbs = new DBServices();
             List<Targets> tList = dbs.ReadTargets();
+            return tList;
+        }
+
+        public List<Targets> Read(string studentId, int year)
+        {
+            DBServices dbs = new DBServices();
+            List<Targets> tList = dbs.ReadTargetsById(studentId, year);
             return tList;
         }
 

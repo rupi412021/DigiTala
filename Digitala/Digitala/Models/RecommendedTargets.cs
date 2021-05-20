@@ -37,7 +37,7 @@ namespace Digitala.Models
         public List<Targets> Recommendations { get => recommendations; set => recommendations = value; }
         public double CountMatch { get => countMatch; set => countMatch = value; }
 
-    public RecommendedTargets GetRecommendedTargets()
+        public RecommendedTargets GetRecommendedTargets()
         {
             DBServices dbs = new DBServices();
             List<Students> S = dbs.ReadStudents();
@@ -58,5 +58,6 @@ namespace Digitala.Models
 
             return recommendations;
         }
+
     }
 }

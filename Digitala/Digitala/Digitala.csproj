@@ -262,6 +262,7 @@
     <Content Include="images\M.png" />
     <Content Include="images\one.png" />
     <Content Include="images\one_chosen.png" />
+    <Content Include="images\tag.bmp" />
     <Content Include="images\talaEmpty.png" />
     <Content Include="images\talaFull.png" />
     <Content Include="images\three.png" />

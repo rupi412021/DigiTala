@@ -272,7 +272,7 @@
                 document.getElementById("collapseFour_19").setAttribute("aria-expanded", "true");
                 document.getElementById("collapseFour_19").classList.add("in");
                 $(".DeleteStudent").attr("hidden", true);
-                ajaxCall("GET", "../api/Goals/" + newID + "/" + year, "", getGoalsForStudentSuccess, error);
+                ajaxCall("GET", "../api/Targets/" + newID + "/" + year, "", getTargetsSuccess, error);
             }
         }
 
@@ -288,19 +288,26 @@
 
         function getGoalsForStudentSuccess(goalsForStudent) {
             console.log(goalsForStudent);
+            console.log(targetsList);
+            
             AllGoalsForStudent = goalsForStudent;
-            renderGoalsForStatus = '<p style="text-align: left">סטטוס יעד<p>';
-            for (var i = 0; i < AllGoalsForStudent.length; i++) {
-                renderGoalsForStatus += '<div class="list-group-item" style="text-align: right">';
-                renderGoalsForStatus += '<span id="goal-' + AllGoalsForStudent[i].GoalId + '"><b>' + AllGoalsForStudent[i].Goal + '</b></span>';
-                renderGoalsForStatus += "<button type='button' class='UpdateStatusGoal btn-trans' id='goalId-" + AllGoalsForStudent[i].GoalId + "'>";
-                if (AllGoalsForStudent[i].GoalStatus == "E")
-                    renderGoalsForStatus += '<img src="../images/one.png"/></button>';
-                else if (AllGoalsForStudent[i].GoalStatus == "P")
-                    renderGoalsForStatus += '<img src="../images/three.png"/></button>';
-                else
-                    renderGoalsForStatus += '<img src="../images/five_chosen.png"/></button>';
-                renderGoalsForStatus += "</div>";
+            renderGoalsForStatus = '<p style="text-align: left; float: left">סטטוס יעד</p>';
+            for (var j = 0; j < targetsList.length; j++) {
+                renderGoalsForStatus += '<div class="targetTitle"><img src="../images/tag.bmp" /><label>' + targetsList[j].Target+'</label></div>';
+                for (var i = 0; i < AllGoalsForStudent.length; i++) {
+                    if (targetsList[j].TarTalaIndex == AllGoalsForStudent[i].SerialTarget) {
+                        renderGoalsForStatus += '<div class="list-group-item goalstatlist">';
+                        renderGoalsForStatus += '<span id="goal-' + AllGoalsForStudent[i].GoalId + '">' + AllGoalsForStudent[i].Goal + '</span>';
+                        renderGoalsForStatus += "<button type='button' class='UpdateStatusGoal btn-trans' id='goalId-" + AllGoalsForStudent[i].GoalId + "'>";
+                        if (AllGoalsForStudent[i].GoalStatus == "E")
+                            renderGoalsForStatus += '<img src="../images/one.png"/></button>';
+                        else if (AllGoalsForStudent[i].GoalStatus == "P")
+                            renderGoalsForStatus += '<img src="../images/three.png"/></button>';
+                        else
+                            renderGoalsForStatus += '<img src="../images/five_chosen.png"/></button>';
+                        renderGoalsForStatus += "</div>";
+                    }
+                }
             }
 
             $("#area_4").html(renderGoalsForStatus);
@@ -366,6 +373,11 @@
 
         function deleteStudenterror(data) {
             console.log("student was not deleted");
+        }
+
+        function getTargetsSuccess(targets) {
+            targetsList = targets;
+            ajaxCall("GET", "../api/Goals/" + newID + "/" + year, "", getGoalsForStudentSuccess, error);
         }
     </script>
 </head>
