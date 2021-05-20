@@ -440,8 +440,8 @@
 
         function GetRecommendationsSuccess(recommendationsData) {
             console.log(recommendationsData); 
-        
-            if (recommendationsData.Recommendations == null && indicator == 0) {
+
+            if (recommendationsData.Recommendations.length == 0 && indicator == 0) {
                 swal({
                     title: "לא נמצאו מטרות מתאימות",
                     text: "ניתן להוסיף מטרות חדשות באופן ידני או לחזור לאחור ולבחור מאפיינים נוספים",
@@ -449,12 +449,25 @@
                     confirmButtonText: "אשר"
                 });
             }
-            else if (recommendationsData.Recommendations != null && indicator == 0) {
+            else if (recommendationsData.Recommendations.length > 0 && indicator == 0) {
                 TargetForTala = recommendationsData.Recommendations;
                 renderTargetsToPage(TargetForTala);
             }
 
-            else if (recommendationsData.Recommendations != null && indicator == 1) {
+            else if (recommendationsData.Recommendations.length > 0 && indicator == 1 && TargetForTala.length == 0) {
+                TargetForTala = recommendationsData.Recommendations;
+                renderTargetsToPage(TargetForTala);
+            }
+
+            else if (recommendationsData.Recommendations.length == 0 && indicator == 1 && TargetForTala.length == 0) {
+                swal({
+                    title: "לא נמצאו מטרות מתאימות",
+                    text: "ניתן להוסיף מטרות חדשות באופן ידני או לחזור לאחור ולבחור מאפיינים נוספים",
+                    type: "warning",
+                    confirmButtonText: "אשר"
+                });
+            }
+            else if (recommendationsData.Recommendations.length > 0 && indicator == 1 && TargetForTala.length > 0) {
                 swal({
                     title: "האם ברצונך למחוק את המטרות הקיימות ולהביא חדשות?",
                     type: "warning",
@@ -468,15 +481,7 @@
                     renderTargetsToPage(TargetForTala);
                 });
             }
-            else if (indicator == 1 && TargetForTala.length == 0){
-                swal({
-                    title: "לא נמצאו מטרות מתאימות",
-                    text: "ניתן להוסיף מטרות חדשות באופן ידני או לחזור לאחור ולבחור מאפיינים נוספים",
-                    type: "warning",
-                    confirmButtonText: "אשר"
-                });
-            }
-
+            
             else {
                 renderTargetsToPage(TargetForTala);
             }

@@ -2106,9 +2106,8 @@ namespace Digitala.Models.DAL
             SqlConnection con = null;
             List<RecommendedTargets> MatchStudentsList = new List<RecommendedTargets>();
             RecommendedTargets Chosen = new RecommendedTargets();
-            int tablefull = 0;
             int countMatch = 0;
-            int ones = 0;
+            int missmatch = 0;
             double score = 0;
             try
             {
@@ -2124,10 +2123,10 @@ namespace Digitala.Models.DAL
                 {
                     if ((string)dr["StudentId"] != rt.NewStudentId)
                     {
-                        for (int i = 1; i < dr.FieldCount-2; i++)
+                        for (int i = 1; i <= dr.FieldCount-2; i++)
                         {
                             if (Convert.ToInt32(dr["char_" + i]) == 1)
-                                ones++;
+                                missmatch++;
                         }
                         for (int j = 0; j < rt.NewStudentChars.Count; j++)
                         {
@@ -2141,16 +2140,18 @@ namespace Digitala.Models.DAL
                                         if (Convert.ToInt32(dr[c]) == 1)
                                         {
                                             countMatch++;
-                                            ones--;
-                                        }                                      
-                                        tablefull = 1;
+                                            missmatch--;
+                                        }                                                                              
                                         break;
                                     }
                                 }
                             }
                         }
 
-                        score = countMatch * 0.75 + (dr.FieldCount - 2 - countMatch - ones) * 0.25;
+                        if (countMatch > missmatch)
+                            score = countMatch * 0.8 + (dr.FieldCount - 2 - countMatch - missmatch) * 0.2;
+                        else
+                            score = 0;
 
                         RecommendedTargets tempR = new RecommendedTargets();
 
@@ -2161,13 +2162,12 @@ namespace Digitala.Models.DAL
                         MatchStudentsList.Add(tempR);
 
                         countMatch = 0;
-                        ones = 0;
+                        missmatch = 0;
                         score = 0;
                     }
                 }
 
                 double max = 0;
-                //we can check => to max and count it. if there are more than numOfStudent/5 similar - to bring random student between them
                 foreach (var item in MatchStudentsList)
                 {
                     if (item.CountMatch > max)
@@ -2179,21 +2179,25 @@ namespace Digitala.Models.DAL
                     }
                 }
 
-                if(Chosen.CountMatch >= (dr.FieldCount - 2)*0.25)
+                if(Chosen.CountMatch > 0)
                     Chosen.Recommendations = ReadTargetsById(Chosen);
 
-                if (tablefull == 0 || Chosen.CountMatch < (dr.FieldCount - 2 - rt.NewStudentChars.Count) * 0.25)
+                else
                 {
                     List <Targets> TargetsList = ReadTargets();
-                    List<Chararcteristics> chars= ReadChararcteristics();
+                    List<Chararcteristics> chars = ReadChararcteristics();
                     List<Targets> recommended = new List<Targets>();
 
                     for (int i = 0; i < rt.NewStudentChars.Count; i++)
                     {
                         for (int j = 0; j < chars.Count; j++)
                         {
-                            if (rt.NewStudentChars[i].CharacteristicKey == chars[j].CharacteristicKey)
-                                rt.NewStudentChars[i].SfaSerial = chars[j].SfaSerial;
+                            if (rt.NewStudentChars[i].CharacteristicKey == chars[j].CharacteristicKey) {
+                                if (chars[j].IsWeakness == true)
+                                    rt.NewStudentChars[i].SfaSerial = chars[j].SfaSerial;
+                                else
+                                    rt.NewStudentChars[i].SfaSerial = 0;
+                            }
                         }
                     }
 
