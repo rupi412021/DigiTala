@@ -7,6 +7,12 @@
     font-size: 12px;
     font-weight: normal;
 }
+.surveytables > tbody > tr > td {
+    font-size: 14px;
+}
+.surveytables > tbody > tr > td > label {
+    font-size: 16px;
+}
 .colRight {
     float: right;
     padding: 0;
