@@ -94,6 +94,153 @@ namespace Digitala.Models.DAL
             }
 
         }
+        
+        public List<Privileges> ReadPrivileges()
+        {
+
+            SqlConnection con = null;
+            List<Privileges> dList = new List<Privileges>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "Select * from Privileges";
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Privileges p = new Privileges();
+
+                    p.DCode = Convert.ToInt32(dr["PId"]);
+                    p.DPhrase = (string)(dr["Privilege"]);
+
+                    dList.Add(p);
+                }
+
+                return dList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Privileges from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
+        public List<Privileges> ReadPrivileges(string studentId, string year)
+        {
+
+            SqlConnection con = null;
+            List<Privileges> dList = new List<Privileges>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "Select P.* from PrivilegesForStudent PFS inner join Privileges P on PFS.PId = P.PId Where PFS.StudentId = " + studentId + " and PFS.Year = " + year;
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Privileges p = new Privileges();
+
+                    p.DCode = Convert.ToInt32(dr["PId"]);
+                    p.DPhrase = (string)(dr["Privilege"]);
+
+                    dList.Add(p);
+                }
+
+                return dList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Privileges from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
+        public int InsertPrivileges(Privileges p)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildInsertPrivilegesCommand(p);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("התאמות לא נוספות למערכת", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildInsertPrivilegesCommand(Privileges p)
+        {
+
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Values('{0}', '{1}', '{2}')", p.DCode, p.SId, p.Year);
+            prefix = "INSERT INTO PrivilegesForStudent " + "([PId], [StudentId], [Year])";
+
+            command = prefix + sb.ToString();
+
+            return command;
+        }
 
         public List<TargetsSurvey> ReadTargetsSurvey(string teacherId)
         {
@@ -194,6 +341,53 @@ namespace Digitala.Models.DAL
         {
             String command;            
             command = "Delete FROM TargetsSurvey WHERE TargetId = " +id;
+            return command;
+        }
+
+        public int DeletePrivileges(Privileges p)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildDeletePrivileges(p);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("ERROR deleting Privileges for student", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildDeletePrivileges(Privileges p)
+        {
+            String command;
+            command = "Delete FROM PrivilegesForStudent WHERE PId = " + p.DCode + " and StudentId = "+ p.SId + " and Year = "+ p.Year;
+
             return command;
         }
 

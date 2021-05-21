@@ -41,7 +41,7 @@
             studentName = localStorage["StudentName"];
             newID = localStorage["StudentID"];
             $("#studentName").html(studentName);
-            year = localStorage["TeacherYear"]
+            year = localStorage["TeacherYear"];
             mode = "";
             ajaxCall("GET", "../api/Talas/" + newID + "/" + year, "", getTalaSuccess, error);
 
@@ -50,6 +50,8 @@
             ajaxCall("GET", "../api/Students/" + TeachID + "/" + year, "", getStudentsByTeacherSuccess, error);
 
             ajaxCall("GET", "../api/Custodian/" + newID, "", getStudentsCustodianSuccess, error);
+
+            ajaxCall("GET", "../api/Privileges", "", getAllPrivilegesSuccess, error);
 
             $(document).on("click", ".UpdateStatusGoal", function () {
                 thisStatusId = this.getAttribute('id');
@@ -108,14 +110,14 @@
                                 dis2ID = document.getElementById("Dis2List").options.item(i).id;
                         }
                         bday = $("#SBDay").val();
-                        let year = bday[6] + bday[7] + bday[8] + bday[9];
+                        let byear = bday[6] + bday[7] + bday[8] + bday[9];
                         let month = bday[3] + bday[4];
                         let day = bday[0] + bday[1];
 
                         var monthsAfter = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
                         month = monthsAfter[parseInt(month)-1];
 
-                        bday = new Date(year, month, day);
+                        bday = new Date(byear, month, day);
 
                         studentObj = {
                             SFirstName: $("#firstSName").val(),
@@ -134,7 +136,7 @@
 
                         ajaxCall("PUT", "../api/Students", JSON.stringify(studentObj), updateStudentSuccess, error);
 
-                        if ($("#contactEmail").val() != null) {
+                        if ($("#contactEmail").val() != null && $("#contactEmail").val() != "") {
                             custObj = {
                                 CSID: newID,
                                 CName: $("#contactName").val(),
@@ -147,6 +149,26 @@
                             else
                                 ajaxCall("PUT", "../api/Custodian", JSON.stringify(custObj), PutStudentsCustodianSuccess, error);
                         }
+
+                        if (PrivilegesForStudent.length > 0)
+                            for (var i = 0; i < PrivilegesForStudent.length; i++) {
+                                tempPriv = {
+                                    DCode: PrivilegesForStudent[i].DCode,
+                                    SId: newID,
+                                    Year: year
+                                }
+                                ajaxCall("DELETE", "../api/Privileges", JSON.stringify(tempPriv), deletePrivilegesSuccess, error);
+                            }
+                            for (var i = 0; i < AllPrivileges.length; i++) {
+                                if ($("#md_checkbox_" + AllPrivileges[i].DCode).is(':checked') == true) {
+                                tempPriv = {
+                                    DCode: AllPrivileges[i].DCode,
+                                    SId: newID,
+                                    Year: year
+                                }
+                                ajaxCall("POST", "../api/Privileges", JSON.stringify(tempPriv), postPrivilegesForStudentSuccess, error);
+                            }
+                        }
                     });
                 }
 
@@ -158,6 +180,9 @@
                     $("#contactName").attr('disabled', false);
                     $("#contactPhone").attr('disabled', false);
                     $("#contactEmail").attr('disabled', false);
+                    for (var i = 0; i < AllPrivileges.length; i++) {
+                        $("#md_checkbox_" + AllPrivileges[i].DCode).attr('disabled', false);
+                    }
                     $(".EditStudentProfile").html("<i class='material-icons'>save</i>");
                     $("#collapse_1").removeClass("panel-col-light-blue");
                     $("#collapse_2").removeClass("panel-col-teal");
@@ -222,6 +247,16 @@
             
             window.setTimeout(toggleMenu, 1000);
         });
+
+        function deletePrivilegesSuccess(data) {
+            console.log("deletePrivilegesSuccess");
+        }
+
+        function postPrivilegesForStudentSuccess(data) {
+            for (var i = 0; i < AllPrivileges.length; i++) {
+                $("#md_checkbox_" + AllPrivileges[i].DCode).attr('disabled', true);
+            }
+        }
 
         function PutStudentsCustodianSuccess(custodianForStudent) {
             $("#contactName").attr('disabled', true);
@@ -289,11 +324,11 @@
         function getGoalsForStudentSuccess(goalsForStudent) {
             console.log(goalsForStudent);
             console.log(targetsList);
-            
+
             AllGoalsForStudent = goalsForStudent;
             renderGoalsForStatus = '<p style="text-align: left; float: left">סטטוס יעד</p>';
             for (var j = 0; j < targetsList.length; j++) {
-                renderGoalsForStatus += '<div class="targetTitle"><img src="../images/tag.bmp" /><label>' + targetsList[j].Target+'</label></div>';
+                renderGoalsForStatus += '<div class="targetTitle"><img src="../images/tag.bmp" /><label>' + targetsList[j].Target + '</label></div>';
                 for (var i = 0; i < AllGoalsForStudent.length; i++) {
                     if (targetsList[j].TarTalaIndex == AllGoalsForStudent[i].SerialTarget) {
                         renderGoalsForStatus += '<div class="list-group-item goalstatlist">';
@@ -313,6 +348,24 @@
             $("#area_4").html(renderGoalsForStatus);
             $("#talaHeader").html("עמידה ביעדי תוכנית הלימודים");
 
+        }
+
+        function getAllPrivilegesSuccess(AllPrivilegesList) {
+            AllPrivileges = AllPrivilegesList;
+            prev = "";
+            for (var i = 0; i < AllPrivileges.length; i++) {
+                prev += '<div class="col-sm-4 col-lg-3"><input type="checkbox" disabled="disabled" id="md_checkbox_' + AllPrivileges[i].DCode + '" class="chk-col-blue-grey" />';
+                prev += '<label class="custom-control-label" for="md_checkbox_' + AllPrivileges[i].DCode + '">' + AllPrivileges[i].DPhrase+'</label></div>'
+            }
+            $("#PrivilegesCheckBox").html(prev);  
+            ajaxCall("GET", "../api/Privileges/" + newID + "/" + year, "", getPrivilegesForStudentSuccess, error);
+        }
+
+        function getPrivilegesForStudentSuccess(PrivilegesForStudentList) {
+            PrivilegesForStudent = PrivilegesForStudentList;
+            for (var i = 0; i < PrivilegesForStudent.length; i++) {
+                $("#md_checkbox_" + PrivilegesForStudent[i].DCode).attr('checked', 'checked');
+            }
         }
 
         function getStudentsByTeacherSuccess(studentsList) {
@@ -357,7 +410,7 @@
         }
 
         function error(data) {
-            console.log("ERROR");
+            console.log(data);
         }
 
         function deleteStudentsuccess(data) {
@@ -647,76 +700,12 @@
                                     <div id="collapseThree_19" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree_19">
                                         <div class="panel-body">
                                             <div class="list-group" id="area_3">
-                                                <div class="demo-checkbox studentsFields">
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_1" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_1">תוספת זמן בבחינה</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_9" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_9">הקראת שאלון</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_2" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_2">מבחן מותאם</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_10" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_10">הכתבה לבוחן ניטרלי</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_3" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_3">מבחן בעל פה</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_11" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_11">הפחתה בשיעורי הבית</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_4" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_4">מבחן באמצעות הקלדה במחשב</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_12" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_12">היבחנות בחדר נפרד</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_5" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_5">טופס מוגדל במבחן</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_13" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_13">היבחנות עם מלווה מוכר</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_6" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_6">נוסחאון מורחב במתמטיקה</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_14" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_14">שימוש במילונית</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_7" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_7">התעלמות משגיאות כתיב</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_15" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_15">יציאה משיעור ללא אישור</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_8" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_8">היבחנות בחדר לליקוי שמיעה</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="checkbox" id="md_checkbox_16" class="chk-col-blue-grey" />
-                                                        <label class="custom-control-label" for="md_checkbox_16">שימוש במחשב בזמן שיעור</label>
-                                                    </div>
-                                                    <div class="col-sm-4 colRight">
-                                                        <div class="input-group">
-                                                            <div class="form-line">
-                                                                <input type="text" class="form-control" id="OtherValues" placeholder="אחר">
-                                                            </div>
+                                                <div class="demo-checkbox studentsFields" id="PrivilegesCheckBox">
+                                                </div>
+                                                <div class="col-sm-4 colRight">
+                                                    <div class="input-group">
+                                                        <div class="form-line">
+                                                            <input type="text" class="form-control" id="OtherValues" placeholder="אחר">
                                                         </div>
                                                     </div>
                                                 </div>

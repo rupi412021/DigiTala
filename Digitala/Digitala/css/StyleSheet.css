@@ -341,7 +341,9 @@ xx {
     padding-right: 10px;
 }
 div.col-sm-3 .custom-control-label::before,
-div.col-sm-3 .custom-control-label::after {
+div.col-sm-3 .custom-control-label::after,
+div.col-sm-4 .custom-control-label::before,
+div.col-sm-4 .custom-control-label::after {
     right: -1.5rem;
     left: initial;
 }

@@ -22,7 +22,7 @@ namespace Digitala.Models
         bool hasTala;
         string medicalSituation;
 
-        public Students(string studentId, string sFirstName, string sLastName, string sEmail, DateTime sBirthDate, string sGender, string sAddress, string sPhone, string sDescripion, int dis1st, int dis2nd, bool hasTala, string medicalSituation)
+        public Students(string studentId, string sFirstName, string sLastName, string sEmail, DateTime sBirthDate, string sGender, string sAddress, string sPhone, string sDescripion, int dis1st, int dis2nd, bool hasTala, string medicalSituation, List<Privileges> priv)
         {
             StudentId = studentId;
             SFirstName = sFirstName;
@@ -61,7 +61,7 @@ namespace Digitala.Models
             List<Students> sList = dbs.ReadStudents();
             return sList;
         }
-
+        
         public List<Students> Insert()
         {
             DBServices dbs = new DBServices();

@@ -3653,7 +3653,7 @@ section.content {
   padding-left: 26px;
   height: 25px;
   line-height: 25px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: normal; }
 
 [type="radio"].radio-col-red:checked + label:after {

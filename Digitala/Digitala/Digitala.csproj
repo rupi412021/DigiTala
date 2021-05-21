@@ -159,6 +159,7 @@
     <Compile Include="Controllers\CustodianController.cs" />
     <Compile Include="Controllers\FuncAreasController.cs" />
     <Compile Include="Controllers\GoalsController.cs" />
+    <Compile Include="Controllers\PrivilegesController.cs" />
     <Compile Include="Controllers\SchoolsController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\TalasController.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Models\Chararcteristics.cs" />
     <Compile Include="Models\Custodian.cs" />
     <Compile Include="Models\DAL\DBServices.cs" />
+    <Compile Include="Models\Privileges.cs" />
     <Compile Include="Models\Goals.cs" />
     <Compile Include="Models\RecommendedTargets.cs" />
     <Compile Include="Models\Schools.cs" />

@@ -17,7 +17,7 @@ namespace Digitala.Controllers
             Students s = new Students();
             List<Students> slist = s.Read();
             return slist;
-        }
+        }  
 
         [HttpGet]
         [Route("api/Students/{teacherId}/{year}")]
