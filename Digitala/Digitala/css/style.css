@@ -7833,13 +7833,16 @@ fieldset[disabled] .form-control {
     margin-bottom: 30px;
     text-align: center; }
   .login-page .login-box a {
-    font-size: 14px;
+    font-size: 16px;
     text-decoration: none;
     color: #00BCD4; }
-  .login-page .login-box .logo {
-    margin-bottom: 20px; }
+    .login-page .login-box .logo {
+        margin-bottom: 20px;
+        text-align: center;
+        color: white;
+    }
     .login-page .login-box .logo a {
-      font-size: 36px;
+      font-size: 40px;
       display: block;
       width: 100%;
       text-align: center;
@@ -7865,13 +7868,16 @@ fieldset[disabled] .form-control {
     margin-bottom: 30px;
     text-align: center; }
   .signup-page .signup-box a {
-    font-size: 14px;
+    font-size: 16px;
     text-decoration: none;
     color: #00BCD4; }
-  .signup-page .signup-box .logo {
-    margin-bottom: 20px; }
+    .signup-page .signup-box .logo {
+        margin-bottom: 20px;
+        text-align: center;
+        color: white;
+    }
     .signup-page .signup-box .logo a {
-      font-size: 36px;
+      font-size: 40px;
       display: block;
       width: 100%;
       text-align: center;
@@ -7897,13 +7903,16 @@ fieldset[disabled] .form-control {
     margin-bottom: 30px;
     text-align: center; }
   .fp-page .fp-box a {
-    font-size: 14px;
+    font-size: 16px;
     text-decoration: none;
     color: #00BCD4; }
-  .fp-page .fp-box .logo {
-    margin-bottom: 20px; }
+    .fp-page .fp-box .logo {
+        margin-bottom: 20px;
+        text-align: center;
+        color: white;
+    }
     .fp-page .fp-box .logo a {
-      font-size: 36px;
+      font-size: 40px;
       display: block;
       width: 100%;
       text-align: center;
