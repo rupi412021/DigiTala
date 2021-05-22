@@ -45,6 +45,39 @@ namespace Digitala.Models
         {
             DBServices dbs = new DBServices();
             dbs.Update(this);
+            UpdateTargetsAchievement(this.SerialTarget);
+        }
+
+        public void UpdateTargetsAchievement(int serialTar)
+        {
+            DBServices dbs = new DBServices();
+            List<Goals> gList = Read(this.StudentId, this.Year);
+            int E = 0;
+            int P = 0;
+            int countGoals = 0;
+            for (int i = 0; i < gList.Count; i++)
+            {
+                if(gList[i].SerialTarget == serialTar)
+                {
+                    countGoals++;
+                    if (gList[i].goalStatus == 'E'.ToString())
+                    {
+                        E++;
+                    }
+                    else if (gList[i].goalStatus == 'P'.ToString())
+                    {
+                        P++;
+                    }
+
+                }
+            }
+
+            if(E == countGoals)
+                dbs.UpdateTargetsAchievement(serialTar, 'E');
+            else if(E+P == 0)
+                dbs.UpdateTargetsAchievement(serialTar, 'F');
+            else
+                dbs.UpdateTargetsAchievement(serialTar, 'P');
         }
     }
 }

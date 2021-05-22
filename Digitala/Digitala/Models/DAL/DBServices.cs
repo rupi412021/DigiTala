@@ -1919,7 +1919,7 @@ namespace Digitala.Models.DAL
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
                 String selectSTR = "SELECT S.* FROM Teachers T inner join StudentsInClass SIC on T.TSchool = SIC.SCSchId and T.TYear = SIC.SCYear and T.TClass = SIC.SCName " +
-                                    "inner join Student S on SIC.SCstdID = S.StudentId WHERE T.TId = " + teacherId + " and T.TYear = " + year;
+                                    "inner join Student S on SIC.SCstdID = S.StudentId WHERE T.TId = " + teacherId + " and T.TYear = " + year + " ORDER BY SLastName ASC";
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -2735,6 +2735,51 @@ namespace Digitala.Models.DAL
         {
             String command;
             command = "UPDATE Custodian SET CEmail = '" + c.CEmail + "', CFullName = '" + c.CName + "', CPhone = '" + c.CPhone + "' WHERE StudentId = " + c.CSID;
+
+            return command;
+        }
+
+        public int UpdateTargetsAchievement(int serialTar, char status)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildUpdateAchievementCommand(serialTar, status);
+
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("סטטוס מטרה לא עודכן", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
+
+        private String BuildUpdateAchievementCommand(int serialTar, char status)
+        {
+            String command;
+            command = "UPDATE TargetsInTala SET Achieved = '" + status + "' WHERE Tindex = " + serialTar;
 
             return command;
         }
