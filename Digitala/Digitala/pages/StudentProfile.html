@@ -239,8 +239,13 @@
                     $("#collapse_3").removeClass("panel-col-yellow");
                     $(".CancelEditsStudentProfile").attr('hidden', true);
                     $(".DeleteStudent").attr('hidden',false);
-
+                    for (var i = 0; i < AllPrivileges.length; i++) {
+                        $("#md_checkbox_" + AllPrivileges[i].DCode).attr('disabled', true);
+                    }
                     getStudentsByTeacherSuccess(AllStudents);
+                    $("#contactName").attr('disabled', true);
+                    $("#contactPhone").attr('disabled', true);
+                    $("#contactEmail").attr('disabled', true);
 
                 });
             });
