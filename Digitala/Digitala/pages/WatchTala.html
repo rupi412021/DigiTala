@@ -81,8 +81,9 @@
             for (var j = 0; j < TLis.length; j++) {
                 if (cFA != TLis[j].FaSerial) {
                     cFA = TLis[j].FaSerial;                       
-                    render += '<h2>' + TLis[j].FunctionArea + "</h2>";
-                    render += '<div class="panel panel-col-grey"><div class="panel-heading" ><h4 class="panel-title"><a>' + TLis[j].Target + '</a></h4></div>';
+                    render += '<div class="panel panel-col-grey"><div class="panel-heading" ><h4 class="panel-title"><a>' + TLis[j].FunctionArea  + '</a></h4></div>';
+                    render += '<h3>' + TLis[j].Target  + "</h3>";
+                    
                     render += '<h4>יעדים</h4>';
                     for (var i = 0; i < goalsList.length; i++) {                       
                         if (TLis[j].TarTalaIndex == goalsList[i].SerialTarget) {
