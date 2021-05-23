@@ -41,11 +41,26 @@
             str = "תוכנית לימודים אישית לשנת " + year;
 
             $("#k").html(str);
-
+            ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
             ajaxCall("GET", "../api/Targets/" + newID + "/" + year, "", getTargetsSuccess, getTargetsError);
 
         });
+        function getStudentsSuccess(studentslist) {
+            sList = studentslist;
+            description = "";
+            for (var i = 0; i < sList.length; i++) {
+                if (sList.StudentId == newID)
+                    description = sList.SDescripion;
+            }
 
+            $("#des").html(description);
+        }
+
+        function getStudentsError() {
+
+            console.log("Cant get Students");
+
+        }
         function getTargetsSuccess(targetsList) {
             TLis = targetsList;
             console.log(TLis);
@@ -58,9 +73,9 @@
             cFA = -1;
             for (var j = 0; j < TLis.length; j++) {
                 if (cFA != TLis[j].FaSerial) {
-                    cFA = TLis.FaSerial;
-                    render += "<h4>" + TLis[j].FunctionArea + "</h4>";
-                    render += '<div class="panel panel-col-grey"><div class="panel-heading" ><h4 class="panel-title"><a >' + TLis[j].Target + '</a></h4></div>';
+                    cFA = TLis[j].FaSerial;                       
+                    render += '<h2>'  + TLis[j].FunctionArea + "</h2>";
+                    render += '<div class="panel panel-col-grey"><div class="panel-heading" ><h4 class="panel-title"><a>' + TLis[j].Target + '</a></h4></div>';
                     for (var i = 0; i < goalsList.length; i++) {
                         if (TLis[j].TarTalaIndex == goalsList[i].SerialTarget) {
                             render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
@@ -70,7 +85,7 @@
                     }
                 }
                 else {
-                    render += '<div class="panel panel-col-grey"><div class="panel-heading" ><h4 class="panel-title"><a >' + TLis[j].Target + '</a></h4></div>';
+                    render += '<div class="panel panel-col-grey"><div class="panel-heading" ><h4 class="panel-title"><a>' + TLis[j].Target + '</a></h4></div>';
                     for (var i = 0; i < goalsList.length; i++) {
                         if (TLis[j].TarTalaIndex == goalsList[i].SerialTarget) {
                             render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
@@ -82,6 +97,7 @@
             }
             $("#accordion_19").html(render);
 
+            
 
         }
 
@@ -130,6 +146,7 @@
         <div class="container-fluid-general">
             <div class="block-header">
                 <h1 id="k"></h1>
+                <p id="des"></p>
             </div>
             <!-- Widgets -->
 
