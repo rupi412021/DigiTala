@@ -57,10 +57,11 @@
         }
 
         function getStudentsError() {
-
+            
             console.log("Cant get Students");
 
         }
+
         function getTargetsSuccess(targetsList) {
             TLis = targetsList;
             console.log(TLis);
@@ -80,23 +81,50 @@
             for (var j = 0; j < TLis.length; j++) {
                 if (cFA != TLis[j].FaSerial) {
                     cFA = TLis[j].FaSerial;                       
-                    render += '<h2>'  + TLis[j].FunctionArea + "</h2>";
+                    render += '<h2>' + TLis[j].FunctionArea + "</h2>";
                     render += '<div class="panel panel-col-grey"><div class="panel-heading" ><h4 class="panel-title"><a>' + TLis[j].Target + '</a></h4></div>';
+                    render += '<h4>יעדים</h4>';
                     for (var i = 0; i < goalsList.length; i++) {
+                        
                         if (TLis[j].TarTalaIndex == goalsList[i].SerialTarget) {
                             render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
                             render += goalsList[i].Goal;
                             render += "</div></div></div>";
+                            
                         }
+                    }
+                    render += '<h4>אמצעים</h4>';
+
+                    for (var z = 0; z < StudentsTools.length; z++) {
+                        if (TLis[j].TarTalaIndex == StudentsTools[z].Tserial) {
+                            render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
+                            render += StudentsTools[z].Tool;
+                            render += "</div></div></div>";
+
+                        }
+
                     }
                 }
                 else {
                     render += '<div class="panel panel-col-grey"><div class="panel-heading" ><h4 class="panel-title"><a>' + TLis[j].Target + '</a></h4></div>';
+                    render += '<h4>יעדים</h4>';
                     for (var i = 0; i < goalsList.length; i++) {
+
                         if (TLis[j].TarTalaIndex == goalsList[i].SerialTarget) {
                             render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
                             render += goalsList[i].Goal;
                             render += "</div></div></div>";
+
+                        }
+                    }
+                    render += '<h4>אמצעים</h4>';
+                    
+                    for (var z = 0; z < StudentsTools.length; z++) {
+                        if (TLis[j].TarTalaIndex == StudentsTools[z].Tserial) {
+                            render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
+                            render += StudentsTools[z].Tool;
+                            render += "</div></div></div>";
+
                         }
                     }
                 }
@@ -167,8 +195,8 @@
                             <h3 id="studentName"></h3>
                         </div>
                         <div class="body">
-                            <div class="panel-group" id="accordion_19" role="tablist" aria-multiselectable="true">
-                                
+                            <div class="panel-group " id="accordion_19" role="tablist" aria-multiselectable="true">
+
                             </div>
                         </div>
                         <!-- #END# Body -->
