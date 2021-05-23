@@ -55,13 +55,28 @@
         function getGolasSuccess(goalsList) {
             console.log(goalsList);
             render = "";
+            cFA = -1;
             for (var j = 0; j < TLis.length; j++) {
-                render += '<div class="panel panel-col-blue-grey"><div class="panel-heading" ><h4 class="panel-title"><a >' + TLis[j].Target + '</a></h4></div>';
-                for (var i = 0; i < goalsList.length; i++) {
-                    if (TLis[j].TarTalaIndex == goalsList[i].SerialTarget) {
-                        render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
-                        render += goalsList[i].Goal;
-                        render += "</div></div></div>";
+                if (cFA != TLis[j].FaSerial) {
+                    cFA = TLis.FaSerial;
+                    render += "<h4>" + TLis[j].FunctionArea + "</h4>";
+                    render += '<div class="panel panel-col-grey"><div class="panel-heading" ><h4 class="panel-title"><a >' + TLis[j].Target + '</a></h4></div>';
+                    for (var i = 0; i < goalsList.length; i++) {
+                        if (TLis[j].TarTalaIndex == goalsList[i].SerialTarget) {
+                            render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
+                            render += goalsList[i].Goal;
+                            render += "</div></div></div>";
+                        }
+                    }
+                }
+                else {
+                    render += '<div class="panel panel-col-grey"><div class="panel-heading" ><h4 class="panel-title"><a >' + TLis[j].Target + '</a></h4></div>';
+                    for (var i = 0; i < goalsList.length; i++) {
+                        if (TLis[j].TarTalaIndex == goalsList[i].SerialTarget) {
+                            render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
+                            render += goalsList[i].Goal;
+                            render += "</div></div></div>";
+                        }
                     }
                 }
             }
