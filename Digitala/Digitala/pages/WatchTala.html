@@ -84,55 +84,44 @@
                     render += '<h2>' + TLis[j].FunctionArea + "</h2>";
                     render += '<div class="panel panel-col-grey"><div class="panel-heading" ><h4 class="panel-title"><a>' + TLis[j].Target + '</a></h4></div>';
                     render += '<h4>יעדים</h4>';
-                    for (var i = 0; i < goalsList.length; i++) {
-                        
+                    for (var i = 0; i < goalsList.length; i++) {                       
                         if (TLis[j].TarTalaIndex == goalsList[i].SerialTarget) {
                             render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
                             render += goalsList[i].Goal;
                             render += "</div></div></div>";
-                            
                         }
                     }
                     render += '<h4>אמצעים</h4>';
-
                     for (var z = 0; z < StudentsTools.length; z++) {
                         if (TLis[j].TarTalaIndex == StudentsTools[z].Tserial) {
                             render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
                             render += StudentsTools[z].Tool;
                             render += "</div></div></div>";
-
                         }
-
                     }
                 }
                 else {
                     render += '<div class="panel panel-col-grey"><div class="panel-heading" ><h4 class="panel-title"><a>' + TLis[j].Target + '</a></h4></div>';
                     render += '<h4>יעדים</h4>';
                     for (var i = 0; i < goalsList.length; i++) {
-
                         if (TLis[j].TarTalaIndex == goalsList[i].SerialTarget) {
                             render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
                             render += goalsList[i].Goal;
                             render += "</div></div></div>";
-
                         }
                     }
                     render += '<h4>אמצעים</h4>';
-                    
+
                     for (var z = 0; z < StudentsTools.length; z++) {
                         if (TLis[j].TarTalaIndex == StudentsTools[z].Tserial) {
                             render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
                             render += StudentsTools[z].Tool;
                             render += "</div></div></div>";
-
                         }
                     }
                 }
             }
             $("#accordion_19").html(render);
-
-            
-
         }
 
         function getToolsError() {
