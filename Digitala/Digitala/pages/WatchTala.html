@@ -33,22 +33,41 @@
     <script>
         $(document).ready(function () {
             studentName = localStorage["StudentName"];
+            classname = localStorage["TeacherClass"];
+            head = studentName +" "  + classname;
             newID = localStorage["StudentID"];
-            $("#studentName").html(studentName);
+            $("#studentName").html(head);
             year = localStorage["TeacherYear"];
-            str = "תוכנית לימודים אישית לשנת " + year ;
+            str = "תוכנית לימודים אישית לשנת " + year;
+
             $("#k").html(str);
 
             ajaxCall("GET", "../api/Targets/" + newID + "/" + year, "", getTargetsSuccess, getTargetsError);
-            ajaxCall("GET", "../api/Goals/" + newID + "/" + year, "", getGolasSuccess, getGolasError);
+
         });
 
         function getTargetsSuccess(targetsList) {
-            console.log(targetsList);
+            TLis = targetsList;
+            console.log(TLis);
+            ajaxCall("GET", "../api/Goals/" + newID + "/" + year, "", getGolasSuccess, getGolasError);
         }
 
         function getGolasSuccess(goalsList) {
             console.log(goalsList);
+            render = "";
+            for (var j = 0; j < TLis.length; j++) {
+                render += '<div class="panel panel-col-blue-grey"><div class="panel-heading" ><h4 class="panel-title"><a >' + TLis[j].Target + '</a></h4></div>';
+                for (var i = 0; i < goalsList.length; i++) {
+                    if (TLis[j].TarTalaIndex == goalsList[i].SerialTarget) {
+                        render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
+                        render += goalsList[i].Goal;
+                        render += "</div></div></div>";
+                    }
+                }
+            }
+            $("#accordion_19").html(render);
+
+
         }
 
         function getGolasError() {
@@ -95,17 +114,22 @@
     <section class="content" style="direction: rtl">
         <div class="container-fluid-general">
             <div class="block-header">
-                <h1 id="studentName"></h1>
+                <h1 id="k"></h1>
             </div>
             <!-- Widgets -->
-            <!-- File Upload -->
+
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <h2 id="k"></h2>
+                            <h3 id="studentName"></h3>
                         </div>
-
+                        <div class="body">
+                            <div class="panel-group" id="accordion_19" role="tablist" aria-multiselectable="true">
+                                
+                            </div>
+                        </div>
+                        <!-- #END# Body -->
                     </div>
                 </div>
             </div>
