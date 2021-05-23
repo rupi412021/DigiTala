@@ -41,6 +41,7 @@
             str = "תוכנית לימודים אישית לשנת " + year;
 
             $("#k").html(str);
+
             ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
             ajaxCall("GET", "../api/Targets/" + newID + "/" + year, "", getTargetsSuccess, getTargetsError);
 
@@ -52,7 +53,6 @@
                 if (sList.StudentId == newID)
                     description = sList.SDescripion;
             }
-
             $("#des").html(description);
         }
 
@@ -64,6 +64,12 @@
         function getTargetsSuccess(targetsList) {
             TLis = targetsList;
             console.log(TLis);
+            ajaxCall("GET", "../api/Tools/" + newID + "/" + year, "", getToolsSuccess, getToolsError);            
+        }
+
+        function getToolsSuccess(data) {
+            StudentsTools = data;
+            console.log(StudentsTools);
             ajaxCall("GET", "../api/Goals/" + newID + "/" + year, "", getGolasSuccess, getGolasError);
         }
 
@@ -99,6 +105,10 @@
 
             
 
+        }
+
+        function getToolsError() {
+            console.log("Cant get Tools");
         }
 
         function getGolasError() {

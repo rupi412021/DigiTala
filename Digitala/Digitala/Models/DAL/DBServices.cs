@@ -2783,6 +2783,54 @@ namespace Digitala.Models.DAL
 
             return command;
         }
+
+
+        public List<Tools> ReadTools(int sid, int syear)
+        {
+
+            SqlConnection con = null;
+            List<Tools> toolsList = new List<Tools>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM Tools t where t.StudentId=" + sid +  "and t.TYear=" + syear;
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Tools t = new Tools();
+
+                    t.StudentId = Convert.ToInt32(dr["StudentId"]);
+                    t.Tid = Convert.ToInt32(dr["TId"]);
+                    t.Tserial = Convert.ToInt32(dr["TalaSerial"]);
+                    t.Year = Convert.ToInt32(dr["TYear"]);
+                    t.Tool = (string)(dr["Tool"]);
+
+                    toolsList.Add(t);
+                }
+
+                return toolsList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Students from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
     }
    
 }

@@ -166,6 +166,7 @@
     <Compile Include="Controllers\TargetsSurveyController.cs" />
     <Compile Include="Controllers\TargetsController.cs" />
     <Compile Include="Controllers\TeachersController.cs" />
+    <Compile Include="Controllers\ToolsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -182,6 +183,7 @@
     <Compile Include="Models\TargetsSurvey.cs" />
     <Compile Include="Models\Targets.cs" />
     <Compile Include="Models\Teachers.cs" />
+    <Compile Include="Models\Tools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
