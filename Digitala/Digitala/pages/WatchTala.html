@@ -33,14 +33,31 @@
     <script>
         $(document).ready(function () {
             studentName = localStorage["StudentName"];
-            newID = localStorage["StudentID"]
+            newID = localStorage["StudentID"];
             $("#studentName").html(studentName);
             year = localStorage["TeacherYear"];
             str = "תוכנית לימודים אישית לשנת " + year ;
             $("#k").html(str);
 
-            
+            ajaxCall("GET", "../api/Targets/" + newID + "/" + year, "", getTargetsSuccess, getTargetsError);
+            ajaxCall("GET", "../api/Goals/" + newID + "/" + year, "", getGolasSuccess, getGolasError);
         });
+
+        function getTargetsSuccess(targetsList) {
+            console.log(targetsList);
+        }
+
+        function getGolasSuccess(goalsList) {
+            console.log(goalsList);
+        }
+
+        function getGolasError() {
+            console.log("Cant get Goals");
+        }
+
+        function getTargetsError() {
+            console.log("Cant get Targets");
+        }
     </script>
 </head>
 
