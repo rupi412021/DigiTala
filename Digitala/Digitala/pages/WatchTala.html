@@ -50,10 +50,10 @@
             sList = studentslist;
             description = "";
             for (var i = 0; i < sList.length; i++) {
-                if (sList.StudentId == newID)
-                    description = sList.SDescripion;
+                if (sList[i].StudentId == newID)
+                    description = sList[i].SDescripion;
             }
-            $("#des").html(description);
+            $("#des").append(description);
         }
 
         function getStudentsError() {
@@ -102,7 +102,7 @@
                     }
                 }
                 else {
-                    render += '<div class="panel panel-col-grey"><div class="panel-heading" ><h4 class="panel-title"><a>' + TLis[j].Target + '</a></h4></div>';
+                    render += '<h3>' + TLis[j].Target + "</h3>";
                     render += '<h4>יעדים</h4>';
                     for (var i = 0; i < goalsList.length; i++) {
                         if (TLis[j].TarTalaIndex == goalsList[i].SerialTarget) {
@@ -174,7 +174,7 @@
         <div class="container-fluid-general">
             <div class="block-header">
                 <h1 id="k"></h1>
-                <p id="des"></p>
+                <h6 id="des"></h6>
             </div>
             <!-- Widgets -->
 
