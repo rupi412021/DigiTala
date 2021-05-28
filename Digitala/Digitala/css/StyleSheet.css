@@ -2,6 +2,21 @@
     font-family: Calibri;
 }
 
+.WatchTalaFields{
+    float: right;
+}
+
+    .WatchTalaFields > .form-group > .form-line {
+        margin-right: 25px;
+    }
+#PrintTala, #TalaToPDF {
+    float: left;
+    color: #555555;
+}
+
+    #PrintTala > i, #TalaToPDF > i {
+        font-size: 36px;
+    }
 #target-error, #area-error, #subarea-error {
     color: red;
     font-size: 12px;
@@ -328,6 +343,24 @@ span, datalist {
 
 .UpdateStatusGoal {
     float: left;
+}
+
+#printContent {
+    direction: rtl;   
+}
+/*@media print {
+    /*body * {
+        visibility: hidden;
+    }
+
+    #printContent, #printContent * {
+        visibility: visible;
+    }*/
+
+}*/
+
+.watchTalaHeaders {
+    color: #73A4A4;
 }
 xx {
     color: #73A4A4; /*טורקיז*/

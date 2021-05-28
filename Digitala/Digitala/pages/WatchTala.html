@@ -34,18 +34,28 @@
         $(document).ready(function () {
             studentName = localStorage["StudentName"];
             classname = localStorage["TeacherClass"];
-            head = studentName +" "  + classname;
             newID = localStorage["StudentID"];
-            $("#studentName").html(head);
+            TeachID = localStorage["TeacherID"];
+            $("#studentName").html(studentName);
             year = localStorage["TeacherYear"];
-            str = "תוכנית לימודים אישית לשנת " + year;
-
+            str = "תוכנית לימודים אישית - ספטמבר " + year;
+            $("#Sclass").html(classname);
             $("#k").html(str);
 
             ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
             ajaxCall("GET", "../api/Targets/" + newID + "/" + year, "", getTargetsSuccess, getTargetsError);
+            ajaxCall("GET", "../api/Teachers", "", getTeachersSuccess, getStudentsError);
 
         });
+
+        function getTeachersSuccess(teachersList) {
+            for (var i = 0; i < teachersList.length; i++) {
+                if (teachersList[i].TeacherID == TeachID) {
+                    $("#STname").html(teachersList[i].TeacherFname + " " + teachersList[i].TeacherSurName);
+                    $("#STemail").html(teachersList[i].TeacherEmail);
+                }
+            }
+        }
         function getStudentsSuccess(studentslist) {
             sList = studentslist;
             description = "";
@@ -170,35 +180,74 @@
         </div>
     </nav>
     <!-- #Top Bar -->
-    <section class="content" style="direction: rtl">
+    <section class="content" id="printContent">
         <div class="container-fluid-general">
             <div class="block-header">
                 <h1 id="k"></h1>
-                <h6 id="des"></h6>
             </div>
-            <!-- Widgets -->
-
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <h3 id="studentName"></h3>
+                            <button type="button" class="btn-trans" id="PrintTala" onclick="window.print()"><i class="material-icons">print</i></button>
+                            <button type="button" class="btn-trans" id="TalaToPDF"><i class="material-icons">picture_as_pdf</i></button>
+                            <h3 id="studentName" class="watchTalaHeaders"></h3>
                         </div>
                         <div class="body">
-                            <div class="panel-group " id="accordion_19" role="tablist" aria-multiselectable="true">
-
-                            </div>
-                        </div>
-                        <!-- #END# Body -->
+                            <div class="row clearfix">
+                                <!--<div class="col-sm-3 WatchTalaFields">
+                <div class="form-group form-group-lg">
+                    <div class="form-line">
+                        <label>כיתה</label>
+                        <input type="text" placeholder="כיתה" class="form-control" id="Sclass" />
                     </div>
                 </div>
-            </div>
-            <!-- #END# Widgets -->
+            </div>-->
+                                <div class="col-sm-2 WatchTalaFields">
+                                    <div class="form-group form-group-lg">
+                                        <label>כיתה</label>
+                                        <div class="form-line">
+                                            <p id="Sclass"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 WatchTalaFields">
+                                    <div class="form-group form-group-lg">
+                                        <label>שם המורה</label>
+                                        <div class="form-line">
+                                            <p id="STname"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 WatchTalaFields">
+                                    <div class="form-group form-group-lg">
+                                        <label>מייל - מורה</label>
+                                        <div class="form-line">
+                                            <p id="STemail"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 WatchTalaFields">
+                                    <div class="form-group form-group-lg">
+                                        <label>כמה מילים...</label>
+                                        <div class="form-line">
+                                            <p id="des"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 WatchTalaFields">
+                                    <div class="form-group form-group-lg">
+                                        <h4 class="watchTalaHeaders">תוכנית הלימודים</h4>
+                                        <div id="accordion_19">
 
-            <div class="row clearfix">
-            </div>
-            <div class="row clearfix">
-
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </section>
