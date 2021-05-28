@@ -46,7 +46,25 @@
             ajaxCall("GET", "../api/Targets/" + newID + "/" + year, "", getTargetsSuccess, getTargetsError);
             ajaxCall("GET", "../api/Teachers", "", getTeachersSuccess, getStudentsError);
 
+            window.setTimeout(toggleMenu, 1000);
+
         });
+
+        function toggleMenu() {
+            toggleNames = document.getElementsByClassName("menu-toggle");
+            mlNames = document.getElementsByClassName("ml-menu");
+            for (var i = 0; i < toggleNames.length; i++) {
+                if (toggleNames[i].id == newID) {
+                    toggleNames[i].parentNode.classList.add("active");
+                    for (var j = 0; j < mlNames.length; j++) {
+                        if (toggleNames[i].id == mlNames[j].id) {
+                            mlNames[j].setAttribute("style", "display: block;");
+                            mlNames[j].childNodes[1].childNodes[0].classList.add("toggled");
+                        }
+                    }
+                }
+            }
+        }
 
         function getTeachersSuccess(teachersList) {
             for (var i = 0; i < teachersList.length; i++) {
@@ -56,6 +74,7 @@
                 }
             }
         }
+
         function getStudentsSuccess(studentslist) {
             sList = studentslist;
             description = "";
@@ -66,10 +85,8 @@
             $("#des").append(description);
         }
 
-        function getStudentsError() {
-            
-            console.log("Cant get Students");
-
+        function getStudentsError() {           
+            console.log("Can't get Students");
         }
 
         function getTargetsSuccess(targetsList) {
@@ -91,7 +108,7 @@
             for (var j = 0; j < TLis.length; j++) {
                 if (cFA != TLis[j].FaSerial) {
                     cFA = TLis[j].FaSerial;                       
-                    render += '<div class="panel panel-col-grey"><div class="panel-heading" ><h4 class="panel-title"><a>' + TLis[j].FunctionArea  + '</a></h4></div>';
+                    render += '<div><div class="panel-heading" ><h4 class="panel-title"><a> תחום - ' + TLis[j].FunctionArea  + '</a></h4></div>';
                     render += '<h3>' + TLis[j].Target  + "</h3>";
                     
                     render += '<h4>יעדים</h4>';
@@ -132,7 +149,7 @@
                     }
                 }
             }
-            $("#accordion_19").html(render);
+            $("#renderTala").html(render);
         }
 
         function getToolsError() {
@@ -180,17 +197,19 @@
         </div>
     </nav>
     <!-- #Top Bar -->
-    <section class="content" id="printContent">
+    <section class="content">
         <div class="container-fluid-general">
             <div class="block-header">
-                <h1 id="k"></h1>
+                <h1 id="k" style="float: right;"></h1>
+                <button type="button" class="btn-trans" id="PrintTala" onclick="window.print()"><i class="material-icons">print</i></button>
+                <button type="button" class="btn-trans" id="TalaToPDF"><i class="material-icons">picture_as_pdf</i></button>
+
             </div>
-            <div class="row clearfix">
+            <div class="row clearfix"  id="printContent">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <button type="button" class="btn-trans" id="PrintTala" onclick="window.print()"><i class="material-icons">print</i></button>
-                            <button type="button" class="btn-trans" id="TalaToPDF"><i class="material-icons">picture_as_pdf</i></button>
+                           
                             <h3 id="studentName" class="watchTalaHeaders"></h3>
                         </div>
                         <div class="body">
@@ -211,7 +230,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-4 WatchTalaFields">
+                                <div class="col-sm-3 WatchTalaFields">
                                     <div class="form-group form-group-lg">
                                         <label>שם המורה</label>
                                         <div class="form-line">
@@ -219,7 +238,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-5 WatchTalaFields">
+                                <div class="col-sm-4 WatchTalaFields">
                                     <div class="form-group form-group-lg">
                                         <label>מייל - מורה</label>
                                         <div class="form-line">
@@ -238,7 +257,7 @@
                                 <div class="col-sm-12 WatchTalaFields">
                                     <div class="form-group form-group-lg">
                                         <h4 class="watchTalaHeaders">תוכנית הלימודים</h4>
-                                        <div id="accordion_19">
+                                        <div id="renderTala">
 
                                         </div>
                                     </div>
@@ -281,7 +300,7 @@
                             <span>עמוד ראשי</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">people</i>
                             <span>תלמידים</span>
@@ -300,7 +319,7 @@
                             <span>ניהול מאגר מטרות</span>
                         </a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="helpPage.html">
                             <i class="material-icons">help_outline</i>
                             <span>עזרה</span>

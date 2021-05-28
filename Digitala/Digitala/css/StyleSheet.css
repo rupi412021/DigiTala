@@ -348,16 +348,20 @@ span, datalist {
 #printContent {
     direction: rtl;   
 }
-/*@media print {
-    /*body * {
+@media print {
+    body * {
         visibility: hidden;
     }
 
     #printContent, #printContent * {
         visibility: visible;
-    }*/
-
-}*/
+    }
+        #printContent {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+}
 
 .watchTalaHeaders {
     color: #73A4A4;
