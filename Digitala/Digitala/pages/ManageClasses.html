@@ -131,9 +131,10 @@
             if ($("#schOpt").val() == "" || $("#classNa").val() == "" || $("#classNum").val() == "" || $("#year").val() == "") {
                 swal("אנא מלאו את כל הפרטים", "נסה שנית", "error");
             }
+
             else {
                 swal({
-                    title: "האם לשמור את השינויים בכיתה " + $("#classNa").val() + "'" + $("#classNum").val() + " בשנה " + $("#year").val() + " עבור סמל בית ספר " + $("#schOpt").val() + "?",
+                    title: "האם לשמור את השינויים בכיתה " + $("#classNa").val() + "`" + $("#classNum").val() + " בשנה " + $("#year").val() + " עבור סמל בית ספר " + $("#schOpt").val() + "?",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#73A4A4",
@@ -141,10 +142,12 @@
                     cancelButtonText: "ביטול",
                     closeOnConfirm: true
                 }, function () {
+                    setTimeout(function () {
                     Jsondata = jsondata;
                     console.log(Jsondata);
 
-                    ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
+                            ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
+                    },500)
                 });
 
             }
@@ -205,6 +208,11 @@
                     ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail, "", putTeacherInfoSuccess, putTeacherInfoError);
                     ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + Jsondata[i].תעודת_זהות, "", postStudentClassSuccess, postStudentClassError);
                 }
+
+                if (count == Jsondata.length) {
+                    swal("כל התלמידים  קיימים במערכת", "הצלחה", "success");
+                }
+
                 else {
                    
                     let school = $("#schOpt").val();
