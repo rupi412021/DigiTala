@@ -20,6 +20,15 @@ namespace Digitala.Controllers
             return clist;
         }
 
+        [HttpGet]
+        [Route("api/Chararcteristics/{studentID}")]
+        public List<Chararcteristics> Get(string studentID, int year)
+        {
+            Chararcteristics c = new Chararcteristics();
+            List<Chararcteristics> clist = c.Read(studentID, year);
+            return clist;
+        }
+
         [HttpPost]
         [Route("api/Chararcteristics")]
         public RecommendedTargets Post([FromBody]RecommendedTargets rt)

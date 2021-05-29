@@ -89,9 +89,9 @@
             console.log("Can't get Students");
         }
 
-        function getTargetsSuccess(targetsList) {
-            TLis = targetsList;
-            console.log(TLis);
+        function getTargetsSuccess(TList) {
+            targetsList = TList;
+            console.log(targetsList);
             ajaxCall("GET", "../api/Tools/" + newID + "/" + year, "", getToolsSuccess, getToolsError);            
         }
 
@@ -102,66 +102,95 @@
         }
 
         function getGolasSuccess(goalsList) {
+            StudentsGoals = goalsList;
             console.log(goalsList);
             render = "";
-            cFA = -1;
-            for (var j = 0; j < TLis.length; j++) {
-                if (cFA != TLis[j].FaSerial) {
-                    cFA = TLis[j].FaSerial;                       
-                    render += '<div><div class="panel-heading" ><h4 class="panel-title"><a> תחום - ' + TLis[j].FunctionArea  + '</a></h4></div>';
-                    render += '<h3>' + TLis[j].Target  + "</h3>";
-                    
-                    render += '<h4>יעדים</h4>';
-                    for (var i = 0; i < goalsList.length; i++) {                       
-                        if (TLis[j].TarTalaIndex == goalsList[i].SerialTarget) {
-                            render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
-                            render += goalsList[i].Goal;
-                            render += "</div></div></div>";
-                        }
-                    }
-                    render += '<h4>אמצעים</h4>';
-                    for (var z = 0; z < StudentsTools.length; z++) {
-                        if (TLis[j].TarTalaIndex == StudentsTools[z].Tserial) {
-                            render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
-                            render += StudentsTools[z].Tool;
-                            render += "</div></div></div>";
-                        }
-                    }
+            Tablerows = 0;
+            GoalsPerTarget = [];
+            ToolsPerTarget = [];
+            for (var i = 0; i < targetsList.length; i++) {
+                for (var j = 0; j < StudentsTools.length; j++) {
+                    if (StudentsTools[j].Tserial == targetsList[i].TarTalaIndex)
+                        ToolsPerTarget.push(StudentsTools[j]);
+                }
+                for (var j = 0; j < StudentsGoals.length; j++) {
+                    if (StudentsGoals[j].SerialTarget == targetsList[i].TarTalaIndex)
+                        GoalsPerTarget.push(StudentsGoals[j]);
+                }
+                if (ToolsPerTarget.length > GoalsPerTarget.length)
+                    Tablerows = ToolsPerTarget.length;
+                else
+                    Tablerows = GoalsPerTarget.length;
+
+                if (i % 2 == 0)
+                    render += '<tr class="oddrow">';
+                else
+                    render += '<tr>';
+           
+                if (Tablerows == 0) {
+                    if (targetsList[i].NewPhrase == false)
+                        render += '<td rowspan="1">' + targetsList[i].Target + '</td>';
+                    else
+                        render += '<td rowspan="1">' + targetsList[i].NewPhrase + '</td>';
+                    render += "<td></td><td></td><td></td></tr>";
                 }
                 else {
-                    render += '<h3>' + TLis[j].Target + "</h3>";
-                    render += '<h4>יעדים</h4>';
-                    for (var i = 0; i < goalsList.length; i++) {
-                        if (TLis[j].TarTalaIndex == goalsList[i].SerialTarget) {
-                            render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
-                            render += goalsList[i].Goal;
-                            render += "</div></div></div>";
-                        }
-                    }
-                    render += '<h4>אמצעים</h4>';
-
-                    for (var z = 0; z < StudentsTools.length; z++) {
-                        if (TLis[j].TarTalaIndex == StudentsTools[z].Tserial) {
-                            render += '<div role="tabpanel"><div class="panel-body"><div class="listgroup">';
-                            render += StudentsTools[z].Tool;
-                            render += "</div></div></div>";
-                        }
-                    }
+                    if (targetsList[i].NewPhrase == false)
+                        render += '<td rowspan="' + Tablerows + '">' + targetsList[i].Target + '</td>';
+                    else
+                        render += '<td rowspan="' + Tablerows + '">' + targetsList[i].NewPhrase + '</td>';
                 }
+
+                for (var k = 0; k < Tablerows; k++) {
+                    if (GoalsPerTarget.length < Tablerows && ToolsPerTarget.length < Tablerows) {
+                        if (i % 2 == 0)
+                            render += '<tr class="oddrow">';
+                        else
+                            render += '<tr>';
+                    }
+                    if (GoalsPerTarget.length > 0) {
+                        if (GoalsPerTarget[0].GoalStatus == "E")
+                            render += '<td class="statusGimg"><img src="../images/one.png" /></td>';
+                        else if (GoalsPerTarget[0].GoalStatus == "P") {
+                            if (i % 2 == 0)
+                                render += '<td class="statusGimg"><img src="../images/threeOdd.png" /></td>';
+                            else
+                                render += '<td class="statusGimg"><img src="../images/three.png" /></td>';
+                        }
+                        else {
+                            if (i % 2 == 0)
+                                render += '<td class="statusGimg"><img src="../images/five_chosen_Odd.png" /></td>';
+                            else
+                                render += '<td class="statusGimg"><img src="../images/five_chosen.png" /></td>';
+                        }
+                        render += '<td>' + GoalsPerTarget[0].Goal + '</td>';
+                        GoalsPerTarget.splice(0, 1);
+                    }
+                    else
+                        render += "<td></td><td> </td>";
+                    if (ToolsPerTarget.length > 0) {
+                        render += "<td>" + ToolsPerTarget[0].Tool + "</td></tr>";
+                        ToolsPerTarget.splice(0, 1);
+                    }
+                    else
+                        render += "<td></td></tr>";
+                }
+                Tablerows = 0;
+
             }
-            $("#renderTala").html(render);
+            $("#TalaTable").html(render);
         }
 
         function getToolsError() {
-            console.log("Cant get Tools");
+            console.log("Can't get Tools");
         }
 
         function getGolasError() {
-            console.log("Cant get Goals");
+            console.log("Can't get Goals");
         }
 
         function getTargetsError() {
-            console.log("Cant get Targets");
+            console.log("Can't get Targets");
         }
     </script>
 </head>
@@ -203,7 +232,6 @@
                 <h1 id="k" style="float: right;"></h1>
                 <button type="button" class="btn-trans" id="PrintTala" onclick="window.print()"><i class="material-icons">print</i></button>
                 <button type="button" class="btn-trans" id="TalaToPDF"><i class="material-icons">picture_as_pdf</i></button>
-
             </div>
             <div class="row clearfix"  id="printContent">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -214,14 +242,10 @@
                         </div>
                         <div class="body">
                             <div class="row clearfix">
-                                <!--<div class="col-sm-3 WatchTalaFields">
-                <div class="form-group form-group-lg">
-                    <div class="form-line">
-                        <label>כיתה</label>
-                        <input type="text" placeholder="כיתה" class="form-control" id="Sclass" />
-                    </div>
-                </div>
-            </div>-->
+                                <!--<div class="form-line">
+        <label>כיתה</label>
+        <input type="text" placeholder="כיתה" class="form-control" id="Sclass" />
+    </div>-->
                                 <div class="col-sm-2 WatchTalaFields">
                                     <div class="form-group form-group-lg">
                                         <label>כיתה</label>
@@ -256,11 +280,26 @@
                                 </div>
                                 <div class="col-sm-12 WatchTalaFields">
                                     <div class="form-group form-group-lg">
-                                        <h4 class="watchTalaHeaders">תוכנית הלימודים</h4>
-                                        <div id="renderTala">
+                                        <label>מאפייני תלמיד</label>
+                                        <div class="col-sm-12 WatchTalaFields" id="phChars">
 
                                         </div>
                                     </div>
+                                </div>
+                                
+                                <div class="body table-responsive WatchTalaFields col-sm-12">
+                                    <h3 class="watchTalaHeaders">תוכנית הלימודים</h3>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>מטרות</th>
+                                                <th>סטטוס יעד</th>
+                                                <th>יעדים</th>
+                                                <th>אמצעים</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="TalaTable"></tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>

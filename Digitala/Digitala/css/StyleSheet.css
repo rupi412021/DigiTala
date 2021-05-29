@@ -363,6 +363,13 @@ span, datalist {
         }
 }
 
+.statusGimg {
+    width: 15%;
+    text-align: center;
+}
+tr.oddrow {
+    background-color: #f4f2f2;
+}
 .watchTalaHeaders {
     color: #73A4A4;
 }
