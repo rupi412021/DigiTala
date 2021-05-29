@@ -368,6 +368,10 @@ span, datalist {
     width: 15%;
     text-align: center;
 }
+
+.statusGimg >img {
+    width: 30px;
+}
 tr.oddrow {
     background-color: #f4f2f2;
 }
