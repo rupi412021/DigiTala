@@ -22,7 +22,7 @@ function getUserSuccess(data) {
             tEmail = data[i].TeacherEmail;
             tname = data[i].TeacherFname;
             tyear = data[i].TeacherYear;
-            tclass = data[i].TeacherClass;
+            tclass = data[i].TeacherClass;           
 
             ajaxCall("GET", "../api/Students/" + data[i].TeacherID + "/" + tyear , "", getStudentSuccess, getStudentError);
         }
