@@ -128,15 +128,26 @@
         }
 
         function AddStudentsEXCEL(jsondata) {
-            if ($("#schOpt").val() == "" || $("#classNa").val() == "" || $("#classNum").val() == "" || $("#year").val() == ""){
+            if ($("#schOpt").val() == "" || $("#classNa").val() == "" || $("#classNum").val() == "" || $("#year").val() == "") {
                 swal("אנא מלאו את כל הפרטים", "נסה שנית", "error");
             }
             else {
-                Jsondata = jsondata;
-                console.log(Jsondata);
+                swal({
+                    title: "האם לשמור את השינויים בכיתה " + $("#classNa").val() + "'" + $("#classNum").val() + " בשנה " + $("#year").val() + " עבור סמל בית ספר " + $("#schOpt").val() + "?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#73A4A4",
+                    confirmButtonText: "שמירה",
+                    cancelButtonText: "ביטול",
+                    closeOnConfirm: true
+                }, function () {
+                    Jsondata = jsondata;
+                    console.log(Jsondata);
 
-                ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
-            }    
+                    ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
+                });
+
+            }
         }
 
         function getStudentsSuccess(Students) {
