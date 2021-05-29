@@ -209,9 +209,6 @@
                     ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + Jsondata[i].תעודת_זהות, "", postStudentClassSuccess, postStudentClassError);
                 }
 
-                if (count == Jsondata.length) {
-                    swal("כל התלמידים  קיימים במערכת", "הצלחה", "success");
-                }
 
                 else {
                    
@@ -262,7 +259,7 @@
         }
 
         function postStudentClassError() {
-            swal( "משהו השתבש", "נסה שנית", "error");
+            swal( "התלמיד כבר קיים בכיתה", "נסה שנית", "error");
         }
 
         function postCustodianSuccess() {
