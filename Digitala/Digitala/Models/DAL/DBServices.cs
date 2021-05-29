@@ -669,6 +669,50 @@ namespace Digitala.Models.DAL
 
         }
 
+        public List<int> ReadChararcteristics(string studentID, int year)
+        {
+            SqlConnection con = null;
+            List<int> Chars = new List<int>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM CharacteristicsMatrix Where [StudentId]="+ studentID + " and [SCYear]="+year;
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Chararcteristics c = new Chararcteristics();
+                    for (int i = 1; i < dr.FieldCount-2; i++)
+                    {
+                        if (Convert.ToInt32(dr["char_" + i]) == 1)
+                            Chars.Add(i);
+                    }
+                }
+
+                return Chars;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Chararcteristics from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
         public int Insert(Teachers teacher)
         {
 

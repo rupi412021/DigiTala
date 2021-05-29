@@ -120,7 +120,7 @@
                 let NewArea = {
                     subAreaId: null,
                     areaId: areaId,
-                    subArea: $("#NewSubArea").val(),
+                    subArea: $("#NewSubArea").val().replace("'", "`"),
                     area: null
                 }
 
@@ -155,7 +155,7 @@
 
             let targetToSave = {
                 TarSerial: Id,
-                Target: $("#target").val(),
+                Target: $("#target").val().replace("'", "`"),
                 FaSerial: area,
                 FunctionArea: $("#areaPick").val(),
                 SfaSerial: subarea,

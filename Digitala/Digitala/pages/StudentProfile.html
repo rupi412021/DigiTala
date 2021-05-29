@@ -120,17 +120,17 @@
                         bday = new Date(byear, month, day);
 
                         studentObj = {
-                            SFirstName: $("#firstSName").val(),
-                            SLastName: $("#lastSName").val(),
+                            SFirstName: $("#firstSName").val().replace("'", "`"),
+                            SLastName: $("#lastSName").val().replace("'", "`"),
                             StudentId: $("#SID").val(),
-                            SAddress: $("#SAddress").val(),
+                            SAddress: $("#SAddress").val().replace("'", "`"),
                             SEmail: $("#SEmail").val(),
                             SPhone: $("#SMobile").val(),
-                            SDescripion: $("#SDescription").val(),
+                            SDescripion: $("#SDescription").val().replace("'", "`"),
                             Dis1st: dis1ID[5] + dis1ID[6],
                             Dis2nd: dis2ID[5] + dis2ID[6],
                             SBirthDate: bday.toDateString(),
-                            MedicalSituation: $("#SMedical").val(),
+                            MedicalSituation: $("#SMedical").val().replace("'", "`"),
                             SGender: gen
                         }
 
@@ -139,8 +139,8 @@
                         if ($("#contactEmail").val() != null && $("#contactEmail").val() != "") {
                             custObj = {
                                 CSID: newID,
-                                CName: $("#contactName").val(),
-                                CPhone: $("#contactPhone").val(),
+                                CName: $("#contactName").val().replace("'", "`"),
+                                CPhone: $("#contactPhone").val().replace("'", "`"),
                                 CEmail: $("#contactEmail").val()
                             }
 

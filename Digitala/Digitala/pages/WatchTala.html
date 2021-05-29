@@ -45,6 +45,7 @@
             ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
             ajaxCall("GET", "../api/Targets/" + newID + "/" + year, "", getTargetsSuccess, getTargetsError);
             ajaxCall("GET", "../api/Teachers", "", getTeachersSuccess, getStudentsError);
+            ajaxCall("GET", "../api/Chararcteristics/" + newID + "/" + year, "", getcharsAreasSuccess, getCharsError);
 
             window.setTimeout(toggleMenu, 1000);
 
@@ -163,13 +164,13 @@
                             else
                                 render += '<td class="statusGimg"><img src="../images/five_chosen.png" /></td>';
                         }
-                        render += '<td>' + GoalsPerTarget[0].Goal + '</td>';
+                        render += '<td>&#9679; ' + GoalsPerTarget[0].Goal + '</td>';
                         GoalsPerTarget.splice(0, 1);
                     }
                     else
                         render += "<td></td><td> </td>";
                     if (ToolsPerTarget.length > 0) {
-                        render += "<td>" + ToolsPerTarget[0].Tool + "</td></tr>";
+                        render += "<td>&#9679; " + ToolsPerTarget[0].Tool + "</td></tr>";
                         ToolsPerTarget.splice(0, 1);
                     }
                     else
@@ -179,6 +180,16 @@
 
             }
             $("#TalaTable").html(render);
+        }
+
+        function getcharsAreasSuccess(charslist) {
+            allChars = charslist;
+            charsTags = "";
+            for (var i = 0; i < allChars.length; i++) {
+                charsTags += '<span class="tag label label-tag">' + allChars[i].Chararcteristic + '</span>';
+            }
+            $("#phChars").html(charsTags);
+
         }
 
         function getToolsError() {
@@ -191,6 +202,10 @@
 
         function getTargetsError() {
             console.log("Can't get Targets");
+        }
+
+        function getCharsError() {
+            console.log("Can't get Chararcteristics");
         }
     </script>
 </head>
@@ -236,16 +251,15 @@
             <div class="row clearfix"  id="printContent">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
-                        <div class="header">
-                           
+                        <div class="header">                         
                             <h3 id="studentName" class="watchTalaHeaders"></h3>
                         </div>
                         <div class="body">
                             <div class="row clearfix">
                                 <!--<div class="form-line">
-        <label>כיתה</label>
-        <input type="text" placeholder="כיתה" class="form-control" id="Sclass" />
-    </div>-->
+            <label>כיתה</label>
+            <input type="text" placeholder="כיתה" class="form-control" id="Sclass" />
+        </div>-->
                                 <div class="col-sm-2 WatchTalaFields">
                                     <div class="form-group form-group-lg">
                                         <label>כיתה</label>
@@ -270,26 +284,25 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 WatchTalaFields">
-                                    <div class="form-group form-group-lg">
-                                        <label>כמה מילים...</label>
-                                        <div class="form-line">
-                                            <p id="des"></p>
-                                        </div>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="row clearfix">
                                 <div class="col-sm-12 WatchTalaFields">
                                     <div class="form-group form-group-lg">
                                         <label>מאפייני תלמיד</label>
+                                        <p id="des"></p>
+                                        <div>
+                                            <small>*המאפיינים הבאים נועדו למיקוד בחירת המטרות; ייתכן כי הם כתובים בלשון זכר אך מתייחסים לשני המינים</small>
+                                        </div>
                                         <div class="col-sm-12 WatchTalaFields" id="phChars">
 
                                         </div>
                                     </div>
                                 </div>
-                                
+                            </div>
+                            <div class="row clearfix">
                                 <div class="body table-responsive WatchTalaFields col-sm-12">
                                     <h3 class="watchTalaHeaders">תוכנית הלימודים</h3>
-                                    <table class="table">
+                                    <table class="table table-lg">
                                         <thead>
                                             <tr>
                                                 <th>מטרות</th>
@@ -302,8 +315,7 @@
                                     </table>
                                 </div>
                             </div>
-                        </div>
-                        
+                        </div>                        
                     </div>
                 </div>
             </div>

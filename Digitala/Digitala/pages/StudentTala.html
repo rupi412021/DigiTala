@@ -216,7 +216,7 @@
                     $("#goal" + tempGoalTarId).val("");
 
                     NewGoal = {
-                        nGoal: tempGoal,
+                        nGoal: tempGoal.replace("'", "`"),
                         tTarId: tempGoalTarId
                     }
                     GoalsArr.push(NewGoal);
@@ -231,7 +231,7 @@
                     $("#tool" + tempToolTarId).val("");
 
                     NewTool = {
-                        nTool: tempTool,
+                        nTool: tempTool.replace("'", "`"),
                         tTarId: tempToolTarId
                     }
 
@@ -312,7 +312,7 @@
                 else {
                     ObjTemp = {
                         TarSerial: unknownTarId,
-                        Target: newTarget,
+                        Target: newTarget.replace("'", "`"),
                         FaSerial: areaId,                      
                         SfaSerial: subarea,
                         Tools: [],
@@ -521,14 +521,14 @@
 
                 if (tempID > 0) {
                     ObjTemp = {
-                        Chararcteristic: tempVal,
+                        Chararcteristic: tempVal.replace("'", "`"),
                         CharacteristicKey: tempID
                     }
                 }
 
                 else {
                     ObjTemp = {
-                        Chararcteristic: tempVal,
+                        Chararcteristic: tempVal.replace("'", "`"),
                         CharacteristicKey: unknownIdChar
                     }
                     unknownIdChar++;

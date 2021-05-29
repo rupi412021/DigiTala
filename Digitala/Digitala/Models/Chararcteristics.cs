@@ -44,10 +44,25 @@ namespace Digitala.Models
             return cList;
         }
 
-        //public void TEMP(int id)
-        //{
-        //    DBServices dbs = new DBServices();
-        //    dbs.TEMP(id);
-        //}
+        public List<Chararcteristics> Read(string studentID, int year)
+        {
+            DBServices dbs = new DBServices();
+            List<int> keyList = dbs.ReadChararcteristics(studentID, year);
+            List<Chararcteristics> allcharslist = dbs.ReadChararcteristics();
+            List<Chararcteristics> cList = new List<Chararcteristics>();
+
+            for (int i = 0; i < allcharslist.Count; i++)
+            {
+                for (int j = 0; j < keyList.Count; j++)
+                {
+                    if (keyList[j] == allcharslist[i].CharacteristicKey)
+                        cList.Add(allcharslist[i]);
+                }
+                
+            }
+
+            return cList;
+        }
+
     }
 }

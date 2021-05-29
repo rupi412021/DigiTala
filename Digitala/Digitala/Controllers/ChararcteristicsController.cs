@@ -21,7 +21,7 @@ namespace Digitala.Controllers
         }
 
         [HttpGet]
-        [Route("api/Chararcteristics/{studentID}")]
+        [Route("api/Chararcteristics/{studentID}/{year}")]
         public List<Chararcteristics> Get(string studentID, int year)
         {
             Chararcteristics c = new Chararcteristics();

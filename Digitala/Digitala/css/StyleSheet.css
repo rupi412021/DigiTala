@@ -2,8 +2,9 @@
     font-family: Calibri;
 }
 
-.WatchTalaFields{
+.WatchTalaFields {
     float: right;
+    font-size: 18px;
 }
 
     .WatchTalaFields > .form-group > .form-line {
@@ -369,6 +370,10 @@ span, datalist {
 }
 tr.oddrow {
     background-color: #f4f2f2;
+}
+
+.table-lg {
+    font-size: 18px;
 }
 .watchTalaHeaders {
     color: #73A4A4;
