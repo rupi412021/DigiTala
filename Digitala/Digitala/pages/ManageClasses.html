@@ -127,10 +127,11 @@
             alert("Error: " + err);
         }
 
-        function AddStudentsEXCEL(jsondata) {
+        function AddStudentsEXCEL(jsondata) {        
             if ($("#schOpt").val() == "" || $("#classNa").val() == "" || $("#classNum").val() == "" || $("#year").val() == "") {
                 swal("אנא מלאו את כל הפרטים", "נסה שנית", "error");
             }
+
 
             else {
                 swal({
@@ -145,7 +146,6 @@
                     setTimeout(function () {
                     Jsondata = jsondata;
                     console.log(Jsondata);
-
                             ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
                     },500)
                 });
@@ -174,6 +174,15 @@
 
                 bday = new Date(year, month, day);
 
+                if (Jsondata[i].מין != "M" && Jsondata[i].מין != "F") {
+                    swal("שדה המין נדרש להיות M או F", "אנה תקנו את הפרטים ונסו שוב", "error");
+                    break;
+                }
+                if (Jsondata[i].תעודת_זהות.length != 9) {
+                    swal("בדוק את התעודת זהות", "אנה תקנו את הפרטים ונסו שוב", "error");
+                    break;
+                }
+
                 if (hit == 0) {
                     let NewS = {
                         studentId: Jsondata[i].תעודת_זהות,
@@ -189,7 +198,7 @@
                         Dis2nd: Jsondata[i].לקות_משנית,
                         medicalSituation: Jsondata[i].אלרגיות_רגישויות,
                     }
-
+                   
                     NewC = {
                         cEmail: Jsondata[i].אימייל_האופוטרופוס,
                         cName: Jsondata[i].שם_האופוטרופוס,
@@ -259,7 +268,7 @@
         }
 
         function postStudentClassError() {
-            swal( "התלמיד כבר קיים בכיתה", "נסה שנית", "error");
+            swal("משהו השתבש", "בדוק אם התלמיד אינו קיים בכיתה", "error");
         }
 
         function postCustodianSuccess() {
