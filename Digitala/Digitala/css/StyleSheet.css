@@ -2,6 +2,18 @@
     font-family: Calibri;
 }
 
+.editTar {
+    height: 45px;
+    font-size: 18px;
+    font-weight: normal;
+    padding-top: 12px;
+    padding-right: 10px;
+}
+
+.paddingTopicons.deleteBtn, .paddingTopicons.updateBtn {
+    padding-top: 7px;
+}
+
 .WatchTalaFields {
     float: right;
     font-size: 18px;

@@ -29,12 +29,13 @@
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
     <script src="../js/pages/loging.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+    <link href="../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
 
     <script>
         $(document).ready(function () {
             mode = "";
-            //unknownIdChar = 
+            //unknownIdChar =
             studentName = localStorage["StudentName"];
             classname = localStorage["TeacherClass"];
             newID = localStorage["StudentID"];
@@ -83,6 +84,9 @@
                 }
                 $("#phLabels").html(tagsList);
             });
+
+            GoalsAndTools();
+            EditDelTargets();
         });
 
         function editTala() {
@@ -95,6 +99,8 @@
             $(".HiddenInEdit").attr("hidden", true);
             $(".HiddenInWatch").attr("hidden", false);
             getcharsAreasSuccess(allChars);
+            renderChooseGoalsNTools();
+
         }
 
         function finishEditTala() {
@@ -222,9 +228,9 @@
                         if (GoalsPerTarget[0].GoalStatus == "E")
                             render += '<td class="statusGimg"><img src="../images/X.png" /></td>';
                         else if (GoalsPerTarget[0].GoalStatus == "P")
-                             render += '<td class="statusGimg"><img src="../images/VX.png" /></td>';
+                            render += '<td class="statusGimg"><img src="../images/VX.png" /></td>';
                         else
-                             render += '<td class="statusGimg"><img src="../images/V.png" /></td>';
+                            render += '<td class="statusGimg"><img src="../images/V.png" /></td>';
                         render += '<td>&#9679; ' + GoalsPerTarget[0].Goal + '</td>';
                         GoalsPerTarget.splice(0, 1);
                     }
@@ -280,7 +286,163 @@
 
         }
 
+        function renderChooseGoalsNTools() {
+            renderTargetsGoalsNTools = '<div class="panel-group">';
+            for (var i = 0; i < targetsList.length; i++) {
+                renderTargetsGoalsNTools += '<div class="panel panel-col-light-grey" id="collapse_' + i + '"> ';
+                renderTargetsGoalsNTools += "<button type='button' class='deleteBtn btn-trans paddingTopicons' data-tarId=" + targetsList[i].TarSerial + "><i class='material-icons'>delete</i></button>";
+                renderTargetsGoalsNTools += "<button type='button' class='updateBtn btn-trans paddingTopicons' data-tarId=" + targetsList[i].TarSerial + "><i class='material-icons'>create</i></button>";
+                renderTargetsGoalsNTools += '<div class="panel-heading" id="heading' + i + '_19"><h4 class="panel-title editTar">' + targetsList[i].Target + '</h4></div>';
+                renderTargetsGoalsNTools += '<div id="collapse' + i + '_19" class="panel-collapse collapse in">';
+                renderTargetsGoalsNTools += '<div class="panel-body"><div class="input-group col-sm-6" tar-ser=' + targetsList[i].TarTalaIndex + '><div class="form-line"><input type="text" class="form-control date goals" id="goal' + targetsList[i].TarTalaIndex + '" placeholder="הזן יעד להשגת המטרה">';
+                renderTargetsGoalsNTools += '</div><span class="input-group-addon" id="SetGoal"><i class="material-icons arrowGoal">arrow_back_ios_new</i></span></div>';
+                renderTargetsGoalsNTools += '<div class="input-group col-sm-6" tar-ser=' + targetsList[i].TarTalaIndex + '><div class="form-line"><input type="text" class="form-control date tools" id="tool' + targetsList[i].TarTalaIndex + '" placeholder="הגדר אמצעי להשגת המטרה">';
+                renderTargetsGoalsNTools += '</div><span class="input-group-addon" id="SetTool"><i class="material-icons arrowTool">arrow_back_ios_new</i></span></div>';
+                renderTargetsGoalsNTools += '<div class="toolsList col-sm-6" id="target_' + targetsList[i].TarTalaIndex + '"></div><div class="goalsList col-sm-6" id="target_' + targetsList[i].TarTalaIndex + '" ></div ></div></div>';
+            }
+            renderTargetsGoalsNTools += "</div>";
+            $("#toolsAndGoals").html(renderTargetsGoalsNTools);
+            renderGoals();
+        }
 
+        function GoalsAndTools() {
+            $(document).on("click", "#SetGoal", function () {
+                tempGoalTarId = this.parentNode.getAttribute("tar-ser");
+                tempGoal = $("#goal" + tempGoalTarId).val();
+                if (tempGoal.length > 0) {
+                    $("#target_" + tempGoalTarId + ".goalsList").append('<div class="goalItem" id=' + tempGoalTarId + '>' + tempGoal + '<i class="material-icons clearItem">clear</i></div>');
+                    $("#goal" + tempGoalTarId).val("");
+
+                    NewGoal = {
+                        nGoal: tempGoal.replace("'", "`"),
+                        tTarId: tempGoalTarId
+                    }
+                    StudentsGoals.push(NewGoal);
+                }
+            });
+
+            $(document).on("click", "#SetTool", function () {
+                tempToolTarId = this.parentNode.getAttribute("tar-ser");
+                tempTool = $("#tool" + tempToolTarId).val();
+                if (tempTool.length > 0) {
+                    $("#target_" + tempToolTarId + ".toolsList").append('<div class="toolItem" id=' + tempToolTarId + '>' + tempTool + '<i class="material-icons clearItem">clear</i></div>');
+                    $("#tool" + tempToolTarId).val("");
+
+                    NewTool = {
+                        nTool: tempTool.replace("'", "`"),
+                        tTarId: tempToolTarId
+                    }
+
+                    StudentsTools.push(NewTool);
+                }
+            });
+
+            $(document).on("click", ".clearItem", function () {
+                if (this.parentNode.getAttribute("class") == "goalItem")
+                    for (var i = 0; i < StudentsGoals.length; i++) {
+                        if (StudentsGoals[i].GoalId == this.parentNode.getAttribute('id'))
+                            StudentsGoals.splice(i, 1);
+                    }
+                else if (this.parentNode.getAttribute("class") == "toolItem")
+                    for (var i = 0; i < StudentsTools.length; i++) {
+                        if (StudentsTools[i].Tid == this.parentNode.getAttribute('id'))
+                            StudentsTools.splice(i, 1);
+                    }
+                this.parentNode.remove();
+            });
+        }
+
+        function renderGoals() {
+            for (var i = 0; i < StudentsTools.length; i++) {
+                $("#target_" + StudentsTools[i].Tserial + ".toolsList").append('<div class="toolItem" id=' + StudentsTools[i].Tid + '>' + StudentsTools[i].Tool + '<i class="material-icons clearItem">clear</i></div>');
+            }
+            for (var i = 0; i < StudentsGoals.length; i++) {
+                $("#target_" + StudentsGoals[i].SerialTarget + ".goalsList").append('<div class="goalItem" id=' + StudentsGoals[i].GoalId + '>' + StudentsGoals[i].Goal + '<i class="material-icons clearItem">clear</i></div>');
+            }
+        }
+
+        function EditDelTargets() {
+
+            $(document).on("click", ".updateBtn", function () {
+                var tarId = this.getAttribute('data-tarId');
+                var tarVal;
+                var tarIndex;
+                for (var i = 0; i < TargetForTala.length; i++) {
+                    if (TargetForTala[i].TarSerial == tarId) {
+                        tarVal = TargetForTala[i].Target;
+                        tarArea = TargetForTala[i].FunctionArea;
+                        tarIndex = i;
+                        break;
+                    }
+                }
+                swal({
+                    title: "ערוך מטרה",
+                    type: "input",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    confirmButtonText: "שמור שינויים",
+                    cancelButtonText: "סגור",
+                    animation: "slide-from-top",
+                    inputValue: tarVal
+                }, function (inputValue) {
+                    if (inputValue === false) return false;
+                    if (inputValue === "") {
+                        swal.showInputError("נוסח המטרה לא השתנה"); return false
+                    }
+                    swal({
+                        title: "נוסח המטרה השתנה בהצלחה",
+                        type: "success",
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    TargetForTala[tarIndex].Target = inputValue;
+                    TargetForTala[tarIndex].newPhrase = 1;
+                    renderTargetsToPage(TargetForTala);
+                });
+            });
+
+            $(document).on("click", ".deleteBtn", function () {
+                var tarId = this.getAttribute('data-tarId');
+                var tarVal;
+                var tarIndex;
+                for (var i = 0; i < targetsList.length; i++) {
+                    if (targetsList[i].TarSerial == tarId) {
+                        tarVal = targetsList[i].Target;
+                        tarIndex = i;
+                        break;
+                    }
+                }
+
+                swal({
+                    title: "האם ברצונך למחוק מטרה זו?",
+                    text: tarVal,
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "מחק",
+                    cancelButtonText: "סגור",
+                    closeOnConfirm: false
+                }, function () {         
+                    for (var i = 0; i < StudentsTools.length; i++) {
+                        if (StudentsTools[i].Tserial == targetsList[tarIndex].TarTalaIndex) 
+                            StudentsTools.splice(i, 1);                        
+                    }
+                    for (var i = 0; i < StudentsGoals.length; i++) {
+                        if (StudentsGoals[i].SerialTarget == targetsList[tarIndex].TarTalaIndex)
+                            StudentsGoals.splice(i, 1);
+                    }
+
+                    targetsList.splice(tarIndex, 1);
+                    renderChooseGoalsNTools();
+                    swal({
+                        title: "המטרה נמחקה",
+                        type: "success",
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                });
+            });
+        }
     </script>
 </head>
 
@@ -398,6 +560,14 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row clearfix HiddenInWatch" hidden="hidden">
+                                <div class="body table-responsive WatchTalaFields col-sm-12">
+                                    <div class="form-group">
+                                        <h3 class="watchTalaHeaders">ערוך מטרות, יעדים ואמצעים</h3>
+                                        <div id="toolsAndGoals"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -493,16 +663,9 @@
     <!-- Morris Plugin Js -->
     <script src="../plugins/raphael/raphael.min.js"></script>
     <script src="../plugins/morrisjs/morris.js"></script>
-    <!-- ChartJs -->
-    <script src="../plugins/chartjs/Chart.bundle.js"></script>
-    <!-- Flot Charts Plugin Js -->
-    <script src="../plugins/flot-charts/jquery.flot.js"></script>
-    <script src="../plugins/flot-charts/jquery.flot.resize.js"></script>
-    <script src="../plugins/flot-charts/jquery.flot.pie.js"></script>
-    <script src="../plugins/flot-charts/jquery.flot.categories.js"></script>
-    <script src="../plugins/flot-charts/jquery.flot.time.js"></script>
-    <!-- Sparkline Chart Plugin Js -->
-    <script src="../plugins/jquery-sparkline/jquery.sparkline.js"></script>
+
+    <script src="../plugins/sweetalert/sweetalert.min.js"></script>
+
     <!-- Custom Js -->
     <script src="../js/admin.js"></script>
     <script src="../js/pages/index.js"></script>
