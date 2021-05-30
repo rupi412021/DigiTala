@@ -33,6 +33,8 @@
 
     <script>
         $(document).ready(function () {
+            mode = "";
+            //unknownIdChar = 
             studentName = localStorage["StudentName"];
             classname = localStorage["TeacherClass"];
             newID = localStorage["StudentID"];
@@ -49,18 +51,54 @@
             ajaxCall("GET", "../api/Chararcteristics/" + newID + "/" + year, "", getcharsAreasSuccess, getCharsError);
 
             window.setTimeout(toggleMenu, 1000);
+
+            $(document).on("change", "#charsMultiPick", function () {
+                let tempVal = $("#charsMultiPick").val();
+
+                ObjTemp = {
+                    Chararcteristic: tempVal.replace("'", "`"),
+                    //CharacteristicKey: unknownIdChar
+                }
+                //unknownIdChar++;
+
+                allChars.push(ObjTemp);
+                let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagRemove" char-id="' + ObjTemp.CharacteristicKey + '">X</button> ' + ObjTemp.Chararcteristic + '</span>';
+                $("#phLabels").append(tampValString);
+                $("#charsMultiPick").val("");
+            });
+
+            $(document).on("click", ".tagRemove", function () {
+                let ValToRemove = this.getAttribute("char-id");
+                let tagsList = "";
+
+                for (i = 0; i < allChars.length; i++) {
+                    if (allChars[i].CharacteristicKey == ValToRemove) {
+                        allChars.splice(i, 1);
+                        break;
+                    }
+                }
+
+                for (var i = 0; i < allChars.length; i++) {
+                    tagsList += '<span class="tag label label-tag"><button class="btn-trans tagRemove" char-id="' + allChars[i].CharacteristicKey + '">X</button> ' + allChars[i].Chararcteristic + '</span>';
+                }
+                $("#phLabels").html(tagsList);
+            });
         });
 
         function editTala() {
+            mode = "edit";
             $("#PrintTala").attr("hidden", true);
             $("#TalaToPDF").attr("hidden", true);
             $("#EditTala").attr("hidden", true);
             $("#FinishEditing").attr("hidden", false);
             $("#cancelEditing").attr("hidden", false);
             $(".HiddenInEdit").attr("hidden", true);
+            $(".HiddenInWatch").attr("hidden", false);
+            getcharsAreasSuccess(allChars);
         }
 
         function finishEditTala() {
+            mode = "";
             $("#PrintTala").attr("hidden", false);
             $("#TalaToPDF").attr("hidden", false);
             $("#EditTala").attr("hidden", false);
@@ -68,15 +106,18 @@
             $("#cancelEditing").attr("hidden", true);
             $(".HiddenInEdit").attr("hidden", false);
             location.reload();
+            $(".HiddenInWatch").attr("hidden", true);
         }
 
         function cancelEditTala() {
+            mode = "";
             $("#PrintTala").attr("hidden", false);
             $("#TalaToPDF").attr("hidden", false);
             $("#EditTala").attr("hidden", false);
             $("#FinishEditing").attr("hidden", true);
             $("#cancelEditing").attr("hidden", true);
             $(".HiddenInEdit").attr("hidden", false);
+            $(".HiddenInWatch").attr("hidden", true);
         }
 
         function toggleMenu() {
@@ -205,11 +246,18 @@
         function getcharsAreasSuccess(charslist) {
             allChars = charslist;
             charsTags = "";
-            for (var i = 0; i < allChars.length; i++) {
-                charsTags += '<span class="tag label label-tag">' + allChars[i].Chararcteristic + '</span>';
+            if (mode == "edit") {
+                for (var i = 0; i < allChars.length; i++) {
+                    charsTags += '<span class="tag label label-tag"><button class="btn-trans tagRemove" char-id="' + allChars[i].CharacteristicKey + '">X</button> ' + allChars[i].Chararcteristic + '</span>';
+                }
+                $("#phLabels").html(charsTags);
             }
-            $("#phChars").html(charsTags);
-
+            else {
+                for (var i = 0; i < allChars.length; i++) {
+                    charsTags += '<span class="tag label label-tag">' + allChars[i].Chararcteristic + '</span>';
+                }
+                $("#phChars").html(charsTags);
+            }
         }
 
         function getToolsError() {
@@ -231,6 +279,8 @@
         function generatePDF() {
 
         }
+
+
     </script>
 </head>
 
@@ -335,6 +385,17 @@
                                         </thead>
                                         <tbody id="TalaTable"></tbody>
                                     </table>
+                                </div>
+                            </div>
+                            <div class="row clearfix HiddenInWatch" hidden="hidden">
+                                <div class="body table-responsive WatchTalaFields col-sm-12">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <h3 class="watchTalaHeaders">הוסף/מחק מאפייני תלמיד</h3>
+                                            <input id="charsMultiPick" placeholder="הקלד ערך חופשי..." class="form-control" />
+                                        </div>
+                                        <div id="phLabels"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
