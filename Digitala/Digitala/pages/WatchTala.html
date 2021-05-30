@@ -49,8 +49,35 @@
             ajaxCall("GET", "../api/Chararcteristics/" + newID + "/" + year, "", getcharsAreasSuccess, getCharsError);
 
             window.setTimeout(toggleMenu, 1000);
-
         });
+
+        function editTala() {
+            $("#PrintTala").attr("hidden", true);
+            $("#TalaToPDF").attr("hidden", true);
+            $("#EditTala").attr("hidden", true);
+            $("#FinishEditing").attr("hidden", false);
+            $("#cancelEditing").attr("hidden", false);
+            $(".HiddenInEdit").attr("hidden", true);
+        }
+
+        function finishEditTala() {
+            $("#PrintTala").attr("hidden", false);
+            $("#TalaToPDF").attr("hidden", false);
+            $("#EditTala").attr("hidden", false);
+            $("#FinishEditing").attr("hidden", true);
+            $("#cancelEditing").attr("hidden", true);
+            $(".HiddenInEdit").attr("hidden", false);
+            location.reload();
+        }
+
+        function cancelEditTala() {
+            $("#PrintTala").attr("hidden", false);
+            $("#TalaToPDF").attr("hidden", false);
+            $("#EditTala").attr("hidden", false);
+            $("#FinishEditing").attr("hidden", true);
+            $("#cancelEditing").attr("hidden", true);
+            $(".HiddenInEdit").attr("hidden", false);
+        }
 
         function toggleMenu() {
             toggleNames = document.getElementsByClassName("menu-toggle");
@@ -242,21 +269,20 @@
         <div class="container-fluid-general">
             <div class="block-header">
                 <h1 id="k" style="float: right;"></h1>
+                <button type="button" class="btn-trans" id="EditTala" onclick="editTala()"><i class="material-icons">edit</i></button>
                 <button type="button" class="btn-trans" id="PrintTala" onclick="window.print()"><i class="material-icons">print</i></button>
                 <button type="button" class="btn-trans" id="TalaToPDF" onclick="generatePDF()"><i class="material-icons">picture_as_pdf</i></button>
+                <button type="button" class="btn-trans" id="cancelEditing" onclick="cancelEditTala()" hidden="hidden"><i class="material-icons">close</i></button>
+                <button type="button" class="btn-trans" id="FinishEditing" onclick="finishEditTala()" hidden="hidden"><i class="material-icons">save</i></button>
             </div>
             <div class="row clearfix" id="printContent">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
-                        <div class="header">                         
+                        <div class="header">
                             <h3 id="studentName" class="watchTalaHeaders"></h3>
                         </div>
                         <div class="body">
                             <div class="row clearfix">
-                                <!--<div class="form-line">
-            <label>כיתה</label>
-            <input type="text" placeholder="כיתה" class="form-control" id="Sclass" />
-        </div>-->
                                 <div class="col-sm-2 WatchTalaFields">
                                     <div class="form-group form-group-lg">
                                         <label>כיתה</label>
@@ -282,21 +308,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row clearfix">
+                            <div class="row clearfix HiddenInEdit">
                                 <div class="col-sm-12 WatchTalaFields">
                                     <div class="form-group form-group-lg">
                                         <label>מאפייני תלמיד</label>
                                         <p id="des"></p>
-                                        <div>
-                                            <small>*המאפיינים הבאים נועדו למיקוד בחירת המטרות; ייתכן כי הם כתובים בלשון זכר אך מתייחסים לשני המינים</small>
-                                        </div>
                                         <div class="col-sm-12 WatchTalaFields" id="phChars">
-
+                                        </div>
+                                        <div>
+                                            <small>*רשימת המאפיינים נועדה למיקוד בחירת המטרות; ייתכן כי המאפיינים כתובים בלשון זכר אך מתייחסים לשני המינים</small>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row clearfix">
+                            <div class="row clearfix HiddenInEdit">
                                 <div class="body table-responsive WatchTalaFields col-sm-12">
                                     <h3 class="watchTalaHeaders">תוכנית הלימודים</h3>
                                     <table class="table table-lg">
@@ -312,7 +337,7 @@
                                     </table>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
             </div>

@@ -10,12 +10,12 @@
     .WatchTalaFields > .form-group > .form-line {
         margin-right: 25px;
     }
-#PrintTala, #TalaToPDF {
+#PrintTala, #TalaToPDF, #FinishEditing, #EditTala, #cancelEditing {
     float: left;
     color: #555555;
 }
 
-    #PrintTala > i, #TalaToPDF > i {
+    #PrintTala > i, #TalaToPDF > i, #FinishEditing > i, #EditTala > i, #cancelEditing > i {
         font-size: 36px;
     }
 #target-error, #area-error, #subarea-error {
