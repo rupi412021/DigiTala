@@ -178,7 +178,7 @@ span.input-group-addon {
     color: #F46549;
 }
 
-#editFormNewTargetModal {
+.editFormNewTargetModal {
     text-align: center
 }
 span.tag.label.label-tag.tar {

@@ -538,7 +538,7 @@
        * @returns {string}
        */
       var generateA = function (text, classes, inline, tokens) {
-        return '<a tabindex="0"' +
+        return '<a tabindex="0" class="btnChooseArea"' +
             (typeof classes !== 'undefined' ? ' class="' + classes + '"' : '') +
             (typeof inline !== 'undefined' ? ' style="' + inline + '"' : '') +
             (that.options.liveSearchNormalize ? ' data-normalized-text="' + normalizeToBase(htmlEscape(text)) + '"' : '') +
