@@ -669,6 +669,51 @@ namespace Digitala.Models.DAL
 
         }
 
+        public List<Chararcteristics> ReadFreeChararcteristics(string studentID, int year)
+        {
+
+            SqlConnection con = null;
+            List<Chararcteristics> Chars = new List<Chararcteristics>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM [ChararcteristicsForStudent] where [StudentId]= "+ studentID + " and [year]= "+ year;
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Chararcteristics c = new Chararcteristics();
+
+                    c.CharacteristicKey = Convert.ToInt32(dr["CharacteristicKey"]);
+                    c.Chararcteristic = (string)(dr["Chararcteristic"]);
+
+                    Chars.Add(c);
+                }
+
+                return Chars;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Chararcteristics from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
         public List<int> ReadChararcteristics(string studentID, int year)
         {
             SqlConnection con = null;
@@ -1481,7 +1526,7 @@ namespace Digitala.Models.DAL
                 columns += ", [char_" + item.CharacteristicKey + "]";
                 i++;
 
-                if (item.CharacteristicKey >= 300)
+                if (item.CharacteristicKey < 0)
                     insertFreeChar(item, SId, year);
             }
             columns += ")";

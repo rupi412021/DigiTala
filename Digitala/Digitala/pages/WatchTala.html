@@ -18,8 +18,8 @@
     <link href="../plugins/node-waves/waves.css" rel="stylesheet" />
     <!-- Animation Css -->
     <link href="../plugins/animate-css/animate.css" rel="stylesheet" />
-    <!-- Morris Chart Css-->
-    <link href="../plugins/morrisjs/morris.css" rel="stylesheet" />
+    <!-- Bootstrap Tagsinput Css -->
+    <link href="../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
     <!-- Custom Css -->
     <link href="../css/style.css" rel="stylesheet">
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
@@ -38,10 +38,11 @@
             deleteGoals = [];
             deleteTools = [];
             deleteTargets = [];
+            deleteChars = [];
             newGoals = [];
             newTools = [];
             newTargets = [];
-            unknownIdChar = 300;
+            unknownIdChar = -1;
             studentName = localStorage["StudentName"];
             classname = localStorage["TeacherClass"];
             newID = localStorage["StudentID"];
@@ -56,6 +57,7 @@
             ajaxCall("GET", "../api/Targets/" + newID + "/" + year, "", getTargetsSuccess, getTargetsError);
             ajaxCall("GET", "../api/Teachers", "", getTeachersSuccess, getStudentsError);
             ajaxCall("GET", "../api/Chararcteristics/" + newID + "/" + year, "", getcharsAreasSuccess, getCharsError);
+            ajaxCall("GET", "../api/FuncAreas/2", "", getSubAreasSuccess, error);
 
             window.setTimeout(toggleMenu, 1000);
 
@@ -64,9 +66,9 @@
 
                 ObjTemp = {
                     Chararcteristic: tempVal.replace("'", "`"),
-                    //CharacteristicKey: unknownIdChar
+                    CharacteristicKey: unknownIdChar
                 }
-                //unknownIdChar++;
+                unknownIdChar--;
 
                 allChars.push(ObjTemp);
                 let tampValString = '<span class="tag label label-tag"><button class="btn-trans tagRemove" char-id="' + ObjTemp.CharacteristicKey + '">X</button> ' + ObjTemp.Chararcteristic + '</span>';
@@ -80,6 +82,8 @@
 
                 for (i = 0; i < allChars.length; i++) {
                     if (allChars[i].CharacteristicKey == ValToRemove) {
+                        if (allChars[i].CharacteristicKey < 300)
+                            deleteChars.push(allChars[i]);
                         allChars.splice(i, 1);
                         break;
                     }
@@ -125,10 +129,10 @@
                 $("#EditTala").attr("hidden", false);
                 $("#FinishEditing").attr("hidden", true);
                 $("#cancelEditing").attr("hidden", true);
-                $(".HiddenInEdit").attr("hidden", false);                
+                $(".HiddenInEdit").attr("hidden", false);
                 $(".HiddenInWatch").attr("hidden", true);
                 location.reload();
-            });           
+            });
         }
 
         function cancelEditTala() {
@@ -151,7 +155,7 @@
                 $(".HiddenInEdit").attr("hidden", false);
                 $(".HiddenInWatch").attr("hidden", true);
             });
-            
+
         }
 
         function toggleMenu() {
@@ -322,9 +326,9 @@
                 renderTargetsGoalsNTools += "<button type='button' class='updateBtn btn-trans paddingTopicons' data-tarId=" + targetsList[i].TarSerial + "><i class='material-icons'>create</i></button>";
                 renderTargetsGoalsNTools += '<div class="panel-heading" id="heading' + i + '_19"><h4 class="panel-title editTar">' + targetsList[i].Target + '</h4></div>';
                 renderTargetsGoalsNTools += '<div id="collapse' + i + '_19" class="panel-collapse collapse in">';
-                renderTargetsGoalsNTools += '<div class="panel-body"><div class="input-group col-sm-6" tar-ser=' + targetsList[i].TarTalaIndex + '><div class="form-line"><input type="text" class="form-control date goals" id="goal' + targetsList[i].TarTalaIndex + '" placeholder="הזן יעד להשגת המטרה">';
+                renderTargetsGoalsNTools += '<div class="panel-body"><div class="input-group col-sm-6" tar-ser=' + targetsList[i].TarTalaIndex + '><div class="form-line w95"><input type="text" class="form-control date goals" id="goal' + targetsList[i].TarTalaIndex + '" placeholder="הזן יעד להשגת המטרה">';
                 renderTargetsGoalsNTools += '</div><span class="input-group-addon" id="SetGoal"><i class="material-icons arrowGoal">arrow_back_ios_new</i></span></div>';
-                renderTargetsGoalsNTools += '<div class="input-group col-sm-6" tar-ser=' + targetsList[i].TarTalaIndex + '><div class="form-line"><input type="text" class="form-control date tools" id="tool' + targetsList[i].TarTalaIndex + '" placeholder="הגדר אמצעי להשגת המטרה">';
+                renderTargetsGoalsNTools += '<div class="input-group col-sm-6" tar-ser=' + targetsList[i].TarTalaIndex + '><div class="form-line w95"><input type="text" class="form-control date tools" id="tool' + targetsList[i].TarTalaIndex + '" placeholder="הגדר אמצעי להשגת המטרה">';
                 renderTargetsGoalsNTools += '</div><span class="input-group-addon" id="SetTool"><i class="material-icons arrowTool">arrow_back_ios_new</i></span></div>';
                 renderTargetsGoalsNTools += '<div class="toolsList col-sm-6" id="target_' + targetsList[i].TarTalaIndex + '"></div><div class="goalsList col-sm-6" id="target_' + targetsList[i].TarTalaIndex + '" ></div ></div></div>';
             }
@@ -407,7 +411,7 @@
             }
             for (var i = 0; i < newTools.length; i++) {
                 $("#target_" + newTools[i].Tserial + ".toolsList").append('<div class="toolItem" id=' + newTools[i].Tid + '>' + newTools[i].Tool + '<i class="material-icons clearItem">clear</i></div>');
-            }         
+            }
             for (var i = 0; i < StudentsGoals.length; i++) {
                 $("#target_" + StudentsGoals[i].SerialTarget + ".goalsList").append('<div class="goalItem" id=' + StudentsGoals[i].GoalId + '>' + StudentsGoals[i].Goal + '<i class="material-icons clearItem">clear</i></div>');
             }
@@ -477,7 +481,7 @@
                     confirmButtonText: "מחק",
                     cancelButtonText: "סגור",
                     closeOnConfirm: false
-                }, function () {         
+                }, function () {
                     for (var i = 0; i < StudentsTools.length; i++) {
                         if (StudentsTools[i].Tserial == targetsList[tarIndex].TarTalaIndex) {
                             deleteTools.push(StudentsTools[i]);
@@ -511,6 +515,21 @@
                     });
                 });
             });
+        }
+
+        function getSubAreasSuccess(subareas) {
+            SubAreasList = subareas;
+        }
+
+        function renderSubAreas() {
+            var area = $("#areas").val();
+            $("#area-error").attr("hidden", true);
+            var renderSubAreasList = '<option value="0">בחר תת-תחום מרשימה</option>';
+            for (var i = 0; i < SubAreasList.length; i++) {
+                if (SubAreasList[i].AreaId == area)
+                    renderSubAreasList += "<option value=" + SubAreasList[i].SubAreaId + ">" + SubAreasList[i].SubArea + "</option>";
+            }
+            $("#subareasList").html(renderSubAreasList);
         }
     </script>
 </head>
@@ -621,8 +640,8 @@
                             <div class="row clearfix HiddenInWatch" hidden="hidden">
                                 <div class="body table-responsive WatchTalaFields col-sm-12">
                                     <div class="form-group">
+                                        <h3 class="watchTalaHeaders">הוסף/מחק מאפייני תלמיד</h3>
                                         <div class="form-line">
-                                            <h3 class="watchTalaHeaders">הוסף/מחק מאפייני תלמיד</h3>
                                             <input id="charsMultiPick" placeholder="הקלד ערך חופשי..." class="form-control" />
                                         </div>
                                         <div id="phLabels"></div>
@@ -634,13 +653,65 @@
                                     <div class="form-group">
                                         <h3 class="watchTalaHeaders">ערוך מטרות, יעדים ואמצעים</h3>
                                         <div id="toolsAndGoals"></div>
+                                        <button type="button" class="btn waves-effect" id="addNewTar" data-toggle="modal" data-allow-outside-click="false" data-target="#smallModal">
+                                            <i class="material-icons">add</i>
+                                            <span>הוסף מטרה חדשה</span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
+                            <form id="form_with_validation">
+                                <div class="modal fade in editFormNewTargetModal" id="smallModal" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog modal-sm" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 id="smallModalLabel">הוסף מטרה חדשה</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <label>תחום תפקוד</label>
+                                                        <select id="areas" class="form-control" onchange="renderSubAreas()">
+                                                            <option value="0">בחר תחום מרשימה</option>
+                                                            <option value="1">סנסומוטורי</option>
+                                                            <option value="2">כישורי חיים</option>
+                                                            <option value="3">חברתי</option>
+                                                            <option value="4">תקשורתי שפתי</option>
+                                                            <option value="5">התנהגותי רגשי</option>
+                                                            <option value="6">קוגניטיבי לימודי</option>
+                                                        </select>
+                                                    </div>
+                                                    <label id="area-error" hidden="hidden">אנא בחר תחום תפקוד</label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <label>תת-תחום</label>
+                                                        <select id="subareasList" class="form-control"></select>
+                                                    </div>
+                                                    <label id="subarea-error" hidden="hidden">אנא הזן תת-תחום</label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <label>מטרה</label>
+                                                        <input type="text" id="targetToBank" pattern="^[א-ת\s]*$" placeholder="נסח מטרה חדשה" class="form-control" />
+                                                    </div>
+                                                    <label id="target-error" hidden="hidden">אנא נסח מטרה</label>
+                                                    <div class="help-info">אותיות בעברית בלבד, ללא סימנים</div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" id="closeNewTarModal" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
+                                                <button type="button" id="saveNewTarToBank" class="btn btn-link waves-effect">שמור</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
 
@@ -727,18 +798,20 @@
     <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
     <!-- Waves Effect Plugin Js -->
     <script src="../plugins/node-waves/waves.js"></script>
-    <!-- Jquery CountTo Plugin Js -->
-    <script src="../plugins/jquery-countto/jquery.countTo.js"></script>
-    <!-- Morris Plugin Js -->
-    <script src="../plugins/raphael/raphael.min.js"></script>
-    <script src="../plugins/morrisjs/morris.js"></script>
-    <!-- Slimscroll Plugin Js -->
-    <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
     <script src="../plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery Validation Plugin Css -->
+    <script src="../plugins/jquery-validation/jquery.validate.js"></script>
+    <!-- Bootstrap Tags Input Plugin Js -->
+    <script src="../plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+    <!-- Bootstrap Notify Plugin Js -->
+    <script src="../plugins/bootstrap-notify/bootstrap-notify.js"></script>
 
     <!-- Custom Js -->
     <script src="../js/admin.js"></script>
-    <script src="../js/pages/index.js"></script>
+    <script src="../js/pages/ui/modals.js"></script>
+    <script src="../js/pages/forms/form-validation.js"></script>
+
     <!-- Demo Js -->
     <script src="../js/demo.js"></script>
 </body>

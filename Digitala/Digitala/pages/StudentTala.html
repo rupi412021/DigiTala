@@ -36,6 +36,7 @@
     <script src="../js/pages/loging.js"></script>
     <script>
         $(document).ready(function () {
+            unknownIdChar = -1;
             CharsChosen = [];
             TargetForTala = [];
             indicator = 0;
@@ -264,7 +265,6 @@
                         renderSubAreasList += "<option value=" + SubAreasList[i].SubAreaId + ">" + SubAreasList[i].SubArea+"</option>";
                 }
                 $("#subareasList").html(renderSubAreasList);
-
             });
             $(document).on("change", "#subareasList", function () {
                 $("#subarea-error").attr("hidden", true);
@@ -531,7 +531,7 @@
                         Chararcteristic: tempVal.replace("'", "`"),
                         CharacteristicKey: unknownIdChar
                     }
-                    unknownIdChar++;
+                    unknownIdChar--;
                 }
 
                 CharsChosen.push(ObjTemp);
@@ -623,7 +623,6 @@
         function getChararcteristicsSuccess(ChararcteristicsData) {
             ChararcteristicsList = ChararcteristicsData;
             console.log(ChararcteristicsData);
-            unknownIdChar = ChararcteristicsList.length + 1000;
             let charsList = "";
             for (var i = 0; i < ChararcteristicsList.length; i++) {
                 for (var j = 0; j < SubAreasList.length; j++) {
@@ -1124,7 +1123,8 @@
     <script src="../js/admin.js"></script>
     <script src="../js/pages/forms/form-wizard.js"></script>
     <script src="../js/pages/ui/modals.js"></script>
-
+    <!-- Select Plugin Js -->
+    <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
     <!-- Demo Js -->
     <script src="../js/demo.js"></script>
 

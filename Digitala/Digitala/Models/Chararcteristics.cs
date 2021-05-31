@@ -50,7 +50,7 @@ namespace Digitala.Models
             List<int> keyList = dbs.ReadChararcteristics(studentID, year);
             List<Chararcteristics> allcharslist = dbs.ReadChararcteristics();
             List<Chararcteristics> cList = new List<Chararcteristics>();
-
+            List<Chararcteristics> FreeChars = dbs.ReadFreeChararcteristics(studentID, year);
             for (int i = 0; i < allcharslist.Count; i++)
             {
                 for (int j = 0; j < keyList.Count; j++)
@@ -59,6 +59,10 @@ namespace Digitala.Models
                         cList.Add(allcharslist[i]);
                 }
                 
+            }
+            for (int i = 0; i < FreeChars.Count; i++)
+            {
+                cList.Add(FreeChars[i]);
             }
 
             return cList;
