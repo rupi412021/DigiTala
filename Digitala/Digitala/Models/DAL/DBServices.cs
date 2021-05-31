@@ -1477,15 +1477,71 @@ namespace Digitala.Models.DAL
             int i = 2;
             foreach (var item in c)
             {
-                //values += ", '{" + i + "}'";
                 ones += ", 1";
                 columns += ", [char_" + item.CharacteristicKey + "]";
                 i++;
+
+                if (item.CharacteristicKey >= 300)
+                    insertFreeChar(item, SId, year);
             }
-            //values += ")";
             columns += ")";
             ones+= ")";
             command = "INSERT INTO CharacteristicsMatrix " + columns + " VALUES (" + SId+", "+ year + ones;
+
+            return command;
+        }
+
+        public int insertFreeChar(Chararcteristics Chararcteristic, string SId, int year)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildInsertFreeCharCommand(Chararcteristic, SId, year);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not insert new Character for a student", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildInsertFreeCharCommand(Chararcteristics c, string SId, int year)
+        {
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Values('{0}', '{1}', '{2}')", c.Chararcteristic, SId, year);
+            prefix = "INSERT INTO ChararcteristicsForStudent " + "([Chararcteristic], [StudentId], [year])";
+
+            command = prefix + sb.ToString();
 
             return command;
         }
