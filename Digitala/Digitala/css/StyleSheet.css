@@ -86,6 +86,9 @@ span.input-group-addon {
         width: 80%;
         
     }
+.studentsFields > .form-group .form-line {
+    width: 80%;
+}
     .studentsFields > .demo-radio-button > label {
         min-width: 10px;
         margin-top: 5px;

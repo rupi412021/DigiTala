@@ -35,6 +35,12 @@
     <script>
         $(document).ready(function () {
             mode = "";
+            deleteGoals = [];
+            deleteTools = [];
+            deleteTargets = [];
+            newGoals = [];
+            newTools = [];
+            newTargets = [];
             //unknownIdChar =
             studentName = localStorage["StudentName"];
             classname = localStorage["TeacherClass"];
@@ -104,26 +110,48 @@
         }
 
         function finishEditTala() {
-            mode = "";
-            $("#PrintTala").attr("hidden", false);
-            $("#TalaToPDF").attr("hidden", false);
-            $("#EditTala").attr("hidden", false);
-            $("#FinishEditing").attr("hidden", true);
-            $("#cancelEditing").attr("hidden", true);
-            $(".HiddenInEdit").attr("hidden", false);
-            location.reload();
-            $(".HiddenInWatch").attr("hidden", true);
+            swal({
+                title: "האם ברצונך לשמור את השינויים?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#73A4A4",
+                confirmButtonText: "שמירה",
+                cancelButtonText: "ביטול",
+                closeOnConfirm: true
+            }, function () {
+                mode = "";
+                $("#PrintTala").attr("hidden", false);
+                $("#TalaToPDF").attr("hidden", false);
+                $("#EditTala").attr("hidden", false);
+                $("#FinishEditing").attr("hidden", true);
+                $("#cancelEditing").attr("hidden", true);
+                $(".HiddenInEdit").attr("hidden", false);                
+                $(".HiddenInWatch").attr("hidden", true);
+                location.reload();
+            });           
         }
 
         function cancelEditTala() {
-            mode = "";
-            $("#PrintTala").attr("hidden", false);
-            $("#TalaToPDF").attr("hidden", false);
-            $("#EditTala").attr("hidden", false);
-            $("#FinishEditing").attr("hidden", true);
-            $("#cancelEditing").attr("hidden", true);
-            $(".HiddenInEdit").attr("hidden", false);
-            $(".HiddenInWatch").attr("hidden", true);
+            swal({
+                title: "יציאה ממצב עריכה",
+                text: "השינויים שביצעת לא יישמרו",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#F46549",
+                confirmButtonText: "יציאה",
+                cancelButtonText: "ביטול",
+                closeOnConfirm: true
+            }, function () {
+                mode = "";
+                $("#PrintTala").attr("hidden", false);
+                $("#TalaToPDF").attr("hidden", false);
+                $("#EditTala").attr("hidden", false);
+                $("#FinishEditing").attr("hidden", true);
+                $("#cancelEditing").attr("hidden", true);
+                $(".HiddenInEdit").attr("hidden", false);
+                $(".HiddenInWatch").attr("hidden", true);
+            });
+            
         }
 
         function toggleMenu() {
@@ -317,7 +345,7 @@
                         nGoal: tempGoal.replace("'", "`"),
                         tTarId: tempGoalTarId
                     }
-                    StudentsGoals.push(NewGoal);
+                    newGoals.push(NewGoal);
                 }
             });
 
@@ -332,22 +360,43 @@
                         nTool: tempTool.replace("'", "`"),
                         tTarId: tempToolTarId
                     }
-
-                    StudentsTools.push(NewTool);
+                    newTools.push(NewTool);
                 }
             });
 
             $(document).on("click", ".clearItem", function () {
-                if (this.parentNode.getAttribute("class") == "goalItem")
+                if (this.parentNode.getAttribute("class") == "goalItem") {
                     for (var i = 0; i < StudentsGoals.length; i++) {
-                        if (StudentsGoals[i].GoalId == this.parentNode.getAttribute('id'))
+                        if (StudentsGoals[i].GoalId == this.parentNode.getAttribute('id')) {
+                            deleteGoals.push(StudentsGoals[i]);
                             StudentsGoals.splice(i, 1);
+                            break;
+                        }
                     }
-                else if (this.parentNode.getAttribute("class") == "toolItem")
+                    for (var i = 0; i < newGoals.length; i++) {
+                        var val = this.parentNode.innerText.replace("clear", "");
+                        if (newGoals[i].nGoal = val) {
+                            newGoals.splice(i, 1);
+                            break;
+                        }
+                    }
+                }
+                else if (this.parentNode.getAttribute("class") == "toolItem") {
                     for (var i = 0; i < StudentsTools.length; i++) {
-                        if (StudentsTools[i].Tid == this.parentNode.getAttribute('id'))
+                        if (StudentsTools[i].Tid == this.parentNode.getAttribute('id')) {
+                            deleteTools.push(StudentsTools[i]);
                             StudentsTools.splice(i, 1);
+                            break;
+                        }
                     }
+                    for (var i = 0; i < newTools.length; i++) {
+                        var val = this.parentNode.innerText.replace("clear", "");
+                        if (newTools[i].nTool = val) {
+                            newTools.splice(i, 1);
+                            break;
+                        }
+                    }
+                }
                 this.parentNode.remove();
             });
         }
@@ -356,8 +405,14 @@
             for (var i = 0; i < StudentsTools.length; i++) {
                 $("#target_" + StudentsTools[i].Tserial + ".toolsList").append('<div class="toolItem" id=' + StudentsTools[i].Tid + '>' + StudentsTools[i].Tool + '<i class="material-icons clearItem">clear</i></div>');
             }
+            for (var i = 0; i < newTools.length; i++) {
+                $("#target_" + newTools[i].Tserial + ".toolsList").append('<div class="toolItem" id=' + newTools[i].Tid + '>' + newTools[i].Tool + '<i class="material-icons clearItem">clear</i></div>');
+            }         
             for (var i = 0; i < StudentsGoals.length; i++) {
                 $("#target_" + StudentsGoals[i].SerialTarget + ".goalsList").append('<div class="goalItem" id=' + StudentsGoals[i].GoalId + '>' + StudentsGoals[i].Goal + '<i class="material-icons clearItem">clear</i></div>');
+            }
+            for (var i = 0; i < newGoals.length; i++) {
+                $("#target_" + newGoals[i].SerialTarget + ".goalsList").append('<div class="goalItem" id=' + newGoals[i].GoalId + '>' + newGoals[i].Goal + '<i class="material-icons clearItem">clear</i></div>');
             }
         }
 
@@ -367,10 +422,10 @@
                 var tarId = this.getAttribute('data-tarId');
                 var tarVal;
                 var tarIndex;
-                for (var i = 0; i < TargetForTala.length; i++) {
-                    if (TargetForTala[i].TarSerial == tarId) {
-                        tarVal = TargetForTala[i].Target;
-                        tarArea = TargetForTala[i].FunctionArea;
+                for (var i = 0; i < targetsList.length; i++) {
+                    if (targetsList[i].TarSerial == tarId) {
+                        tarVal = targetsList[i].Target;
+                        tarArea = targetsList[i].FunctionArea;
                         tarIndex = i;
                         break;
                     }
@@ -395,9 +450,9 @@
                         timer: 1500,
                         showConfirmButton: false
                     });
-                    TargetForTala[tarIndex].Target = inputValue;
-                    TargetForTala[tarIndex].newPhrase = 1;
-                    renderTargetsToPage(TargetForTala);
+                    targetsList[tarIndex].Target = inputValue;
+                    targetsList[tarIndex].newPhrase = 1;
+                    renderChooseGoalsNTools();
                 });
             });
 
@@ -424,14 +479,28 @@
                     closeOnConfirm: false
                 }, function () {         
                     for (var i = 0; i < StudentsTools.length; i++) {
-                        if (StudentsTools[i].Tserial == targetsList[tarIndex].TarTalaIndex) 
-                            StudentsTools.splice(i, 1);                        
+                        if (StudentsTools[i].Tserial == targetsList[tarIndex].TarTalaIndex) {
+                            deleteTools.push(StudentsTools[i]);
+                            StudentsTools.splice(i, 1);
+                        }
+                    }
+                    for (var i = 0; i < newTools.length; i++) {
+                        if (newTools[i].Tserial == targetsList[tarIndex].TarTalaIndex) {
+                            newTools.splice(i, 1);
+                        }
                     }
                     for (var i = 0; i < StudentsGoals.length; i++) {
-                        if (StudentsGoals[i].SerialTarget == targetsList[tarIndex].TarTalaIndex)
+                        if (StudentsGoals[i].SerialTarget == targetsList[tarIndex].TarTalaIndex) {
+                            deleteGoals.push(StudentsGoals[i]);
                             StudentsGoals.splice(i, 1);
+                        }
                     }
-
+                    for (var i = 0; i < newGoals.length; i++) {
+                        if (newGoals[i].SerialTarget == targetsList[tarIndex].TarTalaIndex) {
+                            newGoals.splice(i, 1);
+                        }
+                    }
+                    deleteTargets.push(targetsList[tarIndex]);
                     targetsList.splice(tarIndex, 1);
                     renderChooseGoalsNTools();
                     swal({
@@ -663,7 +732,8 @@
     <!-- Morris Plugin Js -->
     <script src="../plugins/raphael/raphael.min.js"></script>
     <script src="../plugins/morrisjs/morris.js"></script>
-
+    <!-- Slimscroll Plugin Js -->
+    <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
     <script src="../plugins/sweetalert/sweetalert.min.js"></script>
 
     <!-- Custom Js -->
