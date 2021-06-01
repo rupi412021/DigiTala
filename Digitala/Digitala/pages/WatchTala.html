@@ -162,7 +162,6 @@
             $(".HiddenInWatch").attr("hidden", false);
             getcharsAreasSuccess(allChars);
             renderChooseGoalsNTools();
-
         }
 
         function finishEditTala() {
@@ -176,6 +175,22 @@
                 closeOnConfirm: true
             }, function () {
                 mode = "";
+
+                //deleteGoals = [];
+                //deleteTools = [];
+                //deleteTargets = [];
+                //newGoals = [];
+                //newTools = [];
+                //newTargets = [];
+                
+                let newStudentChars = {
+                    NewStudentId: newID,
+                    CurrentYear: localStorage["TeacherYear"],
+                    NewStudentChars: allChars,
+                }
+                ajaxCall("PUT", "../api/Chararcteristics", JSON.stringify(newStudentChars), putCharsSuccess, getCharsError);
+                
+               
                 $("#PrintTala").attr("hidden", false);
                 $("#TalaToPDF").attr("hidden", false);
                 $("#EditTala").attr("hidden", false);
@@ -207,7 +222,6 @@
                 $(".HiddenInEdit").attr("hidden", false);
                 $(".HiddenInWatch").attr("hidden", true);
             });
-
         }
 
         function toggleMenu() {
@@ -350,6 +364,24 @@
             }
         }
 
+        function putCharsSuccess(charslist) {
+            console.log("put new chararcters success");
+
+            if (deleteChars.length > 0) {
+                let newStudentChars = {
+                    NewStudentId: newID,
+                    CurrentYear: localStorage["TeacherYear"],
+                    NewStudentChars: deleteChars,
+                }
+
+                ajaxCall("DELETE", "../api/Chararcteristics", JSON.stringify(newStudentChars), deleteCharsSuccess, getCharsError);
+            }
+        }
+
+        function deleteCharsSuccess(charslist){
+            console.log("delete chararcters success");
+        }
+
         function getToolsError() {
             console.log("Can't get Tools");
         }
@@ -446,9 +478,9 @@
                             break;
                         }
                     }
-                    for (var i = 0; i < newGoals.length; i++) {
-                        var val = this.parentNode.innerText.replace("clear", "");
-                        if (newGoals[i].nGoal = val) {
+                    val = this.parentNode.innerText.replace("clear", "").trim();
+                    for (var i = 0; i < newGoals.length; i++) {                      
+                        if (newGoals[i].nGoal == val) {
                             newGoals.splice(i, 1);
                             break;
                         }
@@ -462,9 +494,9 @@
                             break;
                         }
                     }
+                    val = this.parentNode.innerText.replace("clear", "").trim();
                     for (var i = 0; i < newTools.length; i++) {
-                        var val = this.parentNode.innerText.replace("clear", "");
-                        if (newTools[i].nTool = val) {
+                        if (newTools[i].nTool == val) {
                             newTools.splice(i, 1);
                             break;
                         }
@@ -573,25 +605,29 @@
                 }, function () {
                     if (tarIndex > -1) {
                         for (var i = 0; i < StudentsTools.length; i++) {
-                            if (StudentsTools[i].Tserial == targetsList[tarIndex].TarTalaIndexl) {
+                            if (StudentsTools[i].Tserial == targetsList[tarIndex].TarTalaIndex) {
                                 deleteTools.push(StudentsTools[i]);
                                 StudentsTools.splice(i, 1);
+                                i--;
                             }
                         }
                         for (var i = 0; i < newTools.length; i++) {
                             if (newTools[i].Tserial == targetsList[tarIndex].TarTalaIndex) {
                                 newTools.splice(i, 1);
+                                i--;
                             }
                         }
                         for (var i = 0; i < StudentsGoals.length; i++) {
                             if (StudentsGoals[i].SerialTarget == targetsList[tarIndex].TarTalaIndex) {
                                 deleteGoals.push(StudentsGoals[i]);
                                 StudentsGoals.splice(i, 1);
+                                i--;
                             }
                         }
                         for (var i = 0; i < newGoals.length; i++) {
-                            if (newGoals[i].SerialTarget == targetsList[tarIndex].TarTalaIndex || StudentsTools[i].Tserial == newTargets[tarNewIndex].TarSerial) {
+                            if (newGoals[i].SerialTarget == targetsList[tarIndex].TarTalaIndex) {
                                 newGoals.splice(i, 1);
+                                i--;
                             }
                         }
                         deleteTargets.push(targetsList[tarIndex]);
@@ -601,11 +637,13 @@
                         for (var i = 0; i < newTools.length; i++) {
                             if (newTools[i].Tserial == newTargets[tarNewIndex].TarSerial) {
                                 newTools.splice(i, 1);
+                                i--;
                             }
                         }
                         for (var i = 0; i < newGoals.length; i++) {
                             if (newGoals[i].SerialTarget == newTargets[tarNewIndex].TarSerial) {
                                 newGoals.splice(i, 1);
+                                i--;
                             }
                         }
                         newTargets.splice(tarNewIndex, 1);
@@ -813,7 +851,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </form>>
+                            </form>
                         </div>
                     </div>
                 </div>

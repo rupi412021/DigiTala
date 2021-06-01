@@ -2585,6 +2585,164 @@ namespace Digitala.Models.DAL
             }
         }
 
+        public int UpdateCharsForStudent(RecommendedTargets rt)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildUpdateCharsCommand(rt.NewStudentChars, rt.NewStudentId, rt.CurrentYear);
+
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("לא ניתן לעדכן מאפייני תלמיד", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
+
+        private String BuildUpdateCharsCommand(List<Chararcteristics> c, string SId, int year)
+        {
+            String command;
+            //String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            string columns = "";
+            foreach (var item in c)
+            {
+                if (item.CharacteristicKey < 0)
+                    insertFreeChar(item, SId, year);
+                else
+                    columns += " UPDATE CharacteristicsMatrix SET [char_" + item.CharacteristicKey + "]=1 WHERE [StudentId] = " + SId + " [SCYear] = " + year;               
+            }
+            command = columns;
+
+            return command;
+        }
+
+        public int DeleteFreeCharsForStudent(RecommendedTargets rt)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildDeleteFreeCharsCommand(rt.NewStudentChars, rt.NewStudentId, rt.CurrentYear);
+
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("לא ניתן לעדכן מאפייני תלמיד", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
+
+        private String BuildDeleteFreeCharsCommand(List<Chararcteristics> c, string SId, int year)
+        {
+            String command;
+            //String prefix;
+            StringBuilder sb = new StringBuilder();
+            command = "";
+            foreach (var item in c)
+            {
+                if (item.CharacteristicKey > 299)
+                    command += " Delete FROM [ChararcteristicsForStudent] WHERE [CharacteristicKey] = " + item.CharacteristicKey;
+                else
+                    DeleteCharsForStudent(item.CharacteristicKey, SId, year);
+            }
+
+            return command;
+        }
+
+        public int DeleteCharsForStudent(int key, string SId, int year)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildDeleteCharsCommand(key, SId, year);
+
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("לא ניתן לעדכן מאפייני תלמיד", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
+
+        private String BuildDeleteCharsCommand(int key, string SId, int year)
+        {
+            String command;
+            //String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            command = "UPDATE CharacteristicsMatrix SET [char_" + key + "]=0 WHERE [StudentId] = " + SId + " [SCYear] = " + year;
+
+            return command;
+        }
+
         public int Update(Goals goal)
         {
 

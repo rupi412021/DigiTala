@@ -36,13 +36,20 @@ namespace Digitala.Controllers
             return rt.GetRecommendedTargets();
         }
 
-        //[HttpPost]
-        //[Route("api/Chararcteristics/{id}")]
-        //public void Post(int id)
-        //{
-        //    Chararcteristics c = new Chararcteristics();
-        //    c.TEMP(id);
-        //}
+        [HttpPut]
+        [Route("api/Chararcteristics")]
+        public void Put([FromBody]RecommendedTargets rt)
+        {
+            rt.Update();
+        }
+
+
+        [HttpDelete]
+        [Route("api/Chararcteristics")]
+        public void Delete([FromBody]RecommendedTargets rt)
+        {
+            rt.Delete();
+        }
 
     }
 }

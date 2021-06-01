@@ -59,5 +59,17 @@ namespace Digitala.Models
             return recommendations;
         }
 
+        public void Update()
+        {
+            DBServices dbs = new DBServices();
+            dbs.UpdateCharsForStudent(this);
+        }
+
+        public void Delete()
+        {
+            DBServices dbs = new DBServices();
+            dbs.DeleteFreeCharsForStudent(this);
+        }
+
     }
 }
