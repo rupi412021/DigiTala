@@ -62,14 +62,14 @@ namespace Digitala.Models
         public void Update()
         {
             DBServices dbs = new DBServices();
-            dbs.UpdateCharsForStudent(this);
-        }
 
-        public void Delete()
-        {
-            DBServices dbs = new DBServices();
-            dbs.DeleteFreeCharsForStudent(this);
+            for (int i = 0; i < NewStudentChars.Count; i++)
+            {
+                if (NewStudentChars[i].CharacteristicKey < 0)
+                    dbs.insertFreeChar(NewStudentChars[i], NewStudentId, CurrentYear);
+            }
         }
+       
 
     }
 }

@@ -44,6 +44,15 @@ namespace Digitala.Models
             return cList;
         }
 
+        public void Delete()
+        {
+            DBServices dbs = new DBServices();
+                if (CharacteristicKey > 299)
+                    dbs.DeleteFreeCharsForStudent(this);
+                else
+                    dbs.DeleteCharsForStudent(CharacteristicKey, StudentId, Year);            
+        }
+
         public List<Chararcteristics> Read(string studentID, int year)
         {
             DBServices dbs = new DBServices();

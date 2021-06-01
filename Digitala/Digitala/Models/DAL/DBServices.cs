@@ -2585,7 +2585,7 @@ namespace Digitala.Models.DAL
             }
         }
 
-        public int UpdateCharsForStudent(RecommendedTargets rt)
+        public int DeleteFreeCharsForStudent(Chararcteristics rt)
         {
             SqlConnection con;
             SqlCommand cmd;
@@ -2599,7 +2599,7 @@ namespace Digitala.Models.DAL
                 throw new Exception("Could not connect to DB", ex);
             }
 
-            String cStr = BuildUpdateCharsCommand(rt.NewStudentChars, rt.NewStudentId, rt.CurrentYear);
+            String cStr = BuildDeleteFreeCharsCommand(rt.CharacteristicKey);
 
             cmd = CreateCommand(cStr, con);
 
@@ -2622,75 +2622,13 @@ namespace Digitala.Models.DAL
             }
         }
 
-        private String BuildUpdateCharsCommand(List<Chararcteristics> c, string SId, int year)
+        private String BuildDeleteFreeCharsCommand(int key)
         {
             String command;
             //String prefix;
             StringBuilder sb = new StringBuilder();
 
-            string columns = "";
-            foreach (var item in c)
-            {
-                if (item.CharacteristicKey < 0)
-                    insertFreeChar(item, SId, year);
-                else
-                    columns += " UPDATE CharacteristicsMatrix SET [char_" + item.CharacteristicKey + "]=1 WHERE [StudentId] = " + SId + " [SCYear] = " + year;               
-            }
-            command = columns;
-
-            return command;
-        }
-
-        public int DeleteFreeCharsForStudent(RecommendedTargets rt)
-        {
-            SqlConnection con;
-            SqlCommand cmd;
-
-            try
-            {
-                con = connect("DBConnectionString");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Could not connect to DB", ex);
-            }
-
-            String cStr = BuildDeleteFreeCharsCommand(rt.NewStudentChars, rt.NewStudentId, rt.CurrentYear);
-
-            cmd = CreateCommand(cStr, con);
-
-            try
-            {
-                int numEffected = cmd.ExecuteNonQuery();
-                return numEffected;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("לא ניתן לעדכן מאפייני תלמיד", ex);
-            }
-
-            finally
-            {
-                if (con != null)
-                {
-                    con.Close();
-                }
-            }
-        }
-
-        private String BuildDeleteFreeCharsCommand(List<Chararcteristics> c, string SId, int year)
-        {
-            String command;
-            //String prefix;
-            StringBuilder sb = new StringBuilder();
-            command = "";
-            foreach (var item in c)
-            {
-                if (item.CharacteristicKey > 299)
-                    command += " Delete FROM [ChararcteristicsForStudent] WHERE [CharacteristicKey] = " + item.CharacteristicKey;
-                else
-                    DeleteCharsForStudent(item.CharacteristicKey, SId, year);
-            }
+            command = "Delete FROM [ChararcteristicsForStudent] WHERE [CharacteristicKey] = "+key;
 
             return command;
         }
@@ -2738,7 +2676,7 @@ namespace Digitala.Models.DAL
             //String prefix;
             StringBuilder sb = new StringBuilder();
 
-            command = "UPDATE CharacteristicsMatrix SET [char_" + key + "]=0 WHERE [StudentId] = " + SId + " [SCYear] = " + year;
+            command = "UPDATE CharacteristicsMatrix SET [char_" + key + "]=0 WHERE [StudentId] = " + SId + " and [SCYear] = " + year;
 
             return command;
         }

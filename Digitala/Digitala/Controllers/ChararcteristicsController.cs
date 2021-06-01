@@ -46,9 +46,9 @@ namespace Digitala.Controllers
 
         [HttpDelete]
         [Route("api/Chararcteristics")]
-        public void Delete([FromBody]RecommendedTargets rt)
+        public void Delete([FromBody]Chararcteristics c)
         {
-            rt.Delete();
+            c.Delete();
         }
 
     }

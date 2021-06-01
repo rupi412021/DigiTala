@@ -84,10 +84,16 @@
                 let ValToRemove = this.getAttribute("char-id");
                 let tagsList = "";
 
+                let charObj = {
+                    StudentId: newID,
+                    Year: localStorage["TeacherYear"],
+                    CharacteristicKey: ValToRemove,
+                }
+                if (ValToRemove > 0) 
+                    ajaxCall("DELETE", "../api/Chararcteristics", JSON.stringify(charObj), deleteCharsSuccess, getCharsError);
+
                 for (i = 0; i < allChars.length; i++) {
                     if (allChars[i].CharacteristicKey == ValToRemove) {
-                        if (allChars[i].CharacteristicKey < 300)
-                            deleteChars.push(allChars[i]);
                         allChars.splice(i, 1);
                         break;
                     }
@@ -189,8 +195,7 @@
                     NewStudentChars: allChars,
                 }
                 ajaxCall("PUT", "../api/Chararcteristics", JSON.stringify(newStudentChars), putCharsSuccess, getCharsError);
-                
-               
+
                 $("#PrintTala").attr("hidden", false);
                 $("#TalaToPDF").attr("hidden", false);
                 $("#EditTala").attr("hidden", false);
@@ -367,15 +372,7 @@
         function putCharsSuccess(charslist) {
             console.log("put new chararcters success");
 
-            if (deleteChars.length > 0) {
-                let newStudentChars = {
-                    NewStudentId: newID,
-                    CurrentYear: localStorage["TeacherYear"],
-                    NewStudentChars: deleteChars,
-                }
-
-                ajaxCall("DELETE", "../api/Chararcteristics", JSON.stringify(newStudentChars), deleteCharsSuccess, getCharsError);
-            }
+            
         }
 
         function deleteCharsSuccess(charslist){
