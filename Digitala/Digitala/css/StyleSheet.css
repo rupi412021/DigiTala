@@ -383,8 +383,10 @@ span, datalist {
             right: 0px;
             top: 0px;
         }
+    @page {
+        size: landscape
+    }
 }
-
 .statusGimg {
     width: 15%;
     text-align: center;

@@ -82,10 +82,24 @@ namespace Digitala.Models
             return Read();
         }
 
+        public List<Targets> Delete(int index)
+        {
+            DBServices dbs = new DBServices();
+            dbs.DeleteTargetFromTala(index);
+            return Read();
+        }
+
         public List<Targets> Insert()
         {
             DBServices dbs = new DBServices();
             dbs.Insert(this);
+            return Read();
+        }
+
+        public List<Targets> Insert(string target, int area, int sarea, int year, string studentId)
+        {
+            DBServices dbs = new DBServices();
+            dbs.InsertNewTargets(target, area, sarea, year, studentId);
             return Read();
         }
 
@@ -95,6 +109,13 @@ namespace Digitala.Models
             dbs.Update(this);
             return Read();
         }
-    
-}
+
+        public List<Targets> Update(int Tindex, string phrase)
+        {
+            DBServices dbs = new DBServices();
+            dbs.UpdateTargetInTala(Tindex, phrase);
+            return Read();
+        }
+
+    }
 }

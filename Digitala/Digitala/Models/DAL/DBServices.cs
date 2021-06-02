@@ -1874,7 +1874,7 @@ namespace Digitala.Models.DAL
             catch (Exception ex)
             {
                 // write to log
-                throw new Exception("מטרה לא התווספה", ex);
+                throw new Exception("מטרה לא נוספה", ex);
             }
 
             finally
@@ -3274,6 +3274,155 @@ namespace Digitala.Models.DAL
             prefix = "INSERT INTO Tools " + "([TYear], [StudentId], [Tool], [TalaSerial])";
 
             command = prefix + sb.ToString();
+
+            return command;
+        }
+
+        public int InsertNewTargets(string target, int area, int sarea, int year, string studentId)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildInsertNewTargetsCommand(target, area, sarea, year, studentId);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("מטרה לא נוספה", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildInsertNewTargetsCommand(string target, int area, int sarea, int year, string studentId)
+        {
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", 0, area, sarea, year, studentId, target);
+            prefix = "INSERT INTO [TargetsInTala] " + "([Tserial], [FASerial], [SFASerial], [TYear], [StudentId], [NewPhrase])";
+            command = prefix + sb.ToString();
+
+            return command;
+
+        }
+
+        public int DeleteTargetFromTala(int tindex)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildDeleteTargetFromTalaCommand(tindex);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("מטרה לא נמחק", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildDeleteTargetFromTalaCommand(int tindex)
+        {
+            String command;
+            command = "Delete FROM TargetsInTala WHERE Tindex = " + tindex;
+            return command;
+        }
+
+        public int UpdateTargetInTala(int Tindex, string phrase)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildUpdateTargetInTalaCommand(Tindex, phrase);
+
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("איש קשר לא עודכן", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildUpdateTargetInTalaCommand(int Tindex, string phrase)
+        {
+            String command;
+            command = "UPDATE [TargetsInTala] SET NewPhrase = '" + phrase;
 
             return command;
         }
