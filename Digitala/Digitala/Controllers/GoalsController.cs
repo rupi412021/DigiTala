@@ -27,10 +27,11 @@ namespace Digitala.Controllers
         }
 
         [HttpDelete]
-        [Route("api/Goals")]
-        public List<Goals> Delete([FromBody]Goals g)
+        [Route("api/Goals/{index}/{studentId}/{year}")]
+        public List<Goals> Delete(int index, string studentId, int year)
         {
-            return g.Delete();
+            Goals g = new Goals();
+            return g.Delete(index, studentId, year);
         }
 
         [HttpPost]

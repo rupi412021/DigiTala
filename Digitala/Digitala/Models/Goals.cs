@@ -56,10 +56,10 @@ namespace Digitala.Models
             return gList;
         }
 
-        public List<Goals> Delete()
+        public List<Goals> Delete(int index, string StudentId, int Year)
         {
             DBServices dbs = new DBServices();
-            dbs.DeleteGoal(this);
+            dbs.DeleteGoal(index);
             List<Goals> gList = dbs.ReadGoals(StudentId, Year);
             return gList;
         }

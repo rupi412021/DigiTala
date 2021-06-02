@@ -133,7 +133,7 @@
                         SfaSerial: subarea,
                     }
 
-                    ajaxCall("POST", "../api/Targets/" + ObjTemp.Target + "/" + ObjTemp.FaSerial + "/" + ObjTemp.SfaSerial + "/" + year + "/" + newID, "", postnewTargetsSuccess, postnewTargetsError);
+                    ajaxCall("POST", "../api/Targets/" + ObjTemp.Target + "/" + parseInt(ObjTemp.FaSerial) + "/" + parseInt(ObjTemp.SfaSerial) + "/" + parseInt(year) + "/" + newID, "", postnewTargetsSuccess, postnewTargetsError);
                     $(".editFormNewTargetModal").modal("hide");
                     renderChooseGoalsNTools();
                     $("#AreaPick").val("");
@@ -359,8 +359,8 @@
             renderTargetsGoalsNTools = '<div class="panel-group">';
             for (var i = 0; i < targetsList.length; i++) {
                 renderTargetsGoalsNTools += '<div class="panel panel-col-light-grey" id="collapse_' + i + '"> ';
-                renderTargetsGoalsNTools += "<button type='button' class='deleteBtn btn-trans paddingTopicons' data-tarId=" + targetsList[i].TarSerial + "><i class='material-icons'>delete</i></button>";
-                renderTargetsGoalsNTools += "<button type='button' class='updateBtn btn-trans paddingTopicons' data-tarId=" + targetsList[i].TarSerial + "><i class='material-icons'>create</i></button>";
+                renderTargetsGoalsNTools += "<button type='button' class='deleteBtn btn-trans paddingTopicons' data-tarId=" + targetsList[i].TarTalaIndex + "><i class='material-icons'>delete</i></button>";
+                renderTargetsGoalsNTools += "<button type='button' class='updateBtn btn-trans paddingTopicons' data-tarId=" + targetsList[i].TarTalaIndex + "><i class='material-icons'>create</i></button>";
                 renderTargetsGoalsNTools += '<div class="panel-heading" id="heading' + i + '_19"><h4 class="panel-title editTar">' + targetsList[i].Target + '</h4></div>';
                 renderTargetsGoalsNTools += '<div id="collapse' + i + '_19" class="panel-collapse collapse in">';
                 renderTargetsGoalsNTools += '<div class="panel-body"><div class="input-group col-sm-6" tar-ser=' + targetsList[i].TarTalaIndex + '><div class="form-line w95"><input type="text" class="form-control date goals" id="goal' + targetsList[i].TarTalaIndex + '" placeholder="הזן יעד להשגת המטרה">';
@@ -448,12 +448,12 @@
                 var tarVal;
 
                 for (var i = 0; i < targetsList.length; i++) {
-                    if (targetsList[i].TarSerial == tarId) {
+                    if (targetsList[i].TarTalaIndex == tarId) {
                         tarVal = targetsList[i].Target;
                         break;
                     }
                 }
-               
+
                 swal({
                     title: "ערוך מטרה",
                     type: "input",
@@ -475,10 +475,10 @@
                         showConfirmButton: false
                     });
 
-                    ajaxCall("PUT", "../api/Targets/" + tarId + "/" + inputValue, "", PutTargetsSuccess, PutTargetsError);
+                    ajaxCall("PUT", "../api/Targets/" + parseInt(tarId) + "/" + inputValue + "/" + parseInt(year) + "/" + newID, "", PutTargetsSuccess, PutTargetsError);
 
-                    renderChooseGoalsNTools();
-                    });
+
+                });
             });
 
             $(document).on("click", ".deleteBtn", function () {
@@ -487,13 +487,13 @@
                 var tarIndex;
 
                 for (var i = 0; i < targetsList.length; i++) {
-                    if (targetsList[i].TarSerial == tarId) {
+                    if (targetsList[i].TarTalaIndex == tarId) {
                         tarVal = targetsList[i].Target;
                         tarIndex = i;
                         break;
                     }
                 }
-               
+
                 swal({
                     title: "האם ברצונך למחוק מטרה זו?",
                     text: tarVal,
@@ -505,19 +505,18 @@
                     closeOnConfirm: false
                 }, function () {
                     for (var i = 0; i < StudentsTools.length; i++) {
-                        if (StudentsTools[i].Tserial == targetsList[tarIndex].TarTalaIndex) {
-                            ajaxCall("DELETE", "../api/Tools", JSON.stringify(StudentsTools[i].Tserial), deleteToolsSuccess, deleteToolandGoalError);
-                        }
-                    }
+                        if (StudentsTools[i].Tserial == tarId)
+                            ajaxCall("DELETE", "../api/Tools/" + parseInt(tarId) + "/" + newID + "/" + parseInt(year), "", deleteToolsSuccess, deleteToolandGoalError);
 
+                    }
                     for (var i = 0; i < StudentsGoals.length; i++) {
-                        if (StudentsGoals[i].SerialTarget == targetsList[tarIndex].TarTalaIndex) {
-                            ajaxCall("DELETE", "../api/Goals", JSON.stringify(StudentsGoals[i]), deleteGoalsSuccess, deleteToolandGoalError);
-                        }
-                    }
-                    ajaxCall("DELETE", "../api/Targets/" + tarId, "", deleteTargetsSuccess, deleteTargetsError);
+                        if (StudentsGoals[i].SerialTarget == tarId)
+                            ajaxCall("DELETE", "../api/Goals/" + parseInt(tarId) + "/" + newID + "/" + parseInt(year), "", deleteGoalsSuccess, deleteToolandGoalError);
 
-                    renderChooseGoalsNTools();
+                    }
+                    ajaxCall("DELETE", "../api/Targets/" + parseInt(tarId) + "/" + newID + "/" + parseInt(year), "", deleteTargetsSuccess, deleteTargetsError);
+
+                    
                     swal({
                         title: "המטרה נמחקה",
                         type: "success",
@@ -531,6 +530,7 @@
         function deleteTargetsSuccess(tlist) {
             targetsList = tlist;
             console.log(targetsList);
+            renderChooseGoalsNTools();
         }
 
         function deleteTargetsError(error) {
@@ -539,6 +539,7 @@
         
         function PutTargetsSuccess(tlist) {
             targetsList = tlist;
+            renderChooseGoalsNTools();
             console.log(targetsList);
         }
 

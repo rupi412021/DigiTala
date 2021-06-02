@@ -12,7 +12,7 @@ namespace Digitala.Controllers
     {
         [HttpGet]
         [Route("api/Tools/{sid}/{syear}")]
-        public List<Tools> Get(int sid, int syear)
+        public List<Tools> Get(string sid, int syear)
         {
             Tools t = new Tools();
             List<Tools> tlist = t.Read(sid, syear);
@@ -20,10 +20,11 @@ namespace Digitala.Controllers
         }
 
         [HttpDelete]
-        [Route("api/Tools")]
-        public List<Tools> Delete([FromBody]Tools t)
+        [Route("api/Tools/{index}/{sid}/{syear}")]
+        public List<Tools> Delete(int index, string sid, int syear)
         {
-            return t.Delete();
+            Tools t = new Tools();
+            return t.Delete(index, sid, syear);
         }
 
         [HttpPost]

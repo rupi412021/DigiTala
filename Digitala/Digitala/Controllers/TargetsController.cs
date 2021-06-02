@@ -43,7 +43,7 @@ namespace Digitala.Controllers
         }
 
         [HttpPost]
-        [Route("api/Targets/{target}/{year}/{studentId}")]
+        [Route("api/Targets/{target}/{area}/{sarea}/{year}/{studentId}")]
         public List<Targets> Post(string target, int area, int sarea, int year, string studentId)
         {
             Targets t = new Targets();
@@ -51,11 +51,11 @@ namespace Digitala.Controllers
         }
 
         [HttpDelete]
-        [Route("api/Targets/{Tindex}")]
-        public List<Targets> Delete(int Tindex)
+        [Route("api/Targets/{Tindex}/{studentId}/{year}")]
+        public List<Targets> Delete(int Tindex, string studentId, int year)
         {
             Targets t = new Targets();
-            return t.Delete(Tindex);
+            return t.Delete(Tindex, studentId, year);
         }
 
         [HttpPut]
@@ -66,11 +66,11 @@ namespace Digitala.Controllers
         }
 
         [HttpPut]
-        [Route("api/Targets/{Tindex}/{phrase}")]
-        public List<Targets> Put(int Tindex, string phrase)
+        [Route("api/Targets/{Tindex}/{phrase}/{year}/{studentId}")]
+        public List<Targets> Put(int Tindex, string phrase, int year, string studentId)
         {
             Targets t = new Targets();
-            return t.Update(Tindex, phrase);
+            return t.Update(Tindex, phrase, year, studentId);
         }
     }
 }

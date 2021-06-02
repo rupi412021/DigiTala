@@ -3025,7 +3025,7 @@ namespace Digitala.Models.DAL
             return command;
         }
 
-        public List<Tools> ReadTools(int sid, int syear)
+        public List<Tools> ReadTools(string sid, int syear)
         {
 
             SqlConnection con = null;
@@ -3046,7 +3046,7 @@ namespace Digitala.Models.DAL
                 {   // Read till the end of the data into a row
                     Tools t = new Tools();
 
-                    t.StudentId = Convert.ToInt32(dr["StudentId"]);
+                    t.StudentId = (string)(dr["StudentId"]);
                     t.Tid = Convert.ToInt32(dr["TId"]);
                     t.Tserial = Convert.ToInt32(dr["TalaSerial"]);
                     t.Year = Convert.ToInt32(dr["TYear"]);
@@ -3072,7 +3072,7 @@ namespace Digitala.Models.DAL
             }
         }
 
-        public int DeleteTool(Tools t)
+        public int DeleteTool(int index)
         {
 
             SqlConnection con;
@@ -3087,7 +3087,7 @@ namespace Digitala.Models.DAL
                 throw new Exception("Could not connect to DB", ex);
             }
 
-            String cStr = BuildDeleteToolCommand(t);      // helper method to build the insert string
+            String cStr = BuildDeleteToolCommand(index);      // helper method to build the insert string
 
             cmd = CreateCommand(cStr, con);             // create the command
 
@@ -3111,14 +3111,14 @@ namespace Digitala.Models.DAL
 
         }
 
-        private String BuildDeleteToolCommand(Tools t)
+        private String BuildDeleteToolCommand(int index)
         {
             String command;
-            command = "Delete FROM Tools WHERE TId = " + t.Tid;
+            command = "Delete FROM Tools WHERE TId = " + index;
             return command;
         }
 
-        public int DeleteGoal(Goals g)
+        public int DeleteGoal(int index)
         {
 
             SqlConnection con;
@@ -3133,7 +3133,7 @@ namespace Digitala.Models.DAL
                 throw new Exception("Could not connect to DB", ex);
             }
 
-            String cStr = BuildDeleteGoalCommand(g);      // helper method to build the insert string
+            String cStr = BuildDeleteGoalCommand(index);      // helper method to build the insert string
 
             cmd = CreateCommand(cStr, con);             // create the command
 
@@ -3157,10 +3157,10 @@ namespace Digitala.Models.DAL
 
         }
 
-        private String BuildDeleteGoalCommand(Goals g)
+        private String BuildDeleteGoalCommand(int index)
         {
             String command;
-            command = "Delete FROM Goals WHERE GId = " + g.GoalId;
+            command = "Delete FROM Goals WHERE GId = " + index;
             return command;
         }
 
@@ -3422,7 +3422,7 @@ namespace Digitala.Models.DAL
         private String BuildUpdateTargetInTalaCommand(int Tindex, string phrase)
         {
             String command;
-            command = "UPDATE [TargetsInTala] SET NewPhrase = '" + phrase + " WHERE Tindex = "+ Tindex;
+            command = "UPDATE [TargetsInTala] SET NewPhrase = '" + phrase + "' WHERE Tindex = "+ Tindex;
 
             return command;
         }

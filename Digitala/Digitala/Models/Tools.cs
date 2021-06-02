@@ -11,10 +11,10 @@ namespace Digitala.Models
         int tid;
         int tserial;
         int year;
-        int studentId;
+        string studentId;
         string tool;
 
-        public Tools(int tid, int tserial, int year, int studentId, string tool)
+        public Tools(int tid, int tserial, int year, string studentId, string tool)
         {
             Tid = tid;
             Tserial = tserial;
@@ -28,21 +28,21 @@ namespace Digitala.Models
         public int Tid { get => tid; set => tid = value; }
         public int Tserial { get => tserial; set => tserial = value; }
         public int Year { get => year; set => year = value; }
-        public int StudentId { get => studentId; set => studentId = value; }
+        public string StudentId { get => studentId; set => studentId = value; }
         public string Tool { get => tool; set => tool = value; }
 
 
-        public List<Tools> Read(int sid,int syear)
+        public List<Tools> Read(string sid, int syear)
         {
             DBServices dbs = new DBServices();
             List<Tools> tList = dbs.ReadTools(sid, syear);
             return tList;
         }
 
-        public List<Tools> Delete()
+        public List<Tools> Delete(int index, string StudentId, int Year)
         {
             DBServices dbs = new DBServices();
-            dbs.DeleteTool(this);
+            dbs.DeleteTool(index);
             List<Tools> tList = dbs.ReadTools(StudentId, Year);
             return tList;
         }
