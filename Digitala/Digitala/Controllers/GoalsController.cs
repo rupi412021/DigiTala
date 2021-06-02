@@ -25,5 +25,19 @@ namespace Digitala.Controllers
         {
             g.Update();
         }
+
+        [HttpDelete]
+        [Route("api/Goals")]
+        public List<Goals> Delete([FromBody]Goals g)
+        {
+            return g.Delete();
+        }
+
+        [HttpPost]
+        [Route("api/Goals")]
+        public List<Goals> Post([FromBody]Goals g)
+        {
+            return g.Insert();
+        }
     }
 }

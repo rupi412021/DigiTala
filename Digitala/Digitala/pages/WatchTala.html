@@ -38,12 +38,7 @@
     <script>
         $(document).ready(function () {
             mode = "";
-            deleteGoals = [];
-            deleteTools = [];
             deleteTargets = [];
-            deleteChars = [];
-            newGoals = [];
-            newTools = [];
             newTargets = [];
             unknownIdChar = -1;
             unknownTarId = -1;
@@ -162,7 +157,6 @@
             $("#PrintTala").attr("hidden", true);
             $("#TalaToPDF").attr("hidden", true);
             $("#EditTala").attr("hidden", true);
-            $("#FinishEditing").attr("hidden", false);
             $("#cancelEditing").attr("hidden", false);
             $(".HiddenInEdit").attr("hidden", true);
             $(".HiddenInWatch").attr("hidden", false);
@@ -170,63 +164,24 @@
             renderChooseGoalsNTools();
         }
 
-        function finishEditTala() {
-            swal({
-                title: "האם ברצונך לשמור את השינויים?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#73A4A4",
-                confirmButtonText: "שמירה",
-                cancelButtonText: "ביטול",
-                closeOnConfirm: true
-            }, function () {
-                mode = "";
-
-                //deleteGoals = [];
-                //deleteTools = [];
-                //deleteTargets = [];
-                //newGoals = [];
-                //newTools = [];
-                //newTargets = [];
-                
-                let newStudentChars = {
-                    NewStudentId: newID,
-                    CurrentYear: localStorage["TeacherYear"],
-                    NewStudentChars: allChars,
-                }
-                ajaxCall("PUT", "../api/Chararcteristics", JSON.stringify(newStudentChars), putCharsSuccess, getCharsError);
-
-                $("#PrintTala").attr("hidden", false);
-                $("#TalaToPDF").attr("hidden", false);
-                $("#EditTala").attr("hidden", false);
-                $("#FinishEditing").attr("hidden", true);
-                $("#cancelEditing").attr("hidden", true);
-                $(".HiddenInEdit").attr("hidden", false);
-                $(".HiddenInWatch").attr("hidden", true);
-                location.reload();
-            });
-        }
-
         function cancelEditTala() {
-            swal({
-                title: "יציאה ממצב עריכה",
-                text: "השינויים שביצעת לא יישמרו",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#F46549",
-                confirmButtonText: "יציאה",
-                cancelButtonText: "ביטול",
-                closeOnConfirm: true
-            }, function () {
-                mode = "";
-                $("#PrintTala").attr("hidden", false);
-                $("#TalaToPDF").attr("hidden", false);
-                $("#EditTala").attr("hidden", false);
-                $("#FinishEditing").attr("hidden", true);
-                $("#cancelEditing").attr("hidden", true);
-                $(".HiddenInEdit").attr("hidden", false);
-                $(".HiddenInWatch").attr("hidden", true);
-            });
+            //deleteTargets = [];
+                //newTargets = [];
+            mode = "";
+            let newStudentChars = {
+                NewStudentId: newID,
+                CurrentYear: localStorage["TeacherYear"],
+                NewStudentChars: allChars,
+            }
+            ajaxCall("PUT", "../api/Chararcteristics", JSON.stringify(newStudentChars), putCharsSuccess, getCharsError);
+
+            $("#PrintTala").attr("hidden", false);
+            $("#TalaToPDF").attr("hidden", false);
+            $("#EditTala").attr("hidden", false);
+            $("#cancelEditing").attr("hidden", true);
+            $(".HiddenInEdit").attr("hidden", false);
+            $(".HiddenInWatch").attr("hidden", true);
+            location.reload();
         }
 
         function toggleMenu() {
@@ -444,10 +399,12 @@
                     $("#goal" + tempGoalTarId).val("");
 
                     NewGoal = {
-                        nGoal: tempGoal.replace("'", "`"),
-                        tTarId: tempGoalTarId
+                        Goal: tempGoal.replace("'", "`"),
+                        SerialTarget: tempGoalTarId,
+                        Year: localStorage["TeacherYear"],
+                        StudentId: newID
                     }
-                    newGoals.push(NewGoal);
+                    ajaxCall("POST", "../api/Goals", JSON.stringify(NewGoal), postGoalSuccess, postToolandGoalError);
                 }
             });
 
@@ -459,10 +416,12 @@
                     $("#tool" + tempToolTarId).val("");
 
                     NewTool = {
-                        nTool: tempTool.replace("'", "`"),
-                        tTarId: tempToolTarId
+                        Tool: tempTool.replace("'", "`"),
+                        Tserial: tempToolTarId,
+                        Year: localStorage["TeacherYear"],
+                        StudentId: newID
                     }
-                    newTools.push(NewTool);
+                    ajaxCall("POST", "../api/Tools", JSON.stringify(NewTool), postToolSuccess, postToolandGoalError);
                 }
             });
 
@@ -470,31 +429,15 @@
                 if (this.parentNode.getAttribute("class") == "goalItem") {
                     for (var i = 0; i < StudentsGoals.length; i++) {
                         if (StudentsGoals[i].GoalId == this.parentNode.getAttribute('id')) {
-                            deleteGoals.push(StudentsGoals[i]);
-                            StudentsGoals.splice(i, 1);
-                            break;
-                        }
-                    }
-                    val = this.parentNode.innerText.replace("clear", "").trim();
-                    for (var i = 0; i < newGoals.length; i++) {                      
-                        if (newGoals[i].nGoal == val) {
-                            newGoals.splice(i, 1);
-                            break;
+                            ajaxCall("DELETE", "../api/Goals", JSON.stringify(StudentsGoals[i]), deleteGoalsSuccess, deleteToolandGoalError);
+                            break; 
                         }
                     }
                 }
                 else if (this.parentNode.getAttribute("class") == "toolItem") {
                     for (var i = 0; i < StudentsTools.length; i++) {
                         if (StudentsTools[i].Tid == this.parentNode.getAttribute('id')) {
-                            deleteTools.push(StudentsTools[i]);
-                            StudentsTools.splice(i, 1);
-                            break;
-                        }
-                    }
-                    val = this.parentNode.innerText.replace("clear", "").trim();
-                    for (var i = 0; i < newTools.length; i++) {
-                        if (newTools[i].nTool == val) {
-                            newTools.splice(i, 1);
+                            ajaxCall("DELETE", "../api/Tools", JSON.stringify(StudentsTools[i]), deleteToolsSuccess, deleteToolandGoalError);
                             break;
                         }
                     }
@@ -506,16 +449,10 @@
         function renderGoals() {
             for (var i = 0; i < StudentsTools.length; i++) {
                 $("#target_" + StudentsTools[i].Tserial + ".toolsList").append('<div class="toolItem" id=' + StudentsTools[i].Tid + '>' + StudentsTools[i].Tool + '<i class="material-icons clearItem">clear</i></div>');
-            }
-            for (var i = 0; i < newTools.length; i++) {
-                $("#target_" + newTools[i].Tserial + ".toolsList").append('<div class="toolItem" id=' + newTools[i].Tid + '>' + newTools[i].Tool + '<i class="material-icons clearItem">clear</i></div>');
-            }
+            }            
             for (var i = 0; i < StudentsGoals.length; i++) {
                 $("#target_" + StudentsGoals[i].SerialTarget + ".goalsList").append('<div class="goalItem" id=' + StudentsGoals[i].GoalId + '>' + StudentsGoals[i].Goal + '<i class="material-icons clearItem">clear</i></div>');
-            }
-            for (var i = 0; i < newGoals.length; i++) {
-                $("#target_" + newGoals[i].SerialTarget + ".goalsList").append('<div class="goalItem" id=' + newGoals[i].GoalId + '>' + newGoals[i].Goal + '<i class="material-icons clearItem">clear</i></div>');
-            }
+            }          
         }
 
         function EditDelTargets() {
@@ -600,51 +537,21 @@
                     cancelButtonText: "סגור",
                     closeOnConfirm: false
                 }, function () {
-                    if (tarIndex > -1) {
                         for (var i = 0; i < StudentsTools.length; i++) {
                             if (StudentsTools[i].Tserial == targetsList[tarIndex].TarTalaIndex) {
-                                deleteTools.push(StudentsTools[i]);
-                                StudentsTools.splice(i, 1);
-                                i--;
+                                ajaxCall("DELETE", "../api/Tools", JSON.stringify(StudentsTools[i].Tserial), deleteToolsSuccess, deleteToolandGoalError);
                             }
                         }
-                        for (var i = 0; i < newTools.length; i++) {
-                            if (newTools[i].Tserial == targetsList[tarIndex].TarTalaIndex) {
-                                newTools.splice(i, 1);
-                                i--;
-                            }
-                        }
+                        
                         for (var i = 0; i < StudentsGoals.length; i++) {
                             if (StudentsGoals[i].SerialTarget == targetsList[tarIndex].TarTalaIndex) {
-                                deleteGoals.push(StudentsGoals[i]);
-                                StudentsGoals.splice(i, 1);
-                                i--;
+                                ajaxCall("DELETE", "../api/Goals", JSON.stringify(StudentsGoals[i]), deleteGoalsSuccess, deleteToolandGoalError);
                             }
                         }
-                        for (var i = 0; i < newGoals.length; i++) {
-                            if (newGoals[i].SerialTarget == targetsList[tarIndex].TarTalaIndex) {
-                                newGoals.splice(i, 1);
-                                i--;
-                            }
-                        }
+                        
                         deleteTargets.push(targetsList[tarIndex]);
                         targetsList.splice(tarIndex, 1);
-                    }
-                    else {
-                        for (var i = 0; i < newTools.length; i++) {
-                            if (newTools[i].Tserial == newTargets[tarNewIndex].TarSerial) {
-                                newTools.splice(i, 1);
-                                i--;
-                            }
-                        }
-                        for (var i = 0; i < newGoals.length; i++) {
-                            if (newGoals[i].SerialTarget == newTargets[tarNewIndex].TarSerial) {
-                                newGoals.splice(i, 1);
-                                i--;
-                            }
-                        }
-                        newTargets.splice(tarNewIndex, 1);
-                    }
+                      
 
                     renderChooseGoalsNTools();
                     swal({
@@ -670,6 +577,34 @@
                 }
                 $("#SubAreaPickList").html(renderSubAreasList);
             });
+        }
+
+        function deleteGoalsSuccess(deleted) {
+            StudentsGoals = deleted;
+            console.log("goal deleted");
+        }
+
+        function deleteToolsSuccess(deleted) {
+            StudentsTools = deleted;
+            console.log("tool deleted");
+        }
+
+        function deleteToolandGoalError(error) {
+            console.log("error deleting goal/tool")
+        }
+
+        function postToolSuccess(posted) {
+            StudentsTools = posted;
+            console.log("tool post");
+        }
+
+        function postGoalSuccess(posted) {
+            StudentsGoals = posted;
+            console.log("goal post");
+        }
+
+        function postToolandGoalError(error) {
+            console.log("error posting goal/tool");
         }
 
     </script>
@@ -714,7 +649,6 @@
                 <button type="button" class="btn-trans" id="PrintTala" onclick="window.print()"><i class="material-icons">print</i></button>
                 <button type="button" class="btn-trans" id="TalaToPDF" onclick="generatePDF()"><i class="material-icons">picture_as_pdf</i></button>
                 <button type="button" class="btn-trans" id="cancelEditing" onclick="cancelEditTala()" hidden="hidden"><i class="material-icons">close</i></button>
-                <button type="button" class="btn-trans" id="FinishEditing" onclick="finishEditTala()" hidden="hidden"><i class="material-icons">save</i></button>
             </div>
             <div class="row clearfix" id="printContent">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

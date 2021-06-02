@@ -18,5 +18,19 @@ namespace Digitala.Controllers
             List<Tools> tlist = t.Read(sid, syear);
             return tlist;
         }
+
+        [HttpDelete]
+        [Route("api/Tools")]
+        public List<Tools> Delete([FromBody]Tools t)
+        {
+            return t.Delete();
+        }
+
+        [HttpPost]
+        [Route("api/Tools")]
+        public List<Tools> Post([FromBody]Tools t)
+        {
+            return t.Insert();
+        }
     }
 }

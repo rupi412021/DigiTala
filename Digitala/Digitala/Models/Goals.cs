@@ -48,6 +48,22 @@ namespace Digitala.Models
             UpdateTargetsAchievement(this.SerialTarget);
         }
 
+        public List<Goals> Insert()
+        {
+            DBServices dbs = new DBServices();
+            dbs.InsertGoal(this);
+            List<Goals> gList = dbs.ReadGoals(StudentId, Year);
+            return gList;
+        }
+
+        public List<Goals> Delete()
+        {
+            DBServices dbs = new DBServices();
+            dbs.DeleteGoal(this);
+            List<Goals> gList = dbs.ReadGoals(StudentId, Year);
+            return gList;
+        }
+
         public void UpdateTargetsAchievement(int serialTar)
         {
             DBServices dbs = new DBServices();

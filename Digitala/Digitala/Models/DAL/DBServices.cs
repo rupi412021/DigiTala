@@ -3025,7 +3025,6 @@ namespace Digitala.Models.DAL
             return command;
         }
 
-
         public List<Tools> ReadTools(int sid, int syear)
         {
 
@@ -3071,6 +3070,212 @@ namespace Digitala.Models.DAL
                 }
 
             }
+        }
+
+        public int DeleteTool(Tools t)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildDeleteToolCommand(t);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("אמצעי לא נמחק", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildDeleteToolCommand(Tools t)
+        {
+            String command;
+            command = "Delete FROM Tools WHERE TId = " + t.Tid;
+            return command;
+        }
+
+        public int DeleteGoal(Goals g)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildDeleteGoalCommand(g);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("אמצעי לא נמחק", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildDeleteGoalCommand(Goals g)
+        {
+            String command;
+            command = "Delete FROM Goals WHERE GId = " + g.GoalId;
+            return command;
+        }
+
+        public int InsertGoal(Goals g)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildInsertCommand(g);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("יעד לא עודכן במערכת", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildInsertCommand(Goals g)
+        {
+
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}')", g.Year, g.StudentId, g.Goal, g.SerialTarget);
+            prefix = "INSERT INTO Goals " + "([TYear], [StudentId], [Goal], [TalaSerial])";
+
+            command = prefix + sb.ToString();
+
+            return command;
+        }
+
+        public int InsertTool(Tools t)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildInsertCommand(t);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("אמצעי לא עודכן במערכת", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildInsertCommand(Tools t)
+        {
+
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}')", t.Year, t.StudentId, t.Tool, t.Tserial);
+            prefix = "INSERT INTO Tools " + "([TYear], [StudentId], [Tool], [TalaSerial])";
+
+            command = prefix + sb.ToString();
+
+            return command;
         }
     }
    

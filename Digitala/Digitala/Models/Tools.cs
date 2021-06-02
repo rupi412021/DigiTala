@@ -35,7 +35,23 @@ namespace Digitala.Models
         public List<Tools> Read(int sid,int syear)
         {
             DBServices dbs = new DBServices();
-            List<Tools> tList = dbs.ReadTools(sid,syear);
+            List<Tools> tList = dbs.ReadTools(sid, syear);
+            return tList;
+        }
+
+        public List<Tools> Delete()
+        {
+            DBServices dbs = new DBServices();
+            dbs.DeleteTool(this);
+            List<Tools> tList = dbs.ReadTools(StudentId, Year);
+            return tList;
+        }
+
+        public List<Tools> Insert()
+        {
+            DBServices dbs = new DBServices();
+            dbs.InsertTool(this);
+            List<Tools> tList = dbs.ReadTools(StudentId, Year);
             return tList;
         }
     }
