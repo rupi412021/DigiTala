@@ -3406,7 +3406,7 @@ namespace Digitala.Models.DAL
             }
             catch (Exception ex)
             {
-                throw new Exception("איש קשר לא עודכן", ex);
+                throw new Exception("מטרה לא עודכנה", ex);
             }
 
             finally
@@ -3422,7 +3422,7 @@ namespace Digitala.Models.DAL
         private String BuildUpdateTargetInTalaCommand(int Tindex, string phrase)
         {
             String command;
-            command = "UPDATE [TargetsInTala] SET NewPhrase = '" + phrase;
+            command = "UPDATE [TargetsInTala] SET NewPhrase = '" + phrase + " WHERE Tindex = "+ Tindex;
 
             return command;
         }
