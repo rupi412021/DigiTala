@@ -98,8 +98,8 @@
             });
 
             $(document).on("click", "#closeNewTarModal", function () {
-                $("#AreaPick").val("");
-                $("#SubAreaPick").val("");
+                $("#AreaPick").val("0");
+                $("#SubAreaPick").val("0");
                 $("#newTargetToSave").val("");
             });
 
@@ -109,11 +109,11 @@
                 var subarea = $("#SubAreaPick").val();
                 var newTarget = $("#newTargetToSave").val();
 
-                if (area == "") {
+                if (area == 0) {
                     event.preventDefault();
                     $("#area-error").attr("hidden", false);
                 }
-                else if (subarea == "") {
+                else if (subarea == 0) {
                     event.preventDefault();
                     $("#subarea-error").attr("hidden", false);
                 }
@@ -490,12 +490,10 @@
             $(document).on("click", ".deleteBtn", function () {
                 var tarId = this.getAttribute('data-tarId');
                 var tarVal;
-                var tarIndex;
 
                 for (var i = 0; i < targetsList.length; i++) {
                     if (targetsList[i].TarTalaIndex == tarId) {
                         tarVal = targetsList[i].Target;
-                        tarIndex = i;
                         break;
                     }
                 }
@@ -555,16 +553,14 @@
 
         function getSubAreasSuccess(subareas) {
             SubAreasList = subareas;
-            AreasDict = { "סנסומוטורי": 1, "כישורי חיים": 2, "חברתי": 3, "תקשורתי שפתי": 4, "התנהגותי רגשי": 5, "קוגניטיבי לימודי":6}
             $(document).on("change", "#AreaPick", function () {
-                var area = $("#AreaPick").val();
                 $("#area-error").attr("hidden", true);
-                var renderSubAreasList = "";
+                var renderSubAreasList = "<option subarea-id=" + 0 + " value='" + 0 + "'>בחר תת תחום מרשימה</option>";
                 for (var i = 0; i < SubAreasList.length; i++) {
-                    if (SubAreasList[i].AreaId == AreasDict[area])
-                        renderSubAreasList += "<option subarea-id=" + SubAreasList[i].SubAreaId + " value='" + SubAreasList[i].SubArea + "'></option>";
+                    if (SubAreasList[i].AreaId == $("#AreaPick").val())
+                        renderSubAreasList += "<option subarea-id=" + SubAreasList[i].SubAreaId + " value='" + SubAreasList[i].SubAreaId + "'>"+ SubAreasList[i].SubArea+"</option>";
                 }
-                $("#SubAreaPickList").html(renderSubAreasList);
+                $("#SubAreaPick").html(renderSubAreasList);
             });
         }
 
@@ -749,23 +745,22 @@
                                                 <div class="form-group">
                                                     <div class="form-line">
                                                         <label>בחר תחום תפקוד</label>
-                                                        <input id="AreaPick" list="AreaPickList" class="form-control" required oninvalid="this.setCustomValidity('בחר תחום')" oninput="this.setCustomValidity('')">
-                                                        <datalist id="AreaPickList">
-                                                            <option area-id="1" value="סנסומוטורי"></option>
-                                                            <option area-id="2" value="כישורי חיים"></option>
-                                                            <option area-id="3" value="חברתי"></option>
-                                                            <option area-id="4" value="תקשורתי שפתי"></option>
-                                                            <option area-id="5" value="התנהגותי רגשי"></option>
-                                                            <option area-id="6" value="קוגניטיבי לימודי"></option>
-                                                        </datalist>
+                                                        <select id="AreaPick" class="form-control">
+                                                            <option area-id="0" value="0">בחר ערך מרשימה</option>
+                                                            <option area-id="1" value="1">סנסומוטורי</option>
+                                                            <option area-id="2" value="2">כישורי חיים</option>
+                                                            <option area-id="3" value="3">חברתי</option>
+                                                            <option area-id="4" value="4">תקשורתי שפתי</option>
+                                                            <option area-id="5" value="5">התנהגותי רגשי</option>
+                                                            <option area-id="6" value="6">קוגניטיבי לימודי</option>
+                                                        </select>
                                                     </div>
                                                     <label id="area-error" hidden="hidden">אנא בחר תחום תפקוד</label>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="form-line">
                                                         <label>בחר תת-תחום</label>
-                                                        <input id="SubAreaPick" list="SubAreaPickList" class="form-control" required oninvalid="this.setCustomValidity('בחר תחום')" oninput="this.setCustomValidity('')">
-                                                        <datalist id="SubAreaPickList"></datalist>
+                                                        <select id="SubAreaPick" class="form-control"></select>
                                                     </div>
                                                     <label id="subarea-error" hidden="hidden">אנא הזן תת-תחום</label>
                                                 </div>
@@ -871,8 +866,7 @@
     <script src="../plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap Core Js -->
     <script src="../plugins/bootstrap/js/bootstrap.js"></script>
-    <!-- Select Plugin Js -->
-    <script src="../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
     <!-- Slimscroll Plugin Js -->
     <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
     <!-- Waves Effect Plugin Js -->
