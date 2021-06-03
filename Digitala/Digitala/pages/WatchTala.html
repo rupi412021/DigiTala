@@ -135,7 +135,7 @@
 
                     ajaxCall("POST", "../api/Targets/" + ObjTemp.Target + "/" + parseInt(ObjTemp.FaSerial) + "/" + parseInt(ObjTemp.SfaSerial) + "/" + parseInt(year) + "/" + newID, "", postnewTargetsSuccess, postnewTargetsError);
                     $(".editFormNewTargetModal").modal("hide");
-                    renderChooseGoalsNTools();
+                    
                     $("#AreaPick").val("");
                     $("#SubAreaPick").val("");
                     $("#newTargetToSave").val("");
@@ -223,6 +223,7 @@
 
         function postnewTargetsSuccess(TList) {
             targetsList = TList;
+            renderChooseGoalsNTools();
             console.log(targetsList);
         }
 
@@ -381,7 +382,7 @@
                 tempGoalTarId = this.parentNode.getAttribute("tar-ser");
                 tempGoal = $("#goal" + tempGoalTarId).val();
                 if (tempGoal.length > 0) {
-                    $("#target_" + tempGoalTarId + ".goalsList").append('<div class="goalItem" id=' + tempGoalTarId + '>' + tempGoal + '<i class="material-icons clearItem">clear</i></div>');
+                    //$("#target_" + tempGoalTarId + ".goalsList").append('<div class="goalItem" id=' + tempGoalTarId + '>' + tempGoal + '<i class="material-icons clearItem">clear</i></div>');
                     $("#goal" + tempGoalTarId).val("");
 
                     NewGoal = {
@@ -398,7 +399,7 @@
                 tempToolTarId = this.parentNode.getAttribute("tar-ser");
                 tempTool = $("#tool" + tempToolTarId).val();
                 if (tempTool.length > 0) {
-                    $("#target_" + tempToolTarId + ".toolsList").append('<div class="toolItem" id=' + tempToolTarId + '>' + tempTool + '<i class="material-icons clearItem">clear</i></div>');
+                    //$("#target_" + tempToolTarId + ".toolsList").append('<div class="toolItem" id=' + tempToolTarId + '>' + tempTool + '<i class="material-icons clearItem">clear</i></div>');
                     $("#tool" + tempToolTarId).val("");
 
                     NewTool = {
@@ -414,16 +415,17 @@
             $(document).on("click", ".clearItem", function () {
                 if (this.parentNode.getAttribute("class") == "goalItem") {
                     for (var i = 0; i < StudentsGoals.length; i++) {
-                        if (StudentsGoals[i].GoalId == this.parentNode.getAttribute('id')) {
-                            ajaxCall("DELETE", "../api/Goals", JSON.stringify(StudentsGoals[i]), deleteGoalsSuccess, deleteToolandGoalError);
-                            break; 
+                        if (StudentsGoals[i].GoalId == this.parentNode.getAttribute("id")) {
+                            ajaxCall("DELETE", "../api/Goals/" + StudentsGoals[i].GoalId + "/" + newID + "/" + parseInt(year), "", deleteGoalsSuccess, deleteToolandGoalError);
+                            break;
                         }
                     }
                 }
                 else if (this.parentNode.getAttribute("class") == "toolItem") {
                     for (var i = 0; i < StudentsTools.length; i++) {
-                        if (StudentsTools[i].Tid == this.parentNode.getAttribute('id')) {
-                            ajaxCall("DELETE", "../api/Tools", JSON.stringify(StudentsTools[i]), deleteToolsSuccess, deleteToolandGoalError);
+                        if (StudentsTools[i].Tid == this.parentNode.getAttribute("id")) {
+                            ajaxCall("DELETE", "../api/Tools/" + StudentsTools[i].Tid + "/" + newID + "/" + parseInt(year), "", deleteToolsSuccess, deleteToolandGoalError);
+
                             break;
                         }
                     }
@@ -433,6 +435,10 @@
         }
 
         function renderGoals() {
+            for (var i = 0; i < targetsList.length; i++) {
+                $("#target_" + targetsList[i].TarTalaIndex + ".toolsList").html("");
+                $("#target_" + targetsList[i].TarTalaIndex + ".goalsList").html("");
+            }
             for (var i = 0; i < StudentsTools.length; i++) {
                 $("#target_" + StudentsTools[i].Tserial + ".toolsList").append('<div class="toolItem" id=' + StudentsTools[i].Tid + '>' + StudentsTools[i].Tool + '<i class="material-icons clearItem">clear</i></div>');
             }            
@@ -504,19 +510,19 @@
                     cancelButtonText: "סגור",
                     closeOnConfirm: false
                 }, function () {
-                    for (var i = 0; i < StudentsTools.length; i++) {
-                        if (StudentsTools[i].Tserial == tarId)
-                            ajaxCall("DELETE", "../api/Tools/" + parseInt(tarId) + "/" + newID + "/" + parseInt(year), "", deleteToolsSuccess, deleteToolandGoalError);
+                    goalsToDelete = document.getElementsByClassName("goalItem");
+                    ToolsToDelete = document.getElementsByClassName("toolItem");
+                    for (var i = 0; i < ToolsToDelete.length; i++) {
+                        if (ToolsToDelete[i].parentNode.getAttribute("id") == "target_" + tarId)
+                            ajaxCall("DELETE", "../api/Tools/" + ToolsToDelete[i].getAttribute("id") + "/" + newID + "/" + parseInt(year), "", deleteToolsSuccess, deleteToolandGoalError);
 
                     }
-                    for (var i = 0; i < StudentsGoals.length; i++) {
-                        if (StudentsGoals[i].SerialTarget == tarId)
-                            ajaxCall("DELETE", "../api/Goals/" + parseInt(tarId) + "/" + newID + "/" + parseInt(year), "", deleteGoalsSuccess, deleteToolandGoalError);
-
+                    for (var i = 0; i < goalsToDelete.length; i++) {
+                        if (goalsToDelete[i].parentNode.getAttribute("id") == "target_" + tarId)
+                            ajaxCall("DELETE", "../api/Goals/" + goalsToDelete[i].getAttribute("id") + "/" + newID + "/" + parseInt(year), "", deleteGoalsSuccess, deleteToolandGoalError);
                     }
                     ajaxCall("DELETE", "../api/Targets/" + parseInt(tarId) + "/" + newID + "/" + parseInt(year), "", deleteTargetsSuccess, deleteTargetsError);
-
-                    
+                  
                     swal({
                         title: "המטרה נמחקה",
                         type: "success",
@@ -578,11 +584,13 @@
 
         function postToolSuccess(posted) {
             StudentsTools = posted;
+            renderGoals();
             console.log("tool post");
         }
 
         function postGoalSuccess(posted) {
             StudentsGoals = posted;
+            renderGoals();
             console.log("goal post");
         }
 
