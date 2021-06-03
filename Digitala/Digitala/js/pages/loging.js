@@ -42,6 +42,8 @@ function getUserSuccess(data) {
     else {
         $("#adminPage").css("display", "none");
     }
+
+
 }
 
 function getUserError(error) {
@@ -57,7 +59,7 @@ function getStudentSuccess(Students) {
     stundetlist = Students;
     for (var i = 0; i < Students.length; i++) {
         str += '<li><a href="javascript:void(0);" class="menu-toggle waves-effect waves-block openStudentManually" id=' + Students[i].StudentId + '><span>' + Students[i].SFirstName + ' ' + Students[i].SLastName + "</span></a>" +
-            '<ul class="ml-menu" id=' + Students[i].StudentId + '><li><a class="waves-effect waves-block openProfileManually" href="StudentProfile.html">תיק אישי</a></li><li><a class="waves-effect waves-block openTalaManually" href="StudentTala.html">תל"א</a></li></ul></li>';
+            '<ul class="ml-menu" id=' + Students[i].StudentId + '><li><a class="waves-effect waves-block openProfileManually" href="StudentProfile.html">תיק אישי</a></li><li><a class="waves-effect waves-block openTalaManually">תל"א</a></li></ul></li>';
     }
 
     $("#renderStudentsinMenu").html(str);
@@ -85,8 +87,6 @@ $(document).on("click", ".openStudentManually", function () {
                 arr[i].setAttribute("style", "display: block;");
         }
     }
-
-  
 });
 
 $(document).on("click", ".openTalaManually", function () {
@@ -108,8 +108,24 @@ $(document).on("click", ".openTalaManually", function () {
             localStorage.setItem("StudentName", studentName);
             localStorage.setItem("StudentID", newID);
         }
-    }
+        ajaxCall("GET", "../api/Talas/" + newID + "/" + tyear, "", getTalaSuccess, getTalaError);
+       
+    }   
 });
+
+
+function getTalaSuccess(tala) {
+    console.log(tala);
+    if (tala.StudentId == newID)
+        window.location.assign("WatchTala.html");
+    else
+        window.location.assign("StudentTala.html");
+}
+
+function getTalaError(error) {
+    console.log("error getting talas");
+}
+
 
 $(document).on("click", ".openProfileManually", function () {
     CurrentStudentId = this.parentNode.parentNode.getAttribute('id');    
