@@ -2,9 +2,9 @@
     font-family: Calibri;
 }
 
-/*#noborder{
-
-}*/
+#lastYearTargets.btn.waves-effect {
+    float: left;
+}
 
 .editTar {
     height: 45px;
@@ -326,8 +326,8 @@ span, datalist {
 }
 #addNewArea.btn.waves-effect,
 #addNewSubArea.btn.waves-effect,
-#addNewTar.btn.waves-effect,
-#lastYearTargets.btn.waves-effect {
+#addNewTar.btn.waves-effect
+{
     margin: 6px 10px;
     background-color: transparent;
     color: #73A4A4;

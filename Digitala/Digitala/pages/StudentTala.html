@@ -168,20 +168,11 @@
         function getTalaFromLastYearSuccess(lastyeartala) {
             talaFromLastYear = lastyeartala;
             console.log("LAST YEAR");
-            renderTargetsFromLastYear = "<table id='noborder'><tr><td></td><td>מטרה</td><td>סטטוס</td></tr>";
             for (var i = 0; i < talaFromLastYear.length; i++) {
                 if (talaFromLastYear[i].Achieved == "E" || talaFromLastYear[i].Achieved == "P") {
-                   $("#hidebutton").attr("hidden", false);
-                    renderTargetsFromLastYear += '<tr><td><input type="checkbox" id="md_checkbox_' + talaFromLastYear[i].TarTalaIndex + '" class="chk-col-blue-grey checkTarget"></td>';
-                    if (talaFromLastYear[i].Achieved == "P")
-                        renderTargetsFromLastYear += '<td>' + talaFromLastYear[i].Target + '</td><td><img src="../images/three.png" /></td></tr> ';                    
-                    else
-                    renderTargetsFromLastYear += '<td>' + talaFromLastYear[i].Target + '</td><td><img src="../images/one.png" /></td></tr> ';                   
+                    $("#hidebutton").attr("hidden", false);
                 }
             }
-            renderTargetsFromLastYear += "</table>"
-            $("#LastYearTargetsList").html(renderTargetsFromLastYear);
-
         }
 
         function toggleMenu() {
@@ -447,6 +438,28 @@
                 renderTargetsListByArea(filterBtnId);
 
             });
+
+            $(document).on("click", "#lastYearTargets", function () {
+                filterBtnId = this.getAttribute('id');
+                renderTargetsList = "";
+                mains = document.getElementsByClassName("filterMainBtn");
+                for (var i = 0; i < mains.length; i++) {
+                    mains[i].classList.remove("bg-grey");
+                    mains[i].classList.add("bg-blue-grey");
+                }
+                seconds = document.getElementsByClassName("filterBtn");
+                for (var i = 0; i < seconds.length; i++) {
+                    seconds[i].classList.remove("bg-grey");
+                    seconds[i].classList.add("bg-blue-grey");
+                }
+
+                for (var i = 0; i < talaFromLastYear.length; i++) {
+                    renderTargetsList += '<button type="button" tar-tala=' + talaFromLastYear[i].TarTalaIndex + ' id=' + unknownTarId + ' class="list-group-item tagLastYearTarget">' + talaFromLastYear[i].Target + '</button>';
+                    unknownTarId++;
+                }
+                $("#TargetsByArea").html(renderTargetsList);
+
+            });
         }
 
         function GetRecommendationsSuccess(recommendationsData) {
@@ -514,7 +527,7 @@
                         renderTargets += "<button type='button' class='deleteBtn btn-trans' data-tarId=" + targetsList[i].TarSerial + "><i class='material-icons'>delete</i></button>";
                         renderTargets += "<button type='button' class='updateBtn btn-trans' data-tarId=" + targetsList[i].TarSerial + "><i class='material-icons'>create</i></button>";
                         renderTargets += "</div>";
-                        tampValString += '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + targetsList[i].TarSerial + '">X</button> ' + targetsList[i].Target + '</span>';                      
+                        tampValString += '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + targetsList[i].TarSerial + '">X</button>' + targetsList[i].Target + '</span>';                      
                     }
                 }
                 $("#phTarsLabels").html(tampValString);
@@ -598,19 +611,27 @@
                 renderTagTar(tempID)
             });
 
-            function renderTagTar(tempID) { 
-                for (var i = 0; i < TargetsFullList.length; i++) {
-                    if (TargetsFullList[i].TarSerial == tempID) {
-                        if (TargetForTala == null)
-                            TargetForTala = [];
-                        TargetForTala.push(TargetsFullList[i]);
-                        let tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + TargetsFullList[i].TarSerial + '">X</button> ' + TargetsFullList[i].Target + '</span>';
-                        $("#phTarsLabels").append(tampValString);
-                        rederAllTargets(TargetsFullList);
-                    }
+            $(document).on("click", ".tagLastYearTarget", function () {
+                let tempID = this.getAttribute("id");
+                let tarSer = this.getAttribute("tar-tala");
+                for (var i = 0; i < talaFromLastYear.length; i++) {
+                    if (talaFromLastYear[i].TarTalaIndex == tarSer) {
+                        TarOldTemp = {
+                            TarSerial: tempID,
+                            Target: talaFromLastYear[i].Target,
+                            FaSerial: talaFromLastYear[i].FaSerial,
+                            SfaSerial: talaFromLastYear[i].SfaSerial,
+                            Tools: [],
+                            Goals: [],
+                            NewTar: 1
+                        }
+                        TargetForTala.push(TarOldTemp);
+                    }    
                 }
-            }
-
+                let tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + TarOldTemp.TarSerial + '">X</button> ' + TarOldTemp.Target + '</span>';
+                $("#phTarsLabels").append(tampValString);
+            });
+            
             $(document).on("click", ".tagTarRemove", function () {
                 let ValToRemove = this.getAttribute("id");
                 let tagsList = "";
@@ -629,6 +650,20 @@
 
                 rederAllTargets(TargetsFullList);                
             });
+        }
+
+        function renderTagTar(tempID) {
+            for (var i = 0; i < TargetsFullList.length; i++) {
+                if (TargetsFullList[i].TarSerial == tempID) {
+                    if (TargetForTala == null)
+                        TargetForTala = [];
+                    TargetForTala.push(TargetsFullList[i]);
+                    let tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + TargetsFullList[i].TarSerial + '">X</button> ' + TargetsFullList[i].Target + '</span>';
+                    $("#phTarsLabels").append(tampValString);
+                    rederAllTargets(TargetsFullList);
+                    break;
+                }
+            }
         }
 
         function getChararcteristicsSuccess(ChararcteristicsData) {
@@ -753,6 +788,7 @@
                 }
             }                              
             $("#tarsMultiPickList").html(renderTargetsList);
+            
         }
 
         function error(data) {
@@ -942,27 +978,28 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group" style="float:right">
+                                                            <div class="form-group" id="hidebutton" hidden="hidden">
+                                                                <button type="button" class="btn waves-effect" id="lastYearTargets">
+                                                                    <i class="material-icons">add</i>
+                                                                    <span>מטרות משנה שעברה</span>
+                                                                </button>
+                                                            </div>
                                                             <div class="form-line">
                                                                 <input id="tarsMultiPick" list="tarsMultiPickList" placeholder="&#xf002" Class="form-control" />
                                                                 <datalist id="tarsMultiPickList"></datalist>
                                                             </div>
 
-                                                        </div>
+                                                            </div>
                                                         <div class="form-group">
                                                             <div class="list-group" id="TargetsByArea"></div>
                                                         </div>
-                                                        <div class="form-group">
+                                                        <div class="form-group col-sm-12">
                                                             <button type="button" class="btn waves-effect" id="addNewTar" data-toggle="modal" data-allow-outside-click="false" data-target="#smallModal">
                                                                 <i class="material-icons">add</i>
                                                                 <span class="font-underline">הוסף מטרה שאינה במאגר</span>
                                                             </button>
                                                         </div>
-                                                        <div class="form-group" id="hidebutton" hidden="hidden">
-                                                            <button type="button" id="lastYearTargets" class="btn waves-effect" data-toggle="modal" data-allow-outside-click="false" data-target="#smallModalLastYear">
-                                                                <i class="material-icons">add</i>
-                                                                <span class="font-underline">הצג מטרות שלא הושגו בשנה שעברה</span>
-                                                            </button>
-                                                        </div>
+                                                        
                                                         <div class="form-group">
                                                             <div id="phTarsLabels">
                                                             </div>
@@ -1012,27 +1049,6 @@
                                                             <label id="target-error" hidden="hidden">אנא נסח מטרה</label>
                                                             <div class="help-info">אותיות בעברית בלבד, ללא סימנים</div>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" id="closeNewTarModal" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
-                                                        <button type="button" id="saveNewTarToBank" class="btn btn-link waves-effect">שמור</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal fade in newTargetModal" id="smallModalLastYear" tabindex="-1" role="dialog">
-                                            <div class="modal-dialog modal-sm" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h4 id="smallModalLabel">מטרות שלא הושגו בשנה שעברה</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <div id="LastYearTargetsList">
-                                                                
-                                                            </div>
-                                                        </div>
-                                                      
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" id="closeNewTarModal" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
