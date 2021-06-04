@@ -160,8 +160,29 @@
             NewTargetToBankForm();
             year = localStorage["TeacherYear"];
             window.setTimeout(toggleMenu, 1000);
-            
+
+            ajaxCall("GET", "../api/Targets/" + newID + "/" + parseInt(tyear)-1, "", getTalaFromLastYearSuccess, error);
+
         });
+
+        function getTalaFromLastYearSuccess(lastyeartala) {
+            talaFromLastYear = lastyeartala;
+            console.log("LAST YEAR");
+            renderTargetsFromLastYear = "<table id='noborder'><tr><td></td><td></td>מטרה<td>סטטוס</td></tr>";
+            for (var i = 0; i < talaFromLastYear.length; i++) {
+                if (talaFromLastYear[i].Achieved == "E" || talaFromLastYear[i].Achieved == "P") {
+                   $("#hidebutton").attr("hidden", false);
+                    renderTargetsFromLastYear += '<tr><td><input type="checkbox" id="md_checkbox_' + talaFromLastYear[i].TarTalaIndex + '" class="chk-col-blue-grey checkTarget"></td>';
+                    if (talaFromLastYear[i].Achieved == "P")
+                        renderTargetsFromLastYear += '<td>' + talaFromLastYear[i].Target + '</td><td><img src="../images/three.png" /></td></tr> ';                    
+                    else
+                    renderTargetsFromLastYear += '<td>' + talaFromLastYear[i].Target + '</td><td><img src="../images/one.png" /></td></tr> ';                   
+                }
+            }
+            renderTargetsFromLastYear += "</table>"
+            $("#LastYearTargetsList").html(renderTargetsFromLastYear);
+
+        }
 
         function toggleMenu() {
             toggleNames = document.getElementsByClassName("menu-toggle");
@@ -814,7 +835,6 @@
                                             <div id="collapseOne_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_1">
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -830,7 +850,6 @@
                                             <div id="collapseTwo_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_2">
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -846,7 +865,6 @@
                                             <div id="collapseThree_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_3">
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -862,7 +880,6 @@
                                             <div id="collapseFour_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_4">
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -878,7 +895,6 @@
                                             <div id="collapseFive_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_5">
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -894,7 +910,6 @@
                                             <div id="collapseSix_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSix_19">
                                                 <div class="panel-body">
                                                     <div class="list-group" id="area_6">
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -912,7 +927,6 @@
                                                         <h3 id="largeModalLabel">הוסף מטרה לתל"א</h3>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <!--להציג מטרות שלא הושגו משנה שעברה-->
                                                         <div class="form-group">
                                                             <div>
                                                                 <button type="button" id="filterMainBTN1" class="btn bg-grey btn-lg waves-effect filterMainBtn">סנסומוטורי</button>
@@ -937,14 +951,21 @@
                                                         <div class="form-group">
                                                             <div class="list-group" id="TargetsByArea"></div>
                                                         </div>
-
                                                         <div class="form-group">
-                                                            <div id="phTarsLabels">
-                                                            </div>
                                                             <button type="button" class="btn waves-effect" id="addNewTar" data-toggle="modal" data-allow-outside-click="false" data-target="#smallModal">
                                                                 <i class="material-icons">add</i>
                                                                 <span class="font-underline">הוסף מטרה שאינה במאגר</span>
                                                             </button>
+                                                        </div>
+                                                        <div class="form-group" id="hidebutton" hidden="hidden">
+                                                            <button type="button" id="lastYearTargets" class="btn waves-effect" data-toggle="modal" data-allow-outside-click="false" data-target="#smallModalLastYear">
+                                                                <i class="material-icons">add</i>
+                                                                <span class="font-underline">הצג מטרות שלא הושגו בשנה שעברה</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div id="phTarsLabels">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -991,6 +1012,27 @@
                                                             <label id="target-error" hidden="hidden">אנא נסח מטרה</label>
                                                             <div class="help-info">אותיות בעברית בלבד, ללא סימנים</div>
                                                         </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" id="closeNewTarModal" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
+                                                        <button type="button" id="saveNewTarToBank" class="btn btn-link waves-effect">שמור</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal fade in newTargetModal" id="smallModalLastYear" tabindex="-1" role="dialog">
+                                            <div class="modal-dialog modal-sm" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 id="smallModalLabel">מטרות שלא הושגו בשנה שעברה</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <div class="form-line" id="LastYearTargetsList">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                      
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" id="closeNewTarModal" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
