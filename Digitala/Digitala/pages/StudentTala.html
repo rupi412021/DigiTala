@@ -160,15 +160,15 @@
             NewTargetToBankForm();
             year = localStorage["TeacherYear"];
             window.setTimeout(toggleMenu, 1000);
-
-            ajaxCall("GET", "../api/Targets/" + newID + "/" + parseInt(tyear)-1, "", getTalaFromLastYearSuccess, error);
+            lastYear = year - 1;
+            ajaxCall("GET", "../api/Targets/" + newID + "/" + lastYear, "", getTalaFromLastYearSuccess, error);
 
         });
 
         function getTalaFromLastYearSuccess(lastyeartala) {
             talaFromLastYear = lastyeartala;
             console.log("LAST YEAR");
-            renderTargetsFromLastYear = "<table id='noborder'><tr><td></td><td></td>מטרה<td>סטטוס</td></tr>";
+            renderTargetsFromLastYear = "<table id='noborder'><tr><td></td><td>מטרה</td><td>סטטוס</td></tr>";
             for (var i = 0; i < talaFromLastYear.length; i++) {
                 if (talaFromLastYear[i].Achieved == "E" || talaFromLastYear[i].Achieved == "P") {
                    $("#hidebutton").attr("hidden", false);
@@ -1028,7 +1028,7 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="form-group">
-                                                            <div class="form-line" id="LastYearTargetsList">
+                                                            <div id="LastYearTargetsList">
                                                                 
                                                             </div>
                                                         </div>

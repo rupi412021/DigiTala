@@ -2394,9 +2394,9 @@ namespace Digitala.Models.DAL
 
                 while (dr.Read())
                 {   // Read till the end of the data into a row
-                    Targets t = new Targets();                 
+                    Targets t = new Targets();
                     if (dr["NewPhrase"] == DBNull.Value)
-                        t.Target = (string)(dr["TargetText"]);                  
+                        t.Target = (string)(dr["TargetText"]);
                     else
                         t.Target = (string)(dr["NewPhrase"]);
 
@@ -2416,7 +2416,7 @@ namespace Digitala.Models.DAL
                         t.Originality = Convert.ToDouble(dr["Originality"]);
                         t.NumOfUses = Convert.ToInt32(dr["NumOfUses"]);
                     }
-
+                    t.Achieved = (string)(dr["Achieved"]);
                     t.FunctionArea = (string)(dr["FunctionArea"]);
 
                     targetList.Add(t);
