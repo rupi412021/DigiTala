@@ -1071,7 +1071,7 @@ namespace Digitala.Models.DAL
             float c = allteachers.Count;
             for (int i = 0; i < Math.Round(c * 0.33); i++)
             {
-                surveyTeachers.Add(allteachers[r.Next(0, allteachers.Count-1)]);
+                surveyTeachers.Add(allteachers[r.Next(0, allteachers.Count)]);
             }
 
             return surveyTeachers;
@@ -1183,8 +1183,8 @@ namespace Digitala.Models.DAL
                                 {
                                     InsertTool(Convert.ToInt32(dr["Tindex"]), StudentId, targets[i].Tools[j], CurrentYear);
                                 }
-                            }
-                            break;
+                                break;
+                            }                           
                         }
                     }
                 }
