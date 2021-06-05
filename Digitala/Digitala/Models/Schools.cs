@@ -15,6 +15,7 @@ namespace Digitala.Models
         {
             SchoolName = schoolName;
             SchoolId = schoolId;
+
         }
         public Schools() { }
 
@@ -27,5 +28,6 @@ namespace Digitala.Models
             List<Schools> sList = dbs.ReadSchools();
             return sList;
         }
+
     }
 }

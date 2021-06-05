@@ -45,9 +45,10 @@
             TeachID = localStorage["TeacherID"];
             $("#studentName").html(studentName);
             year = localStorage["TeacherYear"];
-            str = "תוכנית לימודים אישית - ספטמבר " + year;
+
+
             $("#Sclass").html(classname);
-            $("#k").html(str);
+            ajaxCall("GET", "../api/Years", "", getYearsSuccess, getYearserror);
 
             ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
             ajaxCall("GET", "../api/Targets/" + newID + "/" + year, "", getTargetsSuccess, getTargetsError);
@@ -144,7 +145,24 @@
 
             GoalsAndTools();
             EditDelTargets();
+
         });
+
+        function getYearsSuccess(years) {
+            yearsList = years;
+
+            for (var i = 0; i < yearsList.length; i++) {
+                if (yearsList[i].GregorianYear == year) {
+                    $("#k").html("תוכנית לימודים אישית לשנת " + yearsList[i].HebrewYear);
+                    break;
+                }
+            }
+
+        }
+        function getYearserror(error) {
+            console.log("Cold not bring years list");
+        }
+
 
         function editTala() {
             mode = "edit";

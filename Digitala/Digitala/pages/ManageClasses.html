@@ -30,15 +30,33 @@
     <script src="jquery-1.10.2.min.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.4-a/xls.core.min.js"></script>
-
-
     <script>
         $(document).ready(function () {
             ajaxCall("GET", "../api/Schools", "", getSchoolSuccess, getSchoolerror);
             localStorage.removeItem("StudentName");
             localStorage.removeItem("StudentID");
-            makeLists()
+            makeLists();
+            ajaxCall("GET", "../api/Years", "", getYearsSuccess, getYearserror);
+
         });
+
+        function getYearsSuccess(years) {
+            yearsList = years;
+            currentYear = new Date().getFullYear();
+            str = "";
+            count4 = 0;
+            for (var i = 0; i < yearsList.length; i++) {
+                if (yearsList[i].GregorianYear >= currentYear-1 && count4<4) {
+                    str += "<option value='" + yearsList[i].GregorianYear + "'>" + yearsList[i].HebrewYear;
+                    count4++;
+                }
+            }
+
+            $("#year").html(str);
+        }
+        function getYearserror(error) {
+            console.log("Cold not bring years list");
+        }
 
         function makeLists() {
             numbers = "";
@@ -110,6 +128,7 @@
         }
 
         function getSchoolSuccess(schoolsList) {
+            console.log("schools");
             str = "";
 
             for (var i = 0; i < schoolsList.length; i++) {
@@ -119,15 +138,13 @@
             }
 
             $("#schOptList").html(str);
-
-
         }
 
         function getSchoolerror(err) {
             alert("Error: " + err);
         }
 
-        function AddStudentsEXCEL(jsondata) {        
+        function AddStudentsEXCEL(jsondata) {
             if ($("#schOpt").val() == "" || $("#classNa").val() == "" || $("#classNum").val() == "" || $("#year").val() == "") {
                 swal("אנא מלאו את כל הפרטים", "נסה שנית", "error");
             }
@@ -144,10 +161,10 @@
                     closeOnConfirm: true
                 }, function () {
                     setTimeout(function () {
-                    Jsondata = jsondata;
-                    console.log(Jsondata);
-                            ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
-                    },500)
+                        Jsondata = jsondata;
+                        console.log(Jsondata);
+                        ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
+                    }, 500)
                 });
 
             }
@@ -198,7 +215,7 @@
                         Dis2nd: Jsondata[i].לקות_משנית,
                         medicalSituation: Jsondata[i].אלרגיות_רגישויות,
                     }
-                   
+
                     NewC = {
                         cEmail: Jsondata[i].אימייל_האופוטרופוס,
                         cName: Jsondata[i].שם_האופוטרופוס,
@@ -206,7 +223,7 @@
                         cSID: Jsondata[i].תעודת_זהות,
                     }
 
-     
+
                     let school = $("#schOpt").val();
                     let cclass = $("#classNa").val() + "`" + $("#classNum").val();
                     let year = $("#year").val()
@@ -220,13 +237,13 @@
 
 
                 else {
-                   
+
                     let school = $("#schOpt").val();
                     let cclass = $("#classNa").val() + "`" + $("#classNum").val();
                     let year = $("#year").val()
                     let temail = localStorage["UserName"];
 
-                    
+
                     ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail, "", putTeacherInfoSuccess, putTeacherInfoError);
                     ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + Jsondata[i].תעודת_זהות, "", postStudentClassSuccess, postStudentClassError);
                 }
@@ -244,7 +261,7 @@
             console.log("Teacher info updated")
 
         }
-         
+
         function putTeacherInfoError() {
             console.log("Teacher info was not updated")
 
@@ -255,7 +272,7 @@
         }
 
         function postSutdentSuccess() {
-            
+
             console.log("Posted student")
         }
 
@@ -278,6 +295,7 @@
         function postCustodianError() {
             console.log("Custodian not inserted")
         }
+
     </script>
 </head>
 
@@ -317,72 +335,59 @@
             <div class="block-header">
                 <h1>יצירת כיתה ותלמידים</h1>
             </div>
-            <!-- Manage class -->
-            <!--<div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                טעינת תלמידים
-                            </h2>
-
-                        </div>
-                        <div class="body">
-
-                        </div>
-                    </div>
-                </div>
-            </div>-->
-            <!-- #END# Manage class  -->
-            <!-- File Upload -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <h2>
-                                טעינת תלמידים
-                            </h2>
-
-                        </div>
+                            <h3>
+                                טעינת קובץ תלמידים
+                            </h3>
+                            <p>
+                                טעינת התלמידים מבוצעת באמצעות קובץ אקסל
+                            </p>
+                            <p>יש להזין את פרטי כל התלמידים בקובץ, ולהעלותו בעמוד זה - להורדת תבנית הקובץ<a href="../File/Template.xlsx" download> לחץ כאן </a></p>
+                        </div>                        
                         <div class="body">
-
-                            <h4>בחר סמל בית ספר</h4>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">school</i>
-                                </span>
-                                <div class="col-sm-2 studentsFields">
-                                    <input id="schOpt" list="schOptList" class="form-control" placeholder="סמל בית ספר" required>
-                                    <datalist id="schOptList">
-                                    </datalist>
+                            <div class="col-sm-5 studentsFields">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <i class="material-icons" style="float: right;">school</i>
+                                        <label>בחר סמל בית ספר</label>
+                                    </div>
+                                    <div class="form-line">
+                                        <input list="schOptList" placeholder="בחר מרשימה או הקלד ערך" class="form-control" id="schOpt" required>
+                                        <datalist id="schOptList"></datalist>
+                                    </div>
                                 </div>
                             </div>
-                            <h4>בחר כיתה</h4>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">school</i>
-                                </span>
-                                <div class="col-sm-2 studentsFields">
-                                    <input id="classNa" list="className" class="form-control" placeholder="כיתה" required>
-                                    <datalist id="className">
-                                    </datalist>
-                                </div>
-                                <div class="col-sm-2 studentsFields">
-                                    <input id="classNum" list="classNumber" class="form-control" placeholder="מספר" required>
-                                    <datalist id="classNumber">
-                                    </datalist>
-                                </div>
-                            </div>
-                            <h4>הזן שנה</h4>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">person</i>
-                                </span>
-                                <div class="col-sm-2 studentsFields">
-                                    <input type="text" class="form-control" name="username" id="year" placeholder="שנה" required>
+                            <div class="col-sm-7 studentsFields">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <i class="material-icons" style="float: right;">people_outline</i>
+                                        <label>בחר כיתה</label>
+                                    </div>
+                                    <div class="form-line col-sm-6 halfDiv">
+                                        <input id="classNum" list="classNumber" class="form-control" placeholder="מספר" required>
+                                        <datalist id="classNumber"></datalist>
+                                    </div>
+                                    <div class="form-line col-sm-6 halfDiv">
+                                        <input id="classNa" list="className" class="form-control" placeholder="כיתה" required>
+                                        <datalist id="className"></datalist>
+                                    </div>
                                 </div>
                             </div>
-
+                            <div class="col-sm-5 studentsFields">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <i class="material-icons" style="float: right;">date_range</i>
+                                        <label>הזן את שנת הלימודים</label>
+                                    </div>
+                                    <div class="form-line">
+                                        <input list="year" placeholder="בחר שנה מרשימה" class="form-control" id="yearList" required>
+                                        <datalist id="year"></datalist>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="input-group">
                                 <h4>בחר קובץ</h4> <input type="file" id="excelfile" required />
@@ -392,9 +397,6 @@
                             </div>
 
 
-                            <div class="input-group">
-                                <h4>להורדת טמפלייט להעלאת תלמידים <a href="../File/Template.xlsx" download> הקלק </a></h4>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -415,7 +417,7 @@
                 <div class="btn-group user-helper-dropdown">
                     <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                     <ul class="dropdown-menu pull-left">
-                        <li><a href="javascript:void(0);"><i class="material-icons">person</i>פרופיל</a></li>
+                        <!--<li><a href="javascript:void(0);"><i class="material-icons">person</i>פרופיל</a></li>-->
                         <li><a href="SetNewPass.html">איפוס סיסמא<i class="material-icons">lock</i></a></li>
                         <li class="divider"></li>
                         <li><a href="sign-in.html"><i class="material-icons">input</i>התנתק</a></li>

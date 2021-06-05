@@ -8,15 +8,15 @@ using System.Web.Http;
 
 namespace Digitala.Controllers
 {
-    public class SchoolsController : ApiController
+    public class YearsController : ApiController
     {
         [HttpGet]
-        [Route("api/Schools")]
-        public List<Schools> Get()
+        [Route("api/Years")]
+        public List<Years> Get()
         {
-            Schools s = new Schools();
-            List<Schools> tlist = s.Read();
-            return tlist;
+            Years y = new Years();
+            List<Years> ylist = y.Read();
+            return ylist;
         }
 
     }

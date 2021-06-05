@@ -3527,6 +3527,48 @@ namespace Digitala.Models.DAL
 
             }
         }
+
+        public List<Years> ReadYears()
+        {
+            SqlConnection con = null;
+            List<Years> yearsList = new List<Years>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "Select * from HebYears";
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Years y = new Years();
+                    y.HebrewYear = (string)(dr["HebrewYear"]);
+                    y.GregorianYear = (string)(dr["GregorianYear"]);
+                    yearsList.Add(y);
+                }
+
+                return yearsList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET yearsList from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
     }
 
     

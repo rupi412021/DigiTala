@@ -113,13 +113,16 @@ span.input-group-addon {
     color: #555555
 }
 
-
+.form-line.col-sm-6.halfDiv {
+    width: 50%;
+}
 
 .contactsHeader {
     margin-bottom: 20px;
     padding-right: 15px;
     font-weight: bold;
     color: #F46549;
+    font-size: 19px;
 }
 #tarsMultiPick::-webkit-input-placeholder {
     font-family: FontAwesome;
