@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Digitala.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -19,7 +20,7 @@ namespace WebApplication2.Controllers
         {
             List<string> imageLinks = new List<string>();
             var httpContext = HttpContext.Current;
-
+            
             // Check for any uploaded file  
             if (httpContext.Request.Files.Count > 0)
             {
@@ -30,13 +31,22 @@ namespace WebApplication2.Controllers
 
                     // this is an example of how you can extract addional values from the Ajax call
                     string id = httpContext.Request.Form["ID"];
+                    string year = httpContext.Request.Form["Year"];
+
+                    string dir = HostingEnvironment.MapPath("~/StudentFiles/" + id + "/" + year + "/");
+
+                    // If directory does not exist, create it
+                    if (!Directory.Exists(dir))
+                    {
+                        Directory.CreateDirectory(dir);
+                    }
 
                     if (httpPostedFile != null)
                     {
                         // Construct file save path  
                         //var fileSavePath = Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["fileUploadFolder"]), httpPostedFile.FileName);
                         string fname = httpPostedFile.FileName.Split('\\').Last();
-                        var fileSavePath = Path.Combine(HostingEnvironment.MapPath("~/StudentFiles"), fname);
+                        var fileSavePath = Path.Combine(HostingEnvironment.MapPath("~/StudentFiles/"+id+"/"+year+"/"), fname);
                         // Save the uploaded file  
                         httpPostedFile.SaveAs(fileSavePath);
                         imageLinks.Add("uploadedFiles/" + id + fname);
