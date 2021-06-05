@@ -292,6 +292,8 @@
                 timer: 1500,
                 showConfirmButton: false
             });
+
+            location.reload();
         }
 
         function imgError(data) {
@@ -373,7 +375,7 @@
             }
             else {
                 for (var i = 0; i < files.length; i++) {
-                    str += "<a href='../StudentFiles/" + files[i].Filename + "'>" + files[i].Filename + "</a>"
+                    str += "<a href='../StudentFiles/" + newID +"/" + year + "/" + files[i].Filename + "'>" + files[i].Filename + "</a>"
                 }             
             }
             $("#ph").html(str);
