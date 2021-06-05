@@ -94,33 +94,36 @@ $(document).on("click", ".openTalaManually", function () {
     toggle_actice_menus();
     this.parentNode.parentNode.parentNode.classList.add("active");
     this.classList.add("toggled");
-    if (newID == CurrentStudentId && window.location.pathname == "/pages/StudentTala.html") {
+    if (newSID == CurrentStudentId && window.location.pathname == "/pages/StudentTala.html") {
         event.preventDefault();
     }
     else {
         arr = document.getElementsByClassName("openStudentManually");
-        newID = this.parentNode.parentNode.getAttribute('id');
+        newSID = this.parentNode.parentNode.getAttribute('id');
         for (var i = 0; i < arr.length; i++) {
-            if (arr[i].id == newID) {
+            if (arr[i].id == newSID) {
                 studentName = arr[i].innerText;
                 $("#studentName").html(studentName);
             }
             localStorage.setItem("StudentName", studentName);
-            localStorage.setItem("StudentID", newID);
+            localStorage.setItem("StudentID", newSID);
         }
-        ajaxCall("GET", "../api/Talas/" + newID + "/" + tyear, "", getTalaSuccess, getTalaError);
+        ajaxCall("GET", "../api/Talas/" + newSID + "/" + tyear, "", getTalaSuccess, getTalaError);
        
-    }   
+    } 
+
+    function getTalaSuccess(tala) {
+        console.log(tala);
+        if (tala.StudentId == newSID)
+            window.location.assign("WatchTala.html");
+        else
+            window.location.assign("StudentTala.html");
+
+    }
 });
 
 
-function getTalaSuccess(tala) {
-    console.log(tala);
-    if (tala.StudentId == newID)
-        window.location.assign("WatchTala.html");
-    else
-        window.location.assign("StudentTala.html");
-}
+
 
 function getTalaError(error) {
     console.log("error getting talas");
@@ -132,19 +135,19 @@ $(document).on("click", ".openProfileManually", function () {
     toggle_actice_menus();
     this.parentNode.parentNode.parentNode.classList.add("active");
     this.classList.add("toggled");
-    if (newID == CurrentStudentId && window.location.pathname == "/pages/StudentProfile.html") {
+    if (newSID == CurrentStudentId && window.location.pathname == "/pages/StudentProfile.html") {
         event.preventDefault();
     }
     else {
         arr = document.getElementsByClassName("openStudentManually");
-        newID = this.parentNode.parentNode.getAttribute('id');
+        newSID = this.parentNode.parentNode.getAttribute('id');
         for (var i = 0; i < arr.length; i++) {
-            if (arr[i].id == newID) {
+            if (arr[i].id == newSID) {
                 studentName = arr[i].innerText;
                 $("#studentName").html(studentName);
             }
             localStorage.setItem("StudentName", studentName);
-            localStorage.setItem("StudentID", newID);
+            localStorage.setItem("StudentID", newSID);
         }
     }
 });
@@ -163,7 +166,7 @@ function toggle_actice_menus() {
 
 
     studentName = localStorage["StudentName"];
-    newID = localStorage["StudentID"]
+    newSID = localStorage["StudentID"]
     $("#studentName").html(studentName);
 }
 
