@@ -290,26 +290,15 @@
                 timer: 1500,
                 showConfirmButton: false
             });
-
-            //var imgStr = "";
-
-            //if (Array.isArray(data)) {
-
-            //    for (var i = 0; i < data.length; i++) {
-            //        imgStr += "<img src='../" + data[i] + "'/>";
-            //    }
-
-            //}
-
-            //else {
-            //    imgStr = "<img src='../" + data + "'/>";
-            //}
-
-            //document.getElementById("ph").innerHTML = imgStr;
         }
 
         function imgError(data) {
-            console.log(data);
+            swal({
+                title: "קובץ אחד או יותר מהקבצים שנבחרו כבר קיימים במערכת",
+                type: "error",
+                timer: 3000,
+                showConfirmButton: false
+            });
         }
 
         function deletePrivilegesSuccess(data) {

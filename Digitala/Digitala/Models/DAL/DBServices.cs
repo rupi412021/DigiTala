@@ -3454,7 +3454,7 @@ namespace Digitala.Models.DAL
             catch (Exception ex)
             {
                 // write to log
-                throw new Exception("קובץ לא התווסף", ex);
+                throw new Exception("הקובץ כבר קיים", ex);
             }
 
             finally
