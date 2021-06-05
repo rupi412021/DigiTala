@@ -149,12 +149,19 @@ span.input-group-addon {
     margin-top: 2px;
     color: #adadad;
 }
-    .goalItem > i, .toolItem > i {
+    .goalItem > i {
         float: left;
         font-size: 20px;
         color: #F4A55C;
         cursor: pointer;
     }
+
+.toolItem > i {
+    float: left;
+    font-size: 20px;
+    color: #F46549;
+    cursor: pointer;
+}
 
         #SetGoal > i, #SetTool > i {
             color: gray;

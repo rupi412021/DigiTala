@@ -149,7 +149,7 @@
                         Targets: TargetForTala
                     }
 
-                    ajaxCall("POST", "../api/Talas", JSON.stringify(TalaObj), getTalaSuccess, error);
+                    ajaxCall("POST", "../api/Talas", JSON.stringify(TalaObj), postTalaSuccess, error);
                 }
             });
 
@@ -173,6 +173,10 @@
                     $("#hidebutton").attr("hidden", false);
                 }
             }
+        }
+
+        function postTalaSuccess(data) {
+            window.location.assign("WatchTala.html");
         }
 
         function toggleMenu() {
@@ -200,11 +204,11 @@
                 targetsforToolsAndGoals += '<div class="panel-heading" role="tab" id="heading' + i + '_19"><h4 class="panel-title">';
                 targetsforToolsAndGoals += '<a class="collapsed" role="button" data-toggle="collapse" href="#collapse' + i + '_19" aria-expanded="false" aria-controls="collapse' + i + '_19"><i class="material-icons Itar">gps_fixed</i>' + TargetForTala[i].Target + '</a></h4></div>';
                 targetsforToolsAndGoals += '<div id="collapse' + i + '_19" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading' + i + '_19">';
-                targetsforToolsAndGoals += '<div class="panel-body"><div class="input-group col-sm-6" tar-ser=' + TargetForTala[i].TarSerial + '><div class="form-line"><input type="text" class="form-control date goals" id="goal' + TargetForTala[i].TarSerial + '" placeholder="הזן יעד להשגת המטרה">';
+                targetsforToolsAndGoals += '<div class="panel-body"><div class="input-group col-md-6" tar-ser=' + TargetForTala[i].TarSerial + '><div class="form-line"><input type="text" class="form-control date goals" id="goal' + TargetForTala[i].TarSerial + '" placeholder="הזן יעד להשגת המטרה">';
                 targetsforToolsAndGoals += '</div><span class="input-group-addon" id="SetGoal"><i class="material-icons arrowGoal">arrow_back_ios_new</i></span></div>';
-                targetsforToolsAndGoals += '<div class="input-group col-sm-6" tar-ser=' + TargetForTala[i].TarSerial + '><div class="form-line"><input type="text" class="form-control date tools" id="tool' + TargetForTala[i].TarSerial + '" placeholder="הגדר אמצעי להשגת המטרה">';
+                targetsforToolsAndGoals += '<div class="input-group col-md-6" tar-ser=' + TargetForTala[i].TarSerial + '><div class="form-line"><input type="text" class="form-control date tools" id="tool' + TargetForTala[i].TarSerial + '" placeholder="הגדר אמצעי להשגת המטרה">';
                 targetsforToolsAndGoals += '</div><span class="input-group-addon" id="SetTool"><i class="material-icons arrowTool">arrow_back_ios_new</i></span></div>';
-                targetsforToolsAndGoals += '<div class="toolsList col-sm-6" id="target_' + TargetForTala[i].TarSerial + '"></div><div class="goalsList col-sm-6" id="target_' + TargetForTala[i].TarSerial + '" ></div ></div></div>';
+                targetsforToolsAndGoals += '<div class="toolsList col-md-6" id="target_' + TargetForTala[i].TarSerial + '"></div><div class="goalsList col-md-6" id="target_' + TargetForTala[i].TarSerial + '" ></div ></div></div>';
             }
             targetsforToolsAndGoals += "</div>";
             $("#toolsAndGoals").html(targetsforToolsAndGoals);
@@ -642,7 +646,7 @@
             });
 
             $(document).on("click", ".tagLastYearTarget", function () {
-                let tempID = this.getAttribute("id");
+                let tempID = parseInt(this.getAttribute("id"));
                 let tarSer = this.getAttribute("tar-tala");
                 for (var i = 0; i < talaFromLastYear.length; i++) {
                     if (talaFromLastYear[i].TarTalaIndex == tarSer) {
@@ -653,7 +657,7 @@
                             SfaSerial: talaFromLastYear[i].SfaSerial,
                             Tools: [],
                             Goals: [],
-                            NewTar: 1
+                            NewTar: 0
                         }
                         TargetForTala.push(TarOldTemp);
                     }    
