@@ -913,7 +913,7 @@ namespace Digitala.Models.DAL
 
             if (t.NewPhrase)
             {
-                sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", t.TarSerial, t.FaSerial, t.SfaSerial, t.Target, StudentId, CurrentYear);
+                sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", 0, t.FaSerial, t.SfaSerial, t.Target, StudentId, CurrentYear);
                 prefix = "INSERT INTO TargetsInTala " + "([Tserial], [FASerial], [SFASerial], [NewPhrase], [StudentId], [TYear])";
 
             }
