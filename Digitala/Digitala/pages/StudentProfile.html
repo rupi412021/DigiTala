@@ -367,6 +367,16 @@
         }
 
         function getFileSuccess(files) {
+            str = "";
+            if (files.length == 0) {
+                str += "לא קיימים קבצים לתלמיד";
+            }
+            else {
+                for (var i = 0; i < files.length; i++) {
+                    str += "<a href='../StudentFiles/" + files[i].Filename + "'>" + files[i].Filename + "</a>"
+                }             
+            }
+            $("#ph").html(str);
             console.log(files);
         }
 
@@ -765,12 +775,36 @@
                                             <div class="list-group" id="area_3">
                                                 <div class="demo-checkbox studentsFields" id="PrivilegesCheckBox">
                                                 </div>
+                                                <div class="col-sm-4 studentsFields">
+                                                    <p>
+                                                        <b>קבצים</b>
+                                                    </p>
+                                                    <div id="ph">
+                                                      
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-sm-4 studentsFields">
+                                                    <form method="post" enctype="multipart/form-data" id="formUpload">
+                                                        <div>
+                                                            <p>
+                                                                <b>טעינת קבצים חדשים</b>
+                                                            </p>
+                                                            <input type="file" id="files" name="files" multiple="multiple" />
+                                                        </div>
+                                                        <br />
+                                                        <button type="button" id="buttonUpload">טען</button>
+                                                    </form>
+
+                                                </div>
+
+
                                                 <!--<div class="col-sm-4 colRight">
                                                     <div class="input-group">
-                                                        <div class="form-line">
-                                                            <input type="text" class="form-control" id="OtherValues" placeholder="אחר">
-                                                        </div>
-                                                    </div>
+                                                         <div class="form-line">
+                                                             <input type="text" class="form-control" id="OtherValues" placeholder="אחר">
+                                                         </div>
+                                                     </div>
                                                 </div>-->
                                             </div>
                                         </div>
@@ -783,6 +817,7 @@
                                             <a class="collapsed" role="button" data-toggle="collapse" href="#collapseFour_19" aria-expanded="false" aria-controls="collapseThree_19" id="talaHeader">
                                                 תוכנית לימודים אישית
                                             </a>
+
                                         </h4>
                                     </div>
                                     <div id="collapseFour_19" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour_19">
@@ -792,18 +827,12 @@
                                                 <button class="btn" onclick='window.location.assign("StudentTala.html");'>
                                                     לחץ ליצירה
                                                 </button>
+
                                             </div>
                                         </div>
                                     </div>
-                                    <form method="post" enctype="multipart/form-data" id="formUpload">
-                                        <div>
-                                            <label for="files">קבצים</label>
-                                            <input type="file" id="files" name="files" multiple="multiple" />
-                                        </div>
-                                        <br />
-                                        <button type="button" id="buttonUpload">העלאה את הקבצים</button>
-                                    </form>
-                                    <div id="ph"></div>
+
+
                                 </div>
                             </div>
                         </div>
