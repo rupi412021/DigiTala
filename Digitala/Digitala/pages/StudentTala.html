@@ -243,15 +243,19 @@
             });
 
             $(document).on("click", ".clearItem", function () {
-                if (this.parentNode.getAttribute("class")=="goalItem")
+                if (this.parentNode.getAttribute("class") == "goalItem")
                     for (var i = 0; i < GoalsArr.length; i++) {
-                        if ("target_" + GoalsArr[i].tTarId == this.parentNode.parentNode.getAttribute('id'))
+                        if ("target_" + GoalsArr[i].tTarId == this.parentNode.parentNode.getAttribute('id')) {
                             GoalsArr.splice(i, 1);
+                            break;
+                        }
                     }
                 else if (this.parentNode.getAttribute("class")=="toolItem")
                     for (var i = 0; i < ToolsArr.length; i++) {
-                        if ("target_" + ToolsArr[i].tTarId == this.parentNode.parentNode.getAttribute('id'))
+                        if ("target_" + ToolsArr[i].tTarId == this.parentNode.parentNode.getAttribute('id')) {
                             ToolsArr.splice(i, 1);
+                            break;
+                        }
                     }
                 this.parentNode.remove();
             });
@@ -322,7 +326,7 @@
                         NewTar: 1
                     }
 
-                    unknownTarId++;
+                    unknownTarId--;
                     TargetForTala.push(ObjTemp);
 
                     let tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + ObjTemp.TarSerial + '">X</button> ' + ObjTemp.Target + '</span>';
@@ -404,6 +408,8 @@
                         timer: 1500,
                         showConfirmButton: false
                     });
+                    if (TargetForTala[tarIndex].TarSerial > 0)
+                        TargetsFullList.push(TargetForTala[tarIndex]);
                     TargetForTala.splice(tarIndex, 1);
                     renderTargetsToPage(TargetForTala);
                 });
@@ -455,7 +461,7 @@
 
                 for (var i = 0; i < talaFromLastYear.length; i++) {
                     renderTargetsList += '<button type="button" tar-tala=' + talaFromLastYear[i].TarTalaIndex + ' id=' + unknownTarId + ' class="list-group-item tagLastYearTarget">' + talaFromLastYear[i].Target + '</button>';
-                    unknownTarId++;
+                    unknownTarId--;
                 }
                 $("#TargetsByArea").html(renderTargetsList);
 
@@ -473,13 +479,16 @@
                     confirmButtonText: "אשר"
                 });
             }
-            else if (recommendationsData.Recommendations.length > 0 && indicator == 0) {
+            else if ([recommendationsData.Recommendations.length > 0 && indicator == 0] || [recommendationsData.Recommendations.length > 0 && indicator == 1 && TargetForTala.length == 0]) {
                 TargetForTala = recommendationsData.Recommendations;
-                renderTargetsToPage(TargetForTala);
-            }
-
-            else if (recommendationsData.Recommendations.length > 0 && indicator == 1 && TargetForTala.length == 0) {
-                TargetForTala = recommendationsData.Recommendations;
+                for (var j = 0; j < TargetForTala.length; j++) {
+                    for (var i = 0; i < TargetsFullList.length; i++) {
+                        if (TargetForTala[j].TarSerial == TargetsFullList[i].TarSerial && TargetForTala[j].TarTalaIndex == 0) {
+                            TargetsFullList.splice(i, 1);
+                            i--;
+                        }
+                    }
+                }              
                 renderTargetsToPage(TargetForTala);
             }
 
@@ -502,6 +511,14 @@
                     closeOnConfirm: true
                 }, function () {
                     TargetForTala = recommendationsData.Recommendations;
+                    for (var j = 0; j < TargetForTala.length; j++) {
+                        for (var i = 0; i < TargetsFullList.length; i++) {
+                            if (TargetForTala[j].TarSerial == TargetsFullList[i].TarSerial && TargetForTala[j].TarTalaIndex == 0) {
+                                TargetsFullList.splice(i, 1);
+                                i--;
+                            }
+                        }
+                    }  
                     renderTargetsToPage(TargetForTala);
                 });
             }
@@ -603,12 +620,12 @@
 
                 $("#tarsMultiPick").val("");
 
-                renderTagTar(tempID)
+                renderTagTar(tempID);
             });
 
             $(document).on("click", ".tagNewTarget", function () {
                 let tempID = this.getAttribute("id");
-                renderTagTar(tempID)
+                renderTagTar(tempID);
             });
 
             $(document).on("click", ".tagLastYearTarget", function () {
@@ -638,6 +655,8 @@
 
                 for (i = 0; i < TargetForTala.length; i++) {
                     if (TargetForTala[i].TarSerial == ValToRemove) {
+                        if (TargetForTala[i].TarTalaIndex == 0)
+                            TargetsFullList.push(TargetForTala[i]);
                         TargetForTala.splice(i, 1);
                         break;
                     }
@@ -650,22 +669,24 @@
 
                 rederAllTargets(TargetsFullList);                
             });
-        }
 
-        function renderTagTar(tempID) {
-            for (var i = 0; i < TargetsFullList.length; i++) {
-                if (TargetsFullList[i].TarSerial == tempID) {
-                    if (TargetForTala == null)
-                        TargetForTala = [];
-                    TargetForTala.push(TargetsFullList[i]);
-                    let tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + TargetsFullList[i].TarSerial + '">X</button> ' + TargetsFullList[i].Target + '</span>';
-                    $("#phTarsLabels").append(tampValString);
-                    rederAllTargets(TargetsFullList);
-                    break;
+            function renderTagTar(tempID) {
+                for (var i = 1; i <= TargetsFullList.length; i++) {
+                    if (TargetsFullList[i].TarSerial == tempID) {
+                        if (TargetForTala == null)
+                            TargetForTala = [];
+                        TargetForTala.push(TargetsFullList[i]);
+                        let tampValString = '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + TargetsFullList[i].TarSerial + '">X</button> ' + TargetsFullList[i].Target + '</span>';
+                        TargetsFullList.splice(i, 1);
+                        $("#phTarsLabels").append(tampValString);
+                        rederAllTargets(TargetsFullList);
+                        break;
+                    }
                 }
             }
         }
 
+       
         function getChararcteristicsSuccess(ChararcteristicsData) {
             ChararcteristicsList = ChararcteristicsData;
             console.log(ChararcteristicsData);
@@ -722,20 +743,9 @@
 
         function renderTargetsListByArea(SubAreaFilterId) {
             var renderTargetsList = "";
-            targetAfterSlice = TargetsFullList.slice();
-            if (TargetForTala.length>0)
-                for (var i = 0; i < targetAfterSlice.length; i++) {
-                    for (var j = 0; j < TargetForTala.length; j++) {
-                        if (TargetForTala[j].TarSerial == targetAfterSlice[i].TarSerial) {
-                            TargetForTala[j] = targetAfterSlice[i];
-                            targetAfterSlice.splice(i, 1);
-                            break;
-                        }
-                }
-            }
-            for (var i = 0; i < targetAfterSlice.length; i++) {
-                if ("filterSubBTN" + targetAfterSlice[i].SfaSerial == SubAreaFilterId)
-                    renderTargetsList += '<button type="button" id=' + targetAfterSlice[i].TarSerial + ' class="list-group-item tagNewTarget">' + targetAfterSlice[i].Target + '</button>';
+            for (var i = 0; i < TargetsFullList.length; i++) {
+                if ("filterSubBTN" + TargetsFullList[i].SfaSerial == SubAreaFilterId)
+                    renderTargetsList += '<button type="button" id=' + TargetsFullList[i].TarSerial + ' class="list-group-item tagNewTarget">' + TargetsFullList[i].Target + '</button>';
                 $("#TargetsByArea").html(renderTargetsList);
             }
         }
@@ -764,21 +774,12 @@
         function getTargetsSuccess(allTargets) {
             TargetsFullList = allTargets;
             console.log(allTargets);
-            unknownTarId = TargetsFullList.length + 1000;
+            unknownTarId = -1;
             renderSubAreasListByArea("filterMainBTN1");
         }
 
         function rederAllTargets(targetsList) {
             var renderTargetsList = "";
-            for (var i = 0; i < targetsList.length; i++) {
-                for (var k = 0; k < TargetForTala.length; k++) {
-                    if (TargetForTala[k].TarSerial == targetsList[i].TarSerial) {
-                        TargetForTala[k] = targetsList[i];
-                        targetsList.splice(i, 1);
-                        break;
-                    }
-                }
-            }
             for (var i = 0; i < targetsList.length; i++) {
                 for (var j = 0; j < SubAreasList.length; j++) {
                     if (SubAreasList[j].SubAreaId == targetsList[i].SfaSerial) {
