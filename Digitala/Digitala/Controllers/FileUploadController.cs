@@ -49,8 +49,14 @@ namespace WebApplication2.Controllers
                         var fileSavePath = Path.Combine(HostingEnvironment.MapPath("~/StudentFiles/"+id+"/"+year+"/"), fname);
                         // Save the uploaded file  
                         httpPostedFile.SaveAs(fileSavePath);
-                        imageLinks.Add("uploadedFiles/" + id + fname);
+                        imageLinks.Add("StudentFiles/" + id + "/" + year + "/" + fname);
+
+                        Students s = new Students();
+                        s.InsertFile(id, year, fname);
                     }
+
+                    
+
                 }
             }
 

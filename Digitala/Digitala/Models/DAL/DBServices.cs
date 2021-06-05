@@ -3426,7 +3426,63 @@ namespace Digitala.Models.DAL
 
             return command;
         }
+        public int InsertFileName(string i, string y, string n)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildInsertFileCommand(i,y,n);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("קובץ לא התווסף", ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildInsertFileCommand(string i, string y, string n)
+        {
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Values('{0}', '{1}', '{2}')", i, y, n);
+            prefix = "INSERT INTO [StudentFiles] " + "([StudentId], [StudentYear], [FileName])";
+            command = prefix + sb.ToString();
+
+            return command;
+
+        }
     }
-   
+
+    
 }
 

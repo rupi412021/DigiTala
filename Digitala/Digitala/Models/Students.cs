@@ -96,5 +96,11 @@ namespace Digitala.Models
             DBServices dbs = new DBServices();
             dbs.DeleteStudent(id);
         }
+
+        public void InsertFile(string id, string year, string fname)
+        {
+            DBServices dbs = new DBServices();
+            dbs.InsertFileName(id,year,fname);
+        }
     }
 }
