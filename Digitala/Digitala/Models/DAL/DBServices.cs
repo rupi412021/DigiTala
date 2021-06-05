@@ -1183,8 +1183,8 @@ namespace Digitala.Models.DAL
                                 {
                                     InsertTool(Convert.ToInt32(dr["Tindex"]), StudentId, targets[i].Tools[j], CurrentYear);
                                 }
-                            }
-                            break;
+                                break;
+                            }                           
                         }
                     }
                 }
