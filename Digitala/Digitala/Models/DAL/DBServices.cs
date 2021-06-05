@@ -3428,6 +3428,7 @@ namespace Digitala.Models.DAL
 
             return command;
         }
+
         public int InsertFileName(string i, string y, string n)
         {
 
@@ -3482,6 +3483,49 @@ namespace Digitala.Models.DAL
 
             return command;
 
+        }
+
+        public List<FileUpload> ReadFilesName(string studentId, string year)
+        {
+
+            SqlConnection con = null;
+            List<FileUpload> FilesList = new List<FileUpload>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "Select * from StudentFiles SF Where SF.StudentId = " + studentId + " and SF.StudentYear = " + year ;
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    FileUpload f = new FileUpload();
+                    f.Sid = (string)(dr["StudentID"]);
+                    f.Syear = (string)(dr["StudentYear"]);
+                    f.Filename = (string)(dr["FileName"]);
+                    FilesList.Add(f);
+                }
+
+                return FilesList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET Students from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
         }
     }
 

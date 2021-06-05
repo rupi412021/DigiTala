@@ -53,6 +53,8 @@
 
             ajaxCall("GET", "../api/Privileges", "", getAllPrivilegesSuccess, error);
 
+            ajaxCall("GET", "../api/FileUpload/" + newID + "/" + year, "", getFileSuccess, getFileError);
+
             $(document).on("click", ".UpdateStatusGoal", function () {
                 thisStatusId = this.getAttribute('id');
 
@@ -362,6 +364,14 @@
                 $(".DeleteStudent").attr("hidden", true);
                 ajaxCall("GET", "../api/Targets/" + newID + "/" + year, "", getTargetsSuccess, error);
             }
+        }
+
+        function getFileSuccess(files) {
+            console.log(files);
+        }
+
+        function getFileError(files) {
+            console.log("Couldn't get files");
         }
 
         function getIfTalaSuccess(talas) {
