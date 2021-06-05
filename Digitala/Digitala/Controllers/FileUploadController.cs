@@ -64,5 +64,13 @@ namespace WebApplication2.Controllers
             return Request.CreateResponse(HttpStatusCode.Created, imageLinks);
         }
 
+        [HttpGet]
+        [Route("api/FileUpload/{id}/{year}")]
+        public List<FileUpload> Get(string id,string year)
+        {
+            FileUpload f = new FileUpload();
+            List<FileUpload> flist = f.Read(id,year);
+            return flist;
+        }
     }
 }
