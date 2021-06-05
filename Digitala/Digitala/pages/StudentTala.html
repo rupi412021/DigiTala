@@ -479,7 +479,7 @@
                     confirmButtonText: "אשר"
                 });
             }
-            else if ([recommendationsData.Recommendations.length > 0 && indicator == 0] || [recommendationsData.Recommendations.length > 0 && indicator == 1 && TargetForTala.length == 0]) {
+            else if (recommendationsData.Recommendations.length > 0 && indicator == 0) {
                 TargetForTala = recommendationsData.Recommendations;
                 for (var j = 0; j < TargetForTala.length; j++) {
                     for (var i = 0; i < TargetsFullList.length; i++) {
@@ -489,6 +489,19 @@
                         }
                     }
                 }              
+                renderTargetsToPage(TargetForTala);
+            }
+
+            else if (recommendationsData.Recommendations.length > 0 && indicator == 1 && TargetForTala.length == 0) {
+                TargetForTala = recommendationsData.Recommendations;
+                for (var j = 0; j < TargetForTala.length; j++) {
+                    for (var i = 0; i < TargetsFullList.length; i++) {
+                        if (TargetForTala[j].TarSerial == TargetsFullList[i].TarSerial && TargetForTala[j].TarTalaIndex == 0) {
+                            TargetsFullList.splice(i, 1);
+                            i--;
+                        }
+                    }
+                }
                 renderTargetsToPage(TargetForTala);
             }
 
@@ -655,7 +668,7 @@
 
                 for (i = 0; i < TargetForTala.length; i++) {
                     if (TargetForTala[i].TarSerial == ValToRemove) {
-                        if (TargetForTala[i].TarTalaIndex == 0)
+                        if (TargetForTala[i].TarTalaIndex == 0 && TargetForTala[i].TarSerial > 0)
                             TargetsFullList.push(TargetForTala[i]);
                         TargetForTala.splice(i, 1);
                         break;
