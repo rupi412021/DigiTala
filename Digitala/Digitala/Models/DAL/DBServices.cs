@@ -52,7 +52,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "Select T.*, FA.FunctionArea, SFA.SubFunctionArea from Targets T" +
+                String selectSTR = "Select T.*, FA.FunctionArea, SFA.SubFunctionArea from Targets T"+
                                     " inner join FunctionAreas FA on T.FASerial = FA.FASerial  inner join SubFunctionAreas SFA on T.SFASerial = SFA.SFASerial ORDER BY T.NumOfUses DESC";
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
@@ -73,7 +73,7 @@ namespace Digitala.Models.DAL
                     t.NumOfUses = Convert.ToInt32(dr["NumOfUses"]);
                     t.FunctionArea = (string)(dr["FunctionArea"]);
                     t.SubFunctionArea = (string)(dr["SubFunctionArea"]);
-
+                    
                     targetList.Add(t);
                 }
 
@@ -94,7 +94,7 @@ namespace Digitala.Models.DAL
             }
 
         }
-
+        
         public List<Privileges> ReadPrivileges()
         {
 
@@ -339,8 +339,8 @@ namespace Digitala.Models.DAL
 
         private String BuildDeleteSurveyCommand(int id)
         {
-            String command;
-            command = "Delete FROM TargetsSurvey WHERE TargetId = " + id;
+            String command;            
+            command = "Delete FROM TargetsSurvey WHERE TargetId = " +id;
             return command;
         }
 
@@ -386,7 +386,7 @@ namespace Digitala.Models.DAL
         private String BuildDeletePrivileges(Privileges p)
         {
             String command;
-            command = "Delete FROM PrivilegesForStudent WHERE PId = " + p.DCode + " and StudentId = " + p.SId + " and Year = " + p.Year;
+            command = "Delete FROM PrivilegesForStudent WHERE PId = " + p.DCode + " and StudentId = "+ p.SId + " and Year = "+ p.Year;
 
             return command;
         }
@@ -632,7 +632,7 @@ namespace Digitala.Models.DAL
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
                 String selectSTR = "SELECT * FROM Chararcteristics ORDER BY SFASerial ASC";
-
+                
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
                 // get a reader
@@ -679,7 +679,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "SELECT * FROM [ChararcteristicsForStudent] where [StudentId]= " + studentID + " and [year]= " + year;
+                String selectSTR = "SELECT * FROM [ChararcteristicsForStudent] where [StudentId]= "+ studentID + " and [year]= "+ year;
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -723,7 +723,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "SELECT * FROM CharacteristicsMatrix Where [StudentId]=" + studentID + " and [SCYear]=" + year;
+                String selectSTR = "SELECT * FROM CharacteristicsMatrix Where [StudentId]="+ studentID + " and [SCYear]="+year;
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -733,7 +733,7 @@ namespace Digitala.Models.DAL
                 while (dr.Read())
                 {   // Read till the end of the data into a row
                     Chararcteristics c = new Chararcteristics();
-                    for (int i = 1; i < dr.FieldCount - 2; i++)
+                    for (int i = 1; i < dr.FieldCount-2; i++)
                     {
                         if (Convert.ToInt32(dr["char_" + i]) == 1)
                             Chars.Add(i);
@@ -850,17 +850,17 @@ namespace Digitala.Models.DAL
 
         private String BuildInsertCommand(Talas tala)
         {
+           
+                String command;
+                String prefix;
+                StringBuilder sb = new StringBuilder();
 
-            String command;
-            String prefix;
-            StringBuilder sb = new StringBuilder();
+                sb.AppendFormat("Values('{0}', '{1}')", tala.CurrentYear, tala.StudentId);
+                prefix = "INSERT INTO Tala " + "([TYear], [StudentId])";
 
-            sb.AppendFormat("Values('{0}', '{1}')", tala.CurrentYear, tala.StudentId);
-            prefix = "INSERT INTO Tala " + "([TYear], [StudentId])";
+                command = prefix + sb.ToString();
 
-            command = prefix + sb.ToString();
-
-            return command;
+                return command;
         }
 
         public int InsertToTala(Targets target, string StudentId, int CurrentYear)
@@ -1035,7 +1035,7 @@ namespace Digitala.Models.DAL
 
         private String BuildInsertCommand(TargetsSurvey t)
         {
-            String command = "";
+            String command ="";
             String prefix;
             StringBuilder sb = new StringBuilder();
 
@@ -1048,8 +1048,8 @@ namespace Digitala.Models.DAL
                 prefix = "INSERT INTO TargetsSurvey " + "([FASerial], [SFASerial], [TargetText], [TargetId], [TeacherId])";
                 command = command + " " + prefix + sb.ToString();
             }
-
-            return command;
+            
+           return command;
 
         }
 
@@ -1071,7 +1071,7 @@ namespace Digitala.Models.DAL
             float c = allteachers.Count;
             for (int i = 0; i < Math.Round(c * 0.33); i++)
             {
-                surveyTeachers.Add(allteachers[r.Next(0, allteachers.Count - 1)]);
+                surveyTeachers.Add(allteachers[r.Next(0, allteachers.Count-1)]);
             }
 
             return surveyTeachers;
@@ -1166,7 +1166,7 @@ namespace Digitala.Models.DAL
                                     InsertTool(Convert.ToInt32(dr["Tindex"]), StudentId, targets[i].Tools[j], CurrentYear);
                                 }
                             }
-                        }
+                        }  
                     }
                     else
                     {
@@ -1393,7 +1393,7 @@ namespace Digitala.Models.DAL
                 command = prefix + sb.ToString();
 
                 return command;
-            }
+            }    
         }
 
         private String BuildInsertCommand(string area)
@@ -1517,7 +1517,7 @@ namespace Digitala.Models.DAL
             //String prefix;
             StringBuilder sb = new StringBuilder();
 
-            string ones = "";
+            string ones="";
             string columns = "([StudentId], [SCYear]";
             int i = 2;
             foreach (var item in c)
@@ -1530,8 +1530,8 @@ namespace Digitala.Models.DAL
                     insertFreeChar(item, SId, year);
             }
             columns += ")";
-            ones += ")";
-            command = "INSERT INTO CharacteristicsMatrix " + columns + " VALUES (" + SId + ", " + year + ones;
+            ones+= ")";
+            command = "INSERT INTO CharacteristicsMatrix " + columns + " VALUES (" + SId+", "+ year + ones;
 
             return command;
         }
@@ -1716,7 +1716,7 @@ namespace Digitala.Models.DAL
                 throw new Exception("Could not connect to DB", ex);
             }
 
-            String cStr = BuildUpdateCommand(tPass, tEmail);      // helper method to build the insert string
+            String cStr = BuildUpdateCommand(tPass,tEmail);      // helper method to build the insert string
 
             cmd = CreateCommand(cStr, con);             // create the command
 
@@ -1740,11 +1740,11 @@ namespace Digitala.Models.DAL
                 }
             }
         }
-
+     
         private String BuildUpdateCommand(string tPass, string tMail)
         {
             String command;
-            command = "UPDATE Teachers SET TPassword = '" + tPass + "' WHERE TEmail = '" + tMail + "'";
+            command = "UPDATE Teachers SET TPassword = '" + tPass +"' WHERE TEmail = '" + tMail + "'";
             return command;
         }
 
@@ -1791,7 +1791,7 @@ namespace Digitala.Models.DAL
         private String BuildUpdateCommand(int tS, string tC, int tY, string tE)
         {
             String command;
-            command = "UPDATE Teachers SET TSchool = '" + tS + "', TYear ='" + tY + "', TClass ='" + tC + "' WHERE TEmail = '" + tE + "'";
+            command = "UPDATE Teachers SET TSchool = '" + tS + "', TYear ='" +tY + "', TClass ='" + tC +  "' WHERE TEmail = '" + tE + "'";
             return command;
         }
 
@@ -1815,15 +1815,15 @@ namespace Digitala.Models.DAL
                 while (dr.Read())
                 {   // Read till the end of the data into a row
                     Teachers t = new Teachers();
-                    t.TeacherID = Convert.ToInt32(dr["TId"]);
-                    t.TeacherFname = (string)dr["TFirstName"];
-                    t.TeacherSurName = (string)dr["TLastName"];
-                    t.TeacherEmail = (string)dr["TEmail"];
-                    t.TeacherPassword = (string)dr["TPassword"];
-                    t.TeacherAdmin = (bool)dr["TIsAdmin"];
-                    t.TeacherSchoolId = Convert.ToInt32(dr["TSchool"]);
-                    t.TeacherYear = Convert.ToInt32(dr["TYear"]);
-                    t.TeacherClass = (string)dr["TClass"];
+                        t.TeacherID = Convert.ToInt32(dr["TId"]);
+                        t.TeacherFname = (string)dr["TFirstName"];
+                        t.TeacherSurName = (string)dr["TLastName"];
+                        t.TeacherEmail = (string)dr["TEmail"];
+                        t.TeacherPassword = (string)dr["TPassword"];
+                        t.TeacherAdmin = (bool)dr["TIsAdmin"];
+                        t.TeacherSchoolId = Convert.ToInt32(dr["TSchool"]);
+                        t.TeacherYear = Convert.ToInt32(dr["TYear"]);
+                        t.TeacherClass = (string)dr["TClass"];
 
                     teachersList.Add(t);
                 }
@@ -1996,7 +1996,7 @@ namespace Digitala.Models.DAL
         private String BuildDeleteCommand(Chararcteristics c, string SId, int year)
         {
             String command;
-            command = "UPDATE CharacteristicsMatrix SET char_" + c.CharacteristicKey + "=0 WHERE StudentId = '" + SId + "' and SCYear = " + year;
+            command = "UPDATE CharacteristicsMatrix SET char_"+c.CharacteristicKey +"=0 WHERE StudentId = '" + SId + "' and SCYear = "+ year;
             return command;
         }
 
@@ -2117,7 +2117,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "SELECT * FROM Tala WHERE StudentId=" + studentId + " and TYear=" + year;
+                String selectSTR = "SELECT * FROM Tala WHERE StudentId="+ studentId +" and TYear="+ year;
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -2128,7 +2128,7 @@ namespace Digitala.Models.DAL
                 {   // Read till the end of the data into a row
 
                     t.CurrentYear = Convert.ToInt32(dr["TYear"]);
-                    t.StudentId = (string)(dr["StudentId"]);
+                    t.StudentId = (string)(dr["StudentId"]);     
                 }
 
                 return t;
@@ -2251,7 +2251,7 @@ namespace Digitala.Models.DAL
 
             String cStr = BuildInsertCommand(Student);      // helper method to build the insert string
 
-            cmd = CreateCommand(cStr, con);             // create the command
+           cmd = CreateCommand(cStr, con);             // create the command
 
             try
             {
@@ -2282,12 +2282,12 @@ namespace Digitala.Models.DAL
             StringBuilder sb = new StringBuilder();
             if (s.MedicalSituation == null)
                 s.MedicalSituation = "";
-            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}' , '{10}', '{11}')", s.Dis1st, s.Dis2nd, s.StudentId, s.SFirstName, s.SLastName, s.SEmail, s.SGender, s.SAddress, s.MedicalSituation, s.SPhone, s.SDescripion, s.SBirthDate.Year + "/" + s.SBirthDate.Month + "/" + s.SBirthDate.Day);
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}' , '{10}', '{11}')", s.Dis1st, s.Dis2nd, s.StudentId, s.SFirstName, s.SLastName, s.SEmail, s.SGender, s.SAddress, s.MedicalSituation, s.SPhone, s.SDescripion,  s.SBirthDate.Year + "/" + s.SBirthDate.Month + "/" + s.SBirthDate.Day);
             prefix = "INSERT INTO Student " + "([1stDis], [2ndDis], [StudentId], [SFirstName], [SLastName], [SEmail], [SGender], [SAddress], [MedicalSituation], [SPhone], [SDescripion], [SBirthDate])";
 
             command = prefix + sb.ToString();
 
-            return command;
+           return command;
 
         }
 
@@ -2340,7 +2340,7 @@ namespace Digitala.Models.DAL
                 s.MedicalSituation = "";
             command = "UPDATE Student SET [1stDis] = " + s.Dis1st + ", [2ndDis] = " + s.Dis2nd + ", SDescripion = '" + s.SDescripion + "', SGender = '" + s.SGender +
                 "', SFirstName = '" + s.SFirstName + "', SLastName = '" + s.SLastName + "', SEmail = '" + s.SEmail + "', SAddress = '" + s.SAddress + "', MedicalSituation = '" + s.MedicalSituation +
-                "', SPhone = '" + s.SPhone + "', SBirthDate = '" + s.SBirthDate.Year + '/' + s.SBirthDate.Month + '/' + s.SBirthDate.Day + "' WHERE StudentId = " + s.StudentId;
+                "', SPhone = '" + s.SPhone + "', SBirthDate = '" + s.SBirthDate.Year+'/'+ s.SBirthDate.Month + '/' + s.SBirthDate.Day +  "' WHERE StudentId = " + s.StudentId;
             return command;
         }
 
@@ -2463,7 +2463,7 @@ namespace Digitala.Models.DAL
                 {
                     if ((string)dr["StudentId"] != rt.NewStudentId)
                     {
-                        for (int i = 1; i <= dr.FieldCount - 2; i++)
+                        for (int i = 1; i <= dr.FieldCount-2; i++)
                         {
                             if (Convert.ToInt32(dr["char_" + i]) == 1)
                                 missmatch++;
@@ -2481,7 +2481,7 @@ namespace Digitala.Models.DAL
                                         {
                                             countMatch++;
                                             missmatch--;
-                                        }
+                                        }                                                                              
                                         break;
                                     }
                                 }
@@ -2519,12 +2519,12 @@ namespace Digitala.Models.DAL
                     }
                 }
 
-                if (Chosen.CountMatch > 0)
+                if(Chosen.CountMatch > 0)
                     Chosen.Recommendations = ReadTargetsById(Chosen.MatchStudentId, Chosen.MatchYear);
 
                 else
                 {
-                    List<Targets> TargetsList = ReadTargets();
+                    List <Targets> TargetsList = ReadTargets();
                     List<Chararcteristics> chars = ReadChararcteristics();
                     List<Targets> recommended = new List<Targets>();
 
@@ -2532,8 +2532,7 @@ namespace Digitala.Models.DAL
                     {
                         for (int j = 0; j < chars.Count; j++)
                         {
-                            if (rt.NewStudentChars[i].CharacteristicKey == chars[j].CharacteristicKey)
-                            {
+                            if (rt.NewStudentChars[i].CharacteristicKey == chars[j].CharacteristicKey) {
                                 if (chars[j].IsWeakness == true)
                                     rt.NewStudentChars[i].SfaSerial = chars[j].SfaSerial;
                                 else
@@ -2554,7 +2553,7 @@ namespace Digitala.Models.DAL
                                 max6++;
                                 max2++;
                                 recommended.Add(TargetsList[j]);
-                                if (max2 == 2)
+                                if(max2 == 2)
                                     break;
                             }
                         }
@@ -2564,7 +2563,7 @@ namespace Digitala.Models.DAL
                     }
                     Chosen.Recommendations = recommended;
                 }
-
+                            
                 Chosen.CurrentYear = rt.CurrentYear;
                 Chosen.NewStudentId = rt.NewStudentId;
                 Chosen.NewStudentChars = rt.NewStudentChars;
@@ -2629,7 +2628,7 @@ namespace Digitala.Models.DAL
             //String prefix;
             StringBuilder sb = new StringBuilder();
 
-            command = "Delete FROM [ChararcteristicsForStudent] WHERE [CharacteristicKey] = " + key;
+            command = "Delete FROM [ChararcteristicsForStudent] WHERE [CharacteristicKey] = "+key;
 
             return command;
         }
@@ -2697,13 +2696,13 @@ namespace Digitala.Models.DAL
                 throw new Exception("Could not connect to DB", ex);
             }
 
-            String cStr = BuildUpdateCommand(goal);
+            String cStr = BuildUpdateCommand(goal);   
 
-            cmd = CreateCommand(cStr, con);
+            cmd = CreateCommand(cStr, con);  
 
             try
             {
-                int numEffected = cmd.ExecuteNonQuery();
+                int numEffected = cmd.ExecuteNonQuery(); 
                 return numEffected;
             }
             catch (Exception ex)
@@ -2835,7 +2834,7 @@ namespace Digitala.Models.DAL
             String prefix;
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("Values('{0}','{1}','{2}','{3}')", s, c, y, i);
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}')", s, c, y, i );
             prefix = "INSERT INTO StudentsInClass " + "([SCSchId], [SCName], [SCYear], [SCstdID])";
 
 
@@ -3036,7 +3035,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "SELECT * FROM Tools t where t.StudentId=" + sid + "and t.TYear=" + syear;
+                String selectSTR = "SELECT * FROM Tools t where t.StudentId=" + sid +  "and t.TYear=" + syear;
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -3423,11 +3422,11 @@ namespace Digitala.Models.DAL
         private String BuildUpdateTargetInTalaCommand(int Tindex, string phrase)
         {
             String command;
-            command = "UPDATE [TargetsInTala] SET NewPhrase = '" + phrase + "' WHERE Tindex = " + Tindex;
+            command = "UPDATE [TargetsInTala] SET NewPhrase = '" + phrase + "' WHERE Tindex = "+ Tindex;
 
             return command;
         }
     }
-
+   
 }
 

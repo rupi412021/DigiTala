@@ -251,7 +251,58 @@
             });
             
             window.setTimeout(toggleMenu, 1000);
+
+            $('#buttonUpload').on('click', function () {
+                var data = new FormData();
+                var files = $("#files").get(0).files;
+
+                // Add the uploaded file to the form data collection  
+                if (files.length > 0) {
+                    for (f = 0; f < files.length; f++) {
+                        data.append("UploadedImage", files[f]);
+                    }
+
+                    data.append("ID", newID); // append what ever data you want to send along with the files. See how you extract it in the controller.
+                }
+
+                // Ajax upload  
+                $.ajax({
+                    type: "POST",
+                    url: "../Api/FileUpload",
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: imgSuccess,
+                    error: imgError
+                });
+
+                return false;
+            });  
         });
+
+        function imgSuccess(data) {
+            console.log(data);
+
+            //var imgStr = "";
+
+            //if (Array.isArray(data)) {
+
+            //    for (var i = 0; i < data.length; i++) {
+            //        imgStr += "<img src='../" + data[i] + "'/>";
+            //    }
+
+            //}
+
+            //else {
+            //    imgStr = "<img src='../" + data + "'/>";
+            //}
+
+            //document.getElementById("ph").innerHTML = imgStr;
+        }
+
+        function imgError(data) {
+            console.log(data);
+        }
 
         function deletePrivilegesSuccess(data) {
             console.log("deletePrivilegesSuccess");
@@ -720,6 +771,7 @@
                                 </div>
                                 <div class="panel panel-col-orange" id="collapse_4">
                                     <div class="panel-heading" role="tab" id="headingFour_19">
+
                                         <h4 class="panel-title">
                                             <a class="collapsed" role="button" data-toggle="collapse" href="#collapseFour_19" aria-expanded="false" aria-controls="collapseThree_19" id="talaHeader">
                                                 תוכנית לימודים אישית
@@ -736,6 +788,15 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <form method="post" enctype="multipart/form-data" id="formUpload">
+                                        <div>
+                                            <label for="files">קבצים</label>
+                                            <input type="file" id="files" name="files" multiple="multiple" />
+                                        </div>
+                                        <br />
+                                        <button type="button" id="buttonUpload">העלאה את הקבצים</button>
+                                    </form>
+                                    <div id="ph"></div>
                                 </div>
                             </div>
                         </div>
