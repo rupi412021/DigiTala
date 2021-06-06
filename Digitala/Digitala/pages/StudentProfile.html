@@ -55,6 +55,8 @@
 
             ajaxCall("GET", "../api/FileUpload/" + newID + "/" + year, "", getFileSuccess, getFileError);
 
+            
+
             $(document).on("click", ".UpdateStatusGoal", function () {
                 thisStatusId = this.getAttribute('id');
 
@@ -87,6 +89,7 @@
                 }
             });
 
+            
             $(document).on("click", ".EditStudentProfile", function () {
                 if (mode == "edit") {
                     swal({
@@ -176,6 +179,7 @@
 
                 else {
                     mode = "edit";
+                    $("#ph").html(strforedit);
                     $(".DeleteStudent").attr('hidden', true);
                     $(".personalStudentDetails").attr('disabled', false);
                     $(".CancelEditsStudentProfile").attr('hidden', false);  
@@ -368,19 +372,40 @@
             }
         }
 
+        $(document).on("click", ".sFiles", function () {
+            fileName = $(this).attr('id')
+                swal({
+                    title: "האם ברצונך למחוק את הקובץ?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#73A4A4",
+                    confirmButtonText: "שמירה",
+                    cancelButtonText: "ביטול",
+                    closeOnConfirm: true
+                }, function () {
+                        alert(fileName);
+                });
+            
+        }); 
+
         function getFileSuccess(files) {
-            str = "";
+            strforedit = "";
+            strnotforedit = "";
             if (files.length == 0) {
                 str += "לא קיימים קבצים לתלמיד";
             }
             else {
                 for (var i = 0; i < files.length; i++) {
-                    str += "<a href='../StudentFiles/" + newID +"/" + year + "/" + files[i].Filename + "'>" + files[i].Filename + "</a>"
+                    strforedit += "<i class='material-icons sFiles' id='" + files[i].Filename + "'>delete_forever</i>  <a href='../StudentFiles/" + newID + "/" + year + "/" + files[i].Filename + "'>" + files[i].Filename + "</a></br>";
+                    strnotforedit += "<i class='material-icons' id='" + files[i].Filename + "'>attach_file</i>  <a href='../StudentFiles/" + newID + "/" + year + "/" + files[i].Filename + "'>" + files[i].Filename + "</a></br>"
+                }        
+                $("#ph").html(strnotforedit);
+                console.log(files);
                 }             
-            }
-            $("#ph").html(str);
-            console.log(files);
         }
+
+            
+        
 
         function getFileError(files) {
             console.log("Couldn't get files");
@@ -785,6 +810,7 @@
                                                     <p>
                                                         <b>קבצים</b>
                                                     </p>
+                                                    <!--<p>למחיקת קובץ לחץ על סימן ה <i class='material-icons'>attach_file</i>שלצד הקובץ שברצונך למחוק</p>-->
                                                     <div id="ph">
 
                                                     </div>
