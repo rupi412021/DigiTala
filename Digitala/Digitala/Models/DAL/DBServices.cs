@@ -3527,6 +3527,7 @@ namespace Digitala.Models.DAL
 
             }
         }
+<<<<<<< Updated upstream
 
         public List<Years> ReadYears()
         {
@@ -3558,17 +3559,62 @@ namespace Digitala.Models.DAL
             {
                 // write to log
                 throw new Exception("Could not GET yearsList from DB", ex);
+=======
+        public int DeleteFile(string filename)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not connect to DB", ex);
+            }
+
+            String cStr = BuildDeleteFileCommand(filename);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Faild removing item", ex);
+>>>>>>> Stashed changes
             }
             finally
             {
                 if (con != null)
                 {
+<<<<<<< Updated upstream
                     con.Close();
                 }
 
             }
 
         }
+=======
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildDeleteFileCommand(string filename)
+        {
+            String command;
+            command = "Delete FROM StudentFiles WHERE FileName = '" + filename + "'";
+            return command;
+        }
+>>>>>>> Stashed changes
     }
 
     

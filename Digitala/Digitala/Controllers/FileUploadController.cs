@@ -72,5 +72,13 @@ namespace WebApplication2.Controllers
             List<FileUpload> flist = f.Read(id,year);
             return flist;
         }
+
+        [HttpDelete]
+        [Route("api/FileUpload/{filename})")]
+        public void Delete(string filename)
+        {
+            FileUpload f = new FileUpload();
+            f.Delete(filename);
+        }
     }
 }

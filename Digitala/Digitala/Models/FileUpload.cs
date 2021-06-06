@@ -31,5 +31,11 @@ namespace Digitala.Models
             List<FileUpload> fList = dbs.ReadFilesName(id,year);
             return fList;
         }
+
+        public void Delete(string filename)
+        {
+            DBServices dbs = new DBServices();
+            dbs.DeleteFile(filename);
+        }
     }
 }
