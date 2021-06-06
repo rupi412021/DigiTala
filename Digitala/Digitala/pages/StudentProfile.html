@@ -291,7 +291,6 @@
         });
 
         function imgSuccess(data) {
-            console.log(data);
             swal({
                 title: "הקובץ נטען בהצלחה",
                 type: "success",
@@ -376,6 +375,7 @@
 
         $(document).on("click", ".sFiles", function () {
             fileName = $(this).attr('id')
+            fileName = $(this).attr('id')
                 swal({
                     title: "האם ברצונך למחוק את הקובץ?",
                     type: "warning",
@@ -385,10 +385,29 @@
                     cancelButtonText: "ביטול",
                     closeOnConfirm: true
                 }, function () {
-                        alert(fileName);
+                      ajaxCall("Delete", "../api/FileUpload/" + fileName, "", deleteFileSuccess, deleteFileError);
                 });
             
         }); 
+
+        function deleteFileSuccess() {
+            swal({
+                title: "קובץ נמחק בהצלחה",
+                type: "success",
+                timer: 1500,
+                showConfirmButton: false
+            });
+            ajaxCall("GET", "../api/FileUpload/" + newID + "/" + year, "", getFileSuccess, getFileError);
+        }
+
+        function deleteFileError() {
+            swal({
+                title: "קובץ אינו נמחק נסה שוב",
+                type: "error",
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
 
         function getFileSuccess(files) {
             strforedit = "";
@@ -406,12 +425,9 @@
                 
             }             
             $("#ph").html(strnotforedit);
-            console.log(files);
         }
 
-            
-        
-
+                 
         function getFileError(files) {
             console.log("Couldn't get files");
         }

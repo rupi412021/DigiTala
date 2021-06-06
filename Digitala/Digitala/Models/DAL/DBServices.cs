@@ -2888,7 +2888,7 @@ namespace Digitala.Models.DAL
         private String BuildDeleteStudentCommand(int sID)
         {
             String command;
-            command = "Delete FROM Custodian WHERE StudentId = '" + sID + "' Delete FROM StudentsInClass WHERE SCstdID = '" + sID + "' Delete FROM Student WHERE StudentId = '" + sID + "'";
+            command = "Delete FROM Custodian WHERE StudentId = '" + sID + "' Delete FROM StudentsInClass WHERE SCstdID = '" + sID + "' Delete FROM StudentFiles WHERE StudentID = '" + sID +  "' Delete FROM Student WHERE StudentId = '" + sID + "'";
             return command;
         }
 
