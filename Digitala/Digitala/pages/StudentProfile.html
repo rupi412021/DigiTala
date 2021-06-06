@@ -101,17 +101,18 @@
                         cancelButtonText: "ביטול",
                         closeOnConfirm: true
                     }, function () {
+                        $("#ph").html(strnotforedit);
                         gen = '';
                         if ($(".radio-col-female").is(':checked'))
                             gen = 'F';
                         else if ($(".radio-col-male").is(':checked'))
                             gen = 'M';
                         for (var i = 0; i < document.getElementById("Dis1List").options.length; i++) {
-                            if (document.getElementById("Dis1List").options.item(i).value == $("#SDis1").val())
+                            if (document.getElementById("Dis1List").options.item(i).value == $("#SDis1").val() || document.getElementById("Dis1List").options.item(i).value != undefined)
                                 dis1ID = document.getElementById("Dis1List").options.item(i).id;
                         }
-                        for (var i = 0; i < document.getElementById("Dis2List").options.length; i++) {
-                            if (document.getElementById("Dis2List").options.item(i).value == $("#SDis2").val())
+                            for (var i = 0; i < document.getElementById("Dis2List").options.length; i++) {
+                                if (document.getElementById("Dis2List").options.item(i).value == $("#SDis2").val() || document.getElementById("Dis2List").options.item(i).value != undefined)
                                 dis2ID = document.getElementById("Dis2List").options.item(i).id;
                         }
                         bday = $("#SBDay").val();
@@ -236,6 +237,7 @@
                     closeOnConfirm: true
                 }, function () {
                     mode = "";
+                    $("#ph").html(strnotforedit);
                     $(".EditStudentProfile").html("<i class='material-icons'>edit</i>")
                     $("#collapse_1").addClass("panel-col-light-blue");
                     $("#collapse_2").addClass("panel-col-teal");
@@ -297,7 +299,7 @@
                 showConfirmButton: false
             });
 
-            location.reload();
+            ajaxCall("GET", "../api/FileUpload/" + newID + "/" + year, "", getFileSuccess, getFileError);
         }
 
         function imgError(data) {
@@ -392,16 +394,19 @@
             strforedit = "";
             strnotforedit = "";
             if (files.length == 0) {
-                str += "לא קיימים קבצים לתלמיד";
+                strforedit += "לא קיימים קבצים לתלמיד";
+                strnotforedit += "לא קיימים קבצים לתלמיד";
+                console.log(files.length)
             }
             else {
                 for (var i = 0; i < files.length; i++) {
-                    strforedit += "<i class='material-icons sFiles' id='" + files[i].Filename + "'>delete_forever</i>  <a href='../StudentFiles/" + newID + "/" + year + "/" + files[i].Filename + "'>" + files[i].Filename + "</a></br>";
+                    strforedit += "<i class='material-icons sFiles' id='" + files[i].Filename + "'>delete</i>  <a href='../StudentFiles/" + newID + "/" + year + "/" + files[i].Filename + "'>" + files[i].Filename + "</a></br>";
                     strnotforedit += "<i class='material-icons' id='" + files[i].Filename + "'>attach_file</i>  <a href='../StudentFiles/" + newID + "/" + year + "/" + files[i].Filename + "'>" + files[i].Filename + "</a></br>"
                 }        
-                $("#ph").html(strnotforedit);
-                console.log(files);
-                }             
+                
+            }             
+            $("#ph").html(strnotforedit);
+            console.log(files);
         }
 
             
