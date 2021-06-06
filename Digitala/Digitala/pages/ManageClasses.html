@@ -19,7 +19,7 @@
     <!-- Custom Css -->
     <link href="../css/style.css" rel="stylesheet">
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="../plugins/sweetalert/sweetalert.min.js"></script>
     <link href="../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
     <link href="../css/themes/all-themes.css" rel="stylesheet" />
@@ -46,7 +46,7 @@
             str = "";
             count4 = 0;
             for (var i = 0; i < yearsList.length; i++) {
-                if (yearsList[i].GregorianYear >= currentYear-1 && count4<4) {
+                if (yearsList[i].GregorianYear >= currentYear - 1 && count4 < 4) {
                     str += "<option value='" + yearsList[i].GregorianYear + "'>" + yearsList[i].HebrewYear;
                     count4++;
                 }
@@ -145,14 +145,14 @@
         }
 
         function AddStudentsEXCEL(jsondata) {
-            if ($("#schOpt").val() == "" || $("#classNa").val() == "" || $("#classNum").val() == "" || $("#year").val() == "") {
+            if ($("#schOpt").val() == "" || $("#classNa").val() == "" || $("#classNum").val() == "" || $("#yearList").val() == "") {
                 swal("אנא מלאו את כל הפרטים", "נסה שנית", "error");
             }
 
 
             else {
                 swal({
-                    title: "האם לשמור את השינויים בכיתה " + $("#classNa").val() + "`" + $("#classNum").val() + " בשנה " + $("#year").val() + " עבור סמל בית ספר " + $("#schOpt").val() + "?",
+                    title: "האם לשמור את השינויים בכיתה " + $("#classNa").val() + "`" + $("#classNum").val() + " בשנה " + $("#yearList").val() + " עבור סמל בית ספר " + $("#schOpt").val() + "?",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#73A4A4",
@@ -210,7 +210,7 @@
                         sGender: Jsondata[i].מין,
                         sAddress: Jsondata[i].כתובת,
                         sPhone: Jsondata[i].פלאפון,
-                        SDescripion: Jsondata[i].תיאור,
+                        SDescripion: Jsondata[i].תיאור.replace("'", "`"),
                         Dis1st: Jsondata[i].לקות_ראשית,
                         Dis2nd: Jsondata[i].לקות_משנית,
                         medicalSituation: Jsondata[i].אלרגיות_רגישויות,
@@ -226,7 +226,7 @@
 
                     let school = $("#schOpt").val();
                     let cclass = $("#classNa").val() + "`" + $("#classNum").val();
-                    let year = $("#year").val()
+                    let year = parseInt($("#yearList").val());
                     let temail = localStorage["UserName"];
 
                     ajaxCall("POST", "../api/Students", JSON.stringify(NewS), postSutdentSuccess, postSutdentError);
@@ -240,7 +240,7 @@
 
                     let school = $("#schOpt").val();
                     let cclass = $("#classNa").val() + "`" + $("#classNum").val();
-                    let year = $("#year").val()
+                    let year = parseInt($("#yearList").val());
                     let temail = localStorage["UserName"];
 
 
@@ -345,7 +345,7 @@
                             <p>
                                 טעינת התלמידים מבוצעת באמצעות קובץ אקסל
                             </p>
-                            <p>יש להזין את פרטי כל התלמידים בקובץ, ולהעלותו בעמוד זה - להורדת תבנית הקובץ<a href="../File/Template.xlsx" download> לחץ כאן </a></p>
+                            <p>יש להזין את פרטי כל התלמידים בקובץ, ולהעלותו בעמוד זה - להורדת תבנית הקובץ <a class="font-underline" href="../File/Template.xlsx" download>לחץ כאן</a></p>
                         </div>                        
                         <div class="body">
                             <div class="col-sm-5 studentsFields">
@@ -392,7 +392,7 @@
                             <div class="input-group">
                                 <h4>בחר קובץ</h4> <input type="file" id="excelfile" required />
                             </div>
-                            <div class="input-group">
+                            <div class="input-group" id="dirLTR">              
                                 <input type="button" id="viewfile" value="טען כיתה" onclick="ExportToTable()" required />
                             </div>
 
@@ -418,7 +418,7 @@
                     <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                     <ul class="dropdown-menu pull-left">
                         <!--<li><a href="javascript:void(0);"><i class="material-icons">person</i>פרופיל</a></li>-->
-                        <li><a href="SetNewPass.html">איפוס סיסמא<i class="material-icons">lock</i></a></li>
+                        <li><a href="SetNewPass.html">שינוי סיסמא<i class="material-icons">lock</i></a></li>
                         <li class="divider"></li>
                         <li><a href="sign-in.html"><i class="material-icons">input</i>התנתק</a></li>
                     </ul>

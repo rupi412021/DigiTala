@@ -6,6 +6,10 @@
     float: left;
 }
 
+.helpImg{
+    width: 90%;
+}
+
 .editTar {
     height: 45px;
     font-size: 18px;
@@ -380,6 +384,10 @@ span, datalist {
 
 .UpdateStatusGoal {
     float: left;
+}
+
+#dirLTR {
+    direction: ltr;
 }
 
 #printContent {

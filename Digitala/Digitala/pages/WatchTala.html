@@ -167,7 +167,7 @@
         function editTala() {
             mode = "edit";
             $("#PrintTala").attr("hidden", true);
-            $("#TalaToPDF").attr("hidden", true);
+            //$("#TalaToPDF").attr("hidden", true);
             $("#EditTala").attr("hidden", true);
             $("#cancelEditing").attr("hidden", false);
             $(".HiddenInEdit").attr("hidden", true);
@@ -186,7 +186,7 @@
             ajaxCall("PUT", "../api/Chararcteristics", JSON.stringify(newStudentChars), putCharsSuccess, getCharsError);
 
             $("#PrintTala").attr("hidden", false);
-            $("#TalaToPDF").attr("hidden", false);
+            //$("#TalaToPDF").attr("hidden", false);
             $("#EditTala").attr("hidden", false);
             $("#cancelEditing").attr("hidden", true);
             $(".HiddenInEdit").attr("hidden", false);
@@ -664,7 +664,7 @@
                 <h1 id="k" style="float: right;"></h1>
                 <button type="button" class="btn-trans" id="EditTala" onclick="editTala()"><i class="material-icons">edit</i></button>
                 <button type="button" class="btn-trans" id="PrintTala" onclick="window.print()"><i class="material-icons">print</i></button>
-                <button type="button" class="btn-trans" id="TalaToPDF" onclick="generatePDF()"><i class="material-icons">picture_as_pdf</i></button>
+                <!--<button type="button" class="btn-trans" id="TalaToPDF" onclick="generatePDF()"><i class="material-icons">picture_as_pdf</i></button>-->
                 <button type="button" class="btn-trans" id="cancelEditing" onclick="cancelEditTala()" hidden="hidden"><i class="material-icons">close</i></button>
             </div>
             <div class="row clearfix" id="printContent">
@@ -818,8 +818,8 @@
                 <div class="btn-group user-helper-dropdown">
                     <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                     <ul class="dropdown-menu pull-left">
-                        <li><a href="javascript:void(0);"><i class="material-icons">person</i>פרופיל</a></li>
-                        <li><a href="SetNewPass.html">איפוס סיסמא<i class="material-icons">lock</i></a></li>
+                        <!--<li><a href="javascript:void(0);"><i class="material-icons">person</i>פרופיל</a></li>-->
+                        <li><a href="SetNewPass.html">שינוי סיסמא<i class="material-icons">lock</i></a></li>
                         <li class="divider"></li>
                         <li><a href="sign-in.html"><i class="material-icons">input</i>התנתק</a></li>
                     </ul>
