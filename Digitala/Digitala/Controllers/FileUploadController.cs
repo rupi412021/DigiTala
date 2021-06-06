@@ -10,7 +10,7 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 
-namespace WebApplication2.Controllers
+namespace Digitala.Controllers
 {
     public class FileUploadController : ApiController
     {
