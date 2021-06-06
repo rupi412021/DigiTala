@@ -333,6 +333,9 @@
     <section class="content" style="direction: rtl">
         <div class="container-fluid-general">
             <div class="block-header">
+                <button type="button" style="float: left;" class="btn-trans waves-effect" id="help" data-toggle="modal" data-allow-outside-click="false" data-target="#largeModal">
+                    <i class="material-icons" style="float: left;">help_outline</i>
+                </button>
                 <h1>יצירת כיתה ותלמידים</h1>
             </div>
             <div class="row clearfix">
@@ -346,7 +349,7 @@
                                 טעינת התלמידים מבוצעת באמצעות קובץ אקסל
                             </p>
                             <p>יש להזין את פרטי כל התלמידים בקובץ, ולהעלותו בעמוד זה - להורדת תבנית הקובץ <a class="font-underline" href="../File/Template.xlsx" download>לחץ כאן</a></p>
-                        </div>                        
+                        </div>
                         <div class="body">
                             <div class="col-sm-5 studentsFields">
                                 <div class="form-group">
@@ -392,15 +395,32 @@
                             <div class="input-group">
                                 <h4>בחר קובץ</h4> <input type="file" id="excelfile" required />
                             </div>
-                            <div class="input-group" id="dirLTR">              
+                            <div class="input-group" id="dirLTR">
                                 <input type="button" id="viewfile" value="טען כיתה" onclick="ExportToTable()" required />
                             </div>
 
+                            <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body BGGrey">
+                                            <div class="form-group">
+                                                <div>
+                                                    <img src="../images/HelpLoadStudents.jpg" />
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <!-- #END# File Upload  -->
 
         </div>
