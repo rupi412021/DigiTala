@@ -267,6 +267,7 @@
     <Content Include="images\five_chosen.png" />
     <Content Include="images\four.png" />
     <Content Include="images\four_chosen.png" />
+    <Content Include="images\HelpLoadStudents.jpg" />
     <Content Include="images\helpTala.jpg" />
     <Content Include="images\helpTarBank.jpg" />
     <Content Include="images\M.png" />
