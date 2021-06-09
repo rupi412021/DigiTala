@@ -88,5 +88,11 @@ namespace Digitala.Models
             DBServices dbs = new DBServices();
             dbs.updateTinfo(s,c,y,e);
         }
+
+        //public void InsertTeacherToClass(int s, string c, int y, int i)
+        //{
+        //    DBServices dbs = new DBServices();
+        //    dbs.InsertTeacherToClass(s, c, y, i);
+        //}
     }
 }

@@ -201,6 +201,8 @@
                 }
 
                 if (hit == 0) {
+                    if (Jsondata[i].תיאור != null)
+                        Jsondata[i].תיאור.replace("'", "`")
                     let NewS = {
                         studentId: Jsondata[i].תעודת_זהות,
                         sFirstName: Jsondata[i].שם_פרטי,
@@ -210,7 +212,7 @@
                         sGender: Jsondata[i].מין,
                         sAddress: Jsondata[i].כתובת,
                         sPhone: Jsondata[i].פלאפון,
-                        SDescripion: Jsondata[i].תיאור.replace("'", "`"),
+                        SDescripion: Jsondata[i].תיאור,
                         Dis1st: Jsondata[i].לקות_ראשית,
                         Dis2nd: Jsondata[i].לקות_משנית,
                         medicalSituation: Jsondata[i].אלרגיות_רגישויות,
@@ -228,6 +230,7 @@
                     let cclass = $("#classNa").val() + "`" + $("#classNum").val();
                     let year = parseInt($("#yearList").val());
                     let temail = localStorage["UserName"];
+                    //let tid = parseInt(localStorage["TeacherID"]);
 
                     ajaxCall("POST", "../api/Students", JSON.stringify(NewS), postSutdentSuccess, postSutdentError);
                     ajaxCall("POST", "../api/Custodian", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
@@ -242,6 +245,7 @@
                     let cclass = $("#classNa").val() + "`" + $("#classNum").val();
                     let year = parseInt($("#yearList").val());
                     let temail = localStorage["UserName"];
+                    //let tid = parseInt(localStorage["TeacherID"]);
 
 
                     ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail, "", putTeacherInfoSuccess, putTeacherInfoError);

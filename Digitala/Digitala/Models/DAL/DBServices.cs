@@ -3615,6 +3615,63 @@ namespace Digitala.Models.DAL
             }
 
         }
+
+        //public int InsertTeacherToClass(int s, string c, int y, int i)
+        //{
+
+        //    SqlConnection con;
+        //    SqlCommand cmd;
+
+        //    try
+        //    {
+        //        con = connect("DBConnectionString"); // create the connection
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw new Exception("Could not connect to DB", ex);
+        //    }
+
+        //    String cStr = BuildInsertTeacherToClassCommand(s, c, y, i);      // helper method to build the insert string
+
+        //    cmd = CreateCommand(cStr, con);             // create the command
+
+        //    try
+        //    {
+        //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
+        //        return numEffected;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw new Exception("התאמות לא נוספות למערכת", ex);
+        //    }
+
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            // close the db connection
+        //            con.Close();
+        //        }
+        //    }
+
+        //}
+
+        //private String BuildInsertTeacherToClassCommand(int s, string c, int y, int i)
+        //{
+
+        //    String command;
+        //    String prefix;
+        //    StringBuilder sb = new StringBuilder();
+
+        //    sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}')", c, y, s, i);
+        //    prefix = "INSERT INTO TeachesInClass " + "([ClassName], [Year], [SchId], [TID])";
+
+        //    command = prefix + sb.ToString();
+
+        //    return command;
+        //}
     }
 
 }

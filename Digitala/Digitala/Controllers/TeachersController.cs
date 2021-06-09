@@ -33,8 +33,8 @@ namespace Digitala.Controllers
         public void ChangeClassInfo(int tschool, string tclass, int tyear, string temail)
         {
             Teachers t = new Teachers();
-            t.updateClass(tschool, tclass, tyear, temail); 
-
+            t.updateClass(tschool, tclass, tyear, temail);
+            //t.InsertTeacherToClass(tschool, tclass, tyear, tid);
         }
         public void Post([FromBody] Teachers t)
         {
