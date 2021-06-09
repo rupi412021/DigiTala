@@ -396,20 +396,40 @@
                                 <h4>בחר קובץ</h4> <input type="file" id="excelfile" required />
                             </div>
                             <div class="input-group" id="dirLTR">
-                                <input type="button" id="viewfile" value="טען כיתה" onclick="ExportToTable()" required />
+                                <input type="button" id="viewfile" value="טען כיתה/תלמיד" onclick="ExportToTable()" required />
                             </div>
+                            <!--<div class="input-group">
+                                <h3>
+                                    צפייה בכיתות משנים קודמות
+                                </h3>
+                                <p>החלפת הכיתה תשפיע על תצוגת כל המערכת, תוכל לחזור בכל רגע לכיתה הנוכחית ע"י בחירתה מחדש ברשימה זו</p>
+                            </div>
+                            <div class="input-group studentsFields">
+                                <div class="form-group">
+                                    <div>
+                                        <i class="material-icons" style="float: right;">replay</i>
+                                        <label>החלף כיתה</label>
+                                    </div>
+                                    <div class="form-line">
+                                        <input list="passedYearList" placeholder="כיתה" class="form-control" id="passedYear" required>
+                                        <datalist id="passedYearList"></datalist>
+                                    </div>
+                                </div>
+                            </div>-->
 
-                            <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
-                                <div class="modal-dialog modal-lg" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body BGGrey">
-                                            <div class="form-group">
-                                                <div>
-                                                    <img src="../images/HelpLoadStudents.jpg" />
+
+                                <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body BGGrey">
+                                                <div class="form-group">
+                                                    <div>
+                                                        <img src="../images/HelpLoadStudents.jpg" />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">סגור</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -417,7 +437,6 @@
 
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
 
