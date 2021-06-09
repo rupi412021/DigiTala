@@ -380,7 +380,7 @@
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#73A4A4",
-                    confirmButtonText: "שמירה",
+                    confirmButtonText: "מחיקה",
                     cancelButtonText: "ביטול",
                     closeOnConfirm: true
                 }, function () {
@@ -423,11 +423,12 @@
                 }        
                 
             }         
-            if (mode = "") {
+            if (mode == "") {
                 $("#ph").html(strnotforedit);
             }
-            else 
+            else {
                 $("#ph").html(strforedit);
+            }
         }
 
                  
