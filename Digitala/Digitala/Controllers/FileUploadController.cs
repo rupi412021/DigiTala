@@ -74,7 +74,7 @@ namespace Digitala.Controllers
         }
 
         [HttpDelete]
-        [Route("api/FileUpload/{filename})")]
+        [Route("api/FileUpload/{filename}")]
         public void Delete(string filename)
         {
             FileUpload f = new FileUpload();
