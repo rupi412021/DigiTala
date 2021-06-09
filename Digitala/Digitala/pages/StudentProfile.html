@@ -422,8 +422,12 @@
                     strnotforedit += "<i class='material-icons' id='" + files[i].Filename + "'>attach_file</i>  <a href='../StudentFiles/" + newID + "/" + year + "/" + files[i].Filename + "'>" + files[i].Filename + "</a></br>"
                 }        
                 
-            }             
-            $("#ph").html(strnotforedit);
+            }         
+            if (mode = "") {
+                $("#ph").html(strnotforedit);
+            }
+            else 
+                $("#ph").html(strforedit);
         }
 
                  
