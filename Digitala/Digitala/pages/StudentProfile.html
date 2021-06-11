@@ -43,17 +43,26 @@
             $("#studentName").html(studentName);
             year = localStorage["TeacherYear"];
             mode = "";
-            ajaxCall("GET", "../api/Talas/" + newID + "/" + year, "", getTalaSuccess, error);
+
+            YearToShow = localStorage["ClassToShowYear"];
+            if (year != YearToShow) {
+                $(".EditStudentProfile").attr("hidden", true);
+            }
+            else {
+                $(".EditStudentProfile").attr("hidden", false);
+            }
+
+            ajaxCall("GET", "../api/Talas/" + newID + "/" + YearToShow, "", getTalaSuccess, error);
 
             ajaxCall("GET", "../api/Talas/" + newID, "", getIfTalaSuccess, getIfTalaError);
 
-            ajaxCall("GET", "../api/Students/" + TeachID + "/" + year, "", getStudentsByTeacherSuccess, error);
+            ajaxCall("GET", "../api/Students/" + TeachID + "/" + YearToShow, "", getStudentsByTeacherSuccess, error);
 
             ajaxCall("GET", "../api/Custodian/" + newID, "", getStudentsCustodianSuccess, error);
 
             ajaxCall("GET", "../api/Privileges", "", getAllPrivilegesSuccess, error);
 
-            ajaxCall("GET", "../api/FileUpload/" + newID + "/" + year, "", getFileSuccess, getFileError);
+            ajaxCall("GET", "../api/FileUpload/" + newID + "/" + YearToShow, "", getFileSuccess, getFileError);
 
             
 
@@ -101,6 +110,8 @@
                         cancelButtonText: "ביטול",
                         closeOnConfirm: true
                     }, function () {
+                        $("#files").attr("disabled", true);
+                        $("#buttonUpload").attr("disabled", true);
                         $("#ph").html(strnotforedit);
                         gen = '';
                         if ($(".radio-col-female").is(':checked'))
@@ -161,7 +172,7 @@
                                 tempPriv = {
                                     DCode: PrivilegesForStudent[i].DCode,
                                     SId: newID,
-                                    Year: year
+                                    Year: YearToShow
                                 }
                                 ajaxCall("DELETE", "../api/Privileges", JSON.stringify(tempPriv), deletePrivilegesSuccess, error);
                             }
@@ -170,7 +181,7 @@
                                 tempPriv = {
                                     DCode: AllPrivileges[i].DCode,
                                     SId: newID,
-                                    Year: year
+                                    Year: YearToShow
                                 }
                                 ajaxCall("POST", "../api/Privileges", JSON.stringify(tempPriv), postPrivilegesForStudentSuccess, error);
                             }
@@ -183,7 +194,9 @@
                     $("#ph").html(strforedit);
                     $(".DeleteStudent").attr('hidden', true);
                     $(".personalStudentDetails").attr('disabled', false);
-                    $(".CancelEditsStudentProfile").attr('hidden', false);  
+                    $(".CancelEditsStudentProfile").attr('hidden', false);
+                    $("#files").attr("disabled", false);
+                    $("#buttonUpload").attr("disabled", false);
                     $("#contactName").attr('disabled', false);
                     $("#contactPhone").attr('disabled', false);
                     $("#contactEmail").attr('disabled', false);
@@ -246,7 +259,7 @@
                     $("#collapse_2").removeClass("panel-col-yellow");
                     $("#collapse_3").removeClass("panel-col-yellow");
                     $(".CancelEditsStudentProfile").attr('hidden', true);
-                    $(".DeleteStudent").attr('hidden',false);
+
                     for (var i = 0; i < AllPrivileges.length; i++) {
                         $("#md_checkbox_" + AllPrivileges[i].DCode).attr('disabled', true);
                     }
@@ -254,6 +267,8 @@
                     $("#contactName").attr('disabled', true);
                     $("#contactPhone").attr('disabled', true);
                     $("#contactEmail").attr('disabled', true);
+                    $("#files").attr("disabled", true);
+                    $("#buttonUpload").attr("disabled", true);
 
                 });
             });
@@ -272,7 +287,7 @@
                     }
 
                     data.append("ID", newID); // append what ever data you want to send along with the files. See how you extract it in the controller.
-                    data.append("Year", year);
+                    data.append("Year", YearToShow);
                 }
 
                 // Ajax upload  
@@ -298,7 +313,7 @@
                 showConfirmButton: false
             });
 
-            ajaxCall("GET", "../api/FileUpload/" + newID + "/" + year, "", getFileSuccess, getFileError);
+            ajaxCall("GET", "../api/FileUpload/" + newID + "/" + YearToShow, "", getFileSuccess, getFileError);
         }
 
         function imgError(data) {
@@ -369,7 +384,7 @@
                 document.getElementById("collapseFour_19").setAttribute("aria-expanded", "true");
                 document.getElementById("collapseFour_19").classList.add("in");
                 $(".DeleteStudent").attr("hidden", true);
-                ajaxCall("GET", "../api/Targets/" + newID + "/" + year, "", getTargetsSuccess, error);
+                ajaxCall("GET", "../api/Targets/" + newID + "/" + YearToShow, "", getTargetsSuccess, error);
             }
         }
 
@@ -396,7 +411,7 @@
                 timer: 1500,
                 showConfirmButton: false
             });
-            ajaxCall("GET", "../api/FileUpload/" + newID + "/" + year, "", getFileSuccess, getFileError);
+            ajaxCall("GET", "../api/FileUpload/" + newID + "/" + YearToShow, "", getFileSuccess, getFileError);
         }
 
         function deleteFileError() {
@@ -418,8 +433,8 @@
             }
             else {
                 for (var i = 0; i < files.length; i++) {
-                    strforedit += "<i class='material-icons sFiles' id='" + files[i].Filename + "'>delete</i>  <a href='../StudentFiles/" + newID + "/" + year + "/" + files[i].Filename + "'>" + files[i].Filename + "</a></br>";
-                    strnotforedit += "<i class='material-icons' id='" + files[i].Filename + "'>attach_file</i>  <a href='../StudentFiles/" + newID + "/" + year + "/" + files[i].Filename + "'>" + files[i].Filename + "</a></br>"
+                    strforedit += "<i class='material-icons sFiles' id='" + files[i].Filename + "'>delete</i>  <a href='../StudentFiles/" + newID + "/" + YearToShow + "/" + files[i].Filename + "'>" + files[i].Filename + "</a></br>";
+                    strnotforedit += "<i class='material-icons' id='" + files[i].Filename + "'>attach_file</i>  <a href='../StudentFiles/" + newID + "/" + YearToShow + "/" + files[i].Filename + "'>" + files[i].Filename + "</a></br>"
                 }        
                 
             }         
@@ -473,6 +488,15 @@
             $("#area_4").html(renderGoalsForStatus);
             $("#talaHeader").html("עמידה ביעדי תוכנית הלימודים");
 
+            if (year != YearToShow) {
+                disableUpdateStatusGoal = document.getElementsByClassName("UpdateStatusGoal");
+
+                for (var i = 0; i < disableUpdateStatusGoal.length; i++) {
+                    disableUpdateStatusGoal[i].disabled = true;
+                }
+
+            }
+
         }
 
         function getAllPrivilegesSuccess(AllPrivilegesList) {
@@ -483,7 +507,7 @@
                 prev += '<label class="custom-control-label" for="md_checkbox_' + AllPrivileges[i].DCode + '">' + AllPrivileges[i].DPhrase+'</label></div>'
             }
             $("#PrivilegesCheckBox").html(prev);  
-            ajaxCall("GET", "../api/Privileges/" + newID + "/" + year, "", getPrivilegesForStudentSuccess, error);
+            ajaxCall("GET", "../api/Privileges/" + newID + "/" + YearToShow, "", getPrivilegesForStudentSuccess, error);
         }
 
         function getPrivilegesForStudentSuccess(PrivilegesForStudentList) {
@@ -555,7 +579,7 @@
 
         function getTargetsSuccess(targets) {
             targetsList = targets;
-            ajaxCall("GET", "../api/Goals/" + newID + "/" + year, "", getGoalsForStudentSuccess, error);
+            ajaxCall("GET", "../api/Goals/" + newID + "/" + YearToShow, "", getGoalsForStudentSuccess, error);
         }
     </script>
 </head>
@@ -597,9 +621,9 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <button type="button" hidden="hidden" class="CancelEditsStudentProfile btn-trans" id="goalId-1"><i class="material-icons">close</i></button>
-                            <button type="button" class="EditStudentProfile btn-trans" id="goalId-1"><i class="material-icons">edit</i></button>
-                            <button type="button" class="DeleteStudent btn-trans" id="goalId-1"><i class="material-icons">delete_forever</i></button>
+                            <button type="button" hidden="hidden" class="CancelEditsStudentProfile btn-trans"><i class="material-icons">close</i></button>
+                            <button type="button" class="EditStudentProfile btn-trans"><i class="material-icons">edit</i></button>
+                            <button type="button" class="DeleteStudent btn-trans"><i class="material-icons">delete_forever</i></button>
                             <h3 id="studentName"></h3>
                         </div>
                         <div class="body">
@@ -835,11 +859,8 @@
                                                     <p>
                                                         <b>קבצים</b>
                                                     </p>
-                                                    <!--<p>למחיקת קובץ לחץ על סימן ה <i class='material-icons'>attach_file</i>שלצד הקובץ שברצונך למחוק</p>-->
                                                     <div id="ph">
-
                                                     </div>
-
                                                 </div>
                                                 <div class="col-sm-4 studentsFields">
                                                     <form method="post" enctype="multipart/form-data" id="formUpload">
@@ -847,15 +868,12 @@
                                                             <p>
                                                                 <b>טעינת קבצים חדשים</b>
                                                             </p>
-                                                            <input type="file" id="files" name="files" multiple="multiple" />
+                                                            <input type="file" id="files" name="files" multiple="multiple" disabled/>
                                                         </div>
                                                         <br />
-                                                        <button type="button" id="buttonUpload">טען</button>
+                                                        <button type="button" id="buttonUpload" disabled>טען</button>
                                                     </form>
-
                                                 </div>
-
-
                                                 <!--<div class="col-sm-4 colRight">
         <div class="input-group">
              <div class="form-line">
@@ -934,7 +952,7 @@
                     <li>
                         <a href="ManageClasses.html">
                             <i class="material-icons">school</i>
-                            <span>יצירת כיתה ותלמידים</span>
+                            <span>ניהול כיתות</span>
                         </a>
                     </li>
                     <li id="adminPage">

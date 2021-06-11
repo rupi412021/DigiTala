@@ -40,20 +40,24 @@
             mode = "";
             unknownIdChar = -1;
             studentName = localStorage["StudentName"];
-            classname = localStorage["TeacherClass"];
+            classname = localStorage["ClassToShowName"];
             newID = localStorage["StudentID"];
             TeachID = localStorage["TeacherID"];
             $("#studentName").html(studentName);
             year = localStorage["TeacherYear"];
+            YearToShow = localStorage["ClassToShowYear"];
 
+            if (year != YearToShow) {
+                $("#EditTala").attr("hidden", true);
+            }
 
             $("#Sclass").html(classname);
             ajaxCall("GET", "../api/Years", "", getYearsSuccess, getYearserror);
 
             ajaxCall("GET", "../api/Students", "", getStudentsSuccess, getStudentsError);
-            ajaxCall("GET", "../api/Targets/" + newID + "/" + year, "", getTargetsSuccess, getTargetsError);
+            ajaxCall("GET", "../api/Targets/" + newID + "/" + YearToShow, "", getTargetsSuccess, getTargetsError);
             ajaxCall("GET", "../api/Teachers", "", getTeachersSuccess, getStudentsError);
-            ajaxCall("GET", "../api/Chararcteristics/" + newID + "/" + year, "", getcharsAreasSuccess, getCharsError);
+            ajaxCall("GET", "../api/Chararcteristics/" + newID + "/" + YearToShow, "", getcharsAreasSuccess, getCharsError);
             ajaxCall("GET", "../api/FuncAreas/2", "", getSubAreasSuccess, getSubAreasError);
 
             window.setTimeout(toggleMenu, 1000);
@@ -152,7 +156,7 @@
             yearsList = years;
 
             for (var i = 0; i < yearsList.length; i++) {
-                if (yearsList[i].GregorianYear == year) {
+                if (yearsList[i].GregorianYear == YearToShow) {
                     $("#k").html("תוכנית לימודים אישית לשנת " + yearsList[i].HebrewYear);
                     break;
                 }
@@ -236,7 +240,7 @@
         function getTargetsSuccess(TList) {
             targetsList = TList;
             console.log(targetsList);
-            ajaxCall("GET", "../api/Tools/" + newID + "/" + year, "", getToolsSuccess, getToolsError);
+            ajaxCall("GET", "../api/Tools/" + newID + "/" + YearToShow, "", getToolsSuccess, getToolsError);
         }
 
         function postnewTargetsSuccess(TList) {
@@ -252,7 +256,7 @@
         function getToolsSuccess(data) {
             StudentsTools = data;
             console.log(StudentsTools);
-            ajaxCall("GET", "../api/Goals/" + newID + "/" + year, "", getGolasSuccess, getGolasError);
+            ajaxCall("GET", "../api/Goals/" + newID + "/" + YearToShow, "", getGolasSuccess, getGolasError);
         }
 
         function getGolasSuccess(goalsList) {
@@ -846,7 +850,7 @@
                     <li>
                         <a href="ManageClasses.html">
                             <i class="material-icons">school</i>
-                            <span>יצירת כיתה ותלמידים</span>
+                            <span>ניהול כיתות</span>
                         </a>
                     </li>
                     <li id="adminPage">

@@ -35,10 +35,19 @@
         $(document).ready(function () {
             TeachID = localStorage["TeacherID"];
             teacherYear = localStorage["TeacherYear"];
-
+            YearToShow = localStorage["ClassToShowYear"];
             surDuct = { 1: "one", 2: "two", 3: "three", 4: "four", 5: "five" };
 
-            ajaxCall("GET", "../api/Students/" + TeachID + "/" + teacherYear, "", getStudentsSuccess, error);
+            if (teacherYear != YearToShow) {
+                var x = document.getElementById("resetClass");
+                x.style.display = "block";
+            }
+            else {
+                var x = document.getElementById("resetClass");
+                x.style.display = "none";
+            }
+
+            ajaxCall("GET", "../api/Students/" + TeachID + "/" + YearToShow, "", getStudentsSuccess, error);
             ajaxCall("GET", "../api/TargetsSurvey/" + TeachID, "", getSurveySuccess, error);
             ajaxCall("DELETE", "../api/TargetsSurvey", "", DeleteSurveySuccess, error);
 
@@ -60,7 +69,7 @@
                 }          
             });
 
-            classnamet = localStorage["TeacherClass"];
+            classnamet = localStorage["ClassToShowName"];
             classInfo = "כיתה " + classnamet;
             $("#tcname").html(classInfo);
 
@@ -164,7 +173,7 @@
             console.log(StudsentsData);
             talasCount = 0;
             for (var i = 0; i < StudsentsList.length; i++) {
-                ajaxCall("GET", "../api/Talas/" + StudsentsList[i].StudentId + "/" + teacherYear, "", getTalaSuccess, error);
+                ajaxCall("GET", "../api/Talas/" + StudsentsList[i].StudentId + "/" + YearToShow, "", getTalaSuccess, error);
             } 
         }
 
@@ -256,6 +265,12 @@
             console.log("surveys table updated")
         }
 
+        function resetToCurrentYear() {
+            localStorage.setItem("ClassToShowYear", localStorage["TeacherYear"]);
+            localStorage.setItem("ClassToShowName", localStorage["TeacherClass"]);
+            location.reload();
+        }
+
     </script>
 </head>
 
@@ -299,6 +314,10 @@
                 <div class="col-sm-8 col-xs-12" id="filetButtons" style="float:right">
                     <button type="button" id="AllStudents" class="btn bg-grey btn-lg waves-effect">כל התלמידים</button>
                     <button type="button" id="StudentsWithNoTala" class="btn bg-blue-grey btn-lg waves-effect">תלמידים ללא תל"א</button>
+                    <button type="button" id="resetClass" class="btn waves-effect" onclick="resetToCurrentYear()">
+                        <span>חזור לשנה נוכחית</span>
+                        <i class="material-icons">replay</i>
+                    </button>
                 </div>
             </div>
             <div class="row clearfix">
@@ -426,7 +445,7 @@
                     <li>
                         <a href="ManageClasses.html" id="manageClass">
                             <i class="material-icons">school</i>
-                            <span>יצירת כיתה ותלמידים</span>
+                            <span>ניהול כיתות</span>
                         </a>
                     </li>
                     <li id="adminPage">

@@ -46,6 +46,21 @@
             GoalsArr = [];
             ajaxCall("GET", "../api/FuncAreas/2", "", getSubAreasSuccess, error);
 
+            teacherYear = localStorage["TeacherYear"];
+            YearToShow = localStorage["ClassToShowYear"];
+            if (teacherYear != YearToShow) {
+                $("#mainDIV").attr("hidden", true);
+                swal({
+                    title: "לא ניתן ליצור תוכנית לימודים אישית",
+                    text: 'לא ניתן ליצור תל"א לתלמידים משנים קודמות',
+                    type: "error",
+                    confirmButtonText: "חזור"
+                }, function () {
+                    window.location.assign("index.html");
+                });
+
+            }
+
             tagsCharsButtons();
 
             tagsTarsButtons();
@@ -1150,7 +1165,7 @@
                     <li>
                         <a href="ManageClasses.html">
                             <i class="material-icons">school</i>
-                            <span>יצירת כיתה ותלמידים</span>
+                            <span>ניהול כיתות</span>
                         </a>
                     </li>
                     <li id="adminPage">

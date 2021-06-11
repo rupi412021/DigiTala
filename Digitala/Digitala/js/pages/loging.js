@@ -16,22 +16,37 @@ function getUserSuccess(data) {
     tEmail = "";
     tname = "";
 
+   
+
     for (var i = 0; i < data.length; i++) {
-        if (data[i].TeacherEmail == user) { 
+        if (data[i].TeacherEmail == user) {
             isadmin = data[i].TeacherAdmin;
             tEmail = data[i].TeacherEmail;
             tname = data[i].TeacherFname;
             tyear = data[i].TeacherYear;
-            tclass = data[i].TeacherClass;           
+            tclass = data[i].TeacherClass;
 
-            ajaxCall("GET", "../api/Students/" + data[i].TeacherID + "/" + tyear , "", getStudentSuccess, getStudentError);
-        }
-        
+            if (localStorage["ClassToShowYear"] == null) {
+                localStorage.setItem("ClassToShowYear", tyear);
+                localStorage.setItem("ClassToShowName", tclass);
+            }
+
+            showYear = localStorage["ClassToShowYear"];
+
+            if (localStorage["ClassToShowYear"] != localStorage["TeacherYear"] || localStorage["ClassToShowName"] != localStorage["TeacherClass"])
+                ajaxCall("GET", "../api/Students/" + data[i].TeacherID + "/" + showYear, "", getStudentSuccess, getStudentError);
+            else
+                ajaxCall("GET", "../api/Students/" + data[i].TeacherID + "/" + tyear, "", getStudentSuccess, getStudentError);
+
+            break;
+
+        }      
     }
-
     localStorage.setItem("TeacherYear", tyear);
     localStorage.setItem("TeacherClass", tclass);
+    
 
+    
     str = "<div class='name' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'> שלום " + tname + " </div>" +
         "<div class='email' >" + tEmail + "</div>";
     $("#signin").html(str);

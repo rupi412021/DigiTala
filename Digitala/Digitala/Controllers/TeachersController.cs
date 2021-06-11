@@ -47,6 +47,14 @@ namespace Digitala.Controllers
             List<Teachers> tlist = t.Read();
             return tlist;
         }
+        [HttpGet]
+        [Route("api/Teachers/{TID}")]
+        public List<Teachers> Get(int TID)
+        {
+            Teachers t = new Teachers();
+            List<Teachers> tlist = t.ReadPastYears(TID);
+            return tlist;
+        }
 
     }
 }

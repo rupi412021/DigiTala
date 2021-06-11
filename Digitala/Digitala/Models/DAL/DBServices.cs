@@ -2065,8 +2065,8 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "SELECT S.* FROM Teachers T inner join StudentsInClass SIC on T.TSchool = SIC.SCSchId and T.TYear = SIC.SCYear and T.TClass = SIC.SCName " +
-                                    "inner join Student S on SIC.SCstdID = S.StudentId WHERE T.TId = " + teacherId + " and T.TYear = " + year + " ORDER BY SLastName ASC";
+                String selectSTR = "SELECT S.* FROM TeachesInClass T inner join StudentsInClass SIC on T.SchId = SIC.SCSchId and T.Year = SIC.SCYear and T.ClassName = SIC.SCName " +
+                                    "inner join Student S on SIC.SCstdID = S.StudentId WHERE T.TID = " + teacherId + " and T.Year = " + year + " ORDER BY SLastName ASC";
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -3616,62 +3616,107 @@ namespace Digitala.Models.DAL
 
         }
 
-        //public int InsertTeacherToClass(int s, string c, int y, int i)
-        //{
+        public int InsertTeacherToClass(int s, string c, int y, int i)
+        {
 
-        //    SqlConnection con;
-        //    SqlCommand cmd;
+            SqlConnection con;
+            SqlCommand cmd;
 
-        //    try
-        //    {
-        //        con = connect("DBConnectionString"); // create the connection
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // write to log
-        //        throw new Exception("Could not connect to DB", ex);
-        //    }
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not connect to DB", ex);
+            }
 
-        //    String cStr = BuildInsertTeacherToClassCommand(s, c, y, i);      // helper method to build the insert string
+            String cStr = BuildInsertTeacherToClassCommand(s, c, y, i);      // helper method to build the insert string
 
-        //    cmd = CreateCommand(cStr, con);             // create the command
+            cmd = CreateCommand(cStr, con);             // create the command
 
-        //    try
-        //    {
-        //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-        //        return numEffected;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // write to log
-        //        throw new Exception("התאמות לא נוספות למערכת", ex);
-        //    }
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("התאמות לא נוספות למערכת", ex);
+            }
 
-        //    finally
-        //    {
-        //        if (con != null)
-        //        {
-        //            // close the db connection
-        //            con.Close();
-        //        }
-        //    }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
 
-        //}
+        }
 
-        //private String BuildInsertTeacherToClassCommand(int s, string c, int y, int i)
-        //{
+        private String BuildInsertTeacherToClassCommand(int s, string c, int y, int i)
+        {
 
-        //    String command;
-        //    String prefix;
-        //    StringBuilder sb = new StringBuilder();
+            String command;
+            String prefix;
+            StringBuilder sb = new StringBuilder();
 
-        //    sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}')", c, y, s, i);
-        //    prefix = "INSERT INTO TeachesInClass " + "([ClassName], [Year], [SchId], [TID])";
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}')", c, y, s, i);
+            prefix = "INSERT INTO TeachesInClass " + "([ClassName], [Year], [SchId], [TID])";
 
-        //    command = prefix + sb.ToString();
+            command = prefix + sb.ToString();
 
-        //    return command;
-        //}
+            return command;
+        }
+
+        public List<Teachers> ReadTeacherToClass(int TID)
+        {
+            SqlConnection con = null;
+            List<Teachers> TeachList = new List<Teachers>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "Select * from TeachesInClass where TID = "+ TID;
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Teachers t = new Teachers();
+
+                    t.TeacherID = Convert.ToInt32(dr["TID"]);
+                    t.TeacherSchoolId = Convert.ToInt32(dr["SchId"]);
+                    t.TeacherYear = Convert.ToInt32(dr["Year"]);
+                    t.TeacherClass = (string)(dr["ClassName"]);
+                    TeachList.Add(t);
+                }
+
+                return TeachList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw new Exception("Could not GET yearsList from DB", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
     }
 
 }

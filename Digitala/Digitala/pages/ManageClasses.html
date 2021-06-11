@@ -35,10 +35,28 @@
             ajaxCall("GET", "../api/Schools", "", getSchoolSuccess, getSchoolerror);
             localStorage.removeItem("StudentName");
             localStorage.removeItem("StudentID");
+
             makeLists();
             ajaxCall("GET", "../api/Years", "", getYearsSuccess, getYearserror);
+            ajaxCall("GET", "../api/Teachers/" + localStorage["TeacherID"], "", getTeachersPartYearsSuccess, getTeachersPartYearsError);
+
 
         });
+
+        function getTeachersPartYearsError(error) {
+            console.log("could not bring teachew's past year")
+        }
+
+        function getTeachersPartYearsSuccess(list) {
+            console.log(list);
+            classList = list;
+            str = "";
+            for (var i = 0; i < classList.length; i++) {
+                str += "<option value='" + classList[i].TeacherClass + "_" + classList[i].TeacherYear+ "'>";
+            }
+
+            $("#passedYearList").html(str);
+        }
 
         function getYearsSuccess(years) {
             yearsList = years;
@@ -300,6 +318,17 @@
             console.log("Custodian not inserted")
         }
 
+        function loadNewClass() {
+            if ($("#passedYear").val() == "")
+                swal("לא נבחרה כיתה", "", "warning");
+            else {
+                var res = $("#passedYear").val().split("_");
+                localStorage.setItem("ClassToShowYear", res[1]);
+                localStorage.setItem("ClassToShowName", res[0]);
+                window.location.assign("index.html");
+            }
+        }
+
     </script>
 </head>
 
@@ -340,17 +369,17 @@
                 <button type="button" style="float: left;" class="btn-trans waves-effect" id="help" data-toggle="modal" data-allow-outside-click="false" data-target="#largeModal">
                     <i class="material-icons" style="float: left;">help_outline</i>
                 </button>
-                <h1>יצירת כיתה ותלמידים</h1>
+                <h1>הוספת כיתה/תלמיד וצפייה בכיתות משנים קודמות</h1>
             </div>
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
                             <h3>
-                                טעינת קובץ תלמידים
+                                יצירת כיתה ותלמידים
                             </h3>
                             <p>
-                                טעינת התלמידים מבוצעת באמצעות קובץ אקסל
+                                יצירת כיתה חדשה או תלמיד חדש מבוצעת באמצעות טעינת רשימת התלמידים מקובץ אקסל
                             </p>
                             <p>יש להזין את פרטי כל התלמידים בקובץ, ולהעלותו בעמוד זה - להורדת תבנית הקובץ <a class="font-underline" href="../File/Template.xlsx" download>לחץ כאן</a></p>
                         </div>
@@ -402,24 +431,26 @@
                             <div class="input-group" id="dirLTR">
                                 <input type="button" id="viewfile" value="טען כיתה/תלמיד" onclick="ExportToTable()" required />
                             </div>
-                            <!--<div class="input-group">
+                            <div class="input-group">
                                 <h3>
                                     צפייה בכיתות משנים קודמות
                                 </h3>
-                                <p>החלפת הכיתה תשפיע על תצוגת כל המערכת, תוכל לחזור בכל רגע לכיתה הנוכחית ע"י בחירתה מחדש ברשימה זו</p>
+                                <p>החלפת הכיתה תשפיע על תצוגת כל המערכת - תוכל לחזור בכל רגע לכיתה הנוכחית ע"י בחירתה מחדש ברשימה זו</p>
                             </div>
                             <div class="input-group studentsFields">
                                 <div class="form-group">
                                     <div>
-                                        <i class="material-icons" style="float: right;">replay</i>
-                                        <label>החלף כיתה</label>
+                                        <label>בחר כיתה</label>
                                     </div>
                                     <div class="form-line">
                                         <input list="passedYearList" placeholder="כיתה" class="form-control" id="passedYear" required>
                                         <datalist id="passedYearList"></datalist>
                                     </div>
+                                    <button type="button" class="btn-trans waves-effect" onclick="loadNewClass()">
+                                        <i class="material-icons" style="float: left;">replay</i>
+                                    </button>
                                 </div>
-                            </div>-->
+                            </div>
 
 
                                 <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
@@ -488,7 +519,7 @@
                     <li class="active">
                         <a href="ManageClasses.html">
                             <i class="material-icons">school</i>
-                            <span>יצירת כיתה ותלמידים</span>
+                            <span>ניהול כיתות</span>
                         </a>
                     </li>
                     <li id="adminPage">

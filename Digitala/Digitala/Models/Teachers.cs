@@ -89,10 +89,17 @@ namespace Digitala.Models
             dbs.updateTinfo(s,c,y,e);
         }
 
-        //public void InsertTeacherToClass(int s, string c, int y, int i)
-        //{
-        //    DBServices dbs = new DBServices();
-        //    dbs.InsertTeacherToClass(s, c, y, i);
-        //}
+        public void InsertTeacherToClass(int s, string c, int y, int i)
+        {
+            DBServices dbs = new DBServices();
+            dbs.InsertTeacherToClass(s, c, y, i);
+        }
+
+        public List<Teachers> ReadPastYears(int TID)
+        {
+            DBServices dbs = new DBServices();
+            List<Teachers> teachersList = dbs.ReadTeacherToClass(TID);
+            return teachersList;
+        }
     }
 }

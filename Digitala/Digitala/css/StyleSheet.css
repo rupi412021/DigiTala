@@ -26,6 +26,17 @@
     padding-right: 10px;
 }
 
+#resetClass.btn.waves-effect {
+    margin: 6px 10px;
+    background-color: transparent;
+    color: #73A4A4;
+    text-align: right;
+    width: auto;
+    box-shadow: 0 0 0 0;
+    font-size: 18px;
+    float: left;
+}
+
 .paddingTopicons.deleteBtn, .paddingTopicons.updateBtn {
     padding-top: 7px;
 }
@@ -348,8 +359,7 @@ span, datalist {
 }
 #addNewArea.btn.waves-effect,
 #addNewSubArea.btn.waves-effect,
-#addNewTar.btn.waves-effect
-{
+#addNewTar.btn.waves-effect{
     margin: 6px 10px;
     background-color: transparent;
     color: #73A4A4;
