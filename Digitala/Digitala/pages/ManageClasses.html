@@ -40,6 +40,9 @@
             ajaxCall("GET", "../api/Years", "", getYearsSuccess, getYearserror);
             ajaxCall("GET", "../api/Teachers/" + localStorage["TeacherID"], "", getTeachersPartYearsSuccess, getTeachersPartYearsError);
 
+            if (localStorage["TeacherClass"] == "טען") {
+                $("#noClasses").attr("hidden", true);
+            }
 
         });
 
@@ -440,27 +443,28 @@
                             <div class="input-group" id="dirLTR">
                                 <input type="button" id="viewfile" value="טען כיתה/תלמיד" onclick="ExportToTable()" required />
                             </div>
-                            <div class="input-group">
-                                <h3>
-                                    צפייה בכיתות משנים קודמות
-                                </h3>
-                                <p>החלפת הכיתה תשפיע על תצוגת כל המערכת - תוכל לחזור בכל רגע לכיתה הנוכחית ע"י בחירתה מחדש ברשימה זו</p>
-                            </div>
-                            <div class="input-group studentsFields">
-                                <div class="form-group">
-                                    <div>
-                                        <label>בחר כיתה</label>
+                            <div id="noClasses">
+                                <div class="input-group">
+                                    <h3>
+                                        צפייה בכיתות משנים קודמות
+                                    </h3>
+                                    <p>החלפת הכיתה תשפיע על תצוגת כל המערכת - תוכל לחזור בכל רגע לכיתה הנוכחית ע"י בחירתה מחדש ברשימה זו</p>
+                                </div>
+                                <div class="input-group studentsFields">
+                                    <div class="form-group">
+                                        <div>
+                                            <label>בחר כיתה</label>
+                                        </div>
+                                        <div class="form-line">
+                                            <input list="passedYearList" placeholder="כיתה" class="form-control" id="passedYear" required>
+                                            <datalist id="passedYearList"></datalist>
+                                        </div>
+                                        <button type="button" class="btn-trans waves-effect" onclick="loadNewClass()">
+                                            <i class="material-icons" style="float: left;">replay</i>
+                                        </button>
                                     </div>
-                                    <div class="form-line">
-                                        <input list="passedYearList" placeholder="כיתה" class="form-control" id="passedYear" required>
-                                        <datalist id="passedYearList"></datalist>
-                                    </div>
-                                    <button type="button" class="btn-trans waves-effect" onclick="loadNewClass()">
-                                        <i class="material-icons" style="float: left;">replay</i>
-                                    </button>
                                 </div>
                             </div>
-
 
                                 <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
                                     <div class="modal-dialog modal-lg" role="document">
