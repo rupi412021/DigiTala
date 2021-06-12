@@ -2056,7 +2056,7 @@ namespace Digitala.Models.DAL
             }
         }
 
-        public List<Students> ReadStudentsPerTecher(string teacherId, int year)
+        public List<Students> ReadStudentsPerTecher(string teacherId, int year, string classN)
         {
             List<Students> StudentsList = new List<Students>();
             SqlConnection con = null;
@@ -2066,7 +2066,7 @@ namespace Digitala.Models.DAL
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
                 String selectSTR = "SELECT S.* FROM TeachesInClass T inner join StudentsInClass SIC on T.SchId = SIC.SCSchId and T.Year = SIC.SCYear and T.ClassName = SIC.SCName " +
-                                    "inner join Student S on SIC.SCstdID = S.StudentId WHERE T.TID = " + teacherId + " and T.Year = " + year + " ORDER BY SLastName ASC";
+                                    "inner join Student S on SIC.SCstdID = S.StudentId WHERE T.TID = " + teacherId + " and T.Year = " + year + " and T.ClassName = '" + classN +"' ORDER BY SLastName ASC";
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -3644,7 +3644,7 @@ namespace Digitala.Models.DAL
             catch (Exception ex)
             {
                 // write to log
-                throw new Exception("התאמות לא נוספות למערכת", ex);
+                throw new Exception("כיתה לא הוקצתה למורה", ex);
             }
 
             finally

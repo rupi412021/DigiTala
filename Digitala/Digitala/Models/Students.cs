@@ -76,10 +76,10 @@ namespace Digitala.Models
             return Read();
         }
 
-        public List<Students> ReadStudentsForTeacherPerYear(string teacherId, int year)
+        public List<Students> ReadStudentsForTeacherPerYear(string teacherId, int year, string classN)
         {
             DBServices dbs = new DBServices();
-            List<Students> sList = dbs.ReadStudentsPerTecher(teacherId, year);
+            List<Students> sList = dbs.ReadStudentsPerTecher(teacherId, year, classN);
 
             return sList;
         }

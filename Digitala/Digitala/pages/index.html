@@ -34,6 +34,7 @@
     <script>
         $(document).ready(function () {
             TeachID = localStorage["TeacherID"];
+            classnamet = localStorage["ClassToShowName"];
             teacherYear = localStorage["TeacherYear"];
             YearToShow = localStorage["ClassToShowYear"];
             surDuct = { 1: "one", 2: "two", 3: "three", 4: "four", 5: "five" };
@@ -47,7 +48,7 @@
                 x.style.display = "none";
             }
 
-            ajaxCall("GET", "../api/Students/" + TeachID + "/" + YearToShow, "", getStudentsSuccess, error);
+            ajaxCall("GET", "../api/Students/" + TeachID + "/" + YearToShow + "/" + classnamet, "", getStudentsSuccess, error);
             ajaxCall("GET", "../api/TargetsSurvey/" + TeachID, "", getSurveySuccess, error);
             ajaxCall("DELETE", "../api/TargetsSurvey", "", DeleteSurveySuccess, error);
 
@@ -69,7 +70,7 @@
                 }          
             });
 
-            classnamet = localStorage["ClassToShowName"];
+            
             classInfo = "כיתה " + classnamet;
             $("#tcname").html(classInfo);
 

@@ -34,9 +34,9 @@ function getUserSuccess(data) {
             showYear = localStorage["ClassToShowYear"];
 
             if (localStorage["ClassToShowYear"] != localStorage["TeacherYear"] || localStorage["ClassToShowName"] != localStorage["TeacherClass"])
-                ajaxCall("GET", "../api/Students/" + data[i].TeacherID + "/" + showYear, "", getStudentSuccess, getStudentError);
+                ajaxCall("GET", "../api/Students/" + data[i].TeacherID + "/" + showYear + "/" + localStorage["ClassToShowName"], "", getStudentSuccess, getStudentError);
             else
-                ajaxCall("GET", "../api/Students/" + data[i].TeacherID + "/" + tyear, "", getStudentSuccess, getStudentError);
+                ajaxCall("GET", "../api/Students/" + data[i].TeacherID + "/" + tyear + "/" + tclass, "", getStudentSuccess, getStudentError);
 
             break;
 

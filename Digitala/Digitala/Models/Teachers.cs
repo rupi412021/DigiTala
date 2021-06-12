@@ -89,10 +89,25 @@ namespace Digitala.Models
             dbs.updateTinfo(s,c,y,e);
         }
 
-        public void InsertTeacherToClass(int s, string c, int y, int i)
+        public void InsertTeacherToClass(int school, string tclass, int year, int id)
         {
             DBServices dbs = new DBServices();
-            dbs.InsertTeacherToClass(s, c, y, i);
+            List<Teachers> teachersList = ReadPastYears(id);
+            int ind = 0;
+
+            for (int i = 0; i < teachersList.Count; i++)
+            {
+                if (teachersList[i].TeacherID == id)
+                {
+                    if (teachersList[i].TeacherSchoolId == school && teachersList[i].TeacherYear == year && teachersList[i].TeacherClass == tclass)
+                    {
+                        ind = 1;
+                    }
+                }
+                
+            }
+            if(ind == 0)
+                dbs.InsertTeacherToClass(school, tclass, year, id);
         }
 
         public List<Teachers> ReadPastYears(int TID)

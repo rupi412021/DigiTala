@@ -20,11 +20,11 @@ namespace Digitala.Controllers
         }  
 
         [HttpGet]
-        [Route("api/Students/{teacherId}/{year}")]
-        public List<Students> Get(string teacherId, int year)
+        [Route("api/Students/{teacherId}/{year}/{classN}")]
+        public List<Students> Get(string teacherId, int year, string classN)
         {
             Students s = new Students();
-            List<Students> slist = s.ReadStudentsForTeacherPerYear(teacherId, year);
+            List<Students> slist = s.ReadStudentsForTeacherPerYear(teacherId, year, classN);
             return slist;
         }
 

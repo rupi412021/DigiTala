@@ -27,7 +27,7 @@
     <script src="../Scripts/jquery-3.3.1.min.js"></script>
     <script src="../Scripts/ajaxCallsWithKey.js"></script>
     <script src="../js/pages/loging.js"></script>
-    <script src="jquery-1.10.2.min.js" type="text/javascript"></script>
+    <!--<script src="jquery-1.10.2.min.js" type="text/javascript"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.4-a/xls.core.min.js"></script>
     <script>
@@ -64,7 +64,7 @@
             str = "";
             count4 = 0;
             for (var i = 0; i < yearsList.length; i++) {
-                if (yearsList[i].GregorianYear >= currentYear - 1 && count4 < 4) {
+                if (yearsList[i].GregorianYear >= currentYear && count4 < 4) {
                     str += "<option value='" + yearsList[i].GregorianYear + "'>" + yearsList[i].HebrewYear;
                     count4++;
                 }
@@ -72,6 +72,7 @@
 
             $("#year").html(str);
         }
+
         function getYearserror(error) {
             console.log("Cold not bring years list");
         }
@@ -199,34 +200,35 @@
                         break;
                     }
                 }
-                bday = Jsondata[i].תאריך_לידה;
-                let year = bday[6] + bday[7] + bday[8] + bday[9];
+                bday = Jsondata[i].תאריך_לידה.toString();
+                len = bday.length;
+                let year = "20" + bday[len-2] + bday[len-1];
                 let month = bday[3] + bday[4];
                 let day = bday[0] + bday[1];
 
                 var monthsAfter = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
                 month = monthsAfter[parseInt(month) - 1];
 
-                bday = new Date(year, month, day);
+                birthday = new Date(year, month, day);
 
                 if (Jsondata[i].מין != "M" && Jsondata[i].מין != "F") {
-                    swal("שדה המין נדרש להיות M או F", "אנה תקנו את הפרטים ונסו שוב", "error");
+                    swal(" מין נדרש להיות M או F", "אנא תקנו את הפרטים ונסו שוב", "error");
                     break;
                 }
                 if (Jsondata[i].תעודת_זהות.length != 9) {
-                    swal("בדוק את התעודת זהות", "אנה תקנו את הפרטים ונסו שוב", "error");
+                    swal("בדוק את תעודת הזהות", "אנא תקנו את הפרטים ונסו שוב", "error");
                     break;
                 }
 
                 if (hit == 0) {
                     if (Jsondata[i].תיאור != null)
                         Jsondata[i].תיאור.replace("'", "`")
-                    let NewS = {
+                    NewS = {
                         studentId: Jsondata[i].תעודת_זהות,
                         sFirstName: Jsondata[i].שם_פרטי,
                         sLastName: Jsondata[i].שם_משפחה,
                         sEmail: Jsondata[i].אימייל,
-                        sBirthDate: bday.toDateString(),
+                        sBirthDate: birthday.toDateString(),
                         sGender: Jsondata[i].מין,
                         sAddress: Jsondata[i].כתובת,
                         sPhone: Jsondata[i].פלאפון,
@@ -243,18 +245,8 @@
                         cSID: Jsondata[i].תעודת_זהות,
                     }
 
-
-                    let school = $("#schOpt").val();
-                    let cclass = $("#classNa").val() + "`" + $("#classNum").val();
-                    let year = parseInt($("#yearList").val());
-                    let temail = localStorage["UserName"];
-                    //let tid = parseInt(localStorage["TeacherID"]);
-
                     ajaxCall("POST", "../api/Students", JSON.stringify(NewS), postSutdentSuccess, postSutdentError);
-                    ajaxCall("POST", "../api/Custodian", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
-                    ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail, "", putTeacherInfoSuccess, putTeacherInfoError);
-                    ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + Jsondata[i].תעודת_זהות, "", postStudentClassSuccess, postStudentClassError);
-                }
+               }
 
 
                 else {
@@ -263,10 +255,10 @@
                     let cclass = $("#classNa").val() + "`" + $("#classNum").val();
                     let year = parseInt($("#yearList").val());
                     let temail = localStorage["UserName"];
-                    //let tid = parseInt(localStorage["TeacherID"]);
+                    let tid = parseInt(localStorage["TeacherID"]);
 
 
-                    ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail, "", putTeacherInfoSuccess, putTeacherInfoError);
+                    ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail + "/" + tid, "", putTeacherInfoSuccess, putTeacherInfoError);
                     ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + Jsondata[i].תעודת_זהות, "", postStudentClassSuccess, postStudentClassError);
                 }
 
@@ -280,8 +272,10 @@
         }
 
         function putTeacherInfoSuccess() {
-            console.log("Teacher info updated")
-
+            console.log("Teacher info updated");
+            localStorage.setItem("ClassToShowYear", parseInt($("#yearList").val()));
+            localStorage.setItem("ClassToShowName", $("#classNa").val() + "`" + $("#classNum").val());
+            window.location.assign("index.html");
         }
 
         function putTeacherInfoError() {
@@ -296,6 +290,21 @@
         function postSutdentSuccess() {
 
             console.log("Posted student")
+
+            let school = $("#schOpt").val();
+            let cclass = $("#classNa").val() + "`" + $("#classNum").val();
+            let year = parseInt($("#yearList").val());
+            let temail = localStorage["UserName"];
+            let tid = parseInt(localStorage["TeacherID"]);
+
+
+
+            ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail + "/" + tid, "", putTeacherInfoSuccess, putTeacherInfoError);
+            ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + NewS.studentId, "", postStudentClassSuccess, postStudentClassError);
+            ajaxCall("POST", "../api/Custodian", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
+
+            
+
         }
 
         function postSutdentError() {
