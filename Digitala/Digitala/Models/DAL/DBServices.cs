@@ -1524,12 +1524,16 @@ namespace Digitala.Models.DAL
             int i = 2;
             foreach (var item in c)
             {
+                if (item.CharacteristicKey < 0)
+                {
+                    insertFreeChar(item, SId, year);
+                    break;
+                }
                 ones += ", 1";
                 columns += ", [char_" + item.CharacteristicKey + "]";
                 i++;
 
-                if (item.CharacteristicKey < 0)
-                    insertFreeChar(item, SId, year);
+                
             }
             columns += ")";
             ones += ")";
