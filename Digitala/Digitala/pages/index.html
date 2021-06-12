@@ -48,7 +48,8 @@
                 x.style.display = "none";
             }
 
-            ajaxCall("GET", "../api/Students/" + TeachID + "/" + YearToShow + "/" + classnamet, "", getStudentsSuccess, error);
+            if (classnamet != "טען")
+                ajaxCall("GET", "../api/Students/" + TeachID + "/" + YearToShow + "/" + classnamet, "", getStudentsSuccess, error);
             ajaxCall("GET", "../api/TargetsSurvey/" + TeachID, "", getSurveySuccess, error);
             ajaxCall("DELETE", "../api/TargetsSurvey", "", DeleteSurveySuccess, error);
 
