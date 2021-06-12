@@ -2467,14 +2467,14 @@ namespace Digitala.Models.DAL
                 {
                     if ((string)dr["StudentId"] != rt.NewStudentId)
                     {
-                        for (int i = 1; i <= dr.FieldCount - 4; i++)
+                        for (int i = 1; i <= dr.FieldCount - 2; i++)
                         {
                             if (Convert.ToInt32(dr["char_" + i]) == 1)
                                 missmatch++;
                         }
                         for (int j = 0; j < rt.NewStudentChars.Count; j++)
                         {
-                            if (rt.NewStudentChars[j].CharacteristicKey < dr.FieldCount - 4)
+                            if (rt.NewStudentChars[j].CharacteristicKey < dr.FieldCount - 2)
                             {
                                 for (int k = 1; k < dr.FieldCount; k++)
                                 {
@@ -2493,7 +2493,7 @@ namespace Digitala.Models.DAL
                         }
 
                         if (countMatch > missmatch)
-                            score = countMatch * 0.8 + (dr.FieldCount - 4 - countMatch - missmatch) * 0.2;
+                            score = countMatch * 0.8 + (dr.FieldCount - 2 - countMatch - missmatch) * 0.2;
                         else
                             score = 0;
 

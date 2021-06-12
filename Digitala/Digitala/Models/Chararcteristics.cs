@@ -15,8 +15,10 @@ namespace Digitala.Models
         bool isWeakness;
         string studentId;
         int year;
+        int teacherYear;
+        string teacherClass;
 
-        public Chararcteristics(int characteristicKey, string chararcteristic, int faSerial, int sfaSerial, bool isWeakness, string studentId, int year)
+        public Chararcteristics(int characteristicKey, string chararcteristic, int faSerial, int sfaSerial, bool isWeakness, string studentId, int year, int teacherYear, string teacherClass)
         {
             Chararcteristic = chararcteristic;
             FaSerial = faSerial;
@@ -25,6 +27,8 @@ namespace Digitala.Models
             StudentId = studentId;
             Year = year;
             CharacteristicKey = characteristicKey;
+            TeacherYear = teacherYear;
+            TeacherClass = teacherClass;
         }
 
         public Chararcteristics() { }
@@ -36,6 +40,8 @@ namespace Digitala.Models
         public int Year { get => year; set => year = value; }
         public bool IsWeakness { get => isWeakness; set => isWeakness = value; }
         public int CharacteristicKey { get => characteristicKey; set => characteristicKey = value; }
+        public string TeacherClass { get => teacherClass; set => teacherClass = value; }
+        public int TeacherYear { get => teacherYear; set => teacherYear = value; }
 
         public List<Chararcteristics> Read()
         {
