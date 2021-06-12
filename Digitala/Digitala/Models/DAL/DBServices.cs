@@ -2358,7 +2358,9 @@ namespace Digitala.Models.DAL
                 mail.To.Add(UserMail);
                 mail.Subject = "שיחזור סיסמא דיגיתלא";
                 mail.Body = "שלום" + Environment.NewLine +
-                "הסיסמא הזמנית הינה:  " + UserRandomPassword;
+                "הסיסמא הזמנית הינה:  " + Environment.NewLine +  UserRandomPassword + Environment.NewLine + 
+                "ניתן להחליף סיסמא בלינק הבא" + Environment.NewLine + "http://proj.ruppin.ac.il/igroup41/test2/tar5/pages/SetNewPass.html";
+
 
                 SmtpServer.Port = 587;
                 SmtpServer.Credentials = new System.Net.NetworkCredential("rupi41.2021@gmail.com", "igroup41_45920");
