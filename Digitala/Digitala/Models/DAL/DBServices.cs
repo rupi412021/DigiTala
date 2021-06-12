@@ -1521,7 +1521,7 @@ namespace Digitala.Models.DAL
 
             string ones = "";
             string columns = "([StudentId], [SCYear]";
-            int i = 2;
+
             foreach (var item in c)
             {
                 if (item.CharacteristicKey < 0)
@@ -1531,9 +1531,7 @@ namespace Digitala.Models.DAL
                 }
                 ones += ", 1";
                 columns += ", [char_" + item.CharacteristicKey + "]";
-                i++;
-
-                
+             
             }
             columns += ")";
             ones += ")";
