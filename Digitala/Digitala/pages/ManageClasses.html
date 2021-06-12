@@ -204,10 +204,11 @@
                     }
                 }
                 bday = Jsondata[i].תאריך_לידה.toString();
-                len = bday.length;
-                let year = "20" + bday[len-2] + bday[len-1];
-                let month = bday[3] + bday[4];
-                let day = bday[0] + bday[1];
+
+                bdayArr = bday.split("/");
+                let year = "20" + bdayArr[2];
+                let month = bdayArr[1];
+                let day = bdayArr[0];
 
                 var monthsAfter = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
                 month = monthsAfter[parseInt(month) - 1];
