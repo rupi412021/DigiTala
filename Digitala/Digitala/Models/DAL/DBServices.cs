@@ -1527,7 +1527,7 @@ namespace Digitala.Models.DAL
                 if (item.CharacteristicKey < 0)
                 {
                     insertFreeChar(item, SId, year);
-                    break;
+                    continue;
                 }
                 ones += ", 1";
                 columns += ", [char_" + item.CharacteristicKey + "]";
