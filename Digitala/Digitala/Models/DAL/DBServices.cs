@@ -2065,7 +2065,7 @@ namespace Digitala.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "SELECT S.* FROM TeachesInClass T inner join StudentsInClass SIC on T.SchId = SIC.SCSchId and T.Year = SIC.SCYear and T.ClassName = SIC.SCName " +
+                String selectSTR = "SELECT S.* FROM TeachesInClass T inner join StudentInClass SIC on T.SchId = SIC.SCSchId and T.Year = SIC.SCYear and T.ClassName = SIC.SCName " +
                                     "inner join Student S on SIC.SCstdID = S.StudentId WHERE T.TID = " + teacherId + " and T.Year = " + year + " and T.ClassName = '" + classN +"' ORDER BY SLastName ASC";
 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
@@ -2837,7 +2837,7 @@ namespace Digitala.Models.DAL
             StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}')", s, c, y, i);
-            prefix = "INSERT INTO StudentsInClass " + "([SCSchId], [SCName], [SCYear], [SCstdID])";
+            prefix = "INSERT INTO StudentInClass " + "([SCSchId], [SCName], [SCYear], [SCstdID])";
 
 
             command = prefix + sb.ToString();
@@ -2888,7 +2888,7 @@ namespace Digitala.Models.DAL
         private String BuildDeleteStudentCommand(int sID)
         {
             String command;
-            command = "Delete FROM Custodian WHERE StudentId = '" + sID + "' Delete FROM StudentsInClass WHERE SCstdID = '" + sID + "' Delete FROM StudentFiles WHERE StudentID = '" + sID +  "' Delete FROM Student WHERE StudentId = '" + sID + "'";
+            command = "Delete FROM Custodian WHERE StudentId = '" + sID + "' Delete FROM StudentInClass WHERE SCstdID = '" + sID + "' Delete FROM StudentFiles WHERE StudentID = '" + sID +  "' Delete FROM Student WHERE StudentId = '" + sID + "'";
             return command;
         }
 
