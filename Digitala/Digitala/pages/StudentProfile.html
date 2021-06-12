@@ -43,7 +43,7 @@
             $("#studentName").html(studentName);
             year = localStorage["TeacherYear"];
             mode = "";
-
+            classNameToshow = localStorage["ClassToShowName"];
             YearToShow = localStorage["ClassToShowYear"];
             if (year != YearToShow) {
                 $(".EditStudentProfile").attr("hidden", true);
@@ -56,7 +56,7 @@
 
             ajaxCall("GET", "../api/Talas/" + newID, "", getIfTalaSuccess, getIfTalaError);
 
-            ajaxCall("GET", "../api/Students/" + TeachID + "/" + YearToShow, "", getStudentsByTeacherSuccess, error);
+            ajaxCall("GET", "../api/Students/" + TeachID + "/" + YearToShow + "/" + classNameToshow, "", getStudentsByTeacherSuccess, error);
 
             ajaxCall("GET", "../api/Custodian/" + newID, "", getStudentsCustodianSuccess, error);
 
