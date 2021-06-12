@@ -39,6 +39,20 @@
             YearToShow = localStorage["ClassToShowYear"];
             surDuct = { 1: "one", 2: "two", 3: "three", 4: "four", 5: "five" };
 
+            if (classnamet != "טען") {
+                ajaxCall("GET", "../api/Students/" + TeachID + "/" + YearToShow + "/" + classnamet, "", getStudentsSuccess, error);
+                classInfo = "כיתה " + classnamet;
+                $("#filetButtons").attr("hidden", false);
+                $("#NewTargets").attr("hidden", false);
+                $("#tcname").html(classInfo);
+            }
+
+            else {
+                $("#tcname").html("ברוך הבא!");
+                $("#tcname").append('<h3>אין תלמידים לתצוגה, עבור ל"ניהול כיתות" כדי ליצור תלמידים חדשים במערכת</h3>');
+
+            }
+
             if (teacherYear != YearToShow) {
                 var x = document.getElementById("resetClass");
                 x.style.display = "block";
@@ -48,18 +62,7 @@
                 x.style.display = "none";
             }
 
-            if (classnamet != "טען") {
-                ajaxCall("GET", "../api/Students/" + TeachID + "/" + YearToShow + "/" + classnamet, "", getStudentsSuccess, error);
-                classInfo = "כיתה " + classnamet;
-                $("#tcname").html(classInfo);
-            }
-            else {
-                $("#filetButtons").attr("hidden", true);
-                $("#NewTargets").attr("hidden", true);
-                $("#tcname").html("ברוך הבא!");
-                $("#tcname").append('<h3>אין תלמידים לתצוגה, עבור ל"ניהול כיתות" כדי ליצור תלמידים חדשים במערכת</h3>');
-
-            }
+            
             ajaxCall("GET", "../api/TargetsSurvey/" + TeachID, "", getSurveySuccess, error);
             ajaxCall("DELETE", "../api/TargetsSurvey", "", DeleteSurveySuccess, error);
 
@@ -319,7 +322,7 @@
                 <h1 id="tcname"></h1>
             </div>
             <div class="row clearfix">
-                <div class="col-sm-8 col-xs-12" id="filetButtons" style="float:right">
+                <div class="col-sm-8 col-xs-12" id="filetButtons" style="float:right" hidden="hidden">
                     <button type="button" id="AllStudents" class="btn bg-grey btn-lg waves-effect">כל התלמידים</button>
                     <button type="button" id="StudentsWithNoTala" class="btn bg-blue-grey btn-lg waves-effect">תלמידים ללא תל"א</button>
                     <button type="button" id="resetClass" class="btn waves-effect" onclick="resetToCurrentYear()">
@@ -333,7 +336,7 @@
                 </div>
                 <div class="col-sm-6 col-lg-4 col-xs-12" id="studentsCardsLeft" style="float:right">
                 </div>
-                <div class="col-sm-6 col-lg-4 col-xs-12" id="NewTargets" style="float:right">
+                <div class="col-sm-6 col-lg-4 col-xs-12" id="NewTargets" style="float:right" hidden="hidden">
                     <div class="card surveys">
                         <div class="header">
                             <h2>מטרות חדשות לדירוג</h2>
