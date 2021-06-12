@@ -26,11 +26,6 @@ function getUserSuccess(data) {
             tyear = data[i].TeacherYear;
             tclass = data[i].TeacherClass;
 
-            if (localStorage["ClassToShowYear"] == null) {
-                localStorage.setItem("ClassToShowYear", tyear);
-                localStorage.setItem("ClassToShowName", tclass);
-            }
-
             showYear = localStorage["ClassToShowYear"];
 
             if (localStorage["ClassToShowYear"] != localStorage["TeacherYear"] || localStorage["ClassToShowName"] != localStorage["TeacherClass"])
