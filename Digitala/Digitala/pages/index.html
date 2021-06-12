@@ -48,8 +48,18 @@
                 x.style.display = "none";
             }
 
-            if (classnamet != "טען")
+            if (classnamet != "טען") {
                 ajaxCall("GET", "../api/Students/" + TeachID + "/" + YearToShow + "/" + classnamet, "", getStudentsSuccess, error);
+                classInfo = "כיתה " + classnamet;
+                $("#tcname").html(classInfo);
+            }
+            else {
+                $("#filetButtons").attr("hidden", true);
+                $("#NewTargets").attr("hidden", true);
+                $("#tcname").html("ברוך הבא!");
+                $("#tcname").append('<h3>אין תלמידים לתצוגה, עבור ל"ניהול כיתות" כדי ליצור תלמידים חדשים במערכת</h3>');
+
+            }
             ajaxCall("GET", "../api/TargetsSurvey/" + TeachID, "", getSurveySuccess, error);
             ajaxCall("DELETE", "../api/TargetsSurvey", "", DeleteSurveySuccess, error);
 
@@ -70,10 +80,6 @@
                     }
                 }          
             });
-
-            
-            classInfo = "כיתה " + classnamet;
-            $("#tcname").html(classInfo);
 
             $(document).on("click", "#AllStudents", function () {
                 RenderStudentsCards(StudsentsList);               
