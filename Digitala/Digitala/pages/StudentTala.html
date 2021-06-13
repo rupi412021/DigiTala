@@ -44,7 +44,7 @@
             filterMainBtnIdLast = "filterMainBTN1";
             ToolsArr = [];
             GoalsArr = [];
-            ajaxCall("GET", "../api/FuncAreas/2", "", getSubAreasSuccess, error);
+            ajaxCall("GET", "../api/FuncAreas/2", "", getSubAreasSuccess, getSubAreasError);
 
             teacherYear = localStorage["TeacherYear"];
             YearToShow = localStorage["ClassToShowYear"];
@@ -100,7 +100,7 @@
                             NewStudentChars: CharsChosen,
                         }
 
-                        ajaxCall("POST", "../api/Chararcteristics", JSON.stringify(newStudentChars), GetRecommendationsSuccess, error);
+                        ajaxCall("POST", "../api/Chararcteristics", JSON.stringify(newStudentChars), GetRecommendationsSuccess, PostRecommendationsError);
                     }
                 }
                 if ($("#wizard_with_validation-p-2").hasClass("body current")) {
@@ -164,9 +164,10 @@
                         Targets: TargetForTala
                     }
 
-                    ajaxCall("POST", "../api/Talas", JSON.stringify(TalaObj), postTalaSuccess, error);
+                    ajaxCall("POST", "../api/Talas", JSON.stringify(TalaObj), postTalaSuccess, postTalaError);
                 }
             });
+
 
             $(document).on("click", "#saveTargetsToTala", function () {
                 renderTargetsToPage(TargetForTala);
@@ -176,9 +177,26 @@
             year = localStorage["TeacherYear"];
             window.setTimeout(toggleMenu, 1000);
             lastYear = year - 1;
-            ajaxCall("GET", "../api/Targets/" + newID + "/" + lastYear, "", getTalaFromLastYearSuccess, error);
+            ajaxCall("GET", "../api/Targets/" + newID + "/" + lastYear, "", getTalaFromLastYearSuccess, getTalaFromLastYearError);
 
         });
+
+        function getSubAreasError(error) {
+            console.log("faild getting sub areas")
+        }
+
+        function getTalaFromLastYearError(error) {
+            console.log("faild getting targets from last year")
+        }
+
+        function PostRecommendationsError(error) {
+            console.log("algorithm faild");
+        }
+
+        function postTalaError(error) {
+            console.log("fails posting tala");
+        }
+        
 
         function getTalaFromLastYearSuccess(lastyeartala) {
             talaFromLastYear = lastyeartala;
@@ -738,15 +756,27 @@
         function getAreasSuccess(allMainAreas) {
             console.log(allMainAreas);
             MainAreasList = allMainAreas;
-            ajaxCall("GET", "../api/Chararcteristics", "", getChararcteristicsSuccess, error);
+            ajaxCall("GET", "../api/Chararcteristics", "", getChararcteristicsSuccess, getChararcteristicsError);
+        }
+
+        function getChararcteristicsError(error) {
+            console.log("faild getting Chararcteristics");
         }
 
         function getSubAreasSuccess(allSubAreas) {
             console.log(allSubAreas);
             SubAreasList = allSubAreas;
-            ajaxCall("GET", "../api/FuncAreas/1", "", getAreasSuccess, error);
-            ajaxCall("GET", "../api/Targets", "", getTargetsSuccess, error);
+            ajaxCall("GET", "../api/FuncAreas/1", "", getAreasSuccess, getAreasError);
+            ajaxCall("GET", "../api/Targets", "", getTargetsSuccess, getTargetsError);
             
+        }
+
+        function getAreasError(error) {
+            console.log("faild getting Areas");
+        }
+
+        function getTargetsError(error) {
+            console.log("faild getting targets list");
         }
 
         function renderDataListChars(indexHidden) {

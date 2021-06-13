@@ -35,7 +35,10 @@
             ajaxCall("GET", "../api/Schools", "", getSchoolSuccess, getSchoolerror);
             localStorage.removeItem("StudentName");
             localStorage.removeItem("StudentID");
-
+            custList = [];
+            countCust = 0;
+            stdInClassList = [];
+            countStdInClass = 0;
             makeLists();
             ajaxCall("GET", "../api/Years", "", getYearsSuccess, getYearserror);
             ajaxCall("GET", "../api/Teachers/" + localStorage["TeacherID"], "", getTeachersPartYearsSuccess, getTeachersPartYearsError);
@@ -248,9 +251,9 @@
                         cPhone: Jsondata[i].פלאפון_האופוטרופוס,
                         cSID: Jsondata[i].תעודת_זהות,
                     }
-
-                    ajaxCall("POST", "../api/Students", JSON.stringify(NewS), postSutdentSuccess, postSutdentError);
-               }
+                    custList.push(NewC);
+                    stdInClassList.push(NewS);
+                }
 
 
                 else {
@@ -272,14 +275,20 @@
 
                 hit = 0;
             }
+            for (var i = 0; i < stdInClassList.length; i++) {
+                ajaxCall("POST", "../api/Students", JSON.stringify(stdInClassList[i]), postSutdentSuccess, postSutdentError);
+                countStdInClass++;
+            }
 
         }
 
         function putTeacherInfoSuccess() {
             console.log("Teacher info updated");
             localStorage.setItem("ClassToShowYear", parseInt($("#yearList").val()));
-            localStorage.setItem("ClassToShowName", $("#classNa").val() + "`" + $("#classNum").val());
-            window.location.assign("index.html");
+            localStorage.setItem("ClassToShowName", $("#classNa").val() + "`" + $("#classNum").val());           
+            localStorage.setItem("TeacherYear", parseInt($("#yearList").val()));
+            localStorage.setItem("TeacherClass", $("#classNa").val() + "`" + $("#classNum").val());           
+
         }
 
         function putTeacherInfoError() {
@@ -302,12 +311,16 @@
             let tid = parseInt(localStorage["TeacherID"]);
 
 
-
-            ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail + "/" + tid, "", putTeacherInfoSuccess, putTeacherInfoError);
-            ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + NewS.studentId, "", postStudentClassSuccess, postStudentClassError);
-            ajaxCall("POST", "../api/Custodian", JSON.stringify(NewC), postCustodianSuccess, postCustodianError);
-
-            
+            if (countStdInClass == stdInClassList.length) {
+                ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail + "/" + tid, "", putTeacherInfoSuccess, putTeacherInfoError);
+                for (var i = 0; i < stdInClassList.length; i++) {
+                    ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + stdInClassList[i].studentId, "", postStudentClassSuccess, postStudentClassError);
+                }
+                for (var i = 0; i < custList.length; i++) {
+                    ajaxCall("POST", "../api/Custodian", JSON.stringify(custList[i]), postCustodianSuccess, postCustodianError);
+                    countCust++;
+                }
+            }
 
         }
 
@@ -325,6 +338,13 @@
 
         function postCustodianSuccess() {
             console.log("Custodian inserted")
+            if (countCust == custList.length) {
+                countCust = 0;
+                countStdInClass = 0;
+                custList = [];
+                stdInClassList = []; 
+                window.location.assign("index.html");
+            }
         }
 
         function postCustodianError() {
