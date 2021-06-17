@@ -40,7 +40,7 @@
             surDuct = { 1: "one", 2: "two", 3: "three", 4: "four", 5: "five" };
 
             if (classnamet != "טען") {
-                ajaxCall("GET", "../api/Students/" + TeachID + "/" + YearToShow + "/" + classnamet, "", getStudentsSuccess, error);
+                ajaxCall("GET", "../api/Students/" + TeachID + "/" + YearToShow + "/" + classnamet, "", getStudentsSuccess, getStudentsError);
                 classInfo = "כיתה " + classnamet;
                 $("#filetButtons").attr("hidden", false);
                 $("#NewTargets").attr("hidden", false);
@@ -63,8 +63,8 @@
             }
 
             
-            ajaxCall("GET", "../api/TargetsSurvey/" + TeachID, "", getSurveySuccess, error);
-            ajaxCall("DELETE", "../api/TargetsSurvey", "", DeleteSurveySuccess, error);
+            ajaxCall("GET", "../api/TargetsSurvey/" + TeachID, "", getSurveySuccess, getSurveyError);
+            ajaxCall("DELETE", "../api/TargetsSurvey", "", DeleteSurveySuccess, DeleteSurveyError);
 
             localStorage.removeItem("StudentName");
             localStorage.removeItem("StudentID");
@@ -173,7 +173,7 @@
             $(document).on("click", "#saveSurvey", function () {
                 for (var i = 0; i < surveyTargetsList.length; i++) {
                     if (tarid == "surTar" + surveyTargetsList[i].TarSerial) {
-                        ajaxCall("PUT", "../api/TargetsSurvey", JSON.stringify(surveyTargetsList[i]), putTargetsSurveySuccess, error);
+                        ajaxCall("PUT", "../api/TargetsSurvey", JSON.stringify(surveyTargetsList[i]), putTargetsSurveySuccess, putTargetsSurveyError);
                     }
                 }            
             });
@@ -184,7 +184,7 @@
             console.log(StudsentsData);
             talasCount = 0;
             for (var i = 0; i < StudsentsList.length; i++) {
-                ajaxCall("GET", "../api/Talas/" + StudsentsList[i].StudentId + "/" + YearToShow, "", getTalaSuccess, error);
+                ajaxCall("GET", "../api/Talas/" + StudsentsList[i].StudentId + "/" + YearToShow, "", getTalaSuccess, getTalaError);
             } 
         }
 
@@ -219,7 +219,7 @@
                     studentsStrRight += '<div><i class="material-icons">cake</i><span class="icon-name studentIcons">' + bd.getDate() + "/" + months[bd.getMonth()] + "/" + bd.getFullYear() + '</span></div>';
                     studentsStrRight += '<div><i class="material-icons">phone</i><span class="icon-name studentIcons">' + StudsentsData[i].SPhone + '</span></div>';
                     studentsStrRight += '</div><div class="body DivStudentTala">';
-                    studentsStrRight += '<button type="button" std-id=' + StudsentsData[i].StudentId + ' class="btn-trans waves-effect personalTalaBTN openTalaManually">';
+                    studentsStrRight += '<button type="button" std-id=' + StudsentsData[i].StudentId + ' class="btn-trans waves-effect personalTalaBTN">';
                     if (StudsentsData[i].HasTala == true)
                         studentsStrRight += '<img title="צפייה בתוכנית הלימודים" src="../images/talaFull.png" /></button>';
                     else
@@ -271,6 +271,24 @@
         function error(err) {
             console.log("ERROR");
         }
+
+        function getStudentsError(err) {
+            console.log("could not get students");
+        }
+
+        function getSurveyError(err) {
+            console.log("could not get survey");
+        }
+        function DeleteSurveyError(err) {
+            console.log("could not delete survey");
+        }
+        function putTargetsSurveyError(err) {
+            console.log("could not put survey");
+        }
+        function getTalaError(err) {
+            console.log("could not get talas");
+        }
+        
 
         function DeleteSurveySuccess() {
             console.log("surveys table updated")

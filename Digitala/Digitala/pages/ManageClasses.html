@@ -276,8 +276,8 @@
                 hit = 0;
             }
             for (var i = 0; i < stdInClassList.length; i++) {
-                ajaxCall("POST", "../api/Students", JSON.stringify(stdInClassList[i]), postSutdentSuccess, postSutdentError);
                 countStdInClass++;
+                ajaxCall("POST", "../api/Students", JSON.stringify(stdInClassList[i]), postSutdentSuccess, postSutdentError);           
             }
 
         }
@@ -302,7 +302,7 @@
 
         function postSutdentSuccess() {
 
-            console.log("Posted student")
+            console.log("Posted student");
 
             let school = $("#schOpt").val();
             let cclass = $("#classNa").val() + "`" + $("#classNum").val();
@@ -312,13 +312,15 @@
 
 
             if (countStdInClass == stdInClassList.length) {
+                countStdInClass = 0;
                 ajaxCall("PUT", "../api/Teachers/" + school + "/" + cclass + "/" + year + "/" + temail + "/" + tid, "", putTeacherInfoSuccess, putTeacherInfoError);
                 for (var i = 0; i < stdInClassList.length; i++) {
                     ajaxCall("POST", "../api/Students/" + school + "/" + cclass + "/" + year + "/" + stdInClassList[i].studentId, "", postStudentClassSuccess, postStudentClassError);
                 }
                 for (var i = 0; i < custList.length; i++) {
-                    ajaxCall("POST", "../api/Custodian", JSON.stringify(custList[i]), postCustodianSuccess, postCustodianError);
                     countCust++;
+                    ajaxCall("POST", "../api/Custodian", JSON.stringify(custList[i]), postCustodianSuccess, postCustodianError);
+                    
                 }
             }
 
@@ -329,7 +331,7 @@
         }
 
         function postStudentClassSuccess() {
-            swal("הקובץ הועלה בהצלחה", "הצלחה", "success");
+            console.log("עודכן תלמיד בכיתה");
         }
 
         function postStudentClassError() {
@@ -337,10 +339,9 @@
         }
 
         function postCustodianSuccess() {
-            console.log("Custodian inserted")
+            console.log("Custodian inserted");
             if (countCust == custList.length) {
                 countCust = 0;
-                countStdInClass = 0;
                 custList = [];
                 stdInClassList = []; 
                 window.location.assign("index.html");

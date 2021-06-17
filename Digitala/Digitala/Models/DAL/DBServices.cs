@@ -2543,6 +2543,7 @@ namespace Digitala.Models.DAL
                                     rt.NewStudentChars[i].SfaSerial = chars[j].SfaSerial;
                                 else
                                     rt.NewStudentChars[i].SfaSerial = 0;
+                                break;
                             }
                         }
                     }
@@ -2559,6 +2560,7 @@ namespace Digitala.Models.DAL
                                 max6++;
                                 max2++;
                                 recommended.Add(TargetsList[j]);
+                                TargetsList.Remove(TargetsList[j]);
                                 if (max2 == 2)
                                     break;
                             }
