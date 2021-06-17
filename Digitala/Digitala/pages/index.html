@@ -252,12 +252,17 @@
 
         function getSurveySuccess(Survey) {
             surveyTargetsList = Survey;
+            today = new Date();
             console.log(Survey);
             renderTargets = "";
             for (var i = 0; i < surveyTargetsList.length; i++) {
+                creationsDate = new Date(Date.parse(surveyTargetsList[i].CreationDate));
+                var difference = Math.abs(today - creationsDate);
+                days = Math.round(difference / (1000 * 3600 * 24));
                 renderTargets += '<div class="card">';
                 renderTargets += '<button type="button" class="extandSurvey btn-trans" id=surTar' + surveyTargetsList[i].TarSerial+' data-toggle="modal" data-allow-outside-click="false" data-target="#smallModal">';
                 renderTargets += '<i class="material-icons">more_horiz</i></button>';
+                renderTargets += '<span id="hourglassBottom"><i class="material-icons">hourglass_bottom</i>' + parseInt(14-days) + ' ימים</span>';
                 renderTargets += '<p>' + surveyTargetsList[i].Target+'</p></div>';
             }
             
