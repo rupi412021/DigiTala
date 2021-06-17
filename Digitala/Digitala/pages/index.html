@@ -262,11 +262,17 @@
                 renderTargets += '<div class="card">';
                 renderTargets += '<button type="button" class="extandSurvey btn-trans" id=surTar' + surveyTargetsList[i].TarSerial+' data-toggle="modal" data-allow-outside-click="false" data-target="#smallModal">';
                 renderTargets += '<i class="material-icons">more_horiz</i></button>';
-                renderTargets += '<span id="hourglassBottom"><i class="material-icons">hourglass_bottom</i>' + parseInt(14-days) + ' ימים</span>';
-                renderTargets += '<p>' + surveyTargetsList[i].Target+'</p></div>';
+                if (parseInt(14 - days) == 1)
+                    renderTargets += '<span id="hourglassBottom"><i class="material-icons">hourglass_bottom</i>יום אחד</span>';
+                else
+                    renderTargets += '<span id="hourglassBottom"><i class="material-icons">hourglass_bottom</i>' + parseInt(14 - days) + ' ימים</span>';
+                renderTargets += '<p>' + surveyTargetsList[i].Target + '</p></div>';
+
             }
             
             $("#surveyTargets").html(renderTargets);
+            if (surveyTargetsList.length== 0)
+                $("#NewTargets").attr("hidden", "hidden");
         }
 
         function putTargetsSurveySuccess(Survey) {

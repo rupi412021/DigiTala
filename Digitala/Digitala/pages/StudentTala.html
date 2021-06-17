@@ -690,7 +690,8 @@
                             SfaSerial: talaFromLastYear[i].SfaSerial,
                             Tools: [],
                             Goals: [],
-                            NewTar: 0
+                            NewTar: 0,
+                            NewPhrase: 1 
                         }
                         TargetForTala.push(TarOldTemp);
                     }    
@@ -720,9 +721,9 @@
                 rederAllTargets(TargetsFullList);                
             });
 
-            function renderTagTar(tempID) {
+            function renderTagTar(temporaryID) {
                 for (var i = 1; i <= TargetsFullList.length; i++) {
-                    if (TargetsFullList[i].TarSerial == tempID) {
+                    if (TargetsFullList[i].TarSerial == temporaryID) {
                         if (TargetForTala == null)
                             TargetForTala = [];
                         TargetForTala.push(TargetsFullList[i]);

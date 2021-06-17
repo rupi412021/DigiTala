@@ -351,7 +351,7 @@ span, datalist {
 .card.surveys > .header > h2 {
     font-weight: bold;
     font-size: 20px;
-    color: #3f5656;
+    color: ghostwhite;
 }
 .surveys > .body > .card {
     background-color: white;

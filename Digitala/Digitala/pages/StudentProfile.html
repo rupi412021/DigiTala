@@ -153,21 +153,19 @@
 
                         ajaxCall("PUT", "../api/Students", JSON.stringify(studentObj), updateStudentSuccess, error);
 
-                        if ($("#contactEmail").val() != null && $("#contactEmail").val() != "") {
-                            custObj = {
-                                CSID: newID,
-                                CName: $("#contactName").val().replace("'", "`"),
-                                CPhone: $("#contactPhone").val().replace("'", "`"),
-                                CEmail: $("#contactEmail").val()
-                            }
-
-                            if (custodian.CEmail == null)
-                                ajaxCall("POST", "../api/Custodian", JSON.stringify(custObj), PutStudentsCustodianSuccess, error);
-                            else
-                                ajaxCall("PUT", "../api/Custodian", JSON.stringify(custObj), PutStudentsCustodianSuccess, error);
+                        custObj = {
+                            CSID: newID,
+                            CName: $("#contactName").val().replace("'", "`"),
+                            CPhone: $("#contactPhone").val().replace("'", "`"),
+                            CEmail: $("#contactEmail").val()
                         }
 
-                        if (PrivilegesForStudent.length > 0)
+                        if (custObj.CName == "" && custObj.CPhone == "" && custObj.CEmail == "")
+                            ajaxCall("POST", "../api/Custodian", JSON.stringify(custObj), PutStudentsCustodianSuccess, error);
+                        else
+                            ajaxCall("PUT", "../api/Custodian", JSON.stringify(custObj), PutStudentsCustodianSuccess, error);
+      
+                        if (PrivilegesForStudent.length > 0) {
                             for (var i = 0; i < PrivilegesForStudent.length; i++) {
                                 tempPriv = {
                                     DCode: PrivilegesForStudent[i].DCode,
@@ -178,13 +176,17 @@
                             }
                             for (var i = 0; i < AllPrivileges.length; i++) {
                                 if ($("#md_checkbox_" + AllPrivileges[i].DCode).is(':checked') == true) {
-                                tempPriv = {
-                                    DCode: AllPrivileges[i].DCode,
-                                    SId: newID,
-                                    Year: YearToShow
+                                    tempPriv = {
+                                        DCode: AllPrivileges[i].DCode,
+                                        SId: newID,
+                                        Year: YearToShow
+                                    }
+                                    ajaxCall("POST", "../api/Privileges", JSON.stringify(tempPriv), postPrivilegesForStudentSuccess, error);
                                 }
-                                ajaxCall("POST", "../api/Privileges", JSON.stringify(tempPriv), postPrivilegesForStudentSuccess, error);
                             }
+                        }
+                        for (var i = 0; i < AllPrivileges.length; i++) {
+                            $("#md_checkbox_" + AllPrivileges[i].DCode).attr('disabled', true);
                         }
                     });
                 }
@@ -336,6 +338,7 @@
         }
 
         function PutStudentsCustodianSuccess(custodianForStudent) {
+            console.log("custodian was updated");
             $("#contactName").attr('disabled', true);
             $("#contactPhone").attr('disabled', true);
             $("#contactEmail").attr('disabled', true);
@@ -445,8 +448,7 @@
                 $("#ph").html(strforedit);
             }
         }
-
-                 
+                
         function getFileError(files) {
             console.log("Couldn't get files");
         }
