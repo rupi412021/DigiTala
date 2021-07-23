@@ -2356,7 +2356,7 @@ namespace Digitala.Models.DAL
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
-                mail.From = new MailAddress("rupi41.2021@gmail.com");
+                mail.From = new MailAddress("digitalaproj@gmail.com");
                 mail.To.Add(UserMail);
                 mail.Subject = "שיחזור סיסמא דיגיתלא";
                 mail.Body = "שלום" + Environment.NewLine +
@@ -2365,7 +2365,7 @@ namespace Digitala.Models.DAL
 
 
                 SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("rupi41.2021@gmail.com", "igroup41_45920");
+                SmtpServer.Credentials = new System.Net.NetworkCredential("digitalaproj@gmail.com", "L5Kuyt7+o-");
                 SmtpServer.EnableSsl = true;
 
                 SmtpServer.Send(mail);
