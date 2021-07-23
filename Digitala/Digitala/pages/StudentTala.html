@@ -168,6 +168,14 @@
                 }
             });
 
+            $(document).on("click", "#addNewTarToTala", function () {
+                tagsList = "";
+                for (var i = 0; i < TargetForTala.length; i++) {
+                    tagsList += '<span class="tag label label-tag tar"><button class="btn-trans tagTarRemove" id="' + TargetForTala[i].TarSerial + '">X</button> ' + TargetForTala[i].Target + '</span>';
+                }
+                $("#phTarsLabels").html(tagsList);
+                tagsList = "";
+            });
 
             $(document).on("click", "#saveTargetsToTala", function () {
                 renderTargetsToPage(TargetForTala);
